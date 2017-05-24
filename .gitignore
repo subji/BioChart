@@ -4,6 +4,8 @@ node_modules
 public/bower.json 
 public/bower_components/
 public/etc/ 
+public/javascripts/
+public/stylesheets/
 public/images 
 public/test 
 routes/ 
