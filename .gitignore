@@ -1,0 +1,12 @@
+bin
+bin/www
+node_modules
+public/bower.json 
+public/bower_components/
+public/etc/ 
+public/images 
+public/test 
+routes/ 
+views/ 
+.babelrc
+app.js

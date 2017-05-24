@@ -1,0 +1,37 @@
+#survival {
+	float: left;
+	background: #f2f2df;
+}
+
+#selectBox {
+	float: left;
+	background: #a2f3ff;
+}
+
+#separateBar {
+	float: left;
+	background: #fdd2ff;
+}
+
+#group {
+	float: left;
+	background: #f2f22c;
+}
+
+#network {
+	float: left;
+	background: #d2d2f3;
+}
+
+#heatmap {
+	float: left;
+	background: #f7f7f7;
+}
+body {
+  padding: 50px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+a {
+  color: #00B7FF;
+}
