@@ -238,17 +238,17 @@ var draw = (function (draw)	{
 }(draw || {}));
 'use strict';
 
-var event = (function (event)	{
+var eventHandler = (function (eventHandler)	{
 	var model = {};
 
-	event.context = function (ctx)	{
+	eventHandler.context = function (ctx)	{
 		return model.ctx = ctx, 
-		arguments.length ? event : model.ctx;
+		arguments.length ? eventHandler : model.ctx;
 	};
 
-	event.data = function (data)	{
+	eventHandler.data = function (data)	{
 		return model.data = data,
-		arguments.length ? event : model.data;
+		arguments.length ? eventHandler : model.data;
 	};
 
 	function addMoveEventOnCanvas (callback)	{
@@ -267,14 +267,14 @@ var event = (function (event)	{
 		model.ctx.canvas.addEventListener('mousemove', getCoord);
 	};
 
-	event.hover = function (callback)	{
+	eventHandler.hover = function (callback)	{
 		addMoveEventOnCanvas(function (crd)	{
 			// console.log(crd);
 		});
 	};
 
-	return event;
-}(event || {}));
+	return eventHandler;
+}(eventHandler || {}));
 'use strict';
 
 var exclusive = (function ()	{
@@ -701,7 +701,7 @@ var heatmap = (function (heatmap)	{
 		},
 		size: size,
 		scale: scale,
-		event: event,
+		eventHandler: eventHandler,
 	};
 }(window||{}));
 'use strict';
