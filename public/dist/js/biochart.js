@@ -147,7 +147,31 @@ config.mutualExColor = function (value)	{
 		'M': { bg: '#D3D3D3', ins: '#5CB755' },
 		'.': { bg: '#D3D3D3', ins: '#D3D3D3' },
 	}[value];
-}
+};
+
+config.mutualExShapes = function (data)	{
+	var bwx = scale.compatibleBand(data.scaleX),
+			bwy = scale.compatibleBand(data.scaleY),
+			tAdd = (data.value === 'M' || data.value === 'B' || 
+						data.value === 'E') ? bwy / 3 : 0,
+			hAdd = (data.value === 'M' || data.value === 'B' || 
+						data.value === 'E') ? tAdd : bwy;	
+	
+	return render.rect({
+			top: data.scaleY(data.y) + 1,
+			left: data.scaleX(data.x) + 0.25,
+			width: bwx + 0.5,
+			height: bwy - 2,
+			fillStyle: config.mutualExColor(data.value).bg,
+		})
+	.rect({
+			top: data.scaleY(data.y) + tAdd + 1,
+			left: data.scaleX(data.x) + 0.25,
+			width: bwx + 0.5,
+			height: hAdd - 2,
+			fillStyle: config.mutualExColor(data.value).ins,
+		});
+};
 
 config.variantColor = function ()	{
 
@@ -410,7 +434,7 @@ var exclusive = (function ()	{
 		 	}
 		 },
 		 element: 'targeted div or other element',
-		 rect: if you are defined overlap over 0 then use this options. it is only array.
+		 rect: it's only callback function.
 		 */
 		heatmap({
 			data: hm,
@@ -433,43 +457,20 @@ var exclusive = (function ()	{
 					base: false, 
 				},
 			},
-			rect: [
-				function (d) {
-					var bdx = scale.compatibleBand(d.scaleX),
-							bdy = scale.compatibleBand(d.scaleY);
-
-					return {
-						top: d.scaleY(d.y) + 1,
-						left: d.scaleX(d.x) + 0.25,
-						width: bdx + 0.5,
-						height: bdy - 2,
-						fillStyle: config.mutualExColor(d.value).bg,
-					};
-				},
-				function (d) {
-					var bdx = scale.compatibleBand(d.scaleX),
-							bdy = scale.compatibleBand(d.scaleY),
-							topAdd = 0, heiAdd = bdy;
-
-					if (d.value === 'M' || d.value === 'B' || d.value === 'E')	{
-						topAdd = bdy / 3;
-						heiAdd = topAdd;
-					}
-
-					return {
-						top: d.scaleY(d.y) + topAdd + 1,
-						left: d.scaleX(d.x) + 0.25,
-						width: bdx + 0.5,
-						height: heiAdd - 2,
-						fillStyle: config.mutualExColor(d.value).ins,
-					};
-				}
-			]
+			rect: function (data)	{
+				return config.mutualExShapes(data);
+			},
 		});
 		survival({
 			element: '#survival',
 		});
 		// grouping();
+		legend({
+			element: '#legend',
+			data: sample.split(' '),
+			// shapes: 
+			colors: config.mutualExColor,
+		})
 	};
 }());
 'use strict';
@@ -643,10 +644,6 @@ var heatmap = (function (heatmap)	{
 						[w - m.right, m.left] : [m.left, w - m.right]),
 				sy = scale[ay.scale](ay.data, ry === 'riverse' ? 
 						[h - m.bottom, m.top] : [m.top, h - m.bottom]);
-
-		var rects = opts.rect.length < 1 ? [opts.rect] : opts.rect; 
-
-		var testp = setAxisPosition(lx, w, h, m);
 		
 		dq.appendChild(canvas);
 
@@ -672,12 +669,33 @@ var heatmap = (function (heatmap)	{
 			opts.data[i].scaleX = sx;
 			opts.data[i].scaleY = sy;
 
-			for (var r = 0, rl = rects.length; r < rl; r++)	{
-				rd.rect(rects[r](opts.data[i]));
-			}
+			opts.rect(opts.data[i]);	
 		}
 	}
 }(heatmap||{}));
+'use strict';
+
+var legend = (function (legend)	{
+	var model = {};
+
+	legend.context = function (ctx)	{
+		return model.ctx = ctx, 
+		arguments.length ? legend : model.ctx;
+	};
+
+	legend.data = function (data)	{
+		return model.data = data,
+		arguments.length ? legend : model.data;
+	};
+
+	legend.draw = function ()	{
+		console.log('draw');
+	};
+	
+	return function (opts)	{
+		
+	};
+}(legend||{}));
 'use strict';
 
 (function (window)	{
@@ -690,7 +708,7 @@ var heatmap = (function (heatmap)	{
 		landscape: '',
 		exclusive: exclusive,
 		chart: {
-			legend: '',
+			legend: legend,
 			needle: '',
 			graph: '',
 			procbar: '',
@@ -1117,6 +1135,7 @@ var render = (function (render)	{
     	opts.height - opts.headLen * Math.sin(angle + Math.PI / 6));
 		setStyle(render.ctx, opts);
 		render.ctx.closePath();
+		return render;
 	};
 	/**
 	 this function is get a ratio that to apply 
@@ -1265,9 +1284,10 @@ size.chart.mutualExt = function (dom, width, height)	{
 		survival: {w: (width * 0.3), h: height},
 		selectBox: {w: (width * 0.7), h: (height * 0.05)},
 		separateBar: {w: (width * 0.7), h: (height * 0.05)},
-		group: {w: (width * 0.7), h: (height * 0.4)},
-		network: {w: (width * 0.7) * 0.3, h: (height * 0.5)},
+		group: {w: (width * 0.7), h: (height * 0.3)},
+		network: {w: (width * 0.7) * 0.3, h: (height * 0.6)},
 		heatmap: {w: (width * 0.7) * 0.7, h: (height * 0.5)},
+		legend: {w: (width * 0.7) * 0.7, h: (height * 0.1)},
 	};
 };
 'use strict';

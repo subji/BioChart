@@ -27,6 +27,11 @@
 	float: left;
 	background: #f7f7f7;
 }
+
+#legend {
+	float: left;
+	background: #a2f3ff;
+}
 body {
   /*padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;*/
