@@ -138,6 +138,21 @@ var axis = (function (axis)	{
 
 var config = {};
 
+config.mutualExName = function (value)	{
+	return {
+		'A': 'Amplification',
+		'B': 'Amplification & Mutation',
+		'D': 'Deletion',
+		'E': 'Deletion & Mutation',
+		'M': 'Mutation',
+		'.': 'None',
+	}[value];
+};
+
+config.mutualExPriority = function (value)	{
+	return { 'A': 1, 'B': 0, 'D': 3, 'E': 2, 'M': 4, '.': 5 }[value];
+};
+
 config.mutualExColor = function (value)	{
 	return {
 		'A': { bg: '#D3D3D3', ins: '#FFBDE0' },
@@ -155,19 +170,20 @@ config.mutualExShapes = function (data)	{
 			tAdd = (data.value === 'M' || data.value === 'B' || 
 						data.value === 'E') ? bwy / 3 : 0,
 			hAdd = (data.value === 'M' || data.value === 'B' || 
-						data.value === 'E') ? tAdd : bwy;	
+						data.value === 'E') ? tAdd : bwy,
+			il = data.isLegend || false;
 	
 	return render.rect({
 			top: data.scaleY(data.y) + 1,
 			left: data.scaleX(data.x) + 0.25,
-			width: bwx + 0.5,
+			width: data.isLegend ? data.isLegend : bwx + 0.5,
 			height: bwy - 2,
 			fillStyle: config.mutualExColor(data.value).bg,
 		})
 	.rect({
 			top: data.scaleY(data.y) + tAdd + 1,
 			left: data.scaleX(data.x) + 0.25,
-			width: bwx + 0.5,
+			width: data.isLegend ? data.isLegend : bwx + 0.5,
 			height: hAdd - 2,
 			fillStyle: config.mutualExColor(data.value).ins,
 		});
@@ -475,7 +491,10 @@ var exclusive = (function ()	{
 		// grouping();
 		legend({
 			element: '#legend',
+			margin: [20, 20, 20, 20],
 			data: tempLegend,
+			direction: 'horizontal',
+			font: '11px Calibri',
 			shapes: config.mutualExShapes,
 			colors: config.mutualExColor,
 		})
@@ -637,7 +656,7 @@ var heatmap = (function (heatmap)	{
 				h = parseFloat(opts.height || dq.style.height || 300),
 				m = opts.margin || { top: 0, left: 0, bottom: 0, right: 0 };
 
-		var canvas = render.createCanvas(opts.element.replace('#', ''), w, h),
+		var canvas = render.createCanvas(dq.id, w, h),
 				ctx = canvas.getContext('2d'),
 				rd = render.context(ctx);
 
@@ -688,9 +707,50 @@ var legend = (function (legend)	{
 	return function (opts)	{
 		var dq = document.querySelector(opts.element),
 				w = parseFloat(opts.width || dq.style.width || 588),
-				h = parseFloat(opts.height || dq.style.height || 300);
+				h = parseFloat(opts.height || dq.style.height || 60),
+				m = size.setMargin(opts.margin);
 
-		console.log(opts.data)
+		var canvas = render.createCanvas(dq.id, w, h),
+				ctx = canvas.getContext('2d'),
+				rd = render.context(ctx);
+
+		var data = [];
+
+		opts.data.map(function (d)	{
+			return data[config.mutualExPriority(d)] = d;
+		});
+
+		data = data.filter(function (d)	{
+			return d;
+		});
+
+		var sx = scale.ordinal(data, (opts.direction === 'horizontal' ? 
+									[m.left, w - m.right] : [m.top, h - m.bottom])),
+				sy = scale.ordinal(['legendY'], (opts.direction === 'horizontal' ? 
+									[m.top, h - m.bottom] : [m.left, w - m.right]));
+
+		for (var i = 0, l = data.length; i < l; i++)	{
+			var d = data[i], obj = {};
+
+			obj.value = d;
+			obj.x = d;
+			obj.y = 'legendY';
+			obj.scaleX = sx;
+			obj.scaleY = sy;
+			obj.isLegend = 10;
+
+			opts.shapes(obj);
+
+			rd.text({
+				top: sy(obj.y) + scale.compatibleBand(sy) / 2,
+				left: sx(obj.x) + obj.isLegend + 5,
+				text: config.mutualExName(d),
+				textBaseline: 'middle',
+				font: opts.font,
+			});
+		}
+
+		dq.appendChild(canvas);
 	};
 }(legend||{}));
 'use strict';
@@ -1062,6 +1122,7 @@ var render = (function (render)	{
 	render.text = function (opts)	{
 		render.ctx.beginPath();
 		setStyle(render.ctx, opts);
+		render.ctx.font = opts.font || '10px';
 		render.ctx.fillText(opts.text, opts.left, opts.top);
 		render.ctx.closePath();
 		return render;
