@@ -34,6 +34,9 @@ gulp.task('concatugjs', () => {
 	return gulp.src(SRC.JS)
 			   .pipe(concat('biochart.min.js'))
 			   .pipe(uglify())
+			   .on('error', function (err)	{
+			   	gutil.log(gutil.colors.red('[Error]'), err.toString())
+			   })
 			   .pipe(gulp.dest(DEST.JS));
 });
 
@@ -55,4 +58,3 @@ gulp.task('concatugcss', () => {
 			   .pipe(cleanCSS({compatibility: 'ie8'}))
 			   .pipe(gulp.dest(DEST.CSS));
 });
-

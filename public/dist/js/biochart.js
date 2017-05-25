@@ -435,26 +435,31 @@ var exclusive = (function ()	{
 			},
 			rect: [
 				function (d) {
+					var bdx = scale.compatibleBand(d.scaleX),
+							bdy = scale.compatibleBand(d.scaleY);
+
 					return {
 						top: d.scaleY(d.y) + 1,
 						left: d.scaleX(d.x) + 0.25,
-						width: d.scaleX.bandwidth() + 0.5,
-						height: d.scaleY.bandwidth() - 2,
+						width: bdx + 0.5,
+						height: bdy - 2,
 						fillStyle: config.mutualExColor(d.value).bg,
 					};
 				},
 				function (d) {
-					var topAdd = 0, heiAdd = d.scaleY.bandwidth();
+					var bdx = scale.compatibleBand(d.scaleX),
+							bdy = scale.compatibleBand(d.scaleY),
+							topAdd = 0, heiAdd = bdy;
 
 					if (d.value === 'M' || d.value === 'B' || d.value === 'E')	{
-						topAdd = d.scaleY.bandwidth() / 3;
+						topAdd = bdy / 3;
 						heiAdd = topAdd;
 					}
 
 					return {
 						top: d.scaleY(d.y) + topAdd + 1,
 						left: d.scaleX(d.x) + 0.25,
-						width: d.scaleX.bandwidth() + 0.5,
+						width: bdx + 0.5,
 						height: heiAdd - 2,
 						fillStyle: config.mutualExColor(d.value).ins,
 					};
@@ -1187,6 +1192,12 @@ var scale = (function (scale)	{
 	 currently it is only use d3js but later it should changes to native code.
 	 */
 	scale.ordinal = function (domain, range)	{
+		if (!d3.scaleBand)	{
+			return d3.scale.ordinal()
+							.domain(domainData('ordinal', domain))
+							.rangeBands(range);
+		}
+		
 		return d3.scaleBand().domain(domainData('ordinal', domain)).range(range);
 	}
 	/**
@@ -1194,8 +1205,19 @@ var scale = (function (scale)	{
 	 currently it is only use d3js but later it should changes to native code.
 	 */
 	scale.linear = function (domain, range)	{
+		if (!d3.scaleLinear)	{
+			return d3.scale.linear()
+							.domain(domainData('linear', domain))
+							.range(range);
+
+		}
+
 		return d3.scaleLinear().domain(domainData('linear', domain)).range(range);
 	};
+
+	scale.compatibleBand = function (scale)	{
+		return !scale.bandwidth ? scale.rangeBands() : scale.bandwidth();
+	}
 
 	scale.getDomain = function ()	{
 		return model.data.shift();
