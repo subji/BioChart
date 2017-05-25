@@ -1216,7 +1216,7 @@ var scale = (function (scale)	{
 	};
 
 	scale.compatibleBand = function (scale)	{
-		return !scale.bandwidth ? scale.rangeBands() : scale.bandwidth();
+		return !scale.bandwidth ? scale.rangeBand() : scale.bandwidth();
 	}
 
 	scale.getDomain = function ()	{
