@@ -322,10 +322,14 @@ var exclusive = (function ()	{
 				result = [];
 
 		var targeted = data.split('\n\n').filter(function (d, i)	{
-			var m = (/[\[][\w(\s|,)]+[\]]/g).exec(d.split('\n'))[0].replace((/\[|\]|\s/g), '');
+			if (d !== '')	{
+				var m = (/[\[][\w(\s|,)]+[\]]/g)
+								.exec(d.split('\n'))[0]
+								.replace((/\[|\]|\s/g), '');
 
-			if (k.indexOf(m) > -1)	{
-				return d;
+				if (k.indexOf(m) > -1)	{
+					return d;
+				}	
 			}
 		})[0].split('\n').filter(function (d, i)	{
 			if (i > 0)	{
