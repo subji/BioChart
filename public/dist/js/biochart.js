@@ -1284,9 +1284,7 @@ var survival = (function (survival)	{
 
 		dq.appendChild(canvas);
 
-		
-
-		event.context(ctx)
+		eventHandler.context(ctx)
 				 .hover(function (obj)	{
 				 	console.log(obj);
 				 });
