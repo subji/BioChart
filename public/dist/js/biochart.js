@@ -53,7 +53,9 @@ var axis = (function (axis)	{
 			});
 		});
 	};
-
+	/**
+	 텍스트의 위치를 축의 위치와 방향에 따라 정한다.
+	 */
 	function textLocation (value)	{
 		var obj = { top: 0, left: 0 },
 				bd = scale.getDistance(this.scale, this.toDomain),
@@ -77,9 +79,10 @@ var axis = (function (axis)	{
 
 		return obj;
 	};
-
+	/*
+		텍스트를 그려주는 함수.
+	 */
 	function text ()	{
-		console.log(this, this.toDomain)
 		var rd = render.context(model.ctx);
 
 		for (var i = 0, l = this.toDomain.length; i < l; i++)	{
@@ -319,8 +322,6 @@ var eventHandler = (function (eventHandler)	{
 
 var exclusive = (function ()	{
 	function makeFrame(ele, sizes)	{
-		// console.log(sizes);
-
 		for (var s in sizes)	{
 			var e = document.createElement('div');
 					e.id = s;
@@ -331,95 +332,6 @@ var exclusive = (function ()	{
 		}
 	};
 
-	function toNetwork(key, data) {
-		var id_regex = /id:\w+/ig,
-				result = [];
-
-		function toRgb(txt)	{
-			return 'rgb(' + txt.split(' ').join(',') + ')';
-		}
-
-		data.split('\n').splice(1).filter(function (d, i)	{
-			var obj = {};
-
-				if(d.match(id_regex)[0].replace(key, '') === 'id:')	{
-					d.split('\t').filter(function (ts)	{
-						obj[ts.split(':')[0]] = 
-						ts.split(':')[0].indexOf('color') > -1 ? 
-						toRgb(ts.split(':')[1]) : ts.split(':')[1];	
-					});
-
-					result.push(obj);
-				}
-		});
-
-		return result;
-	};
-
-	function toHeatmap(key, data) {
-		var k = key.replace(/\s/g, ''),
-				genes = key.split(' '),
-				result = [];
-
-		var targeted = data.split('\n\n').filter(function (d, i)	{
-			if (d !== '')	{
-				var m = (/[\[][\w(\s|,)]+[\]]/g)
-								.exec(d.split('\n'))[0]
-								.replace((/\[|\]|\s/g), '');
-
-				if (k.indexOf(m) > -1)	{
-					return d;
-				}	
-			}
-		})[0].split('\n').filter(function (d, i)	{
-			if (i > 0)	{
-				var idx = 0,
-						len = 0,
-						tg = '';
-
-				genes.forEach(function (g)	{
-					if (d.indexOf(g) > -1)	{
-						idx = d.indexOf(g);
-						len = g.length;
-					}
-				});
-
-				tg = d.substring(idx, idx + len);
-
-				d.substring(0, idx - 2).split('').forEach(function (d, i)	{
-					result.push({
-						x: i,
-						y: tg,
-						value: d,
-					});
-				})
-			}
-		});
-
-		return result;
-	};
-
-	function toHeatmapAxis (data)	{
-		var y = {}, x = 0, len = 0;
-
-		for (var i = 0, l = data.length; i < l; i++)	{
-			y[data[i].y] = 1;
-		}
-
-		return {
-			x: [0, data.length / Object.keys(y).length],
-			y: Object.keys(y),
-		};
-	};
-
-	function toSurvival() {
-
-	};
-
-	function toGrouping()	{
-
-	};
-
 	return function (opts)	{
 		var e = opts.element || null,
 				dq = document.querySelector(e),
@@ -428,12 +340,8 @@ var exclusive = (function ()	{
 
 		makeFrame(dq, size.chart.mutualExt(dq, w, h));
 
-		var sample = 'MAPK1 BRAF KRAS NF1 EGFR HGF';
-		var test = new RegExp(sample.replace(/\s/g, '|'), 'ig');
-		var hm = toHeatmap(sample, opts.heatmap.data); 
-
 		network({
-			data: toNetwork(test, opts.network.data),
+			data: opts.network.data,
 			element: '#network',
 		});
 		/** 
@@ -453,14 +361,14 @@ var exclusive = (function ()	{
 		 rect: it's only callback function.
 		 */
 		heatmap({
-			data: hm,
+			data: opts.heatmap.data,
 			margin: size.setMargin(opts.heatmap.margin),
 			element: '#heatmap',
 			axis: {
 				x: { 
 					location: 'bottom',
 					scale: 'ordinal', 
-					data: toHeatmapAxis(hm).x,
+					data: opts.heatmap.xaxis,
 					ticks: false,
 					base: false, 
 					text: false,
@@ -468,7 +376,7 @@ var exclusive = (function ()	{
 				y: { 
 					location: 'left',
 					scale: 'ordinal', 
-					data: toHeatmapAxis(hm).y,
+					data: opts.heatmap.yaxis,
 					ticks: false,
 					base: false, 
 				},
@@ -480,24 +388,20 @@ var exclusive = (function ()	{
 		survival({
 			element: '#survival',
 		});
-
-		var tempLegend = [];
-
-		hm.map(function (d)	{
-			if (tempLegend.indexOf(d.value) < 0) {
-				tempLegend.push(d.value);
-			}
-		});
 		// grouping();
 		legend({
 			element: '#legend',
-			margin: [20, 20, 20, 20],
-			data: tempLegend,
+			margin: opts.legend.margin,
+			data: opts.legend.data,
 			direction: 'horizontal',
 			font: '11px Calibri',
 			shapes: config.mutualExShapes,
 			colors: config.mutualExColor,
-		})
+		});
+
+		selectBox.element('#selectBox')
+						 .data(sample.split(' '))
+						 .make();
 	};
 }());
 'use strict';
@@ -656,8 +560,9 @@ var heatmap = (function (heatmap)	{
 				h = parseFloat(opts.height || dq.style.height || 300),
 				m = opts.margin || { top: 0, left: 0, bottom: 0, right: 0 };
 
-		var canvas = render.createCanvas(dq.id, w, h),
-				ctx = canvas.getContext('2d'),
+		var gc = render.createCanvas(dq.id, w, h),
+				canvas = gc.canvas,
+				ctx = gc.ctx,
 				rd = render.context(ctx);
 
 		var ax = opts.axis.x,
@@ -710,8 +615,9 @@ var legend = (function (legend)	{
 				h = parseFloat(opts.height || dq.style.height || 60),
 				m = size.setMargin(opts.margin);
 
-		var canvas = render.createCanvas(dq.id, w, h),
-				ctx = canvas.getContext('2d'),
+		var gc = render.createCanvas(dq.id, w, h),
+				canvas = gc.canvas,
+				ctx = gc.ctx,
 				rd = render.context(ctx);
 
 		var data = [];
@@ -773,6 +679,9 @@ var legend = (function (legend)	{
 			network: network,
 			heatmap: heatmap,
 			survival: survival,
+		},
+		tools: {
+			selectBox: selectBox,
 		},
 		size: size,
 		scale: scale,
@@ -960,8 +869,9 @@ var network = (function ()	{
 		// 		dq = document.querySelector(e),
 		// 		w = parseFloat(opts.width || dq.style.width || 252),
 		// 		h = parseFloat(opts.height || dq.style.height || 300),
-		// 		canv = render.createCanvas(dq.id, w, h),
-		// 		ctx = canv.getContext('2d');
+		// 		gc = render.createCanvas(dq.id, w, h),
+		// 		canv = gc.canvas,
+		// 		ctx = gc.ctx;
 
 		// dq.appendChild(canv);
 		var data = [],
@@ -1212,8 +1122,7 @@ var render = (function (render)	{
 	};
 
 	render.context = function (ctx)	{
-		render.ctx = ctx;
-		return render;
+		return render.ctx = ctx, render;
 	};
 
 	render.createCanvas = function (id, width, height, ratio)	{
@@ -1221,13 +1130,18 @@ var render = (function (render)	{
 
 		var canv = document.createElement('canvas');
 				canv.id = id;
-				canv.width = width * ratio;
-				canv.height = height * ratio;
+				canv.width = Math.floor(width * ratio);
+				canv.height = Math.floor(height * ratio);
 				canv.style.width = width + 'px';
 				canv.style.height = height + 'px';
 				canv.getContext('2d').setTransform(ratio, 0, 0, ratio, 0, 0);
 
-		return canv;
+		var ctx = canv.getContext('2d');
+				ctx.imageSmoothingEnabled = false;
+				ctx.mozImageSmoothingEnabled = false;
+				ctx.webkitImageSmoothingEnabled = false;
+
+		return { canvas: canv, ctx: ctx };
 	};
 
 	return render;
@@ -1316,11 +1230,62 @@ var scale = (function (scale)	{
 }(scale||{}));
 'use strict';
 
+var selectBox = (function (selectBox)	{
+	var model = {};
+
+	selectBox.element = function (element)	{
+		return model.element = element, 
+		arguments.length ? selectBox : model.element;
+	};
+
+	selectBox.data = function (data)	{	
+		return model.data = data, 
+		arguments.length ? selectBox : model.data;
+	};
+
+	function makeSelect ()	{
+
+	};
+
+	selectBox.make = function ()	{
+		var dq = document.querySelector(model.element),
+				sel = document.createElement('select'),
+				ph = document.createElement('option');
+
+		ph.disabled = true;
+		ph.selected = true;
+		ph.hidden = true;
+		ph.text = 'Choose a gene set';
+
+		sel.className = model.element.substring(1, model.element.length);
+		sel.options.add(ph);
+
+		for (var i = 0, l = model.data.length; i < l; i++)	{
+			var d = model.data[i],
+					opt = document.createElement('option');
+
+			opt.text = d;
+			opt.value = d;
+
+			sel.options.add(opt);
+		}
+
+		dq.appendChild(sel);
+		
+		return selectBox;
+	};
+
+	return selectBox;
+}(selectBox||{}));
+'use strict';
+
 var size = {};
 
 size.setMargin = function (margin)	{
 	if (typeof margin === 'number')	{
 		return { top: margin, left: margin, bottom: margin, right: margin };
+	} else if (Object.prototype.toString.call(margin) === '[object Object]')	{
+		return margin;
 	} else {
 		switch(margin.length)	{
 			case 1: return { top: margin[0], left: margin[0], bottom: margin[0], right: margin[0] }; break;
@@ -1341,8 +1306,8 @@ size.chart.mutualExt = function (dom, width, height)	{
 	return {
 		survival: {w: (width * 0.3), h: height},
 		selectBox: {w: (width * 0.7), h: (height * 0.05)},
-		separateBar: {w: (width * 0.7), h: (height * 0.05)},
-		group: {w: (width * 0.7), h: (height * 0.3)},
+		separateBar: {w: (width * 0.7), h: (height * 0.1)},
+		group: {w: (width * 0.7), h: (height * 0.25)},
 		network: {w: (width * 0.7) * 0.3, h: (height * 0.6)},
 		heatmap: {w: (width * 0.7) * 0.7, h: (height * 0.5)},
 		legend: {w: (width * 0.7) * 0.7, h: (height * 0.1)},
@@ -1357,8 +1322,9 @@ var survival = (function (survival)	{
 				dq = document.querySelector(e),
 				w = parseFloat(opts.width || dq.style.width || 360),
 				h = parseFloat(opts.height || dq.style.height || 600),
-				canvas = render.createCanvas(e.substring(1, e.length), w, h),
-				ctx = canvas.getContext('2d');
+				gc = render.createCanvas(e.substring(1, e.length), w, h),
+				canvas = gc.canvas,
+				ctx = gc.ctx;
 
 		dq.appendChild(canvas);
 
