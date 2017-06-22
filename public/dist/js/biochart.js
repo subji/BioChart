@@ -2055,8 +2055,10 @@ var preprocessing = (function (preprocessing)	{
  		문단 혹은 문장에서 geneset 의 이름을 찾아내어 주는 함수.
  	 */
  	function getGeneSet (t)	{
- 		return (/[\[][\w(\s|,)]+[\]]/)
- 		.exec(t)[0].replace(/\[|\]/g, '').split(' ');
+ 		if (t !== '')	{
+ 			return (/[\[][\w(\s|,)]+[\]]/)
+ 			.exec(t)[0].replace(/\[|\]/g, '').split(' ');
+ 		}
  	};
  	/*
  		'**color': '255 255 255' 의 형식을 rgb(255, 255, 255)
