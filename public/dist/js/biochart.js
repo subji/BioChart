@@ -167,7 +167,6 @@ var bar = (function (bar)	{
 		model.e = o.element = util.varType(o.element) === 'Object' ? 
 							o.element : (/\W/).test(o.element[0]) ? 
 							d3.select(o.element) : d3.select('#' + o.element);
-		model.e = util.d3v4() ? model.e : model.e[0][0];
 		model.w = o.width || null;
 		model.h = o.height || null;
 		model.m = size.setMargin(o.margin);
@@ -653,7 +652,6 @@ var divisionLine = (function (divisionLine)	{
 		model.e = o.element = util.varType(o.element) === 'Object' ? 
 							o.element : (/\W/).test(o.element[0]) ? 
 							d3.select(o.element) : d3.select('#' + o.element);
-		model.e = util.d3v4() ? model.e : model.e[0][0];
 		model.m = size.setMargin(o.margin);
 		model.s = draw.size(model.e);
 		model.t = model.m.top || 0;
@@ -670,8 +668,9 @@ var divisionLine = (function (divisionLine)	{
 		model.h = o.height || 30;
 		model.w = o.width || 30;
 
-		model.line = d3.line().x(function (d) { return d.x; })
-													.y(function (d) { return d.y; });
+		model.line = (util.d3v4() ? d3.line() : d3.svg.line())
+								 .x(function (d) { return d.x; })
+								 .y(function (d) { return d.y; });
 
 		var s = setShapeSize();
 
@@ -939,6 +938,7 @@ var draw = (function (draw)	{
 	 */
 	draw.size = function (svg)	{
 		svg = util.d3v4() ? svg : svg[0][0];
+		svg = util.varType(svg) === 'Array' ? svg : d3.select(svg);
 
 		return {w: svg.attr('width'), h: svg.attr('height')};
 	};
@@ -1273,7 +1273,6 @@ var heatmap = (function (heatmap)	{
 		model.e = o.element = util.varType(o.element) === 'Object' ? 
 							o.element : (/\W/).test(o.element[0]) ? 
 							d3.select(o.element) : d3.select('#' + o.element);
-		model.e = util.d3v4() ? model.e : model.e[0][0];
 		model.s = draw.size(model.e);
 		model.m = size.setMargin(o.margin);
 		model.t = model.m.top || 0;
@@ -1789,7 +1788,6 @@ var legend = (function (legend)	{
 		model.e = o.element = util.varType(o.element) === 'Object' ? 
 							o.element : (/\W/).test(o.element[0]) ? 
 							d3.select(o.element) : d3.select('#' + o.element);
-		model.e = util.d3v4() ? model.e : model.e[0][0];
 		model.m = size.setMargin(o.margin);
 		model.w = model.e.attr('width'),
 		model.h = model.e.attr('height'),
@@ -2468,6 +2466,7 @@ var render = (function (render)	{
 
 	render.addGroup = function (svg, top, left)	{
 		svg = util.d3v4() ? svg : svg[0][0];
+		svg = util.varType(svg) === 'Array' ? svg : d3.select(svg);
 		
 		return svg.append('g')
 					 .attr('class', svg.attr('id') + ' g-tag')
