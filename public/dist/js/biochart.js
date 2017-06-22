@@ -1145,7 +1145,7 @@ var exclusive = (function ()	{
 	 */
 	function drawExclusivity ()	{
 		// Draw survival.
-		drawSurvival();
+		// drawSurvival();
 		// Draw Network.
 		drawNetwork();
 		// Draw axis.
