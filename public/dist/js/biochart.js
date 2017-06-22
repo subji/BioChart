@@ -935,9 +935,12 @@ var draw = (function (draw)	{
 		svg 의 가로, 세로 길이를 반환해주는 함수.
 	 */
 	draw.size = function (svg)	{
-		console.log(svg.node(), svg.node().id, 
-			d3.select('#' + svg.node().id))
-		return {w: svg.attr('width'), h: svg.attr('height')};
+		return {
+			w: util.d3v4() ? svg.attr('width') : 
+											 svg[0][0].attr('width'), 
+			h: util.d3v4() ? svg.attr('height') : 
+											 svg[0][0].attr('height'),
+		};
 	};
 
 	return draw;
@@ -3138,6 +3141,14 @@ var survival = (function (survival)	{
 	}
 }(survival || {}));
 var util = (function (util)	{
+	'use strict';
+	/*
+		d3 version 체크 함수.
+	 */
+	util.d3v4 = function ()	{
+		return d3.version.indexOf('3') > -1 ? false : true;
+	};
+
 	util.camelCase = function (txt)	{
 		return txt.substring(0, 1).toUpperCase() + 
 					 txt.substring(1).toLowerCase();
