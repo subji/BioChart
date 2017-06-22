@@ -935,6 +935,8 @@ var draw = (function (draw)	{
 		svg 의 가로, 세로 길이를 반환해주는 함수.
 	 */
 	draw.size = function (svg)	{
+		console.log(svg.node(), svg.node().id, 
+			d3.select('#' + svg.node().id))
 		return {w: svg.attr('width'), h: svg.attr('height')};
 	};
 
@@ -2178,8 +2180,6 @@ var preprocessing = (function (preprocessing)	{
 	 					g = m.splice(1, m.length),
 	 					thd = toHeatmapData(
 	 						g, t, el.heatmap[t.join(' ')] = []);
-
-	 					console.log(t);
 
 	 			el.geneset.push(t);
  			}
