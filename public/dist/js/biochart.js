@@ -2055,10 +2055,8 @@ var preprocessing = (function (preprocessing)	{
  		문단 혹은 문장에서 geneset 의 이름을 찾아내어 주는 함수.
  	 */
  	function getGeneSet (t)	{
- 		if (t !== '')	{
- 			return (/[\[][\w(\s|,)]+[\]]/)
- 			.exec(t)[0].replace(/\[|\]/g, '').split(' ');
- 		}
+		return (/[\[][\w(\s|,)]+[\]]/)
+		.exec(t)[0].replace(/\[|\]/g, '').split(' ');
  	};
  	/*
  		'**color': '255 255 255' 의 형식을 rgb(255, 255, 255)
@@ -2174,13 +2172,17 @@ var preprocessing = (function (preprocessing)	{
  	 */
  	function heatmap (h)	{
  		util.loop(h.split('\n\n'), function (d, i)	{
- 			var t = getGeneSet(d),
- 					m = d.split('\n'),
- 					g = m.splice(1, m.length),
- 					thd = toHeatmapData(
- 						g, t, el.heatmap[t.join(' ')] = []);
+ 			if (d !== '')	{
+ 				var t = getGeneSet(d),
+	 					m = d.split('\n'),
+	 					g = m.splice(1, m.length),
+	 					thd = toHeatmapData(
+	 						g, t, el.heatmap[t.join(' ')] = []);
 
- 			el.geneset.push(t);
+	 					console.log(t);
+
+	 			el.geneset.push(t);
+ 			}
  		});
  	};
  	/*
