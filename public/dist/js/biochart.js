@@ -1719,7 +1719,7 @@ var layout = (function (layout)	{
 		util.loop(s, function (k, v)	{
 			util.loop(i, function (d, j)	{
 				if (k.indexOf(d) > -1)	{
-					return cb(k, v);
+					return cb(k, util.d3v4() ? v : v[0][0]);
 				}
 			});
 		});
