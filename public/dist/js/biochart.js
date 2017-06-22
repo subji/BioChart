@@ -163,9 +163,11 @@ var bar = (function (bar)	{
 	};
 
 	return function (o)	{
+		model = {};
 		model.e = o.element = util.varType(o.element) === 'Object' ? 
 							o.element : (/\W/).test(o.element[0]) ? 
 							d3.select(o.element) : d3.select('#' + o.element);
+		model.e = util.d3v4() ? model.e : model.e[0][0];
 		model.w = o.width || null;
 		model.h = o.height || null;
 		model.m = size.setMargin(o.margin);
@@ -651,6 +653,7 @@ var divisionLine = (function (divisionLine)	{
 		model.e = o.element = util.varType(o.element) === 'Object' ? 
 							o.element : (/\W/).test(o.element[0]) ? 
 							d3.select(o.element) : d3.select('#' + o.element);
+		model.e = util.d3v4() ? model.e : model.e[0][0];
 		model.m = size.setMargin(o.margin);
 		model.s = draw.size(model.e);
 		model.t = model.m.top || 0;
@@ -935,12 +938,9 @@ var draw = (function (draw)	{
 		svg 의 가로, 세로 길이를 반환해주는 함수.
 	 */
 	draw.size = function (svg)	{
-		return {
-			w: util.d3v4() ? svg.attr('width') : 
-											 svg[0][0].attr('width'), 
-			h: util.d3v4() ? svg.attr('height') : 
-											 svg[0][0].attr('height'),
-		};
+		svg = util.d3v4() ? svg : svg[0][0];
+
+		return {w: svg.attr('width'), h: svg.attr('height')};
 	};
 
 	return draw;
@@ -1269,9 +1269,11 @@ var heatmap = (function (heatmap)	{
 	};
 
 	return function (o)	{
+		model.e = {};
 		model.e = o.element = util.varType(o.element) === 'Object' ? 
 							o.element : (/\W/).test(o.element[0]) ? 
 							d3.select(o.element) : d3.select('#' + o.element);
+		model.e = util.d3v4() ? model.e : model.e[0][0];
 		model.s = draw.size(model.e);
 		model.m = size.setMargin(o.margin);
 		model.t = model.m.top || 0;
@@ -1787,6 +1789,7 @@ var legend = (function (legend)	{
 		model.e = o.element = util.varType(o.element) === 'Object' ? 
 							o.element : (/\W/).test(o.element[0]) ? 
 							d3.select(o.element) : d3.select('#' + o.element);
+		model.e = util.d3v4() ? model.e : model.e[0][0];
 		model.m = size.setMargin(o.margin);
 		model.w = model.e.attr('width'),
 		model.h = model.e.attr('height'),
