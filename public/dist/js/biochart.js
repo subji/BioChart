@@ -164,7 +164,8 @@ var bar = (function (bar)	{
 
 	return function (o)	{
 		model = {};
-		model.e = o.element = util.varType(o.element) === 'Object' ? 
+		model.e = o.element = util.varType(o.element) === 'Object' || 
+													util.varType(o.element) === 'Array' ? 
 							o.element : (/\W/).test(o.element[0]) ? 
 							d3.select(o.element) : d3.select('#' + o.element);
 		model.w = o.width || null;
@@ -649,7 +650,8 @@ var divisionLine = (function (divisionLine)	{
 
 	return function (o)	{
 		model = {};
-		model.e = o.element = util.varType(o.element) === 'Object' ? 
+		model.e = o.element = util.varType(o.element) === 'Object' || 
+													util.varType(o.element) === 'Array' ? 
 							o.element : (/\W/).test(o.element[0]) ? 
 							d3.select(o.element) : d3.select('#' + o.element);
 		model.m = size.setMargin(o.margin);
@@ -1271,7 +1273,8 @@ var heatmap = (function (heatmap)	{
 
 	return function (o)	{
 		model.e = {};
-		model.e = o.element = util.varType(o.element) === 'Object' ? 
+		model.e = o.element = util.varType(o.element) === 'Object' || 
+													util.varType(o.element) === 'Array' ? 
 							o.element : (/\W/).test(o.element[0]) ? 
 							d3.select(o.element) : d3.select('#' + o.element);
 		model.s = draw.size(model.e);
@@ -1786,7 +1789,8 @@ var legend = (function (legend)	{
 		model.d = o.data.sort(function (a, b)	{
 			return o.priority(a) > o.priority(b) ? 1 : -1;
 		});
-		model.e = o.element = util.varType(o.element) === 'Object' ? 
+		model.e = o.element = util.varType(o.element) === 'Object' || 
+													util.varType(o.element) === 'Array' ? 
 							o.element : (/\W/).test(o.element[0]) ? 
 							d3.select(o.element) : d3.select('#' + o.element);
 		model.m = size.setMargin(o.margin);
