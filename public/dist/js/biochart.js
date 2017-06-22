@@ -1175,7 +1175,7 @@ var exclusive = (function ()	{
 		model.ids = size.chart.exclusivity(e, w, h);
 		model.svg = layout.exclusivity(model.ids, model);
 		// For survival data.
-		divideSurvivalData();
+		// divideSurvivalData();
 		// make select box of geneset.
 		model.nowSet = selectGeneSet.set({
 			element: '#exclusivity_select_geneset',
@@ -1188,7 +1188,7 @@ var exclusive = (function ()	{
 			},
 		});
 		// Survival 에 그려질 데이터를 가져온다.
-		getDataOfPatient();
+		// getDataOfPatient();
 		// using init geneset
 		drawExclusivity();
 
@@ -2217,7 +2217,7 @@ var preprocessing = (function (preprocessing)	{
 	preprocessing.exclusivity = function (d)	{
 		heatmap(d.heatmap);
 		network(d.network); 
-		survival(d.survival.std);
+		// survival(d.survival.std);
 
 		console.log('Preprocess of Exclusivity: ', el);
 
