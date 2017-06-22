@@ -938,7 +938,8 @@ var draw = (function (draw)	{
 	 */
 	draw.size = function (svg)	{
 		svg = util.d3v4() ? svg : svg[0][0];
-		svg = util.varType(svg) === 'Array' ? svg : d3.select(svg);
+		svg = util.varType(svg) === 'Array' || 
+					util.varType(svg) === 'Object' ? svg : d3.select(svg);
 
 		return {w: svg.attr('width'), h: svg.attr('height')};
 	};
@@ -1719,7 +1720,7 @@ var layout = (function (layout)	{
 		util.loop(s, function (k, v)	{
 			util.loop(i, function (d, j)	{
 				if (k.indexOf(d) > -1)	{
-					return cb(k, util.d3v4() ? v : v[0][0]);
+					return cb(k, v);
 				}
 			});
 		});
@@ -2466,7 +2467,8 @@ var render = (function (render)	{
 
 	render.addGroup = function (svg, top, left)	{
 		svg = util.d3v4() ? svg : svg[0][0];
-		svg = util.varType(svg) === 'Array' ? svg : d3.select(svg);
+		svg = util.varType(svg) === 'Array' || 
+					util.varType(svg) === 'Object' ? svg : d3.select(svg);
 		
 		return svg.append('g')
 					 .attr('class', svg.attr('id') + ' g-tag')
