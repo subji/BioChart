@@ -2464,10 +2464,11 @@ var render = (function (render)	{
 	};
 
 	render.addGroup = function (svg, top, left)	{
-		return svg.append('g')
-							.attr('class', svg.attr('id') + ' g-tag')
-							.attr('transform', 
-										'translate(' + left + ', ' + top + ')');			
+		return util.d3v4() ? svg : svg[0][0]
+					 .append('g')
+					 .attr('class', svg.attr('id') + ' g-tag')
+					 .attr('transform', 
+								 'translate(' + left + ', ' + top + ')');			
 	};
 
 	function setAttributes (svgElement, attrs)	{
