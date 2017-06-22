@@ -3151,7 +3151,7 @@ var util = (function (util)	{
 		d3 version 체크 함수.
 	 */
 	util.d3v4 = function ()	{
-		return d3.version.indexOf('3') > -1 ? false : true;
+		return d3.version.indexOf('3') === 0 ? false : true;
 	};
 
 	util.camelCase = function (txt)	{
