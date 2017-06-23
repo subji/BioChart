@@ -28,31 +28,26 @@
 	box-shadow:0 3px 5px rgba(0,0,0,.2); 
 	padding:15px; 
 	background:white; 
-	width:100%; 
 	display:inline-block; 
 	position:relative; 
-	margin-left:2.5%; 
-	margin-top: 3%; }
+}
 #exclusivity_select_geneset_view { 
 	border:none; 
-	outline:none; 
+	outline:none;
 	display: inline-block; 
 	-webkit-appearance:none; 
 	-moz-appearance:none; 
 	appearance:none; 
 	cursor:pointer; 
-	font-size:12px; 
 	color:#909090; 
 	border-radius:0; 
-	width:275px; 
 	z-index:2; 
 	background:transparent; }
 #exclusivity_select_geneset > label:after{ 
 	content:"\25bc"; 
-	font-size:12px; 
 	color:white; 
 	background:#f3a1a1; 
-	width:42px; 
+	width:50px; 
 	text-align:center; 
 	line-height:3.2em; 
 	top:0; 

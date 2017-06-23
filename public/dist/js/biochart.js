@@ -738,7 +738,7 @@ var divisionLine = (function (divisionLine)	{
 				},
 			},
 			style: {
-				fill: '#FFFFFF',
+				fill: '#F1F1F1',
 				'text-anchor': function (d, i)	{
 					return i === 0 ? 'start' : 'end';
 				},
@@ -2802,16 +2802,6 @@ var selectGeneSet = (function (selectGeneSet)	{
 		option 을 추가하는 함수.
 	 */
 	function addOption (o)	{
-		console.log(o);
-		console.log(
-			draw.getTextWidth('RIT1'),
-			draw.getTextWidth('RIT1 '),
-			draw.getTextHeight('16px', 'Arial'),
-			draw.getTextWidth('RIT1 KRAS EGFR NF1 BRAF'),
-			draw.getTextWidth('RIT1 KRAS EGFR NF1 BRAF', '16px Arial'),
-			draw.getTextWidth('Unaltered group'),
-			draw.getTextWidth('Unaltered')
-		);
 		util.loop(o, function (d, i)	{
 			var o = document.createElement('option'),
 					g = d.join(' ');
@@ -2822,6 +2812,58 @@ var selectGeneSet = (function (selectGeneSet)	{
 			model.s.options.add(o);
 		});
 	};
+	/*
+		Geneset 에서 문자열이 가장 킨 텍스트를 
+		반환한다.
+	 */
+	function mostLargeText (t)	{
+		var l = '';
+
+		util.loop(t, function (d, i)	{
+			var r = d.join(' ');
+			
+			l = r.length > l.length ? r : l;
+		});
+
+		return l;
+	};
+	/*
+		세로 길이에 맞는 텍스트길이 하지만
+		가로길이가 칸을 벗어나서는 안된다.
+	 */
+	function adjustText (t, w, h)	{
+		var b = 1,
+				std = mostLargeText(t);
+
+		while (draw.getTextHeight(b + 'px').height < h / 4 && 
+					 draw.getTextWidth(std, b + 'px') < w)	{
+			b += 1;
+		}
+
+		model.view.style.fontSize = b + 'px';
+	};
+	/*
+		Geneset select box 의 스타일 설정을 조절해주는
+		함수.
+	 */
+	function adjustStyle (t)	{
+		model.area = document.querySelector(
+			'#exclusivity_select_geneset');
+		model.view = document.querySelector(
+			'#exclusivity_select_geneset_view');
+		model.label = document.querySelector(
+			'#exclusivity_select_geneset label');
+		var w = parseFloat(model.area.style.width),
+				h = parseFloat(model.area.style.height);
+
+		model.label.style.width = w + 'px';
+		model.view.style.width = w + 'px';
+		model.label.style.padding = w * 0.05 + 'px';
+		model.label.style.marginTop = w * 0.03 + 'px';
+		model.label.style.marginLeft = w * 0.03 + 'px';
+
+		adjustText(t, w, h);
+	};	
 
 	selectGeneSet.set = function (o)	{
 		var e = document.querySelector(o.element);
@@ -2833,6 +2875,8 @@ var selectGeneSet = (function (selectGeneSet)	{
 		model.s.onchange = o.change || null;
 
 		e.appendChild(model.l);
+
+		adjustStyle(o.data);
 
 		return model.s.value;
 	};
