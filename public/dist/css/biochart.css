@@ -20,7 +20,7 @@
 #exclusivity_network { float: left; background: #F7F7F7; pointer-events: none; }
 
 #exclusivity_heatmap_axis { font-size: 14px; font-weight: bold; text-shadow: 2px 1px rgba(0, 0, 0, .2); }
-#exclusivity_heatmap { float: right; background: #F7F7F7; }
+#exclusivity_heatmap {  float: right; /*background: #F7F7F7;*/ background: #5ff461; }
 
 #exclusivity_legend { float: left; background: #F7F7F7; }
 

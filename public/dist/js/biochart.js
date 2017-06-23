@@ -647,6 +647,19 @@ var divisionLine = (function (divisionLine)	{
 				  - model[model.sw](model.point),
 		};
 	};
+	/*
+		문자열의 높이를 설정해주는 함수.
+	 */
+	function setTextHeight (h, t)	{
+		var b = 1,
+				h = h / 2.5;
+
+		while (draw.getTextHeight(b + 'px').height < h)	{
+			b += 1;
+		}
+
+		return b + 'px';
+	};
 
 	return function (o)	{
 		model = {};
@@ -669,6 +682,7 @@ var divisionLine = (function (divisionLine)	{
 		model.lg = render.addGroup(model.e, model.t, model.l);
 		model.h = o.height || 30;
 		model.w = o.width || 30;
+		model.th = setTextHeight(model.h);
 
 		model.line = (util.d3v4() ? d3.line() : d3.svg.line())
 								 .x(function (d) { return d.x; })
@@ -715,19 +729,21 @@ var divisionLine = (function (divisionLine)	{
 			attr: {
 				id: model.e.attr('id') + '_text',
 				x: function (d, i) {
-					var tw = draw.getTextWidth(d.text, '12px');
-					return model.direction === 'h' ?
-					       i === 0 ? model.m.left : 
-					       model.s.w - model.m.right - model.m.left - tw: 
-								 model.w / 2 - tw / 2;
+					return i === 0 ? 
+								 model[model.sw](model.a[0]) + 5 : 
+								 model[model.sw](model.a[model.a.length - 1]) - 5;
 				},
 				y: function (d, i)	{
-					return model.h - 5;
+					return model.h - model.h * 0.25;
 				},
 			},
 			style: {
 				fill: '#FFFFFF',
-				'font-size': '12px',
+				'text-anchor': function (d, i)	{
+					return i === 0 ? 'start' : 'end';
+				},
+				'alignment-baseline': 'middle',
+				'font-size': model.th,
 				'font-weight': 'bold',
 				'text-shadow': '1px 1px rgba(0, 0, 0, 0.5)',
 			},
