@@ -715,10 +715,10 @@ var divisionLine = (function (divisionLine)	{
 			attr: {
 				id: model.e.attr('id') + '_text',
 				x: function (d, i) {
-					var tw = draw.getTextWidth(d.text, '16px');
+					var tw = draw.getTextWidth(d.text, '12px');
 					return model.direction === 'h' ?
-					       i === 0 ? model.m.left + 5 : 
-					       model.s.w - model.m.right - tw * 1.8: 
+					       i === 0 ? model.m.left : 
+					       model.s.w - model.m.right - model.m.left - tw: 
 								 model.w / 2 - tw / 2;
 				},
 				y: function (d, i)	{
@@ -727,7 +727,7 @@ var divisionLine = (function (divisionLine)	{
 			},
 			style: {
 				fill: '#FFFFFF',
-				'font-size': '16px',
+				'font-size': '12px',
 				'font-weight': 'bold',
 				'text-shadow': '1px 1px rgba(0, 0, 0, 0.5)',
 			},
@@ -780,7 +780,10 @@ var draw = (function (draw)	{
 		parseFloat(document.querySelector(args)) : 
 		parseFloat(args.style.height);
 	};
-
+	/*
+		파라미터로 받은 문자열의 길이를 font 에 적용하여 반환하는
+		함수.
+	 */
 	draw.getTextWidth = function (text, font)	{
 		var canv = document.createElement('canvas'),
 				ctx = canv.getContext('2d'),
@@ -793,11 +796,15 @@ var draw = (function (draw)	{
 
 		width = ctx.measureText(text).width;
 
-		document.body.removeChild(document.getElementById('get-text-width'));
+		document.body.removeChild(
+		document.getElementById('get-text-width'));
 
 		return width;
 	};
-
+	/*
+		문자의 크기와 문자의 종류에 따라 해당 문자열의
+		높이를 반환하는 함수.
+	 */
 	draw.getTextHeight = function (size, font)	{
 		var text = document.createElement('span'),
 				block = document.createElement('div'),
@@ -2779,6 +2786,16 @@ var selectGeneSet = (function (selectGeneSet)	{
 		option 을 추가하는 함수.
 	 */
 	function addOption (o)	{
+		console.log(o);
+		console.log(
+			draw.getTextWidth('RIT1'),
+			draw.getTextWidth('RIT1 '),
+			draw.getTextHeight('16px', 'Arial'),
+			draw.getTextWidth('RIT1 KRAS EGFR NF1 BRAF'),
+			draw.getTextWidth('RIT1 KRAS EGFR NF1 BRAF', '16px Arial'),
+			draw.getTextWidth('Unaltered group'),
+			draw.getTextWidth('Unaltered')
+		);
 		util.loop(o, function (d, i)	{
 			var o = document.createElement('option'),
 					g = d.join(' ');
