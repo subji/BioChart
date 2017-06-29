@@ -14,6 +14,7 @@ const DIR = {
 
 const SRC = {
 	JS: DIR.SRC + '/javascripts/*.js',
+	ADDJS: DIR.SRC + 'javascripts/survival_copy/*.js',
 	CSS: DIR.SRC + '/stylesheets/*.css',
 };
 
@@ -22,7 +23,7 @@ const DEST = {
 	CSS: DIR.DEST + '/css',
 };
 
-gulp.task('default', ['clean', 'concatjs', 'concatugjs', 'concatcss', 'concatugcss'], () => {
+gulp.task('default', ['clean', 'concatjs', 'concataddjs', 'concatugjs', 'concatcss', 'concatugcss'], () => {
 	gutil.log('Gulp is running');
 });
 
@@ -44,6 +45,12 @@ gulp.task('concatjs', () => {
 	return gulp.src(SRC.JS)
 			   .pipe(concat('biochart.js'))
 			   .pipe(gulp.dest(DEST.JS));
+});
+
+gulp.task('concataddjs', () => {
+	return gulp.src(SRC.ADDJS)
+					.pipe(concat('biochart.js'))
+					.pipe(gulp.dest(DEST.JS));
 });
 
 gulp.task('concatcss', () => {
