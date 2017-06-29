@@ -3393,8 +3393,8 @@ var selectGeneSet = (function (selectGeneSet)	{
 		var w = parseFloat(model.area.style.width),
 				h = parseFloat(model.area.style.height);
 
-		model.label.style.width = w + 'px';
-		model.view.style.width = w + 'px';
+		model.label.style.width = w  * 0.8 + 'px';
+		model.view.style.width = w * 0.8 + 'px';
 		model.label.style.padding = w * 0.05 + 'px';
 		model.label.style.marginTop = w * 0.03 + 'px';
 		model.label.style.marginLeft = w * 0.03 + 'px';
@@ -3475,10 +3475,10 @@ var size = (function (size)	{
 	size.chart.exclusivity = function (e, w, h)	{
 		var ids =  {
 			// Layout 2.
-			exclusivity_select_geneset: {w: w * 0.2, h: h * 0.1},
-			exclusivity_upper_empty: {w: w * 0.35, h: h * 0.25},
+			exclusivity_select_geneset: {w: w * 0.25, h: h * 0.1},
+			exclusivity_upper_empty: {w: w * 0.34, h: h * 0.2},
 			exclusivity_survival: {w: w * 0.4, h: h},
-			exclusivity_network: {w: w * 0.25, h: h * 0.5},
+			exclusivity_network: {w: w * 0.25, h: h * 0.55},
 			exclusivity_heatmap: {w: w * 0.35, h: h * 0.3},
 			exclusivity_legend: {w: w * 0.35, h: h * 0.1},
 

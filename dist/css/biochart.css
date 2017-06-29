@@ -1,4 +1,4 @@
-#exclusivity_survival { float: right; /*background: #F7F7F7;*/ /*background: #F7F7dd;*/ }
+#exclusivity_survival { float: right; }
 #exclusivity_survival input, 
 #os,
 #dfs { clear: both; display: none; margin: 10px; }
@@ -10,21 +10,18 @@
 #os_stat_table td,
 #dfs_stat_table td { font-size: 16px; }
 
-#exclusivity_select_geneset { float: left; /*background: #F7F7F7;*/ /*background: #F7ddF7;*/ }
+#exclusivity_select_geneset { float: left; margin-left: 0.5%; margin-top: 3%; }
 
-#exclusivity_upper_empty {
-	float: left;
-	/*background: #F7F7F7;*/
-}
+#exclusivity_upper_empty { float: left; }
 
-#exclusivity_network { float: left; /*background: #F7F7F7;*/ pointer-events: none; /*background: #ddF7F7;*/ }
+#exclusivity_network { float: left; pointer-events: none; }
 
-#exclusivity_heatmap_axis { font-size: 14px; font-weight: bold; text-shadow: 2px 1px rgba(0, 0, 0, .2); }
-#exclusivity_heatmap { float: left; /*background: #F7F7F7;*/ /*background: #1d1dFd;*/ }
+#exclusivity_heatmap_axis { font-size: 12px; font-weight: bold; text-shadow: 2px 1px rgba(0, 0, 0, .2); }
+#exclusivity_heatmap { float: left; }
 
-#exclusivity_legend { float: left; /*background: #e711F7;*/ }
+#exclusivity_legend { float: left; }
 
-#exclusivity_select_geneset > label{ box-shadow:0 3px 5px rgba(0,0,0,.2); /*padding:15px;*/ background:white; display:inline-block; position:relative; }
+#exclusivity_select_geneset > label{ box-shadow:0 3px 5px rgba(0,0,0,.2); background:white; display:inline-block; position:relative; }
 #exclusivity_select_geneset_view { border:none; outline:none; display: inline-block; -webkit-appearance:none; -moz-appearance:none; appearance:none; cursor:pointer; color:#909090; border-radius:0; z-index:2; background:transparent; }
 #exclusivity_select_geneset > label:after{ content:"\25bc"; color:white; background:#f3a1a1; width:50px; text-align:center; line-height:3.2em; top:0; right:0; bottom:0; position:absolute; pointer-events:none; }
 #exclusivity_select_geneset > option{ border-bottom:1px solid #eaeaea; border-left:3px solid white; appearance:none; }
