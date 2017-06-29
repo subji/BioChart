@@ -733,7 +733,7 @@ var divisionLine = (function (divisionLine)	{
 	 */
 	function setTextHeight (h, t)	{
 		var b = 1,
-				h = h / 2.5;
+				h = h / 3;
 
 		while (draw.getTextHeight(b + 'px').height < h)	{
 			b += 1;
@@ -824,6 +824,8 @@ var divisionLine = (function (divisionLine)	{
 					return i === 0 ? 'start' : 'end';
 				},
 				'alignment-baseline': 'middle',
+				// TODO.
+				// bar 에 맞는 글자 크기를 설정하여야 한다.
 				'font-size': model.th,
 				'font-weight': 'bold',
 				'text-shadow': '1px 1px rgba(0, 0, 0, 0.5)',
@@ -887,7 +889,7 @@ var draw = (function (draw)	{
 				width = 0;
 
 		canv.id = 'get-text-width'
-		ctx.font = font || '10px Arial';
+		ctx.font = (font || '10px') + 'arial';
 
 		document.body.appendChild(canv);
 
@@ -3371,8 +3373,7 @@ var selectGeneSet = (function (selectGeneSet)	{
 		var b = 1,
 				std = mostLargeText(t);
 
-		while (draw.getTextHeight(b + 'px').height < h / 4 && 
-					 draw.getTextWidth(std, b + 'px') < w)	{
+		while (draw.getTextHeight(b + 'px').height < h / 4.8)	{
 			b += 1;
 		}
 
