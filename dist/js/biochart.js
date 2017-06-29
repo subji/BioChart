@@ -3476,7 +3476,7 @@ var size = (function (size)	{
 		var ids =  {
 			// Layout 2.
 			exclusivity_select_geneset: {w: w * 0.2, h: h * 0.1},
-			exclusivity_upper_empty: {w: w * 0.35, h: h * 0.1},
+			exclusivity_upper_empty: {w: w * 0.35, h: h * 0.25},
 			exclusivity_survival: {w: w * 0.4, h: h},
 			exclusivity_network: {w: w * 0.25, h: h * 0.5},
 			exclusivity_heatmap: {w: w * 0.35, h: h * 0.3},
