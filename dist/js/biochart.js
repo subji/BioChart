@@ -3692,6 +3692,32 @@ var survival = (function (survival)	{
 
 		makeTab(o.element, ['OS', 'DFS'])
 
+		SurvivalCurveBroilerPlate.settings = {
+			canvas_width 			 : 400,
+			canvas_height 		 : 400,
+		 	chart_width 			 : 370,
+	  	chart_height 			 : 370,
+		  chart_left 				 : 50,
+		  chart_top 				 : 25,
+		  include_info_table : false,
+			include_legend 		 : true,
+			include_pvalue 		 : true,
+			pval_x 						 : 220,
+			pval_y 						 : 57,
+		};
+
+		SurvivalCurveBroilerPlate.style = {
+		  censored_sign_size : 5,
+		  axis_stroke_width  : 1,
+		  axisX_title_pos_x  : 260,
+		  axisX_title_pos_y  : 30,
+		  axisY_title_pos_x  : 10,
+		  axisY_title_pos_y  : 10,
+		  axis_color 				 : "black",
+			pval_font_size 		 : 12,
+			pval_font_style 	 : 'normal',
+		};
+
 		SurvivalTab.init(o.divisionData, pureData);
 	};
 }(survival || {}));
