@@ -81,7 +81,7 @@ var axis = (function (axis)	{
 	axis.top = function (d)	{
 		var m = size.setMargin(d.margin),
 				s = draw.size(model.current),
-				p = [m.top, m.left],
+				p = d.position || [m.top, m.left],
 				c = scale.get(d.data, [m.left, s.w - m.right]),
 				g = render.addGroup(model.current, p[0], p[1]);
 
@@ -94,7 +94,7 @@ var axis = (function (axis)	{
 	axis.left = function (d)	{
 		var m = size.setMargin(d.margin),
 				s = draw.size(model.current),
-				p = [m.top, s.w - m.right],
+				p = d.position || [m.top, s.w - m.right],
 				c = scale.get(d.data, [m.top, s.h - m.bottom]),
 				g = render.addGroup(model.current, p[0], p[1]);
 
@@ -105,7 +105,7 @@ var axis = (function (axis)	{
 	axis.bottom = function (d)	{
 		var m = size.setMargin(d.margin),
 				s = draw.size(model.current),
-				p = [s.h - m.bottom, m.left],
+				p = d.position || [s.h - m.bottom, m.left],
 				c = scale.get(d.data, [m.left, s.w - m.right]),
 				g = render.addGroup(model.current, p[0], p[1]);
 
@@ -116,7 +116,7 @@ var axis = (function (axis)	{
 	axis.right = function (d)	{
 		var m = size.setMargin(d.margin),
 				s = draw.size(model.current),
-				p = [m.top, m.left],
+				p = d.position || [m.top, m.left],
 				c = scale.get(d.data, [m.top, s.h - m.bottom]),
 				g = render.addGroup(model.current, p[0], p[1]);
 
@@ -203,6 +203,7 @@ var bar = (function (bar)	{
 var config = {
 	exclusivity: {},
 	landscape: {},
+	variants: {},
 };
 // For Mutational Landscape ==============================================
 config.landscape.name = function (value)	{
@@ -536,7 +537,7 @@ config.landscape.group = {
 config.exclusivity.separate = function (v)	{
 	// 배열을 할때, 0번째 엘리먼트는 배경, 1번째 엘리먼트는 실제 엘리먼트가 
 	// 되어야 한다.
-	return v === 'B' ? ['A', 'M'] : v === 'E' ? ['D', 'E'] : 
+	return v === 'B' ? ['A', 'M'] : v === 'E' ? ['D', 'M'] : 
 				 v === 'M' ? ['.', 'M'] : [v];
 };
 /*
@@ -632,6 +633,86 @@ config.exclusivity.division = {
 	}
 };
 // ============================ Mutual Exclusivity ==================================
+// ============================ Variants ==================================
+config.variants.legend = {
+	margin: [20, 20, 0, 0],
+	attr: {
+		x: function (d, i) { 
+			var x = this.dr === 'h' ? (this.p * 10 + this.mw) * i : 
+							this.isText ? this.p : 0;
+
+			return this.isText ? (x + this.p * 2) : x;
+		},
+		y: function (d, i) { 
+			var h = this.height || 5;
+
+			return this.isText ? this.mh * i + (h * 0.7) : this.mh * i;
+		},
+		r: function (d) {return 5;},
+	},
+	style: {
+		fontSize: function (d) {return '12px'},
+		fill: function (d) {return config.landscape.color(d);},
+	},
+	text: function (d) {return d;},
+};
+/*
+	Needle plot 의 원의 크기를 정하는 함수.
+	값이 지름이 된다는 가정하에 크기를 구한다.
+ */
+function needleRadius (c)	{
+	return (Math.sqrt(c) * 3) / 1.25;
+};
+
+config.variants.needle = {
+	margin: [20, 30, 100, 60],
+	attr: {
+		x: function (d, i)	{return this.sx(d.x);},
+		y: function (d, i)	{return this.sy(d.y);},
+		r: function (d, i)	{return d.value ? needleRadius(d.value) : this.radius;},
+	},
+	style: {
+		fill: function (d)	{ return d.info ? config.landscape.color(d.info[0].type) : false;},
+		stroke: function (d)	{return '#FFFFFF';},
+	},
+};
+
+config.variants.needleGraph = {
+	margin: [0, 30, 80, 60],
+	attr: {
+		x: function (d, i)	{return this.isText ? this.sx(d.x) + 5 : this.sx(d.x);},
+		y: function (d, i)	{return this.isText ? this.sh / 2 : 0;},
+		width: function (d, i)	{
+			return this.sx(d.width);
+		},
+		height: function (d, i)	{return this.sh;},
+	},
+	style: {
+		fill: function (d)	{return d.color;},
+		stroke: function (d)	{return '#FFFFFF';},
+	},
+	text: function (d) {return d.info.identifier;}
+};
+
+config.variants.axis = {
+	left: {margin: [20, 60, 100, 0]},
+	top: {margin: [2, 30, 0, 60]},
+};
+
+config.variants.navi = {
+	margin: [0, 30, 5, 60],
+	style: {
+		fill: function (d) {
+			var c = d.info ? 
+							d3.rgb(config.landscape.color(d.info[0].type)) : false;
+
+			this.g.selectAll('path').style('stroke', 'rgba(0, 0, 0, 0.1)');
+			
+			return c ? (c.opacity = 0.3, c) : false;
+		},
+	}
+};
+// ============================ Variants ==================================
 var divisionLine = (function (divisionLine)	{
 	'use strict';
 
@@ -935,6 +1016,8 @@ var draw = (function (draw)	{
 	};
 
 	draw.tab = function (target, tabNames, tabIds)	{
+		document.querySelector(target).innerHTML = '';
+
 		var div = document.querySelector(target);
 
 		if (tabNames.length !== tabIds.length)	{
@@ -966,7 +1049,10 @@ var draw = (function (draw)	{
 		svg = util.varType(svg) === 'Array' || 
 					util.varType(svg) === 'Object' ? svg : d3.select(svg);
 
-		return {w: svg.attr('width'), h: svg.attr('height')};
+		return {
+			w: parseFloat(svg.attr('width')), 
+			h: parseFloat(svg.attr('height')),
+		};
 	};
 
 	return draw;
@@ -1019,68 +1105,24 @@ var exclusive = (function ()	{
 	'use strict';
 
 	var model = {};
-	// /*
-	//  모든 gene 이 na 인 구간과 아닌구간을 나눠주는 함수.
-	//  */
-	// function toSeparated (datas, genes, left, right)	{
-	// 	var data = new Array().concat(datas),
-	// 			count = data.length / genes.length,
-	// 			result = [];
-
-	// 	for (var i = 0, l = genes.length; i < l; i++)	{
-	// 		var g = genes[i];
-
-	// 		result.push({
-	// 			key: g,
-	// 			// Splice 를 할때에는 반드시 새로운 배열로 concat 하기로 하자. 그렇지 않으면
-	// 			// 다른 변수에 복사해놓더라도 원본 배열의 데이터도 같이 Splice 가 된다.
-	// 			left: data.splice(0, left + 1),
-	// 			right: data.splice(0, count - right),
-	// 		});
-	// 	}
-
-	// 	return result;
-	// };
-	// /*
-	//  데이터 구간 분할을 위한 지점을 구해주는 함수.
-	//  */
-	// function setSepData (genes, datas)	{
-	// 	var left, right;
-
-	// 	for (var i = 0, l = datas.length; i < l; i++)	{
-	// 		var d = datas[i];
-
-	// 		if (d.value !== '.')	{
-	// 			left = !left ? d.x : left > d.x ? left : d.x;
-	// 		}
-	// 	}
-
-	// 	return {
-	// 		point: left + 1,
-	// 		data: toSeparated(datas, genes, left, left + 1),
-	// 	};
-	// };
-
-	// function drawMutualExclusivity (opts)	{
-	// 	var axis = toHeatmapAxis(opts.heatmap.data),
-	// 			sepData = setSepData(axis.y, opts.heatmap.data);
 	/*
 		Survival 에 사용될 데이터를 나누는 함수.
 	 */
 	function divideSurvivalData ()	{
-		model.data.survival = {};
+		var result = {};
 
-		util.loop(model.data.heatmap, function (k, v)	{
-			var t = new Array().concat(v);
-
-			// console.log(t);
-
-			model.data.survival[k] = {
-				altered: t.splice(0, model.data.divisionIdx[k] + 1),
-				unaltered: t.splice(0, (v.length - 1)
-														 - (model.data.divisionIdx[k] + 1)),
-			};
+		util.loop(model.data.survival.data[model.nowSet], 
+		function (d, i)	{
+			if (d)	{
+				if (i <= model.data.divisionIdx[model.nowSet].idx)	{
+					result[d.participant_id] = 'altered';
+				} else {
+					result[d.participant_id] = 'unaltered';
+				}
+			}
 		});
+
+		return result;
 	};
 	/*
 		Survival 차트를 그리는 함수.
@@ -1089,8 +1131,8 @@ var exclusive = (function ()	{
 		survival({
 			element: '#exclusivity_survival',
 			margin: [20, 20, 20, 20],
-			data: model.origin.survival.data,
-			divData: model.data.survival[model.nowSet],
+			data: model.data.survival.data[model.nowSet],
+			divisionData: divideSurvivalData(),
 		});
 	};
 	/*
@@ -1162,7 +1204,7 @@ var exclusive = (function ()	{
 		layout.getSVG(model.svg, ['legend'], function (k, v)	{
 			legend({
 				element: v,
-				data: model.data.legend[model.nowSet],
+				data: model.data.type[model.nowSet],
 				priority: config.exclusivity.priority,
 				text: config.exclusivity.legend.text,
 				attr: config.exclusivity.legend.attr,
@@ -1176,7 +1218,7 @@ var exclusive = (function ()	{
 	 */
 	function drawExclusivity ()	{
 		// Draw survival.
-		// drawSurvival();
+		drawSurvival();
 		// Draw Network.
 		drawNetwork();
 		// Draw axis.
@@ -1737,6 +1779,28 @@ var layout = (function (layout)	{
 	var model = {
 		exclusivity: {},
 		landscape: {},
+		variants: {},
+	};
+	/*
+		파라미터 ids 를 조회하며 e(except) 항목들을 제외한
+		id 들을 t(chart case) 에 svg 를 만들어 넣어준다.
+	 */
+	function create (e, t, ids)	{
+		util.loop(ids, function (d, i)	{
+			var is = true;
+
+			util.loop(e, function (b, j)	{
+				if (d.indexOf(b) > -1)	{
+					is = !is;
+				}
+			});
+
+			if (is)	{
+				model[t][d] = render.createSVG(d);
+			}
+		});
+
+		return model[t];
 	};
 	/*
 		사용자가 전달한 id set (i) 에 맞는 svg 들을 
@@ -1762,31 +1826,25 @@ var layout = (function (layout)	{
 		조회하며 svg 태그를 만들어 div 태그에 넣고 svg 를
 		반환한다.
 	 */
-	layout.exclusivity = function (ids, m)	{
-		util.loop(ids, function (d, i)	{
-			if (d.indexOf('geneset') < 0 && 
-					d.indexOf('survival') < 0 &&
-					d.indexOf('network') < 0)	{
-				model.exclusivity[d] = render.createSVG(d);
-			}
-		});
-
-		return model.exclusivity;
+	layout.exclusivity = function (ids)	{
+		return create(['geneset', 'survival', 'network'], 
+									 'exclusivity', ids);
 	};
 
 	/*
 		Id (scale_option, title 제외) 를 조회하며
 		svg 태그를 만들어 div 태그에 삽입한다.
 	 */
-	layout.landscape = function (ids, m)	{
-		util.loop(ids, function (d, i)	{
-			if (d.indexOf('option') < 0 && 
-					d.indexOf('title') < 0)	{
-				model.landscape[d] = render.createSVG(d);
-			}
-		});
+	layout.landscape = function (ids)	{
+		return create(['option', 'title'], 'landscape', ids);
+	};
 
-		return model.landscape;
+	/*
+		ID (title 제외) 를 조회하며 svg 태그를 만들어
+		div 태그에 삽입한다.
+	 */
+	layout.variants = function (ids)	{
+		return create(['title'], 'variants', ids);
 	};
 
 	return layout;
@@ -1829,34 +1887,61 @@ var legend = (function (legend)	{
 		model.mh = draw.getTextHeight('10px Arial').height;
 		model.dr = (model.w - model.m.left - model.m.right)
 						 > (model.h - model.m.top - model.m.bottom) ? 'h' : 'v';
-		
-		render.rect({	
-			element: model.sg.selectAll('#' + model.e.attr('id') + '_rect'),
-			data: model.d,
-			attr: {
-				id: function (d) { return model.e.attr('id') + '_rect'; },
-				x: function (d, i) { 
-					return o.attr.x ? o.attr.x.call(model, d, i) : 0;
+
+		if (o.attr.r)	{
+			render.circle({
+				element: model.sg.selectAll('#' + model.e.attr('id') + '_circle'),
+				data: model.d,
+				attr: {
+					id: function (d) { return model.e.attr('id') + '_circle'; },
+					cx: function (d, i)	{
+						return o.attr.x ? o.attr.x.call(model, d, i) : 0;
+					},
+					cy: function (d, i)	{
+						return o.attr.y ? o.attr.y.call(model, d, i) : 0;
+					},
+					r: function (d, i)	{
+						return o.attr.r ? o.attr.r.call(model, d, i) : 0;
+					},
+				}, 
+				style: {
+					fill: function (d)	{
+						return o.style.fill ? o.style.fill(d) : '#000000';
+					},
+					stroke: function (d)	{
+						return o.style.stroke ? o.style.stroke(d) : false;
+					},
 				},
-				y: function (d, i) { 
-					return o.attr.y ? o.attr.y.call(model, d, i) : 0;
+			})
+		} else {
+			render.rect({	
+				element: model.sg.selectAll('#' + model.e.attr('id') + '_rect'),
+				data: model.d,
+				attr: {
+					id: function (d) { return model.e.attr('id') + '_rect'; },
+					x: function (d, i) { 
+						return o.attr.x ? o.attr.x.call(model, d, i) : 0;
+					},
+					y: function (d, i) { 
+						return o.attr.y ? o.attr.y.call(model, d, i) : 0;
+					},
+					width: function (d, i) { 
+						return o.attr.width ? o.attr.width.call(model, d, i) : 5; 
+					},
+					height: function (d, i) { 
+						return o.attr.height ? o.attr.height.call(model, d, i) : 5; 
+					},
 				},
-				width: function (d, i) { 
-					return o.attr.width ? o.attr.width.call(model, d, i) : 5; 
+				style: {
+					fill: function (d) { 
+						return o.style.fill ? o.style.fill(d) : '#000000'; 
+					},
+					stroke: function (d) { 
+						return o.style.stroke ? o.style.stroke(d) : false; 
+					},
 				},
-				height: function (d, i) { 
-					return o.attr.height ? o.attr.height.call(model, d, i) : 5; 
-				},
-			},
-			style: {
-				fill: function (d) { 
-					return o.style.fill ? o.style.fill(d) : '#000000'; 
-				},
-				stroke: function (d) { 
-					return o.style.stroke ? o.style.stroke(d) : false; 
-				},
-			},
-		});
+			});
+		}
 
 		render.text({
 			element: model.tg.selectAll('#' + model.e.attr('id') + '_text'),
@@ -1879,6 +1964,9 @@ var legend = (function (legend)	{
 				'font-family': function (d) { 
 					return o.style.fontFamily ? o.style.fontFamily(d) : 'Arial'; 
 				},
+				'alignment-baseline': function (d)	{
+					return o.style.alignmentBaseline ? o.style.alignmentBaseline : 'middel';
+				}
 			},
 			text: function (d, i)	{ 
 				return o.text(d, i, model) || ('legend' + i); 
@@ -1901,9 +1989,9 @@ var legend = (function (legend)	{
 		chart: {
 			bar: bar,
 			legend: legend,
-			needle: '',
-			graph: '',
-			procbar: '',
+			needle: needle,
+			needleGraph: needleGraph,
+			needleNavi: needleNavi,
 			network: network,
 			heatmap: heatmap,
 			survival: survival,
@@ -1922,6 +2010,262 @@ var legend = (function (legend)	{
 		preprocessing: preprocessing,
 	};
 }(window||{}));
+var needle = (function (needle)	{
+	'use strict';
+
+	var model = {};
+
+	return function (o)	{
+		model = {};
+		model.e = o.element = util.varType(o.element) === 'Object' || 
+													util.varType(o.element) === 'Array' ? 
+							o.element : (/\W/).test(o.element[0]) ? 
+							d3.select(o.element) : d3.select('#' + o.element);
+		model.s = draw.size(model.e);
+		model.m = size.setMargin(o.margin);
+		model.t = model.m.top || 0;
+		model.l = model.m.left || 0;
+		model.g = render.addGroup(model.e, model.m.top, model.m.left);
+		model.xag = render.addGroup(model.e, model.m.top, model.m.left);
+		model.xxg = render.addGroup(model.e, model.m.top, model.m.left);
+		model.radius = o.radius || 5;
+		model.sx = scale.get(o.xaxis, [model.m.left, model.s.w - model.m.right]);
+		model.sy = scale.get(o.yaxis, [model.s.h - model.m.bottom, model.m.top]);
+		model.line = (util.d3v4() ? d3.line() : d3.svg.line())
+								 .x(function (d) { return model.sx(d.x); })
+								 .y(function (d) { return model.sy(d.y); });
+
+		util.loop(o.lineData, function (d, i)	{
+			render.line({
+				element: model.g,
+				attr: {
+					id: function (d) { return model.e.attr('id') + '_line'; },
+					d: model.line(d.value),
+				},
+				style: {
+					stroke: '#333333',
+				}
+			});
+		});
+
+		render.circle({
+			element: model.g.selectAll('#' + model.e.attr('id') + '_circle'),
+			data: o.circleData,
+			attr: {
+				id: function (d) { return model.e.attr('id') + '_circle'; },
+				cx: function (d, i)	{ 
+					return o.attr.x ? o.attr.x.call(model, d, i) : 0; 
+				},
+				cy: function (d, i)	{ 
+					return o.attr.y ? o.attr.y.call(model, d, i) : 0; 
+				},
+				r: function (d, i)	{ 
+					return o.attr.r ? o.attr.r.call(model, d, i) : model.radius; 
+				},
+			},
+			style: {
+				fill: function (d, i) { 
+					return o.style.fill ? o.style.fill.call(model, d, i) : '#000000';
+				},
+				stroke: function (d, i)	{
+					return o.style.stroke ? o.style.stroke.call(model, d, i) : '#FFFFFF';
+				},
+			}
+		});
+	};
+}(needle||{}));
+var needleGraph = (function (needleGraph)	{
+	'use strict';
+
+	var model = {};
+	/*
+		Graph 안에 들어갈 글자의 크기를 정해주는 함수.
+	 */
+	function setFontSize ()	{
+		var b = 1;
+
+		while (draw.getTextHeight(b + 'px').height < 
+					 model.sh / 2)	{
+			b += 1;
+		}
+
+		return b + 'px';
+	};
+
+	return function (o)	{
+		model = {};
+		model.e = o.element = util.varType(o.element) === 'Object' || 
+													util.varType(o.element) === 'Array' ? 
+							o.element : (/\W/).test(o.element[0]) ? 
+							d3.select(o.element) : d3.select('#' + o.element);
+		model.s = draw.size(model.e);
+		model.m = size.setMargin(o.margin);
+		model.t = model.s.h - model.m.bottom;
+		model.l = model.m.left || 0;
+		model.g = render.addGroup(model.e, model.t, model.l);
+		model.sx = scale.get(o.xaxis, [model.m.left, model.s.w - model.m.right]);
+		model.sy = scale.get(o.yaxis, [model.s.h - model.m.bottom, model.m.top]);
+		model.sh = Math.abs(model.sy(1) - model.sy(0)) / 2;
+		model.mfh = setFontSize();
+
+		render.rect({
+			element: model.g.selectAll('#' + model.e.attr('id') + '_base'),
+			data: [''],
+			attr: {
+				id: model.e.attr('id') + '_base',
+				x: model.sx(util.minmax(o.xaxis).min) + 5,
+				y: model.sh * 0.1,
+				width: model.s.w - model.m.right - model.m.left - 5,
+				height: model.sh * 0.8,
+				rx: 1,
+				ry: 1,
+			},
+			style: {
+				fill: '#DADFE1',
+				stroke: '#CCCDCE',
+				'stroke-width': '5px',
+			},
+		});
+
+		render.rect({
+			element: model.g.selectAll('#' + model.e.attr('id') + '_rect'),
+			data: o.data,
+			attr: {
+				id: function (d) { return model.e.attr('id') + '_rect'; },
+				x: function (d, i) { 
+					return o.attr.x ? o.attr.x.call(model, d, i) : 0;
+				},
+				y: function (d, i) { 
+					return o.attr.y ? o.attr.y.call(model, d, i) : 0;
+				},
+				width: function (d, i) { 
+					return o.attr.width ? o.attr.width.call(model, d, i) : 0;
+				},
+				height: function (d, i) { 
+					return o.attr.height ? o.attr.height.call(model, d, i) : 0;
+				},
+				rx: 3,
+				ry: 3,
+			},
+			style: {
+				fill: function (d, i)	{
+					return o.style.fill ? o.style.fill.call(model, d, i) : '#000000';
+				},
+				stroke: function (d, i)	{
+					return o.style.stroke ? o.style.stroke.call(model, d, i) : '#FFFFFF';
+				},
+			}
+		});
+
+		render.text({
+			element: model.g.selectAll('#' + model.e.attr('id') + '_text'),
+			data: o.data,
+			attr: {
+				id: function (d) {
+					return model.isText = true, model.e.attr('id') + '_text';
+				},
+				x: function (d, i)	{
+					return o.attr.x ? o.attr.x.call(model, d, i) : 0;
+				},
+				y: function (d, i) { 
+					return o.attr.y ? o.attr.y.call(model, d, i) : 0;
+				},
+			},
+			style: {
+				'fill': '#FFFFFF',
+				'font-size': model.mfh,
+				'alignment-baseline': 'middle',
+			},
+			text: function (d, i) {
+				return o.text ? o.text.call(model, d, i) : 0;
+			},
+		})
+	};
+}(needleGraph||{}));
+var needleNavi = (function (needleNavi)	{
+	'use strict';
+
+	var model = {
+		start: 0,
+		end: 0,
+	};
+	/*
+		Navigator 를 조절할 양쪽의 조절 버튼을 만드는
+		함수.
+	 */
+	function makeControlRect (r)	{
+		util.loop(r, function (d, i)	{
+			render.rect({
+				element: model.g.selectAll('#' + model.e.attr('id') + '_' + d),
+				data: [d],
+				attr: {
+					id: function (d) { return model.e.attr('id') + '_' + d },
+					x: d === 'end' ? model.end + model.m.left - 5 : model.start - 5,
+					y: model.s.h * 0.25,
+					width: 10,
+					height: model.s.h * 0.4,
+					rx: 5,
+					rx: 5,
+				},
+				style: {
+					fill: '#A8A8A8',
+					stroke: '#EAECED',
+					'stroke-width': '2px',
+					cursor: 'move',
+				}
+			});
+		});
+	};
+
+	return function (o)	{
+		model = {};
+		model.e = o.element = util.varType(o.element) === 'Object' || 
+													util.varType(o.element) === 'Array' ? 
+							o.element : (/\W/).test(o.element[0]) ? 
+							d3.select(o.element) : d3.select('#' + o.element);
+		model.s = draw.size(model.e);
+		model.m = size.setMargin(o.margin);
+		model.t = model.m.top || 0;
+		model.l = model.m.left || 0;
+		model.g = render.addGroup(model.e, model.m.top, model.m.left);
+		model.sx = scale.get(o.xaxis, [model.m.left, model.s.w - model.m.right]);
+		model.sy = scale.get(o.yaxis, [model.s.h - model.m.bottom, model.m.top]);
+
+		model.start = model.sx(util.minmax(o.xaxis).min);
+		model.end = model.s.w - model.m.right - model.m.left;
+
+		needle({
+			element: model.e,
+			lineData: o.data.needle,
+			circleData: o.data.fullNeedle,
+			attr: config.variants.needle.attr,
+			style: o.style,
+			margin: [5, 30, 10, 60],
+			xaxis: o.xaxis,
+			yaxis: o.yaxis,
+		});
+
+		render.rect({
+			element: model.g.selectAll('#' + model.e.attr('id') + '_navi'),
+			data: [''],
+			attr: {
+				id: function (d)	{ return model.e.attr('id') + 'navi'; },
+				x: model.start,
+				y: 0,
+				width: model.end,
+				height: model.s.h - model.m.bottom,
+				rx: 3,
+				ry: 3,
+			},
+			style: {
+				fill: 'rgba(255, 225, 50, 0.1)',
+				stroke: '#FFDF6D',
+			},
+		});
+
+		makeControlRect(['start', 'end']);
+	};
+}(needleNavi||{}));
 var network = (function ()	{	
 	'use strict';
 
@@ -2049,9 +2393,14 @@ var preprocessing = (function (preprocessing)	{
 		exclusivity: {
 			heatmap: {},
 			network: {},
-			legend: {},
-			mutual: {},
+			type: {},
+			survival: {
+				merge: {},
+				heat: {},
+				data: {},
+			},
 			geneset: [],
+			fullGeneset: [],
 			axis: {
 				heatmap: {x: {}, y: {}},
 				division: {x: {}, y: []},
@@ -2077,13 +2426,133 @@ var preprocessing = (function (preprocessing)	{
 				patient: {x: [], y: []},
 			},
 		},
+		variants: {
+			needle: [],
+			fullNeedle: [],
+			type: [],
+			graph: [],
+			axis: {
+				needle: {x: [], y: []},
+			},
+		},
 	};
 	/*
 	 	Object 들의 naming 이 너무 길어서 줄임.
 	 */
 	var ml = model.landscape,
 			el = model.exclusivity,
+			vl = model.variants,
 			cl = config.landscape;
+	// ============== Variants =================
+	/*
+	 	Stack 으로 정렬된 데이터를 line 및 circle 을 그리기
+	 	좋은 형태로 만들어 주는 함수.
+	 */
+	function optimizeVariantsStack (o)	{
+		util.loop(o, function (k, v)	{
+			var c = 0,
+					oo = { key: k, value: [
+						{ x: parseFloat(k), y: c, value: 0 }
+					]};
+			// 위는 line 을 그리기위한 초기 데이터.
+			// 여기는 y 축을 위한 초기 데이터 설정.
+			vl.axis.needle.y.push(c);
+
+			util.loop(v, function (kk, vv)	{
+				oo.value.push({
+					x: parseFloat(k),
+					y: (c = c + vv.length, c),
+					value: vv.length,
+					info: vv,
+				});
+			});
+
+			vl.axis.needle.y.push(c);
+			vl.needle.push(oo);
+		});
+	};
+	/*
+		Needle Plot 도 Stack 형태의 데이터가 되어야 그릴 수 있기에
+		그렇게 바꿔주는 코드이다.
+	 */
+	function setVariantsStack (p)	{
+		var o = {};
+
+		util.loop(p, function (d, i)	{
+			d.type = config.landscape.name(d.type);
+
+			var s = d.position + ' ' + d.type + ' ' + d.aachange;
+
+			o[d.position] ? o[d.position][s] ? 
+			o[d.position][s].push(d) : o[d.position][s] = [d] : 
+			(o[d.position] = {}, o[d.position][s] = [d]);
+			// Variants Plot 의 type 들을 구한다.
+			if (vl.type.indexOf(d.type) < 0)	{
+				vl.type.push(d.type);
+			}
+		});
+
+		optimizeVariantsStack(o);
+	};
+	/*
+		Circle 을 그리기 위해 위 Stacked 데이터를
+		full 데이터로 변환한 데이터를 추가해주는 함수.
+	 */
+	function fullyNeedle ()	{
+		util.loop(vl.needle, function (d, i)	{
+			util.loop(d.value, function (dd, ii)	{
+				if (dd.info) {
+					// dd.info 가 없는 경우는 0 인 경우뿐이므로.
+					// 따로 0 인 조건 검사 없이 연산을 한다.
+					dd.value = dd.y - d.value[ii - 1].y;
+
+					vl.fullNeedle.push(dd);
+				}
+			});
+		});
+	};
+	/*
+		Graph 의 데이터 형식을 바꿔주는 함수.
+	 */
+	function setGraph (g)	{
+		util.loop(g, function (d, i)	{
+			vl.graph.push({
+				x: d.start,
+				y: 0,
+				width: d.end - d.start,
+				height: 15,
+				color: d.colour,
+				info: d,
+			});
+		});
+	};
+	/*
+		Needle Plot & Graph 를 그릴 때 사용되는 축
+		데이터를 설정하는 함수.
+	 */
+	function setNeedleAxis (g)	{
+		vl.axis.needle.x = [0, g[0].length];
+		vl.axis.needle.y = 
+		vl.axis.needle.y.length < 1 ? [0, 1] : 
+		[util.minmax(vl.axis.needle.y).min, 
+		 util.minmax(vl.axis.needle.y).max];
+	};
+
+	preprocessing.variants = function (d)	{
+		setVariantsStack(d.variants.public_list);
+		setGraph(d.variants.graph);
+		setNeedleAxis(d.variants.graph);
+		fullyNeedle();
+
+		vl.patient = d.variants.patient_list.map(function (d, i)	{
+			return d.type = config.landscape.name(d.type), d;
+		});
+
+		console.log('Preprocess of Variants: ', vl);
+
+		return vl;
+	};
+	// ============== Variants =================
  	// ============== Mutual Exclusivity =================
  	/*
  		문단 혹은 문장에서 geneset 의 이름을 찾아내어 주는 함수.
@@ -2150,7 +2619,7 @@ var preprocessing = (function (preprocessing)	{
  		Legend 객체에 빈 배열을 만들어주는 함수.
  	 */
  	function toLegendData (k)	{
- 		return el.legend[k.join(' ')] = [];
+ 		return el.type[k.join(' ')] = [];
  	};
  	/*
  		x, y, value 형태를 넣어주는 함수.
@@ -2163,7 +2632,7 @@ var preprocessing = (function (preprocessing)	{
  			// B, E 와같이 두개의 variant 를 갖고있는 문자는 분해시켜준다.
  			util.loop(config.exclusivity.separate(d), function (dd, ii)	{
  				dd = config.exclusivity.name(dd);
- 			
+
  				o.push({x: i, y: k, value: dd});
  				l.indexOf(dd) < 0 ? l.push(dd) : l = l;	
  			});
@@ -2212,44 +2681,119 @@ var preprocessing = (function (preprocessing)	{
 	 					g = m.splice(1, m.length),
 	 					thd = toHeatmapData(
 	 						g, t, el.heatmap[t.join(' ')] = []);
-
+	 			// Survival 데이터를 뽑아내는데 필요한 원본데이터.
+	 			el.survival.heat[t.join(' ')] = g;
+	 			el.fullGeneset.concat(t);
 	 			el.geneset.push(t);
  			}
  		});
  	};
  	/*
- 		heatmap 의 axis 값을 구해주는 함수.
+ 		GEne list 를 만들어준다.
  	 */
- 	function axisForHeatmap ()	{
- 		util.loop(el.heatmap, function (k, v)	{
- 			console.log(k, v)
+ 	function makeSuvivalGeneList (t)	{
+ 		var r = {};
+
+ 		util.loop(t, function (d, i)	{
+ 			r[d.gene] = ['.'];
  		});
+
+ 		return r;
+ 	};
+ 	/*
+ 		2500 여개의 types 데이터를 줄이기 위한 함수.
+ 	 */
+ 	function toObjectSurvivalTypes (t, gl)	{
+ 		var r = {};
+
+ 		util.loop(t, function (d, i)	{
+ 			var tn = config.landscape.name(d.type),
+ 					ty = tn === 'Amplification' || tn === 'Homozygous_deletion' ? 
+ 							tn === 'Amplification' ? 'A' : 'D' : 'M',
+ 					gcp = util.cloneObject(gl);
+
+ 			!r[d.participant_id] ? (gcp[d.gene] = [ty], 
+ 			 r[d.participant_id] = gcp, r) : (
+ 			 r[d.participant_id][d.gene][0] === '.' ? 
+ 			 r[d.participant_id][d.gene] = [ty] : 
+ 			 r[d.participant_id][d.gene].push(ty), r);
+ 		});
+
+ 		return r;
+ 	};
+ 	/*
+ 		type 과 patient 의 데이터를 하나로 합치자.
+ 	 */
+ 	function mergeSurvival (p, t)	{
+ 		var gl = makeSuvivalGeneList(t),
+ 				ot = toObjectSurvivalTypes(t, gl);
+
+ 		util.loop(p, function (d, i)	{
+ 			d.gene = ot[d.participant_id] ? ot[d.participant_id] : gl;
+ 		});
+
+ 		el.survival.merge = p;
+ 	};
+ 	/*
+ 		배열로 된 타입 데이터를 서바이벌 문자로 치환한다.
+ 		이는 서바이벌 데이터를 뽑아내기 위한 기준으로 삼기 때문에
+ 		구현한다.
+ 	 */
+ 	function transferSuvType (ta)	{
+ 		if (ta.indexOf('A') > -1 && ta.indexOf('M') > -1)	{
+ 			return 'B';
+ 		} else if (ta.indexOf('D') > -1 && ta.indexOf('M') > -1) {
+ 			return 'E';
+ 		} else {
+ 			return ta[0];
+ 		}
  	};
  	/*
  		Participant ID 를 기준으로 각 Gene 들마다의 데이터를
  		만들어 반환해주는 함수.
  	 */
- 	function survival (s)	{
- 		var k = el.mutual.keys = 
- 						mutualProps(s.gene, s.mutation[0]);
- 		el.mutual.data = {};
+ 	function survival (h)	{
+ 		var hasParticipant = {};
+ 		// Merged data 를 돌면서 각 geneset 에 맞는 gene 들의 
+ 		// 타입들이 매칭되는지 확인후 geneset 의 개수만큼 맞다면
+ 		// 해당 위치에 Merged data 를 넣는다.
+		util.loop(el.survival.heat, function (k, v)	{
+			var idx = el.axis.heatmap.x[k].length,
+					ldx = k.split(' '),
+					a = !el.survival.data[k] ? 
+							 el.survival.data[k] = [] : el.survival.data[k],
+					p = hasParticipant[k] = {};
 
- 		util.loop(s.mutation, function (d, i)	{
- 			el.mutual.data[d[k.p]] = 
- 			el.mutual.data[d[k.p]] ? 
- 			el.mutual.data[d[k.p]] : {};
- 			el.mutual.data[d[k.p]][d[k.g]] ? 
- 			el.mutual.data[d[k.p]][d[k.g]].push(d[k.t]) : 
- 			el.mutual.data[d[k.p]][d[k.g]] = [d[k.t]];
- 		});
+			for (var i = 0; i < idx; i++)	{
+				el.survival.merge.some(function (d)	{
+					var isType = true;
+
+ 					for (var l = 0; l < ldx.length; l++)	{ 	
+ 						if (transferSuvType(d.gene[ldx[l]]) !== v[l][i])	{
+ 							isType = false;
+ 						}
+ 					}
+
+ 					if (isType)	{
+ 						if (p[d.participant_id] === undefined)	{
+ 							p[d.participant_id] = '';
+ 							a[i] = d;
+
+ 							return a[i] !== undefined;
+ 						} 
+ 					}
+				});
+			}			
+		});			
  	};
  	/*
  		call exclusivity of preprocessing.
  	 */
 	preprocessing.exclusivity = function (d)	{
+		mergeSurvival(d.survival.patient, d.survival.types);
 		heatmap(d.heatmap);
 		network(d.network); 
-		// survival(d.survival.std);
+		survival(d.heatmap);
 
 		console.log('Preprocess of Exclusivity: ', el);
 
@@ -2286,7 +2830,7 @@ var preprocessing = (function (preprocessing)	{
 		X, Y, VALUE 값이 있을때, X 또는 Y 값을 기준으로 한
 		VALUE 의 양을 각각의 쌓이는 모양의 데이터로 만들어주는 함수.
 	 */
-	function stack (t, o)	{
+	function mutStack (t, o)	{
 		var r = [];
 		// Nested loop 를 사용했다.
 		util.loop(o, function (k, v)	{
@@ -2457,15 +3001,14 @@ var preprocessing = (function (preprocessing)	{
 		// set properties of model.landscape.
 		ml.type = util.keyToArr(ml.type);	
 		ml.pq = loopingPq(d.pq, d.pqValue || 'p');
-		ml.stack.gene = stack('gene', ml.stack.gene);
-		ml.stack.sample = stack('sample', ml.stack.sample);
-		ml.stack.patient = stack('patient', ml.stack.patient);
+		ml.stack.gene = mutStack('gene', ml.stack.gene);
+		ml.stack.sample = mutStack('sample', ml.stack.sample);
+		ml.stack.patient = mutStack('patient', ml.stack.patient);
 		// Axis data for chart.
 		linearAxis();
 		ordinalAxis();
 
 		console.log('Preprocess of Landscape: ', ml);
-		// return model.landscape.
 		return ml;
 	};
 	// ============== Mutational Landscape =================
@@ -2534,6 +3077,12 @@ var render = (function (render)	{
 		defsShape.call(defs, 'rect');
 	};
 	/*
+		Draw Circle.
+	 */
+	render.circle = function (defs)	{
+		defsShape.call(defs, 'circle');
+	};
+	/*
 		Draw Text.
 	 */
 	render.text = function (defs)	{
@@ -2549,6 +3098,12 @@ var render = (function (render)	{
 		
 		setAttributes(t, defs.attr);
 		setStyles(t, defs.style);
+	};
+	/*
+		Draw Patient.
+	 */
+	render.patient = function (defs)	{
+		
 	};
 
 	return render;
@@ -2970,6 +3525,19 @@ var size = (function (size)	{
 
 		return makeFrames.call(size.setSize(e, w, h), ids), model.ids;
 	};
+	/*
+		Setting size of Variants.
+	 */
+	size.chart.variants = function (e, w, h)	{
+		var ids = {
+			variants_title: {w: w * 0.95, h: h * 0.05},
+			variants_needle: {w: w * 0.85, h: h * 0.85},
+			variants_legend: {w: w * 0.15, h: h * 0.85},
+			variants_navi: {w: w * 0.85, h: h * 0.1},
+		};
+
+		return makeFrames.call(size.setSize(e, w, h), ids), model.ids;
+	};
 
 	return size;
 }(size || {}));
@@ -3065,87 +3633,8 @@ var survival = (function (survival)	{
 	'use strict';
 
 	var model = {};
-
-	function toLog (tpm)	{
-		return Math.log(tpm + 1) / Math.LN2;
-	};
-
-	function getTpmData (data)	{
-		var result = {},
-				caseList = {};
-
-		function getMedian (list)	{
-			return list.length % 2 === 0 ? 
-						list.length / 2: (list.length + 1) / 2;
-		};
-
-		for (var i = 0, l = data.data.cohort_rna_list.length; i < l; i++)	{
-			var c = data.data.cohort_rna_list[i];
-
-			c.tpm = toLog(c.tpm);
-
-			if (!result[c.participant_id])	{
-				result[c.participant_id] = { tpm: c.tpm, len: 1 };
-			} else {
-				result[c.participant_id].tpm += c.tpm;
-				result[c.participant_id].len += 1;
-			}
-		}
-
-		var avgList = toSortAverage(getAvgList(data, result)),
-				mid = getMedian(avgList),
-				low = avgList.slice(0, mid + 1),
-				high = avgList.slice(mid + 1, avgList.length);
-
-		low.forEach(function (l)	{
-			caseList[l.participant_id] = 'unaltered';
-		});
-
-		high.forEach(function (h)	{
-			caseList[h.participant_id] = 'altered';
-		});
-
-		return {
-			dataList: result,
-			caseList: caseList,
-		};
-	};
-
-	function getAvgList (data, tpmData)	{
-		var result = [];
-
-		function getPatientInfo (data, id)	{
-			var p = data.data.patient_list;
-
-			for (var i = 0, l = p.length; i < l; i++)	{
-				var pat = p[i];
-
-				if (pat.participant_id === id)	{
-					return p;
-				}
-			}
-		}
-
-		for (var t in tpmData)	{
-			var td = tpmData[t];
-
-			result.push({
-				participant_id: t,
-				average: td.tpm / td.len,
-				info: getPatientInfo(data, t),
-			});
-		}
-
-		return result;
-	}
-
-	function toSortAverage (data)	{
-		return (data = data.sort(function (a, b)	{
-					return a.average > b.average ? 1 : -1;
-				}), data);
-	}
-
-	function getSurvivalData (suv, sep)	{
+	
+	function getSurvivalData (data)	{
 		var month = {os: [], dfs: []},
 				pure = {os: [], dfs: []},
 				all = {os: [], dfs: []};
@@ -3162,23 +3651,25 @@ var survival = (function (survival)	{
 			array.push(obj);
 		};
 
-		suv.data.patient_list.forEach(function (d)	{
-			var osmonth = (d.os_days / 30),
-					dfsmonth = (d.dfs_days / 30);
+		util.loop(data, function (d, i)	{
+			if (d)	{
+				var osm = (d.os_days / 30),
+						dfsm = (d.dfs_days / 30);
 
-			month.os.push(osmonth);
-			month.dfs.push(dfsmonth);
+				month.os.push(osm);
+				month.dfs.push(dfsm);
 
-			if (!(osmonth == null || d.os_status == null))	{
-				forPatient(d.participant_id, osmonth, d.os_status, pure.os);
+				if (!(osm == null || d.os_status == null))	{
+					forPatient(d.participant_id, osm, d.os_status, pure.os);
+				}
+
+				if (!(dfsm == null || d.dfs_status == null))	{
+					forPatient(d.participant_id, dfsm, d.dfs_status, pure.dfs);
+				}
+
+				forPatient(d.participant_id, osm, d.os_status, all.os);
+				forPatient(d.participant_id, osm, d.dfs_status, all.dfs);
 			}
-
-			if (!(dfsmonth == null || d.dfs_status == null))	{
-				forPatient(d.participant_id, dfsmonth, d.dfs_status, pure.dfs);
-			}
-
-			forPatient(d.participant_id, osmonth, d.os_status, all.os);
-			forPatient(d.participant_id, osmonth, d.dfs_status, all.dfs);
 		});
 
 		return {
@@ -3189,43 +3680,13 @@ var survival = (function (survival)	{
 	};
 
 	return function (o)	{
-		model = {};
-		model.e = o.element = util.varType(o.element) === 'Object' ? 
-							o.element : (/\W/).test(o.element[0]) ? 
-							d3.select(o.element) : d3.select('#' + o.element);
-		model.s = draw.size(model.e);
-		model.m = size.setMargin(o.margin);
-		model.t = model.m.top || 0;
-		model.l = model.m.left || 0;
-		model.g = render.addGroup(model.e, model.t, model.l);
+		draw.tab(o.element, ['OS', 'DFS'], 
+		['osSurvival', 'dfsSurvival']);
 
-		console.log(o);
-		// var e = opts.element || null,
-		// 		dq = document.querySelector(e),
-		// 		w = parseFloat(opts.width || dq.style.width || 360),
-		// 		h = parseFloat(opts.height || dq.style.height || 600),
-		// 		m = size.setMargin(opts.margin) || { top: 0, left: 0, bottom: 0, right: 0 };
+		var pureData = getSurvivalData(o.data).pure;
 
-		// var gc = render.createCanvas(e.substring(1, e.length), w, h);
-
-		// model = {};
-		// draw.clearCanvas(dq);
-
-		draw.tab('#' + model.e.attr('id'), ['OS', 'DFS'], ['osSurvival', 'dfsSurvival']);
-
-		// var data = getSurvivalData(opts.data, opts.subData),
-		// 		tpmData = getTpmData(opts.data);
-
-		// // dq.appendChild(gc.canvas);
-		// console.log(tpmData, data);
-
-		// SurvivalTab.init(tpmData.caseList, data.pure);
-
-		// // eventHandler.context(ctx)
-		// // 		 .hover(function (obj)	{
-		// // 		 	console.log(obj);
-		// // 		 });
-	}
+		SurvivalTab.init(o.divisionData, pureData);
+	};
 }(survival || {}));
 var util = (function (util)	{
 	'use strict';
@@ -3317,19 +3778,154 @@ var util = (function (util)	{
 }(util||{}));
 'use strict';
 
-var variants = (function ()	{
+var variants = (function (variants)	{
+	'use strict';
 
-	function render() {
-
-	}
-
-	return function (opts)	{
-		var e = opts.element || null,
-				dq = document.querySelector(e),
-				w = opts.width || dq.style.width || 1200,
-				h = opts.height || dq.style.height || 600;
-
-		console.log('Variants', '\nElement: ', e,
-			'\nWidth: ', w, '\nHeight: ', h);
+	var model = { div: {} };
+	/*
+		Title 을 만드는 함수.
+	 */
+	function title ()	{
+		model.div.title = document.querySelector('#variants_title');
+		model.div.title.innerHTML = model.origin.variants.title;
 	};
-}());
+	/*
+		x,y 축의 위치를 설정하는 함수.
+	 */
+	function getAxisPosition (w, e, m)	{
+		return [
+			w === 'top' ? e.attr('height') - m[0] : m[0], m[1]
+		];
+	};
+	/*
+		X,Y 축을 그려주는 함수.
+	 */
+	function drawAxis ()	{
+		var dr = ['left', 'top'],
+				// Y 축의 데이터는 아래에서 위로 향하는 데이터이기 때문에
+				// 원본데이터를 복사하여 순서를 뒤집어 주었다.
+				yd = new Array().concat(model.data.axis.needle.y);
+
+		layout.getSVG(model.svg, ['needle'], function (k, v)	{
+			util.loop(dr, function (d, i)	{
+				axis.element(v)[d]({
+					margin: config.variants.axis[d].margin,
+					position: getAxisPosition(d, v, 
+										config.variants.axis[d].margin),
+					data: d === 'left' ? yd.reverse() : 
+															 model.data.axis.needle.x,
+					opt: {},
+				});
+			});
+		});
+	};
+	/*
+		Needle Plot 을 그려주는 함수.
+	 */
+	function drawNeedle ()	{
+		layout.getSVG(model.svg, ['needle'], function (k, v)	{
+			needle({
+				element: v,
+				lineData: model.data.needle,
+				circleData: model.data.fullNeedle,
+				attr: config.variants.needle.attr,
+				style: config.variants.needle.style,
+				margin: config.variants.needle.margin,
+				xaxis: model.data.axis.needle.x,
+				yaxis: model.data.axis.needle.y,
+			});
+		});
+	};
+	/*
+		Needle Plot 아래 Graph 를 그려주는 함수.
+	 */
+	function drawNeedleGraph ()	{
+		layout.getSVG(model.svg, ['needle'], function (k, v)	{
+			needleGraph({
+				element: v,
+				data: model.data.graph,
+				attr: config.variants.needleGraph.attr,
+				style: config.variants.needleGraph.style,
+				margin: config.variants.needleGraph.margin,
+				text: config.variants.needleGraph.text,
+				xaxis: model.data.axis.needle.x,
+				yaxis: model.data.axis.needle.y,
+			});
+		});
+	};
+	/*
+		Navigator bar 를 그려주는 함수.
+	 */
+	function drawNeedleNavi () {
+		layout.getSVG(model.svg, ['navi'], function (k, v)	{
+			needleNavi({
+				element: v,
+				data: model.data,
+				margin: config.variants.navi.margin,
+				style: config.variants.navi.style,
+				xaxis: model.data.axis.needle.x,
+				yaxis: model.data.axis.needle.y,
+			});
+		});
+	};
+	/*
+		Patient 를 그려주는 함수.
+	 */
+	function drawNeedlePatient ()	{
+		layout.getSVG(model.svg, ['needle'], function (k, v)	{
+
+		});
+	};
+	/*
+		Legend 를 그려주는 함수.
+	 */
+	function drawLegend ()	{
+		layout.getSVG(model.svg, ['legend'], function (k, v)	{
+			legend({
+				element: v,
+				data: model.data.type,
+				priority: config.landscape.priority,
+				text: config.variants.legend.text,
+				attr: config.variants.legend.attr,
+				style: config.variants.legend.style,
+				margin: config.variants.legend.margin,
+			});
+		});
+	};
+	/*
+		Variants 를 그려주는 함수.
+	 */
+	function drawVariants ()	{
+		drawAxis();
+		drawLegend();
+		drawNeedle();
+		drawNeedleNavi();
+		drawNeedleGraph();
+		drawNeedlePatient();
+	};
+	/*
+		처음 배경색을 설정해주는 함수.
+	 */
+	function setBaseEleBackground (e)	{
+		e.style.background = '#F7F7F7';
+	};
+
+	return function (o)	{
+		console.log('Given Variants data: ', o);
+		var e = document.querySelector(o.element || null),
+				w = parseFloat(o.width || e.style.width || 1400),
+				h = parseFloat(o.height || e.style.height || 700);
+		// Origin data from server.
+		model.origin = o.data;
+		// preprocess data for landscape and call drawLandScape.
+		model.data = preprocessing.variants(o.data);
+		// Make Landscape layout and return div ids.
+		model.ids = size.chart.variants(e, w, h);
+		// Make svg to parent div and object data.
+		model.svg = layout.variants(model.ids, model);
+
+		setBaseEleBackground(e);
+		title();
+		drawVariants();
+	};
+}(variants||{}));
