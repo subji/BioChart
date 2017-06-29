@@ -1076,29 +1076,33 @@ var exclusive = (function ()	{
 		Survival 차트를 그리는 함수.
 	 */
 	function drawSurvival ()	{
+		var e = document.querySelector('#exclusivity_survival'),
+				w = parseFloat(e.style.width),
+				h = parseFloat(e.style.height) / 1.5;
+
 		SurvivalCurveBroilerPlate.settings = {
-			canvas_width 			 : 400,
-			canvas_height 		 : 400,
-		 	chart_width 			 : 370,
-	  	chart_height 			 : 370,
+			canvas_width 			 : w,
+			canvas_height 		 : h,
+		 	chart_width 			 : w - 30,
+	  	chart_height 			 : h - 30,
 		  chart_left 				 : 50,
 		  chart_top 				 : 15,
 		  include_info_table : false,
 			include_legend 		 : true,
 			include_pvalue 		 : true,
-			pval_x 						 : 220,
+			pval_x 						 : w - 200,
 			pval_y 						 : 42,
 		};
 
 		SurvivalCurveBroilerPlate.style = {
 		  censored_sign_size : 5,
 		  axis_stroke_width  : 1,
-		  axisX_title_pos_x  : 210,
-		  axisX_title_pos_y  : 370,
-		  axisY_title_pos_x  : -180,
+		  axisX_title_pos_x  : w / 2,
+		  axisX_title_pos_y  : h - 25,
+		  axisY_title_pos_x  : -(w / 2) + 25,
 		  axisY_title_pos_y  : 10,
 		  axis_color 				 : "black",
-			pval_font_size 		 : 12,
+			pval_font_size 		 : 14,
 			pval_font_style 	 : 'normal',
 		};
 
@@ -1216,6 +1220,8 @@ var exclusive = (function ()	{
 		var e = document.querySelector(o.element || null),
 				w = parseFloat(o.width || e.style.width || 1400),
 				h = parseFloat(o.height || e.style.height || 700);
+
+		e.style.background = '#F7F7F7';
 
 		model.origin = o.data;
 		model.data = preprocessing.exclusivity(o.data);
@@ -2258,7 +2264,7 @@ var network = (function ()	{
 						bgcolor: d.bgcolor,
 						bdcolor: d.bordercolor || 'rgb(0, 0, 0)',
 						width: 100,
-						height: 100,
+						height: 200,
 						isComp: true,
 						per: d.text,
 					},
@@ -2275,7 +2281,8 @@ var network = (function ()	{
 						bgcolor: d.bgcolor,
 						bdcolor: d.bordercolor || 'rgb(0, 0, 0)',
 						width: draw.getTextWidth(d.text, '14px Calibri'),
-						height: 15,
+						height: 20,
+						fontSize: 10,
 						isComp: false,
 					},
 					group: 'nodes',
@@ -2340,7 +2347,7 @@ var network = (function ()	{
 				'border-color': 'rgb(150, 0, 0)',
 				'border-width': '1',
 				'content': 'data(per)',
-				'font-size': '12',
+				'font-size': '10',
 				'text-valign': 'top',
 			})
 			.selector('edge')
@@ -3076,8 +3083,8 @@ var render = (function (render)	{
 	/*
 		Draw Patient.
 	 */
-	render.patient = function (defs)	{
-		
+	render.triangle = function (defs)	{
+		var t = defs.element.append('path');
 	};
 
 	return render;
@@ -3466,12 +3473,21 @@ var size = (function (size)	{
 	 */
 	size.chart.exclusivity = function (e, w, h)	{
 		var ids =  {
-			exclusivity_survival: {w: (w * 0.3), h: h * 0.85},
-			exclusivity_group: {w: (w * 0.7), h: (h * 0.25)},
-			exclusivity_select_geneset: {w: (w * 0.7) * 0.3, h: (h * 0.1)},
-			exclusivity_heatmap: {w: (w * 0.7) * 0.7, h: (h * 0.5)},
-			exclusivity_network: {w: (w * 0.7) * 0.3, h: (h * 0.5)},
-			exclusivity_legend: {w: (w * 0.7) * 0.7, h: (h * 0.1)},
+			// Layout 2.
+			exclusivity_select_geneset: {w: w * 0.2, h: h * 0.1},
+			exclusivity_upper_empty: {w: w * 0.35, h: h * 0.1},
+			exclusivity_survival: {w: w * 0.4, h: h},
+			exclusivity_network: {w: w * 0.25, h: h * 0.5},
+			exclusivity_heatmap: {w: w * 0.35, h: h * 0.3},
+			exclusivity_legend: {w: w * 0.35, h: h * 0.1},
+
+			// Layout 1.
+			// exclusivity_survival: {w: (w * 0.3), h: h * 0.85},
+			// exclusivity_group: {w: (w * 0.7), h: (h * 0.25)},
+			// exclusivity_select_geneset: {w: (w * 0.7) * 0.3, h: (h * 0.1)},
+			// exclusivity_heatmap: {w: (w * 0.7) * 0.7, h: (h * 0.5)},
+			// exclusivity_network: {w: (w * 0.7) * 0.3, h: (h * 0.5)},
+			// exclusivity_legend: {w: (w * 0.7) * 0.7, h: (h * 0.1)},
 		};
 
 		return makeFrames.call(size.setSize(e, w, h), ids), model.ids;
@@ -3905,6 +3921,7 @@ var variants = (function (variants)	{
 		Patient 를 그려주는 함수.
 	 */
 	function drawNeedlePatient ()	{
+		console.log(model.data.patient)
 		layout.getSVG(model.svg, ['needle'], function (k, v)	{
 
 		});

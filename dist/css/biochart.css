@@ -1,4 +1,4 @@
-#exclusivity_survival { float: left; background: #F7F7F7; }
+#exclusivity_survival { float: right; /*background: #F7F7F7;*/ /*background: #F7F7dd;*/ }
 #exclusivity_survival input, 
 #os,
 #dfs { clear: both; display: none; margin: 10px; }
@@ -8,21 +8,21 @@
 #dfs_survival:checked ~ #dfs { display: block; }
 #exclusivity_survival input:checked + label { border-top-color: #A5A4A4; border-right-color: #DDD; border-left-color: #DDD; border-bottom-color: transparent; }
 #os_stat_table td,
-#dfs_stat_table td { font-size: 12px; }
+#dfs_stat_table td { font-size: 16px; }
 
-#exclusivity_select_geneset { float: left; background: #F7F7F7; }
+#exclusivity_select_geneset { float: left; /*background: #F7F7F7;*/ /*background: #F7ddF7;*/ }
 
-#exclusivity_group {
+#exclusivity_upper_empty {
 	float: left;
-	background: #F7F7F7;
+	/*background: #F7F7F7;*/
 }
 
-#exclusivity_network { float: left; background: #F7F7F7; pointer-events: none; }
+#exclusivity_network { float: left; /*background: #F7F7F7;*/ pointer-events: none; /*background: #ddF7F7;*/ }
 
 #exclusivity_heatmap_axis { font-size: 14px; font-weight: bold; text-shadow: 2px 1px rgba(0, 0, 0, .2); }
-#exclusivity_heatmap { float: right; background: #F7F7F7; }
+#exclusivity_heatmap { float: left; /*background: #F7F7F7;*/ /*background: #1d1dFd;*/ }
 
-#exclusivity_legend { float: left; background: #F7F7F7; }
+#exclusivity_legend { float: left; /*background: #e711F7;*/ }
 
 #exclusivity_select_geneset > label{ box-shadow:0 3px 5px rgba(0,0,0,.2); padding:15px; background:white; display:inline-block; position:relative; }
 #exclusivity_select_geneset_view { border:none; outline:none; display: inline-block; -webkit-appearance:none; -moz-appearance:none; appearance:none; cursor:pointer; color:#909090; border-radius:0; z-index:2; background:transparent; }
