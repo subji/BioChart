@@ -9,7 +9,7 @@ import del from 'del';
 
 const DIR = {
 	SRC: 'public',
-	DEST: 'public/dist',
+	DEST: 'dist',
 };
 
 const SRC = {
