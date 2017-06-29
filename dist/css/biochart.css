@@ -1,7 +1,7 @@
 #exclusivity_survival { float: left; background: #F7F7F7; }
 #exclusivity_survival input, 
 #os,
-#dfs { clear: both; display: none; }
+#dfs { clear: both; display: none; margin: 10px; }
 #exclusivity_survival label { font-weight: bold; font-size: 14px; text-shadow: 1px 1px rgba(0, 0, 0, 0.2); display: block; float: left; padding: 10px 30px; border-top: 2px solid transparent; border-right: 1px solid transparent; border-left: 1px solid transparent; border-bottom: 1px solid #DDD; }
 #exclusivity_survival label:hover { cursor: pointer; }
 #os_survival:checked ~ #os,
