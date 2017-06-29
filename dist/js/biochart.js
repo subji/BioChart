@@ -1082,7 +1082,7 @@ var exclusive = (function ()	{
 		 	chart_width 			 : 370,
 	  	chart_height 			 : 370,
 		  chart_left 				 : 50,
-		  chart_top 				 : 25,
+		  chart_top 				 : 15,
 		  include_info_table : false,
 			include_legend 		 : true,
 			include_pvalue 		 : true,
