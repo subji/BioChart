@@ -119,21 +119,6 @@
 #landscape_sort_list { position: relative; float: left; min-width: 122px; width: 122px; height: 100%; visibility: hidden; margin: 0px 0px 0px 0px; padding: 2px 10px 0px 0px; text-align: center; list-style: none; font-size: 15px; }
 #landscape_sort_list li { margin: 0px; padding: 0px; margin-top: 5px; }
 #landscape_sort_list li:hover { cursor: pointer; background: #333; color: #FFF; }
-/** {
-  outline: 0;
-  font-family: sans-serif
-}*/
-/*body {
-  background-color: #fafafa
-}*/
-/*span.msg,
-span.choose {
-  color: #555;
-  padding: 5px 0 10px;
-  display: inherit
-}*/
-
-/*Styling Selectbox*/
 .drop-menu {
   outline: 0;
   display: inline-block;
