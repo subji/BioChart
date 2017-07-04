@@ -151,17 +151,6 @@ var bar = (function (bar)	{
 	function setScale (d, a, w)	{
 		return scale.get(a, range(d)[w]);
 	};
-	/*
-		Chart 를 그리는데 필요한 data 를 넣어주는 함수.
-	 */
-	function dataImport (d)	{
-		d.m = model.m;
-		d.sx = model.sx;
-		d.sy = model.sy;
-		d.dx = this.xaxis;
-		d.dy = this.yaxis;
-	};
-
 	return function (o)	{
 		model = {};
 		model.e = o.element = util.varType(o.element) === 'Object' || 
@@ -174,24 +163,42 @@ var bar = (function (bar)	{
 		model.t = model.m.top || 0;
 		model.l = model.m.left || 0;
 		model.g = render.addGroup(model.e, model.t, model.l);
+		model.dx = o.xaxis;
+		model.dy = o.yaxis;
 		model.sx = setScale(o.direction, o.xaxis, 'x');
 		model.sy = setScale(o.direction, o.yaxis, 'y');
+
+		var id = model.e.attr('id');
 		/*
 		 	Bar, Stacked Bar, ... 를 그려주는 렌더링 함수를 호출하는 부분.
 		 */
 		render.rect({
-			element: model.g.selectAll('#' + model.e.attr('id') + '_rect'),
+			element: model.g.selectAll('#' + id + '_rect'),
 			data: o.data,
 			attr: {
-				id: function (d) { return dataImport.call(o, d), model.e.attr('id') + '_rect'; },
-				x: function (d) { return o.attr.x(d); },
-				y: function (d) { return o.attr.y(d); },
-				width: function (d) { return o.attr.width(d); },
-				height: function (d) { return o.attr.height(d); },
+				id: function (d) { return id + '_rect'; },
+				x: function (d) { 
+					return o.attr.x ? o.attr.x.call(model, d) : o.attr.x(d); 
+				},
+				y: function (d) { 
+					return o.attr.y ? o.attr.y.call(model, d) : o.attr.y(d); 
+				},
+				width: function (d) { 
+					return o.attr.width ? o.attr.width.call(model, d) : 
+								 o.attr.width(d); 
+				},
+				height: function (d) { 
+					return o.attr.height ? o.attr.height.call(model, d) : 
+								 o.attr.height(d); 
+				},
 			},
 			style: {
-				fill: function (d) { return o.style.fill(d); },
-				stroke: function (d) { return o.style.stroke(d); },
+				fill: function (d) { 
+					return o.style.fill ? o.style.fill(d) : '#000000'; 
+				},
+				stroke: function (d) { 
+					return o.style.stroke ? o.style.stroke(d) : '#FFFFFF'; 
+				},
 			},
 		});
 
@@ -386,10 +393,10 @@ config.landscape.color = function (value)	{
  */
 config.landscape.sample = {
 	attr: {
-		x: function (d) {return d.x.indexOf('-') > -1 ? d.sx(d.x) : d.sx(d.x) + 3;},
-		y: function (d) {return d.sy(util.minmax(d.dy).max) - d.sy(d.y + d.value) + d.sy(util.minmax(d.dy).min);},
-		width: function (d) {return d.x.indexOf('-') > -1 ? scale.compatibleBand(d.sx) : scale.compatibleBand(d.sx) - 7.5},
-		height: function (d) {return d.sy(d.value) - d.sy(util.minmax(d.dy).min);},	
+		x: function (d) {return d.x.indexOf('-') > -1 ? this.sx(d.x) : this.sx(d.x) + 3;},
+		y: function (d) {return this.sy(util.minmax(this.dy).max) - this.sy(d.y + d.value) + this.sy(util.minmax(this.dy).min);},
+		width: function (d) {return d.x.indexOf('-') > -1 ? scale.compatibleBand(this.sx) : scale.compatibleBand(this.sx) - 7.5},
+		height: function (d) {return this.sy(d.value) - this.sy(util.minmax(this.dy).min);},	
 	},
 	style: {
 		fill: function (d)	{ return config.landscape.color(d.info); },
@@ -401,10 +408,10 @@ config.landscape.sample = {
  */
 config.landscape.gene = {
 	attr: {
-		x: function (d) {return d.sx(util.minmax(d.dx).max) - d.sx(d.x + d.value);},
-		y: function (d) {return d.sy(d.y);},
-		width: function (d) {return d.sx(d.value);},
-		height: function (d) { return scale.compatibleBand(d.sy); },
+		x: function (d) {return this.sx(util.minmax(this.dx).max - d.x) - this.sx(d.value) + this.m.left;},
+		y: function (d) {return this.sy(d.y);},
+		width: function (d) {return this.sx(d.value) - this.m.left;},
+		height: function (d) { return scale.compatibleBand(this.sy); },
 	},
 	style: {
 		fill: function (d)	{ return config.landscape.color(d.info); },
@@ -416,10 +423,10 @@ config.landscape.gene = {
  */
 config.landscape.pq = {
 	attr: {
-		x: function (d) { return d.sx(util.minmax(d.dx).min); },
-		y: function (d) { return d.sy(d.y); },
-		width: function (d) { return d.sx(d.value); },
-		height: function (d) { return scale.compatibleBand(d.sy); },
+		x: function (d) { return this.sx(util.minmax(this.dx).min); },
+		y: function (d) { return this.sy(d.y); },
+		width: function (d) { return this.sx(d.value); },
+		height: function (d) { return scale.compatibleBand(this.sy); },
 	},
 	style: {
 		fill: function (d)	{ return '#BFBFBF'; },
@@ -682,9 +689,7 @@ config.variants.needleGraph = {
 	attr: {
 		x: function (d, i)	{return this.isText ? this.sx(d.x) + 5 : this.sx(d.x);},
 		y: function (d, i)	{return this.isText ? this.sh / 2 : 0;},
-		width: function (d, i)	{
-			return this.sx(d.width);
-		},
+		width: function (d, i)	{return this.sx(d.width);},
 		height: function (d, i)	{return this.sh;},
 	},
 	style: {
@@ -711,6 +716,70 @@ config.variants.navi = {
 			return c ? (c.opacity = 0.3, c) : false;
 		},
 	}
+};
+
+config.variants.patient = {
+	needle: {
+		margin: [0, 30, 48, 60],
+		attr: {
+			points: function (d, i)	{
+				var x = this.s(d.position);
+				
+				return x + ',' + this.len / 2.5 + 
+				' ' + (x - this.len) + ',' + this.len * 2 + 
+				' ' + (x + this.len) + ',' + this.len * 2 + 
+				' ' + x + ',' + this.len / 2.5;
+			},
+		},
+		style: {
+			fill: function (d, i)	{return config.landscape.color(d.type);},
+			stroke: function (d, i)	{
+				var c = d3.rgb(config.landscape.color(d.type));
+				
+				return c.opacity = 0.3, c;
+			},
+		},
+	},
+	legend: {
+		margin: [0, 0, 0, 0],
+		attr: {
+			points: function (d, i)	{
+				// 기존에 그려진 type legend 의 위치를 알아낸 뒤,
+				// 그 아래에 위치하기 위해서 getBoundingClientRect 함수
+				// 를 사용하였다.
+				var l = document.querySelector('#variants_legend_chart').firstChild,
+						bcr = l.getBoundingClientRect(),
+						x = bcr.right - bcr.left + bcr.width;
+
+				return x + ',' + (bcr.bottom - bcr.width) + 
+				 ' ' + (x - bcr.width / 2) + ',' + bcr.bottom + 
+				 ' ' + (x + bcr.width / 2) + ',' + bcr.bottom + 
+				 ' ' + x + ',' + (bcr.bottom - bcr.width);
+			},
+			x: function (d, i)	{
+				var l = document.querySelector('#variants_legend_chart').firstChild,
+						bcr = l.getBoundingClientRect();
+
+				return bcr.right - bcr.left + (bcr.width * 2) + this.p;
+			},
+			y: function (d, i)	{
+				var l = document.querySelector('#variants_legend_chart').firstChild;
+
+				return l.getBoundingClientRect().bottom;
+			},
+		},
+		style: {
+			fill: function (d, i)	{return config.landscape.color(d.type);},
+			stroke: function (d, i)	{
+				var c = d3.rgb(config.landscape.color(d.type));
+				
+				return c.opacity = 0.3, c;
+			},
+			fontSize: function (d) {return '12px';},
+			strokeWidth: function (d) {return '3px';},
+		},
+		text: function (d) { return 'Patients'; }
+	},
 };
 // ============================ Variants ==================================
 var divisionLine = (function (divisionLine)	{
@@ -1229,16 +1298,31 @@ var exclusive = (function ()	{
 		model.data = preprocessing.exclusivity(o.data);
 		model.ids = size.chart.exclusivity(e, w, h);
 		model.svg = layout.exclusivity(model.ids, model);
+		model.nowSet = model.data.geneset[0].join(' ');
 		// For survival data.
 		// divideSurvivalData();
 		// make select box of geneset.
-		model.nowSet = selectGeneSet.set({
+		// model.nowSet = selectGeneSet.set({
+		// 	element: '#exclusivity_select_geneset',
+		// 	data: model.data.geneset,
+		// 	change: function (e)	{
+		// 		model.nowSet = this.value;
+		// 		layout.removeG();
+		// 		// even change value it appear another geneset.
+		// 		drawExclusivity();
+		// 	},
+		// });
+
+		selectBox({
 			element: '#exclusivity_select_geneset',
-			data: model.data.geneset,
-			change: function (e)	{
-				model.nowSet = this.value;
+			initText: model.nowSet,
+			items: model.data.geneset.map(function (d)	{
+				return d.join(' ');
+			}),
+			click: function (v)	{
+				model.nowSet = v;
+
 				layout.removeG();
-				// even change value it appear another geneset.
 				drawExclusivity();
 			},
 		});
@@ -1250,36 +1334,74 @@ var exclusive = (function ()	{
 		console.log('Exclusivity Model data: ', model);
 	};
 }());
-'use strict';
+var expression = (function (expression)	{
+	'use strict';
 
-var force = (function (force)	{
-	force.setConstant = function (cons)	{
-		force.constant = cons || 50;
+	var model = {};
 
-		return model;
+	function drawSurvival ()	{
+
 	};
 
-	force.getConstant = function ()	{
-		return force.constant || 50;
+	function drawBar ()	{
+
 	};
 
-	force.getKvalue = function (width, height)	{
-		var constant = force.getConstant();
+	function drawFunctionOption ()	{
 
-		return Math.sqrt(width * height) / constant;
 	};
 
-	force.aForce = function (k, d)	{
-		return (d * d) / k;
+	function drawColorMapping ()	{
+
 	};
 
-	force.rForce = function (k, d)	{
-		return (k * k) / d;
+	function drawDivisionBar ()	{
+
 	};
 
-	return force;
+	function drawScatter ()	{
 
-}(force || {}));
+	};
+
+	function drawScatterLegend ()	{
+
+	};
+
+	function drawHeatmap ()	{
+
+	};
+
+	function drawSignatureList ()	{
+
+	};
+
+	function drawColorGradient ()	{
+
+	};
+
+	function drawExpression ()	{
+
+	};
+
+	return function (o)	{
+		var e = document.querySelector(o.element || null),
+				w = parseFloat(o.width || e.style.width || 1400),
+				h = parseFloat(o.height || e.style.height || 700);
+
+		e.style.background = '#F7F7F7';
+
+		model.origin = o.data;
+		model.data = preprocessing.expression(o.data);
+		model.ids = size.chart.expression(e, w, h);
+		model.svg = layout.expression(model.ids, model);
+
+		console.log('Expression Model data: ', model);
+	};
+}(expression||{}));
+
+
+
+
 var heatmap = (function (heatmap)	{
 	'use strict';
 
@@ -1301,7 +1423,7 @@ var heatmap = (function (heatmap)	{
 		위한 데이터를 새로 만들어주는 함수.
 	 */
 	function prepareRemoveDuplication (data)	{
-		util.loopArr(data, function (d, i)	{
+		util.loop(data, function (d, i)	{
 			var k = d.x + d.y,
 					p = config.landscape.case(d.value);
 			// 우선순위가 가장 높은 것이 맨위에 오게 만든다.
@@ -1319,7 +1441,8 @@ var heatmap = (function (heatmap)	{
 	};
 
 	return function (o)	{
-		model.e = {};
+		// repaint 할 때, 중복되며 표시되므로 이를 방지하기 위해 초기화를 시켜준다.
+		model = { mt: ['cnv', 'var'], v: {}, d: [] };
 		model.e = o.element = util.varType(o.element) === 'Object' || 
 													util.varType(o.element) === 'Array' ? 
 							o.element : (/\W/).test(o.element[0]) ? 
@@ -1358,6 +1481,24 @@ var landscape = (function (landscape)	{
 
 	var model = {
 		div: {},
+		init: {
+			axis: {x: [], y: []},
+			width: 0,
+			height: 0,
+		},
+		now: {
+			sort: {
+				mutation: null,
+				sample: null,
+				value: null,	
+			},
+			axis: {x: [], y: []},
+			width: 0,
+			height: 0,
+		},
+		exclusive: {
+			init: null,
+		},
 	};
 	/*
 		Group 의 갯수만큼 div 를 만들어주는 함수.
@@ -1547,7 +1688,7 @@ var landscape = (function (landscape)	{
 			direction: c.direction,
 			width: k.indexOf('patient') < 0 && 
 						 k.indexOf('sample') > -1 ? 
-						 (model.nowWidth || model.initWidth) : null,
+						 (model.now.width || model.init.width) : null,
 			xaxis: c.xaxis.call(model.data.axis),
 			yaxis: c.yaxis.call(model.data.axis),
 		});
@@ -1592,7 +1733,7 @@ var landscape = (function (landscape)	{
 					xaxis: c.xaxis.call(model.data.axis),
 					yaxis: c.yaxis.call(model.data.axis),
 					width: k.indexOf('patient') < 0 ? 
-					(model.nowWidth || model.initWidth) : null,
+					(model.now.width || model.init.width) : null,
 				});
 			});	
 		});
@@ -1612,7 +1753,7 @@ var landscape = (function (landscape)	{
 					margin: c.margin,
 					data: dataForGroup(k, d),
 					width: k.indexOf('patient') < 0 ? 
-					(model.nowWidth || model.initWidth) : null,
+					(model.now.width || model.init.width) : null,
 					xaxis: c.xaxis.call(model.data.axis),
 					yaxis: model.data.axis.group.y.filter(function (dd, ii)	{
 						if (k.indexOf(dd[0].replace(/\s/ig, '')) > -1)	{
@@ -1642,20 +1783,20 @@ var landscape = (function (landscape)	{
 	/*
 		초기 가로 길이값을 정해주는 함수. (초기값은 프레임 크기의 2배)
 	 */
-	function initWidth ()	{
-		model.initWidth = 
+	function initSize ()	{
+		model.init.width = 
 		draw.width(d3.select('#landscape_heatmap').node()) * 2;
-		model.initHeight = 
+		model.init.height = 
 		draw.height(d3.select('#landscape_heatmap').node());
 	};
 	/*
 		Scale Option 을 그려주는 함수.
 	 */
 	function drawScale ()	{
-		var so = scaleOption.set({
+		landscapeScaleOption.set({
 			element: '#landscape_option',
 			default: 100,
-			defaultValue: model.initWidth,
+			defaultValue: model.init.width,
 			interval: 10,
 			unit: '%',
 			btn: [
@@ -1666,20 +1807,56 @@ var landscape = (function (landscape)	{
 			input: {id: 'viewscale', className: 'viewscale'},
 			change: function (btn, now)	{
 				layout.removeG();
-				drawLandScape(model.data, 
-				(model.nowWidth = now, model.nowWidth));
+				// Initialize 버튼을 클릭하였을 때.
+				// 초기화면으로 되돌려 준다.
+				if (btn === 'initialize')	{
+					changeAxisScale({ 
+						axis: 'x', data: model.init.axis.x });
+					changeAxisScale({
+						axis: 'y', data: model.init.axis.y });
+
+					return drawLandScape(model.data, 
+								(model.now.width = model.init.width, 
+								 model.now.width));
+				}
+				return drawLandScape(model.data, 
+						 	(model.now.width = now, model.now.width));
 			},
 		});
+	};
+
+	function changeAxisScale (data)	{
+		if (data.axis === 'x')	{
+			model.data.axis.group[data.axis] = data.data;
+			model.data.axis.sample[data.axis] = data.data;
+			model.data.axis.heatmap[data.axis] = data.data;
+		} else {
+			model.data.axis.pq[data.axis] = data.data;
+			model.data.axis.gene[data.axis] = data.data;
+			model.data.axis.heatmap[data.axis] = data.data;
+		}
 	};
 	/*
 		정렬버튼과 현재 정렬의 상태를 보여주는 UI 를 그려주는 함수.
 	 */
 	function drawSort ()	{
-		sortOption.set({
+		selectBox({
 			element: '#landscape_option',
-			subject: ['Mutation', 'Value', 'Sample'],
-			itemClick: function (e)	{
-				console.log('dd')
+			margin: [0, 8, 0, 0],
+			height: '30px',
+			className: 'landscape-sort',
+			initText: 'Select by sort..',
+			viewName: 'sort',
+			items: ['Mutation', 'Value', 'Sample'],
+			click: function (v)	{
+				!model.now.sort[v] ? model.now.sort[v] = 'asc' : 
+				 model.now.sort[v] === 'asc' ? 
+				 model.now.sort[v] = 'desc' : model.now.sort[v] = 'asc';
+				 
+				layout.removeG();
+				changeAxisScale(
+					landscapeSort[model.now.sort[v]](v, model.data));
+				drawLandScape(model.data, model.now.width);
 			},
 		});
 	};
@@ -1690,8 +1867,8 @@ var landscape = (function (landscape)	{
 		layout.getSVG(model.svg, 
 		['e_group_', 'e_sample', 'e_heatmap'], 
 		function (k, v)	{
-			v.attr('width', width || model.nowWidth || 
-															 model.initWidth);
+			v.attr('width', width || model.now.width || 
+															 model.init.width);
 		});
 	};
 	/*
@@ -1706,8 +1883,8 @@ var landscape = (function (landscape)	{
 		drawStack();
 		// Draw Bar.
 		drawBar();
-		// // Draw Heatmap.
-		// drawHeat();
+		// Draw Heatmap.
+		drawHeat();
 		// Draw Group.
 		drawGroup();
 		// Draw Legend.
@@ -1723,10 +1900,16 @@ var landscape = (function (landscape)	{
 		model.origin = o.data;
 		// preprocess data for landscape and call drawLandScape.
 		model.data = preprocessing.landscape(o.data);
+		// 초기 x, y 축 값을 저장해 놓는다. 이는 나중에 초기화 버튼을
+		// 눌렀을때 초기화면으로 돌아가기 위함이다.
+		model.init.axis.x = 
+		new Array().concat(model.data.axis.heatmap.x);
+		model.init.axis.y = 
+		new Array().concat(model.data.axis.gene.y);
 		// Make Landscape layout and return div ids.
 		model.ids = size.chart.landscape(e, w, h);
 		// 처음에 가로 길이를 정해준다.
-		initWidth();
+		initSize();
 		// Write Title.
 		title();
 		// Draw Scale.
@@ -1737,29 +1920,358 @@ var landscape = (function (landscape)	{
 		groupFrame(model.data.axis.group.y);
 		// Make svg to parent div and object data.
 		model.svg = layout.landscape(model.ids, model);
+		// to exclusive.
+		model.exclusive.init = landscapeSort.exclusive(
+			model.data.heatmap, model.data.gene);
+		// Set init exclusive.
+		changeAxisScale(model.exclusive.init);
 		// Mutational Landscape 를 그려주는 함수.
-		drawLandScape(model.data, model.initWidth);
+		drawLandScape(model.data, model.init.width);
 
 		console.log('Landscape Model data: ', model);
 		// Scroll event for moving execution.
 		eventHandler.onScroll('#landscape_heatmap', function (e)	{
 			var s = document.querySelector('#landscape_sample'),
 					g = document.querySelector('#landscape_group').children,
-					t = this;
+					a = Array.prototype.slice.call(g);
 
-			s.scrollLeft = t.scrollLeft;
+			s.scrollLeft = this.scrollLeft;
 
-			util.loop(g, function (d, i)	{
-				d.scrollLeft = t.scrollLeft;
+			util.loop.call(this, a, function (d, i)	{
+				d.scrollLeft = this.scrollLeft;
 			});
 		});
 	};
 }(landscape||{}));
+var landscapeScaleOption = (function (landscapeScaleOption)	{
+	'use strict';
+
+	var model = {
+	};
+	/*
+	 Button 별 Icon Class name 반환해주는 함수.
+	 */
+	function setIcon (name)	{
+		return {
+			'upscale': 'fa fa-caret-up',
+			'downscale': 'fa fa-caret-down',
+			'initialize': 'fa fa-refresh',
+		}[name];
+	};
+	/*
+	 Scale 이벤트 함수.
+	*/
+	function scaleEvent (evt)	{
+		var input = document.querySelector('#viewscale');
+
+		switch(this.id)	{
+			case 'upscale': model.status += model.interval; break;
+			case 'downscale': model.status -= model.interval; break;
+			case 'initialize': model.status = model.default; break;
+			default: return; break;
+		}
+
+		var sign = this.id === 'upscale' ? 1 : -1,
+				chNum = parseInt(model.defaultValue * 0.1);
+
+		model.status = model.status < model.default ? model.default : 
+									 model.status > 200 ? 200 : model.status;
+
+		input.value = model.status + ' %';
+
+		model.nowValue = this.id === 'initialize' ? 
+		model.defaultValue : this.id === 'upscale' ? 
+		model.nowValue + (sign * chNum) : 
+		model.nowValue + (sign * chNum); 
+		// 현재 값이 기본값보다 작으면 기본값으로,
+		// 현재 값이 기본값의 한계치인 2배 값보다 높으면 기본값의 한계치로 대치한다.
+		model.nowValue = model.defaultValue > model.nowValue ? 
+		model.defaultValue : model.defaultValue * 2 < model.nowValue ? 
+		model.defaultValue * 2 : model.nowValue;
+
+		model.change ? model.change(this.id, model.nowValue) : false;
+	};
+	/*
+	 Scalable button 들을 만들어주는 함수.
+	 */
+	function button (parent, opts)	{
+		for (var i = 0, l = opts.btn.length; i < l; i++)	{
+			var b = opts.btn[i],
+					btn = document.createElement('button'),
+					icon = document.createElement('i');
+
+			icon.className = setIcon(b.id);
+
+			btn.id = b.id;
+			btn.addEventListener('click', scaleEvent);
+			btn.appendChild(icon);
+			parent.appendChild(btn);
+		}
+	};
+	/*
+	 input 태그를 만들어주는 함수.
+	 tabIndex 속성을 -1 값으로 주어 Tab 동작에도 Focusing 이 안되게 했다.
+	 또한 readOnly 속성을 Enable 해서 수정이 불가능하게 하였다.
+	 */
+	function input (p, o)	{
+		util.loop(o.input, function (d, i)	{
+			var ip = document.createElement('input');
+
+			ip.id = d.id;
+			ip.readOnly = true;
+			ip.tabIndex = -1;
+			ip.value = (model.value || model.default) + ' ' + model.unit;
+
+			p.appendChild(ip);
+		});
+	};
+	/*
+	 단위가 % 인지 그냥 정수 인지 체크 하는 함수.
+	 */
+	function setUnit (unit)	{
+		if (unit === 'percentage' || unit === '%')	{
+			model.unit = '%';
+		} else if (unit === 'int' || !unit)	{	
+			model.unit = '';
+		}
+	};
+	/*
+	 {
+		 element: targeted element,
+		 default: initialize number(default number) of scale,
+		 interval: how to increase or decrease number,
+		 unit: unit of number (ex. '%' or 'percent', 'int' or '0'),
+	 }
+	 */
+	landscapeScaleOption.set = function (opts)	{
+		if (d3.select('.scale-option-frame').empty())	{
+			var div = document.createElement('div');
+
+			div.className = 'scale-option-frame';
+
+			model = opts;
+			model.status = opts.default;
+			model.e = document.querySelector(opts.element);
+			model.width = parseFloat(opts.width || model.e.style.width || 140);
+			model.height = parseFloat(opts.height || model.e.style.height || 105);
+			model.change = opts.change || null;
+			model.defaultValue = opts.defaultValue;
+			model.nowValue = model.defaultValue;
+			model.e.appendChild(div);
+
+			opts.btn = opts.btn.length ? opts.btn : [opts.btn];
+			opts.input = opts.input.length ? opts.input : [opts.input];
+				
+			input(div, opts);
+			button(div, opts);
+		}
+
+		return landscapeScaleOption;
+	};
+	/*
+	 	버튼 클릭 후 값이 변경될 때마다 호출되는 함수.
+	 */
+	landscapeScaleOption.change = function (callback)	{
+		return callback(model), landscapeScaleOption;
+	};
+
+	return landscapeScaleOption;
+}(landscapeScaleOption||{}));
+var landscapeSort = (function (landscapeSort)	{
+	'use strict';
+
+	var model = {
+		exclusive: [],
+	};
+	/*
+		정렬하는 기준이 해당되는 데이터를 찾아오는
+		함수.
+	 */
+	function findData (type, data)	{
+		switch (type)	{
+			case 'mutation': return data.stack.gene; break;
+			case 'sample': return data.stack.sample; break;
+			case 'value': return data.pq; break;
+			case 'init': return data.init; break;
+			default: 
+			throw new Error('No matching any data'); break;
+		}
+	};
+	/*
+		Stacked 데이터를 정렬하기위해선 해당 값에 대한
+		Stacked 데이터를 합해주어야 한다.
+	 */
+	function byValue (data, what)	{
+		var obj = {};
+
+		util.loop(data, function (d, i)	{
+			obj[d[what]] = obj[d[what]] ? 
+			obj[d[what]] += d.value : obj[d[what]] = d.value;
+		});
+
+		return obj;
+	};
+	/*
+		Object 데이터를 sort 함수 사용을 위해
+		배열로 변경시켜주는 함수.
+	 */
+	function toObjectArray (data)	{
+		var arr = [];
+
+		util.loop(data, function (k, v)	{
+			arr.push({ key: k, value: v });
+		});
+
+		return arr;
+	}
+	/*
+		중복되는 부분, 정렬 방향에 따른 값과,
+		그에 따른 정렬함수 실행을 하는 함수.
+	 */
+	function ascdesc (sort, data)	{
+		var w = sort === 'asc' ? 1 : -1;
+
+		return data.sort(function (a, b)	{
+			return a.value > b.value ? 1 * w : -1 * w;
+		});
+	};
+	/*
+		Mutation 을 기준으로 오름차순,내림차순 정렬을
+		하는 함수.
+	 */
+	function alignByMutation (sort, data)	{
+		var dt = ascdesc(sort, toObjectArray(byValue(data, 'y')));
+
+		return { 
+			axis: 'y', data: dt.map(function (d) { return d.key; })
+		};
+	};
+	/*
+		Sample 을 기준으로 오름차순,내림차순 정렬을
+		하는 함수.
+	 */
+	function alignBySample (sort, data)	{
+		var dt = ascdesc(sort, toObjectArray(byValue(data, 'x')));
+		
+		return { 
+			axis: 'x', data: dt.map(function (d) { return d.key; })
+		};
+	};
+	/*
+		PQ value 를 기준으로 오름차순,내림차순 정렬을
+		하는 함수.
+	 */
+	function alignByPQvalue (sort, data)	{
+		var dt = ascdesc(sort, data);
+
+		return { 
+			axis: 'y', data: dt.map(function (d)	{ return d.y; })
+		};
+	};
+	/*
+		정렬한 기준에 맞는 함수를 호출해주는 함수.
+	 */
+	function callMatchingFunction (type, sort, data)	{
+		switch (type)	{
+			case 'mutation': return alignByMutation(sort, data); break;
+			case 'sample': return alignBySample(sort, data); break;
+			case 'value': return alignByPQvalue(sort, data); break;
+			default: throw new Error('Not matching any function'); break;
+		};
+	};
+	/*
+		type string 을 만들어주는 함수. 
+		exclusive 를 위해서 이다.
+	 */
+	function typeStrForExclusive (r, g, t)	{
+		var gIdx = g.indexOf(t.y) * 2,
+				mIdx = config.landscape.case(t.value) === 'cnv' ? 0 : 1;
+
+		r.value = r.value.replaceAt(gIdx, '00'.replaceAt(mIdx, '1'));
+	};
+	/*
+		Gene 만큼의 배열을 모두 '00' 으로 초기화 하는 함수.
+	 */
+	function fillZero (len)	{
+		var str = '';
+
+		for (var i = 0; i < len; i++)	{
+			str += '00';
+		}
+
+		return str;
+	};
+	/*
+		추려진 sample 들을 문자열에 따라 정렬한다.
+	 */
+	function sortByExclusive (sa)	{
+		var r = sa.sort(function (a, b)	{
+			return a.value < b.value ? 1 : -1;
+		}).map(function (d, i)	{
+			return d.key;
+		});
+
+		return { axis: 'x', data: r };
+	};
+	/*
+		Landscape 에서 중앙의 heatmap 이 exclusive 
+		하게 보여지기 위한 데이터를 만드는 함수.
+	 */
+	landscapeSort.exclusive = function (main, gene)	{
+		var t = {},
+				r = [],
+				i = 0;
+
+		util.loop(main, function (d)	{
+			if (!t[d.x])	{
+				t[d.x] = true;
+				r.push({ key: d.x, value: fillZero(gene.length) });
+				i += 1;
+			} else {
+				t[d.x] = t[d.x];
+			}
+			
+			typeStrForExclusive(r[i - 1], gene, d);
+		});
+
+		return model.exclusive = r, sortByExclusive(r);
+	};
+	/*
+		Gene, Sample, PQ 의 순서가 오름차순 정렬로
+		되게끔 만드는 함수.
+	 */
+	landscapeSort.asc = function (type, data)	{
+		return callMatchingFunction(type, 'asc', findData(type, data));
+	};
+	/*
+		Gene, Sample, PQ 의 순서가 내림차순 정렬로
+		되게끔 만드는 함수.
+	 */
+	landscapeSort.desc = function (type, data)	{
+		return callMatchingFunction(type, 'desc', findData(type, data));
+	};
+	/*
+		개별 Gene 에 대한 Sort 를 한다.
+	 */
+	landscapeSort.byGene = function ()	{
+
+	};
+	/*
+		Group 의 속성 priority 순서로 정렬하는 함수.
+	 */
+	landscapeSort.byGroup = function ()	{
+
+	};
+
+	return landscapeSort;
+
+}(landscapeSort||{}));
 var layout = (function (layout)	{
 	'use strict';
 
 	var model = {
 		exclusivity: {},
+		expression: {},
 		landscape: {},
 		variants: {},
 	};
@@ -1812,7 +2324,6 @@ var layout = (function (layout)	{
 		return create(['geneset', 'survival', 'network'], 
 									 'exclusivity', ids);
 	};
-
 	/*
 		Id (scale_option, title 제외) 를 조회하며
 		svg 태그를 만들어 div 태그에 삽입한다.
@@ -1820,13 +2331,19 @@ var layout = (function (layout)	{
 	layout.landscape = function (ids)	{
 		return create(['option', 'title'], 'landscape', ids);
 	};
-
 	/*
 		ID (title 제외) 를 조회하며 svg 태그를 만들어
 		div 태그에 삽입한다.
 	 */
 	layout.variants = function (ids)	{
 		return create(['title'], 'variants', ids);
+	};
+	/*
+		Id (title 제외) 를 조회하며
+		svg 태그를 만들어 div 태그에 삽입한다.
+	 */
+	layout.expression = function (ids)	{
+		return create(['title'], 'expression', ids);
 	};
 
 	return layout;
@@ -1870,12 +2387,14 @@ var legend = (function (legend)	{
 		model.dr = (model.w - model.m.left - model.m.right)
 						 > (model.h - model.m.top - model.m.bottom) ? 'h' : 'v';
 
+		var id = model.e.attr('id');
+
 		if (o.attr.r)	{
 			render.circle({
-				element: model.sg.selectAll('#' + model.e.attr('id') + '_circle'),
+				element: model.sg.selectAll('#' + id + '_circle'),
 				data: model.d,
 				attr: {
-					id: function (d) { return model.e.attr('id') + '_circle'; },
+					id: function (d) { return id + '_circle'; },
 					cx: function (d, i)	{
 						return o.attr.x ? o.attr.x.call(model, d, i) : 0;
 					},
@@ -1895,12 +2414,35 @@ var legend = (function (legend)	{
 					},
 				},
 			})
-		} else {
-			render.rect({	
-				element: model.sg.selectAll('#' + model.e.attr('id') + '_rect'),
+		} else if (o.attr.points)	{
+			render.triangle({
+				element: model.sg.selectAll('#' + id + '_triangle'),
 				data: model.d,
 				attr: {
-					id: function (d) { return model.e.attr('id') + '_rect'; },
+					id: function (d) { return id + '_triangle'; },
+					points: function (d, i) { 
+						return o.attr.points ? o.attr.points.call(model, d, i) : 
+									 [0, 0];
+					},
+				},
+				style: {
+					fill: function (d)	{
+						return o.style.fill ? o.style.fill(d) : '#000000';
+					},
+					stroke: function (d)	{
+						return o.style.stroke ? o.style.stroke(d) : false;
+					},
+					'stroke-width': function (d)	{
+						return o.style.strokeWidth ? o.style.strokeWidth(d) : '1px';
+					},
+				},
+			});
+		} else {
+			render.rect({	
+				element: model.sg.selectAll('#' + id + '_rect'),
+				data: model.d,
+				attr: {
+					id: function (d) { return id + '_rect'; },
 					x: function (d, i) { 
 						return o.attr.x ? o.attr.x.call(model, d, i) : 0;
 					},
@@ -1965,7 +2507,7 @@ var legend = (function (legend)	{
 		render: render,
 		variants: variants,
 		pathways: '',
-		expression: '',
+		expression: expression,
 		landscape: landscape,
 		exclusive: exclusive,
 		chart: {
@@ -1979,10 +2521,11 @@ var legend = (function (legend)	{
 			survival: survival,
 		},
 		tools: {
-			sortOption: sortOption,
-			scaleOption: scaleOption,
+			selectBox: selectBox,
 			divisionLine: divisionLine,
 			selectGeneSet: selectGeneSet,
+			landscapeSort: landscapeSort,
+			landscapeScaleOption: landscapeScaleOption,
 		},
 		util: util,
 		size: size,
@@ -2266,7 +2809,7 @@ var network = (function ()	{
 						bgcolor: d.bgcolor,
 						bdcolor: d.bordercolor || 'rgb(0, 0, 0)',
 						width: 100,
-						height: 200,
+						height: 150,
 						isComp: true,
 						per: d.text,
 					},
@@ -2365,6 +2908,8 @@ var network = (function ()	{
 				animate: false,
 			}
 		});
+
+		cy.resize(550, 10, 10, 10);
 	};
 }());
 var preprocessing = (function (preprocessing)	{
@@ -2373,6 +2918,14 @@ var preprocessing = (function (preprocessing)	{
 		차트 별 데이터 및 여러 정보를 포함할 모델 객체.
 	 */
 	var model = {
+		expression: {
+			heatmap: {},
+			scatter: {},
+			bar: {},
+			survival: {
+
+			}
+		},
 		exclusivity: {
 			heatmap: {},
 			network: {},
@@ -2424,6 +2977,7 @@ var preprocessing = (function (preprocessing)	{
 	 */
 	var ml = model.landscape,
 			el = model.exclusivity,
+			exp = model.expression,
 			vl = model.variants,
 			cl = config.landscape;
 	// ============== Variants =================
@@ -2995,6 +3549,14 @@ var preprocessing = (function (preprocessing)	{
 		return ml;
 	};
 	// ============== Mutational Landscape =================
+	// ============== Expression =================
+	preprocessing.expression = function (d)	{
+		console.log(d);
+
+		console.log('Preprocessing of Expression: ', exp);
+		return exp;
+	};
+	// ============== Expression =================
 
 	return preprocessing;
 }(preprocessing||{}));
@@ -3086,7 +3648,7 @@ var render = (function (render)	{
 		Draw Patient.
 	 */
 	render.triangle = function (defs)	{
-		var t = defs.element.append('path');
+		defsShape.call(defs, 'polygon');
 	};
 
 	return render;
@@ -3186,140 +3748,112 @@ var scale = (function (scale)	{
 
 	return scale;
 }(scale||{}));
-var scaleOption = (function (scaleOption)	{
+var selectBox = (function (selectBox)	{
 	'use strict';
 
-	var model = {
-	};
+	var model = {};
 	/*
-	 Button 별 Icon Class name 반환해주는 함수.
+		Select Box 가 그려질 Frame 을 만드는 함수.
 	 */
-	function setIcon (name)	{
-		return {
-			'upscale': 'fa fa-caret-up',
-			'downscale': 'fa fa-caret-down',
-			'initialize': 'fa fa-refresh',
-		}[name];
+	function makeSBFrame (className)	{
+		var div = document.createElement('div');
+
+		div.className = (className + ' drop-menu');
+		div.style.width = (model.w - model.m.left * 2) + 'px';
+		div.style.marginLeft = model.m.left + 'px';
+		div.style.height = model.h;
+		div.style.fontSize = '14px';
+
+		return div;
 	};
 	/*
-	 Scale 이벤트 함수.
-	*/
-	function scaleEvent (evt)	{
-		var input = document.querySelector('#viewscale');
-
-		switch(this.id)	{
-			case 'upscale': model.status += model.interval; break;
-			case 'downscale': model.status -= model.interval; break;
-			case 'initialize': model.status = model.default; break;
-			default: return; break;
-		}
-
-		var sign = this.id === 'upscale' ? 1 : -1,
-				chNum = parseInt(model.defaultValue * 0.1);
-
-		model.status = model.status < model.default ? model.default : 
-									 model.status > 200 ? 200 : model.status;
-
-		input.value = model.status + ' %';
-
-		model.nowValue = this.id === 'initialize' ? 
-		model.defaultValue : this.id === 'upscale' ? 
-		model.nowValue + (sign * chNum) : 
-		model.nowValue + (sign * chNum); 
-		// 현재 값이 기본값보다 작으면 기본값으로,
-		// 현재 값이 기본값의 한계치인 2배 값보다 높으면 기본값의 한계치로 대치한다.
-		model.nowValue = model.defaultValue > model.nowValue ? 
-		model.defaultValue : model.defaultValue * 2 < model.nowValue ? 
-		model.defaultValue * 2 : model.nowValue;
-
-		model.change ? model.change(this.id, model.nowValue) : false;
-	};
-	/*
-	 Scalable button 들을 만들어주는 함수.
+		처음에 표기될 문자열과 화살표를 만드는 함수.
 	 */
-	function button (parent, opts)	{
-		for (var i = 0, l = opts.btn.length; i < l; i++)	{
-			var b = opts.btn[i],
-					btn = document.createElement('button'),
-					icon = document.createElement('i');
+	function initText (className, text)	{
+		var div = document.createElement('div'),
+				spn = document.createElement('span'),
+				itg = document.createElement('i');
 
-			icon.className = setIcon(b.id);
+		div.className = (className || '') + ' select';
+		spn.innerHTML = text || 'Select ...';
+		itg.className = 'fa fa-chevron-down';
 
-			btn.id = b.id;
-			btn.addEventListener('click', scaleEvent);
-			btn.appendChild(icon);
-			parent.appendChild(btn);
-		}
+		return div.appendChild(spn), 
+					 div.appendChild(itg), div;
+	};	
+	/*
+		선택된 값이 표시될 input 태그를 만드는 함수.
+	 */
+	function inputView (name)	{
+		var inp = document.createElement('input');
+
+		inp.type = 'hidden';
+		inp.name = name;
+
+		return inp;
 	};
 	/*
-	 input 태그를 만들어주는 함수.
-	 tabIndex 속성을 -1 값으로 주어 Tab 동작에도 Focusing 이 안되게 했다.
-	 또한 readOnly 속성을 Enable 해서 수정이 불가능하게 하였다.
+		Item 을 만드는 함수.
 	 */
-	function input (p, o)	{
-		util.loop(o.input, function (d, i)	{
-			var ip = document.createElement('input');
+	function addItems (list)	{
+		var ult = document.createElement('ul');
 
-			ip.id = d.id;
-			ip.readOnly = true;
-			ip.tabIndex = -1;
-			ip.value = (model.value || model.default) + ' ' + model.unit;
+		ult.className = 'dropeddown';
+		console.log(list)
+		util.loop(list, function (d)	{
+			var lit = document.createElement('li');
 
-			p.appendChild(ip);
-		});
+			lit.id = d.toLowerCase();
+			lit.innerHTML = d;
+
+			ult.appendChild(lit);
+		});	
+
+		return ult;
 	};
 	/*
-	 단위가 % 인지 그냥 정수 인지 체크 하는 함수.
+		Slide 동작 및 기타 동작을 실행해주는 함수.
 	 */
-	function setUnit (unit)	{
-		if (unit === 'percentage' || unit === '%')	{
-			model.unit = '%';
-		} else if (unit === 'int' || !unit)	{	
-			model.unit = '';
-		}
-	};
-	/*
-	 {
-		 element: targeted element,
-		 default: initialize number(default number) of scale,
-		 interval: how to increase or decrease number,
-		 unit: unit of number (ex. '%' or 'percent', 'int' or '0'),
-	 }
-	 */
-	scaleOption.set = function (opts)	{
-		if (d3.select('.scale-option-frame').empty())	{
-			var div = document.createElement('div');
+	function execution (callback)	{
+		$('.drop-menu').click(function () {
+      $(this).attr('tabindex', 1).focus();
+      $(this).toggleClass('active');
+      $(this).find('.dropeddown').slideToggle(300);
+    });
+    $('.drop-menu').focusout(function () {
+      $(this).removeClass('active');
+      $(this).find('.dropeddown').slideUp(300);
+    });
+    $('.drop-menu .dropeddown li').click(function () {
+      $(this).parents('.drop-menu')
+      			 .find('span').text($(this).text());
+      $(this).parents('.drop-menu')
+      			 .find('input').attr('value', $(this).attr('id'));
 
-			div.className = 'scale-option-frame';
-
-			model = opts;
-			model.status = opts.default;
-			model.e = document.querySelector(opts.element);
-			model.width = parseFloat(opts.width || model.e.style.width || 140);
-			model.height = parseFloat(opts.height || model.e.style.height || 105);
-			model.change = opts.change || null;
-			model.defaultValue = opts.defaultValue;
-			model.nowValue = model.defaultValue;
-			model.e.appendChild(div);
-
-			opts.btn = opts.btn.length ? opts.btn : [opts.btn];
-			opts.input = opts.input.length ? opts.input : [opts.input];
-				
-			input(div, opts);
-			button(div, opts);
-		}
-
-		return scaleOption;
-	};
-	/*
-	 	버튼 클릭 후 값이 변경될 때마다 호출되는 함수.
-	 */
-	scaleOption.change = function (callback)	{
-		return callback(model), scaleOption;
+      callback.call(this, $(this).text().toLowerCase());
+    });
 	};
 
-	return scaleOption;
-}(scaleOption||{}));
+	return function (o)	{
+		model.e = document.querySelector(o.element);
+		model.m = size.setMargin(o.margin || [0, 0, 0, 0]);
+		model.w = o.width || parseFloat(model.e.style.width);
+		model.h = o.height || parseFloat(model.e.style.height);
+		
+		var f = makeSBFrame(o.className),
+				i = initText(o.className, o.initText),
+				v = inputView(o.viewName || 'Select ...'),
+				l = addItems(o.items);
+
+		f.appendChild(i);
+		f.appendChild(v);
+		f.appendChild(l);
+		model.e.appendChild(f);
+
+		execution(o.click);
+	};
+
+}(selectBox||{}));
 var selectGeneSet = (function (selectGeneSet)	{
 	'use strict';
 
@@ -3529,97 +4063,30 @@ var size = (function (size)	{
 
 		return makeFrames.call(size.setSize(e, w, h), ids), model.ids;
 	};
+	/*
+		Setting size of Expression.
+	 */
+	size.chart.expression = function (e, w, h)	{
+		var ids = {
+			expression_title: {w: w, h: h * 0.05},
+			expression_survival: {w: w * 0.4, h: h * 0.95},
+			expression_bar: {w: w * 0.4, h: h * 0.4},
+			expression_function: {w: w * 0.2, h: h * 0.05},
+			expression_color_mapping: {w: w * 0.2, h: h * 0.05},
+			expression_bar_legend: {w: w * 0.2, h: h * 0.3},
+			expression_scatter: {w: w * 0.4, h: h * 0.3},
+			expression_scatter_empty: {w: w * 0.2, h: h * 0.2},
+			expression_scatter_legend: {w: w * 0.2, h: h * 0.1},
+			expression_heatmap: {w: w * 0.4, h: h * 0.25},
+			expression_geneset: {w: w * 0.2, h: h * 0.05},
+			expression_color_gradient: {w: w * 0.2, h: h * 0.1},
+		};
+
+		return makeFrames.call(size.setSize(e, w, h), ids), model.ids;
+	};	
 
 	return size;
 }(size || {}));
-var sortOption = (function (sortOption)	{
-	'use strict';
-
-	var model = {};
-	/*
-		정렬 버튼을 누르면 목록이 보이거나 감추거나
-		하는 동작을 정의한 함수.
-	 */
-	function controlList (e)	{
-		model.ul.style.visibility = 
-		model.ul.style.visibility === 'hidden' || 
-		model.ul.style.visibility === '' ? 'visible' : 'hidden';
-	};	
-	/*
-		정렬 방법을 선택할 버튼을 만드는 함수.
-	 */
-	function makeButton ()	{
-		model.b = document.createElement('button');
-		model.s = document.createElement('span');
-		model.i = document.createElement('i');
-
-		model.b.id = 'landscape_sort_select';
-		model.b.addEventListener('click', controlList);
-		model.i.className = 'fa fa-sort-amount-desc';
-
-		model.s.appendChild(model.i);
-		model.b.appendChild(model.s);
-	};
-	/*
-		정렬 방법을 표시해줄 태그를 만들어주는 함수.
-	 */
-	function makeInput () {
-		model.ip = document.createElement('input');
-		model.ip.id = 'landscape_sort_case_view';
-		model.ip.readOnly = true;
-		model.ip.tabIndex = -1;
-	};
-	/*
-		목록의 항목 하나를 선택하면
-		인자로 넘어온 외부 함수를 호출한다.
-	 */
-	function clickItem (e)	{
-		return model.ul.style.visibility = 'hidden',
-					 model.ip.value = this.innerHTML,
-					 model.itemClick(e);
-	};
-	/*
-		정렬방법 (Mutation, Value, Sample) 들을 나타낼 
-		리스트를 만드는 함수.
-	 */
-	function makeList (a)	{
-		model.ul = document.createElement('ul');
-
-		model.ul.id = 'landscape_sort_list';
-
-		util.loop(a, function (d, i)	{
-			var l = document.createElement('li');
-
-			l.appendChild(document.createTextNode(d));
-			l.addEventListener('click', clickItem);
-			model.ul.appendChild(l);
-		});
-	};
-	/*
-		정렬 태그들을 감싸는 DIV 태그를 만드는 함수.
-	 */
-	function divSort () {
-		var d = document.createElement('div');
-
-		return d.id = 'landscape_sort_area', d;
-	};
-
-	sortOption.set = function (o)	{
-		var d = divSort();
-
-		model.itemClick = o.itemClick;
-
-		d.appendChild((makeInput(), model.ip));
-		d.appendChild((makeButton(), model.b));
-		d.appendChild((makeList(o.subject), model.ul));
-
-		model.e = document.getElementById(o.element.replace('#', ''));
-		model.e.appendChild(d);
-	};
-
-	return sortOption;
-
-}(sortOption||{}));
 var survival = (function (survival)	{
 	'use strict';
 
@@ -3823,6 +4290,28 @@ var util = (function (util)	{
 	util.removeWhiteSpace = function (t)	{
 		return t.replace(/\s/ig, '');
 	};
+	/*
+		문자열에서 사용자지정위치의 문자를 다른 문자로
+		대치해주는 함수.
+		String 객체의 프로토타입으로 지정하였다.
+	 */
+	String.prototype.replaceAt = function (idx, rep)	{
+		return this.substr(0, idx) + rep + 
+					 this.substr(idx + rep.length)
+	};
+	/*
+		Array 를 특정한 하나의 값으로 채워주는 함수.
+		이미 중복된 fill 이란 함수가 있지만,
+		IE 에서는 사용이 되지 않기 때문에
+		새로 오버라이딩 하였다.
+	 */
+	Array.prototype.fill = function (len, v)	{
+		for (var i = 0; i < len; i++)	{
+			this.push(v);
+		}
+
+		return this;
+	};
 
 	return util;
 }(util||{}));
@@ -3919,13 +4408,69 @@ var variants = (function (variants)	{
 		});
 	};
 	/*
+		Needle 에 Patient 를 추가하는 함수.
+	 */
+	function needlePatient (d)	{
+		layout.getSVG(model.svg, ['needle'], function (k, v)	{
+			var md = {},
+			  	cp = config.variants.patient.needle;
+
+			md.m = size.setMargin(cp.margin);
+			md.s = draw.size(v);
+			md.g = render.addGroup(v, md.s.h - md.m.bottom, md.m.left);
+			md.s = scale.get(model.data.axis.needle.x, [
+				md.m.left, md.s.w - md.m.right]);
+			md.len = 5;
+
+			render.triangle({
+				element: md.g.selectAll('#' + v.attr('id') + '_tri'),
+				data: d,
+				attr: {
+					id: function (d, i) { return v.attr('id') + '_tri'; },
+					points: function (d, i) { 
+						return cp.attr.points ? 
+									 cp.attr.points.call(md, d, i) : [0, 0];
+					},
+				},
+				style: {
+					fill: function (d, i) { 
+						return cp.style.fill ? 
+									 cp.style.fill.call(md, d, i) : '#000000';
+					},
+					stroke: function (d, i)	{
+						return cp.style.stroke ? 
+									 cp.style.stroke.call(md, d, i) : '#FFFFFF';
+					},
+					'stroke-width': '3px',
+				},
+			});
+		});
+	};
+	/*
+		Legend 에 patient 를 남기는 함수.
+	 */
+	function legendPatient (d)	{
+		layout.getSVG(model.svg, ['legend'], function (k, v)	{
+			var cp = config.variants.patient.legend,
+					m = size.setMargin(cp.margin),
+					g = render.addGroup(v, m.top, m.left);
+
+			legend({
+				element: v,
+				data: d,
+				attr: config.variants.patient.legend.attr,
+				style: config.variants.patient.legend.style,
+				text: config.variants.patient.legend.text,
+				margin: config.variants.patient.legend.margin,
+			});
+		});
+	};
+	/*
 		Patient 를 그려주는 함수.
 	 */
-	function drawNeedlePatient ()	{
-		console.log(model.data.patient)
-		layout.getSVG(model.svg, ['needle'], function (k, v)	{
-
-		});
+	function drawPatient ()	{
+		needlePatient(model.data.patient);
+		legendPatient(model.data.patient);
 	};
 	/*
 		Legend 를 그려주는 함수.
@@ -3952,7 +4497,7 @@ var variants = (function (variants)	{
 		drawNeedle();
 		drawNeedleNavi();
 		drawNeedleGraph();
-		drawNeedlePatient();
+		drawPatient();
 	};
 	/*
 		처음 배경색을 설정해주는 함수.

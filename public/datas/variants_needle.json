@@ -1,0 +1,1603 @@
+{
+  "data": {
+    "graph": [
+      {
+        "colour": "#2dcf00",
+        "description": "P53 transactivation motif",
+        "display": 1,
+        "end": 29,
+        "identifier": "P53_TAD",
+        "length": 393,
+        "start": 5
+      },
+      {
+        "colour": "#ff5353",
+        "description": "P53 DNA-binding domain",
+        "display": 1,
+        "end": 289,
+        "identifier": "P53",
+        "length": 393,
+        "start": 95
+      },
+      {
+        "colour": "#5b5bff",
+        "description": "P53 tetramerisation motif",
+        "display": 1,
+        "end": 359,
+        "identifier": "P53_tetramer",
+        "length": 393,
+        "start": 318
+      }
+    ],
+    "name": "TP53",
+    "patient_list": [
+      {
+        "aachange": "p.E298*",
+        "id": "SMCLUAD1609050115",
+        "position": "298",
+        "type": "Nonsense_Mutation"
+      }
+    ],
+    "public_list": [
+      {
+        "aachange": "p.V272G",
+        "id": "TCGA-05-4382",
+        "position": "272",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.Y205C",
+        "id": "TCGA-05-4384",
+        "position": "205",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.C176Y",
+        "id": "TCGA-05-4395",
+        "position": "176",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.K139fs",
+        "id": "TCGA-05-4396",
+        "position": "139",
+        "type": "Frame_Shift_Del"
+      },
+      {
+        "aachange": "p.R249fs",
+        "id": "TCGA-05-4397",
+        "position": "249",
+        "type": "Frame_Shift_Del"
+      },
+      {
+        "aachange": "p.G105D",
+        "id": "TCGA-05-4398",
+        "position": "105",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.VRRCPH173fs",
+        "id": "TCGA-05-4402",
+        "position": "173",
+        "type": "Frame_Shift_Del"
+      },
+      {
+        "aachange": "p.C277F",
+        "id": "TCGA-05-4405",
+        "position": "277",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.R175H",
+        "id": "TCGA-05-4405",
+        "position": "175",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.D281V",
+        "id": "TCGA-05-4410",
+        "position": "281",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.T125T",
+        "id": "TCGA-05-4415",
+        "position": "125",
+        "type": "Splice_Site"
+      },
+      {
+        "aachange": "p.R280I",
+        "id": "TCGA-05-4420",
+        "position": "280",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.L194R",
+        "id": "TCGA-05-4424",
+        "position": "194",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.T155I",
+        "id": "TCGA-05-4426",
+        "position": "155",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.D281N",
+        "id": "TCGA-05-4427",
+        "position": "281",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.R249M",
+        "id": "TCGA-05-4430",
+        "position": "249",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.R342*",
+        "id": "TCGA-05-4432",
+        "position": "342",
+        "type": "Nonsense_Mutation"
+      },
+      {
+        "aachange": "p.D281E",
+        "id": "TCGA-05-4432",
+        "position": "281",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.R196*",
+        "id": "TCGA-05-4433",
+        "position": "196",
+        "type": "Nonsense_Mutation"
+      },
+      {
+        "aachange": "p.I195M",
+        "id": "TCGA-05-5423",
+        "position": "195",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.R249M",
+        "id": "TCGA-05-5423",
+        "position": "249",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.E68*",
+        "id": "TCGA-05-5425",
+        "position": "68",
+        "type": "Nonsense_Mutation"
+      },
+      {
+        "aachange": "p.C238Y",
+        "id": "TCGA-05-5428",
+        "position": "238",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.R249M",
+        "id": "TCGA-35-4122",
+        "position": "249",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.W146*",
+        "id": "TCGA-35-4123",
+        "position": "146",
+        "type": "Nonsense_Mutation"
+      },
+      {
+        "aachange": "p.S241F",
+        "id": "TCGA-35-5375",
+        "position": "241",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.R273L",
+        "id": "TCGA-38-4625",
+        "position": "273",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.L201fs",
+        "id": "TCGA-38-4629",
+        "position": "201",
+        "type": "Frame_Shift_Ins"
+      },
+      {
+        "aachange": "p.K132R",
+        "id": "TCGA-38-4630",
+        "position": "132",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.A159P",
+        "id": "TCGA-38-4632",
+        "position": "159",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.R283P",
+        "id": "TCGA-38-6178",
+        "position": "283",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.V73fs",
+        "id": "TCGA-44-2656",
+        "position": "73",
+        "type": "Frame_Shift_Del"
+      },
+      {
+        "aachange": "p.R280T",
+        "id": "TCGA-44-2662",
+        "position": "280",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.R196*",
+        "id": "TCGA-44-2666",
+        "position": "196",
+        "type": "Nonsense_Mutation"
+      },
+      {
+        "aachange": "p.E286*",
+        "id": "TCGA-44-2668",
+        "position": "286",
+        "type": "Nonsense_Mutation"
+      },
+      {
+        "aachange": "p.E286G",
+        "id": "TCGA-44-3396",
+        "position": "286",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.P36fs",
+        "id": "TCGA-44-5643",
+        "position": "36",
+        "type": "Frame_Shift_Del"
+      },
+      {
+        "aachange": "p.F109C",
+        "id": "TCGA-44-5644",
+        "position": "109",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.Q354*",
+        "id": "TCGA-44-5645",
+        "position": "354",
+        "type": "Nonsense_Mutation"
+      },
+      {
+        "aachange": "p.R337L",
+        "id": "TCGA-44-6144",
+        "position": "337",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.R110L",
+        "id": "TCGA-44-6147",
+        "position": "110",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.G245C",
+        "id": "TCGA-44-6774",
+        "position": "245",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.H168L",
+        "id": "TCGA-44-6775",
+        "position": "168",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.G245V",
+        "id": "TCGA-44-6777",
+        "position": "245",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.I232F",
+        "id": "TCGA-44-6778",
+        "position": "232",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.K132E",
+        "id": "TCGA-44-6779",
+        "position": "132",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.E336*",
+        "id": "TCGA-44-7660",
+        "position": "336",
+        "type": "Nonsense_Mutation"
+      },
+      {
+        "aachange": "p.R213*",
+        "id": "TCGA-44-7661",
+        "position": "213",
+        "type": "Nonsense_Mutation"
+      },
+      {
+        "aachange": "p.E68*",
+        "id": "TCGA-44-7662",
+        "position": "68",
+        "type": "Nonsense_Mutation"
+      },
+      {
+        "aachange": "p.T125T",
+        "id": "TCGA-44-7669",
+        "position": "125",
+        "type": "Splice_Site"
+      },
+      {
+        "aachange": "p.R337L",
+        "id": "TCGA-44-7670",
+        "position": "337",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.E171*",
+        "id": "TCGA-44-8117",
+        "position": "171",
+        "type": "Nonsense_Mutation"
+      },
+      {
+        "aachange": "p.E349*",
+        "id": "TCGA-44-8120",
+        "position": "349",
+        "type": "Nonsense_Mutation"
+      },
+      {
+        "aachange": "p.S127F",
+        "id": "TCGA-44-A479",
+        "position": "127",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.H193L",
+        "id": "TCGA-44-A47G",
+        "position": "193",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.G245V",
+        "id": "TCGA-44-A4SS",
+        "position": "245",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.G245C",
+        "id": "TCGA-44-A4SS",
+        "position": "245",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.W53*",
+        "id": "TCGA-44-A4SU",
+        "position": "53",
+        "type": "Nonsense_Mutation"
+      },
+      {
+        "aachange": "p.P77L",
+        "id": "TCGA-49-4487",
+        "position": "77",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.T125T",
+        "id": "TCGA-49-4488",
+        "position": "125",
+        "type": "Splice_Site"
+      },
+      {
+        "aachange": "p.R213*",
+        "id": "TCGA-49-4490",
+        "position": "213",
+        "type": "Nonsense_Mutation"
+      },
+      {
+        "aachange": "p.C277F",
+        "id": "TCGA-49-4505",
+        "position": "277",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.R175H",
+        "id": "TCGA-49-4514",
+        "position": "175",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.Q331*",
+        "id": "TCGA-49-6767",
+        "position": "331",
+        "type": "Nonsense_Mutation"
+      },
+      {
+        "aachange": "p.R209*",
+        "id": "TCGA-50-5045",
+        "position": "209",
+        "type": "Nonsense_Mutation"
+      },
+      {
+        "aachange": "p.E298*",
+        "id": "TCGA-50-5049",
+        "position": "298",
+        "type": "Nonsense_Mutation"
+      },
+      {
+        "aachange": "p.H179Q",
+        "id": "TCGA-50-5066",
+        "position": "179",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.V216M",
+        "id": "TCGA-50-5068",
+        "position": "216",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.G262V",
+        "id": "TCGA-50-5930",
+        "position": "262",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.W91*",
+        "id": "TCGA-50-5931",
+        "position": "91",
+        "type": "Nonsense_Mutation"
+      },
+      {
+        "aachange": "p.R158L",
+        "id": "TCGA-50-5933",
+        "position": "158",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.E285K",
+        "id": "TCGA-50-5939",
+        "position": "285",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.P72fs",
+        "id": "TCGA-50-5941",
+        "position": "72",
+        "type": "Frame_Shift_Del"
+      },
+      {
+        "aachange": "p.E285*",
+        "id": "TCGA-50-5944",
+        "position": "285",
+        "type": "Nonsense_Mutation"
+      },
+      {
+        "aachange": "p.R158fs",
+        "id": "TCGA-50-5946",
+        "position": "158",
+        "type": "Frame_Shift_Del"
+      },
+      {
+        "aachange": "p.F54fs",
+        "id": "TCGA-50-6591",
+        "position": "54",
+        "type": "Frame_Shift_Del"
+      },
+      {
+        "aachange": "p.R249G",
+        "id": "TCGA-50-6592",
+        "position": "249",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.V272M",
+        "id": "TCGA-50-6594",
+        "position": "272",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.S183*",
+        "id": "TCGA-50-6595",
+        "position": "183",
+        "type": "Nonsense_Mutation"
+      },
+      {
+        "aachange": "p.R175H",
+        "id": "TCGA-50-6595",
+        "position": "175",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.R337C",
+        "id": "TCGA-50-6673",
+        "position": "337",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.R282W",
+        "id": "TCGA-50-8460",
+        "position": "282",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.M237I",
+        "id": "TCGA-53-7626",
+        "position": "237",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.V157F",
+        "id": "TCGA-53-A4EZ",
+        "position": "157",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.G244C",
+        "id": "TCGA-55-1592",
+        "position": "244",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.S166*",
+        "id": "TCGA-55-1594",
+        "position": "166",
+        "type": "Nonsense_Mutation"
+      },
+      {
+        "aachange": "p.D281Y",
+        "id": "TCGA-55-1596",
+        "position": "281",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.P153fs",
+        "id": "TCGA-55-5899",
+        "position": "153",
+        "type": "Frame_Shift_Del"
+      },
+      {
+        "aachange": "p.E339fs",
+        "id": "TCGA-55-6712",
+        "position": "339",
+        "type": "Frame_Shift_Del"
+      },
+      {
+        "aachange": "p.T312fs",
+        "id": "TCGA-55-6968",
+        "position": "312",
+        "type": "Frame_Shift_Del"
+      },
+      {
+        "aachange": "p.R273L",
+        "id": "TCGA-55-6969",
+        "position": "273",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.KR305fs",
+        "id": "TCGA-55-6975",
+        "position": "305",
+        "type": "Frame_Shift_Del"
+      },
+      {
+        "aachange": "p.Q144L",
+        "id": "TCGA-55-6979",
+        "position": "144",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.G334V",
+        "id": "TCGA-55-6985",
+        "position": "334",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.V157F",
+        "id": "TCGA-55-7227",
+        "position": "157",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.Q144*",
+        "id": "TCGA-55-7283",
+        "position": "144",
+        "type": "Nonsense_Mutation"
+      },
+      {
+        "aachange": "p.Y163C",
+        "id": "TCGA-55-7570",
+        "position": "163",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.C135F",
+        "id": "TCGA-55-7573",
+        "position": "135",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.E346*",
+        "id": "TCGA-55-7574",
+        "position": "346",
+        "type": "Nonsense_Mutation"
+      },
+      {
+        "aachange": "p.Q317*",
+        "id": "TCGA-55-7576",
+        "position": "317",
+        "type": "Nonsense_Mutation"
+      },
+      {
+        "aachange": "p.R273H",
+        "id": "TCGA-55-7724",
+        "position": "273",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.C141*",
+        "id": "TCGA-55-7726",
+        "position": "141",
+        "type": "Nonsense_Mutation"
+      },
+      {
+        "aachange": "p.Q52*",
+        "id": "TCGA-55-7727",
+        "position": "52",
+        "type": "Nonsense_Mutation"
+      },
+      {
+        "aachange": "p.L35fs",
+        "id": "TCGA-55-7903",
+        "position": "35",
+        "type": "Frame_Shift_Del"
+      },
+      {
+        "aachange": "p.R158P",
+        "id": "TCGA-55-7907",
+        "position": "158",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.K120E",
+        "id": "TCGA-55-7910",
+        "position": "120",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.Q144H",
+        "id": "TCGA-55-7911",
+        "position": "144",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.T125T",
+        "id": "TCGA-55-7913",
+        "position": "125",
+        "type": "Splice_Site"
+      },
+      {
+        "aachange": "p.E294fs",
+        "id": "TCGA-55-7914",
+        "position": "294",
+        "type": "Frame_Shift_Del"
+      },
+      {
+        "aachange": "p.R273L",
+        "id": "TCGA-55-7994",
+        "position": "273",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.H179Y",
+        "id": "TCGA-55-7995",
+        "position": "179",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.Q331*",
+        "id": "TCGA-55-8085",
+        "position": "331",
+        "type": "Nonsense_Mutation"
+      },
+      {
+        "aachange": "p.R249S",
+        "id": "TCGA-55-8089",
+        "position": "249",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.R158L",
+        "id": "TCGA-55-8092",
+        "position": "158",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.Q317*",
+        "id": "TCGA-55-8094",
+        "position": "317",
+        "type": "Nonsense_Mutation"
+      },
+      {
+        "aachange": "p.E339*",
+        "id": "TCGA-55-8096",
+        "position": "339",
+        "type": "Nonsense_Mutation"
+      },
+      {
+        "aachange": "p.Y205C",
+        "id": "TCGA-55-8205",
+        "position": "205",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.C275F",
+        "id": "TCGA-55-8208",
+        "position": "275",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.Y205F",
+        "id": "TCGA-55-8299",
+        "position": "205",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.G245V",
+        "id": "TCGA-55-8301",
+        "position": "245",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.G245S",
+        "id": "TCGA-55-8301",
+        "position": "245",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.E343*",
+        "id": "TCGA-55-8302",
+        "position": "343",
+        "type": "Nonsense_Mutation"
+      },
+      {
+        "aachange": "p.G154V",
+        "id": "TCGA-55-8506",
+        "position": "154",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.Q317*",
+        "id": "TCGA-55-8507",
+        "position": "317",
+        "type": "Nonsense_Mutation"
+      },
+      {
+        "aachange": "p.R213*",
+        "id": "TCGA-55-8510",
+        "position": "213",
+        "type": "Nonsense_Mutation"
+      },
+      {
+        "aachange": "p.H297fs",
+        "id": "TCGA-55-8511",
+        "position": "297",
+        "type": "Frame_Shift_Del"
+      },
+      {
+        "aachange": "p.R337P",
+        "id": "TCGA-55-8514",
+        "position": "337",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.G266V",
+        "id": "TCGA-55-8614",
+        "position": "266",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.Q144*",
+        "id": "TCGA-55-8616",
+        "position": "144",
+        "type": "Nonsense_Mutation"
+      },
+      {
+        "aachange": "p.R248Q",
+        "id": "TCGA-55-8619",
+        "position": "248",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.R280G",
+        "id": "TCGA-55-8620",
+        "position": "280",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.S241F",
+        "id": "TCGA-55-8621",
+        "position": "241",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.R110L",
+        "id": "TCGA-55-A48X",
+        "position": "110",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.R337C",
+        "id": "TCGA-55-A48Z",
+        "position": "337",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.H193R",
+        "id": "TCGA-55-A491",
+        "position": "193",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.R273S",
+        "id": "TCGA-55-A493",
+        "position": "273",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.R158L",
+        "id": "TCGA-55-A4DG",
+        "position": "158",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.V274G",
+        "id": "TCGA-62-8394",
+        "position": "274",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.Q331H",
+        "id": "TCGA-62-8399",
+        "position": "331",
+        "type": "Splice_Site"
+      },
+      {
+        "aachange": "p.P177T",
+        "id": "TCGA-62-8402",
+        "position": "177",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.E198*",
+        "id": "TCGA-62-A46R",
+        "position": "198",
+        "type": "Nonsense_Mutation"
+      },
+      {
+        "aachange": "p.V157L",
+        "id": "TCGA-62-A46U",
+        "position": "157",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.L194R",
+        "id": "TCGA-62-A46Y",
+        "position": "194",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.Y236C",
+        "id": "TCGA-62-A471",
+        "position": "236",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.P219fs",
+        "id": "TCGA-62-A472",
+        "position": "219",
+        "type": "Frame_Shift_Del"
+      },
+      {
+        "aachange": "p.C229fs",
+        "id": "TCGA-64-1676",
+        "position": "229",
+        "type": "Frame_Shift_Del"
+      },
+      {
+        "aachange": "p.A159P",
+        "id": "TCGA-64-1677",
+        "position": "159",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.DDIE48fs",
+        "id": "TCGA-64-1677",
+        "position": "48",
+        "type": "Frame_Shift_Del"
+      },
+      {
+        "aachange": "p.E224D",
+        "id": "TCGA-64-1678",
+        "position": "224",
+        "type": "Splice_Site"
+      },
+      {
+        "aachange": "p.VQLWVDSTPPPGTR143fs",
+        "id": "TCGA-64-1678",
+        "position": "143",
+        "type": "Frame_Shift_Del"
+      },
+      {
+        "aachange": "p.G245V",
+        "id": "TCGA-64-1679",
+        "position": "245",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.E180K",
+        "id": "TCGA-64-1681",
+        "position": "180",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.R280G",
+        "id": "TCGA-64-5775",
+        "position": "280",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.N239S",
+        "id": "TCGA-64-5778",
+        "position": "239",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.G154V",
+        "id": "TCGA-67-3770",
+        "position": "154",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.S127C",
+        "id": "TCGA-67-3771",
+        "position": "127",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.F270V",
+        "id": "TCGA-69-7760",
+        "position": "270",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.Q167*",
+        "id": "TCGA-69-7765",
+        "position": "167",
+        "type": "Nonsense_Mutation"
+      },
+      {
+        "aachange": "p.G334W",
+        "id": "TCGA-69-7974",
+        "position": "334",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.K351*",
+        "id": "TCGA-69-7978",
+        "position": "351",
+        "type": "Nonsense_Mutation"
+      },
+      {
+        "aachange": "p.QLAKTC136del",
+        "id": "TCGA-69-7979",
+        "position": "136",
+        "type": "In_Frame_Del"
+      },
+      {
+        "aachange": "p.T125T",
+        "id": "TCGA-69-7980",
+        "position": "125",
+        "type": "Splice_Site"
+      },
+      {
+        "aachange": "p.A161V",
+        "id": "TCGA-69-7980",
+        "position": "161",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.T125T",
+        "id": "TCGA-69-8255",
+        "position": "125",
+        "type": "Splice_Site"
+      },
+      {
+        "aachange": "p.D281Y",
+        "id": "TCGA-69-A59K",
+        "position": "281",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.N131fs",
+        "id": "TCGA-71-8520",
+        "position": "131",
+        "type": "Frame_Shift_Del"
+      },
+      {
+        "aachange": "p.R248P",
+        "id": "TCGA-73-4666",
+        "position": "248",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.C176F",
+        "id": "TCGA-73-4676",
+        "position": "176",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.R196*",
+        "id": "TCGA-73-7499",
+        "position": "196",
+        "type": "Nonsense_Mutation"
+      },
+      {
+        "aachange": "p.L130F",
+        "id": "TCGA-75-5125",
+        "position": "130",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.P278H",
+        "id": "TCGA-75-5146",
+        "position": "278",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.R267L",
+        "id": "TCGA-75-5146",
+        "position": "267",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.Y163C",
+        "id": "TCGA-75-5147",
+        "position": "163",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.Q192*",
+        "id": "TCGA-75-6207",
+        "position": "192",
+        "type": "Nonsense_Mutation"
+      },
+      {
+        "aachange": "p.A69fs",
+        "id": "TCGA-75-6211",
+        "position": "69",
+        "type": "Frame_Shift_Ins"
+      },
+      {
+        "aachange": "p.V157F",
+        "id": "TCGA-75-6214",
+        "position": "157",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.RR282del",
+        "id": "TCGA-75-7031",
+        "position": "282",
+        "type": "In_Frame_Del"
+      },
+      {
+        "aachange": "p.A159P",
+        "id": "TCGA-78-7145",
+        "position": "159",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.P250L",
+        "id": "TCGA-78-7146",
+        "position": "250",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.Y236*",
+        "id": "TCGA-78-7147",
+        "position": "236",
+        "type": "Nonsense_Mutation"
+      },
+      {
+        "aachange": "p.R248L",
+        "id": "TCGA-78-7149",
+        "position": "248",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.R158L",
+        "id": "TCGA-78-7150",
+        "position": "158",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.E271K",
+        "id": "TCGA-78-7154",
+        "position": "271",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.R337L",
+        "id": "TCGA-78-7155",
+        "position": "337",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.G244C",
+        "id": "TCGA-78-7220",
+        "position": "244",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.Q192*",
+        "id": "TCGA-78-7535",
+        "position": "192",
+        "type": "Nonsense_Mutation"
+      },
+      {
+        "aachange": "p.F270C",
+        "id": "TCGA-78-7536",
+        "position": "270",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.R273C",
+        "id": "TCGA-78-7540",
+        "position": "273",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.P153fs",
+        "id": "TCGA-78-7542",
+        "position": "153",
+        "type": "Frame_Shift_Del"
+      },
+      {
+        "aachange": "p.V157L",
+        "id": "TCGA-78-8640",
+        "position": "157",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.V147fs",
+        "id": "TCGA-78-8660",
+        "position": "147",
+        "type": "Frame_Shift_Del"
+      },
+      {
+        "aachange": "p.Q165*",
+        "id": "TCGA-78-8662",
+        "position": "165",
+        "type": "Nonsense_Mutation"
+      },
+      {
+        "aachange": "p.C275F",
+        "id": "TCGA-83-5908",
+        "position": "275",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.E258D",
+        "id": "TCGA-86-6851",
+        "position": "258",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.E294*",
+        "id": "TCGA-86-7701",
+        "position": "294",
+        "type": "Nonsense_Mutation"
+      },
+      {
+        "aachange": "p.C176F",
+        "id": "TCGA-86-7711",
+        "position": "176",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.HSGTAK115fs",
+        "id": "TCGA-86-7953",
+        "position": "115",
+        "type": "Frame_Shift_Del"
+      },
+      {
+        "aachange": "p.R248L",
+        "id": "TCGA-86-7954",
+        "position": "248",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.Y163H",
+        "id": "TCGA-86-8055",
+        "position": "163",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.E171K",
+        "id": "TCGA-86-8056",
+        "position": "171",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.Q192*",
+        "id": "TCGA-86-8073",
+        "position": "192",
+        "type": "Nonsense_Mutation"
+      },
+      {
+        "aachange": "p.Y220C",
+        "id": "TCGA-86-8074",
+        "position": "220",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.H193R",
+        "id": "TCGA-86-8279",
+        "position": "193",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.H193P",
+        "id": "TCGA-86-8280",
+        "position": "193",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.N247I",
+        "id": "TCGA-86-8358",
+        "position": "247",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.G154fs",
+        "id": "TCGA-86-8585",
+        "position": "154",
+        "type": "Frame_Shift_Del"
+      },
+      {
+        "aachange": "p.F341fs",
+        "id": "TCGA-86-8672",
+        "position": "341",
+        "type": "Frame_Shift_Ins"
+      },
+      {
+        "aachange": "p.R248L",
+        "id": "TCGA-86-8673",
+        "position": "248",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.P191del",
+        "id": "TCGA-86-A4JF",
+        "position": "191",
+        "type": "In_Frame_Del"
+      },
+      {
+        "aachange": "p.P89fs",
+        "id": "TCGA-86-A4JF",
+        "position": "89",
+        "type": "Frame_Shift_Del"
+      },
+      {
+        "aachange": "p.E286K",
+        "id": "TCGA-86-A4P7",
+        "position": "286",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.P72fs",
+        "id": "TCGA-91-6829",
+        "position": "72",
+        "type": "Frame_Shift_Del"
+      },
+      {
+        "aachange": "p.G334V",
+        "id": "TCGA-91-6831",
+        "position": "334",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.E343*",
+        "id": "TCGA-91-6836",
+        "position": "343",
+        "type": "Nonsense_Mutation"
+      },
+      {
+        "aachange": "p.Y220C",
+        "id": "TCGA-91-6840",
+        "position": "220",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.R110L",
+        "id": "TCGA-91-6847",
+        "position": "110",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.R156P",
+        "id": "TCGA-91-6848",
+        "position": "156",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.CNSSCM238del",
+        "id": "TCGA-91-8499",
+        "position": "238",
+        "type": "In_Frame_Del"
+      },
+      {
+        "aachange": "p.E285K",
+        "id": "TCGA-93-8067",
+        "position": "285",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.E286Q",
+        "id": "TCGA-93-A4JN",
+        "position": "286",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.C141W",
+        "id": "TCGA-93-A4JO",
+        "position": "141",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.E258*",
+        "id": "TCGA-93-A4JP",
+        "position": "258",
+        "type": "Nonsense_Mutation"
+      },
+      {
+        "aachange": "p.R273L",
+        "id": "TCGA-95-7039",
+        "position": "273",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.R158L",
+        "id": "TCGA-95-7043",
+        "position": "158",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.Y205H",
+        "id": "TCGA-95-7567",
+        "position": "205",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.Y163D",
+        "id": "TCGA-95-7944",
+        "position": "163",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.Y205C",
+        "id": "TCGA-95-7947",
+        "position": "205",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.G105D",
+        "id": "TCGA-95-8039",
+        "position": "105",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.K132N",
+        "id": "TCGA-95-8494",
+        "position": "132",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.R282W",
+        "id": "TCGA-97-7553",
+        "position": "282",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.R249W",
+        "id": "TCGA-97-7554",
+        "position": "249",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.G245V",
+        "id": "TCGA-97-7937",
+        "position": "245",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.T125T",
+        "id": "TCGA-97-8172",
+        "position": "125",
+        "type": "Splice_Site"
+      },
+      {
+        "aachange": "p.H193N",
+        "id": "TCGA-97-8175",
+        "position": "193",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.R273L",
+        "id": "TCGA-97-8179",
+        "position": "273",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.C242F",
+        "id": "TCGA-97-A4LX",
+        "position": "242",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.R333fs",
+        "id": "TCGA-97-A4M0",
+        "position": "333",
+        "type": "Frame_Shift_Del"
+      },
+      {
+        "aachange": "p.R156del",
+        "id": "TCGA-97-A4M1",
+        "position": "156",
+        "type": "In_Frame_Del"
+      },
+      {
+        "aachange": "p.V173L",
+        "id": "TCGA-99-8025",
+        "position": "173",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.C242F",
+        "id": "TCGA-99-8028",
+        "position": "242",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.E298*",
+        "id": "TCGA-99-8033",
+        "position": "298",
+        "type": "Nonsense_Mutation"
+      },
+      {
+        "aachange": "p.D57N",
+        "id": "TCGA-J2-A4AD",
+        "position": "57",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.N239D",
+        "id": "TCGA-J2-A4AD",
+        "position": "239",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.P152L",
+        "id": "TCGA-L4-A4E5",
+        "position": "152",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.P152L",
+        "id": "TCGA-L9-A444",
+        "position": "152",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.E286Q",
+        "id": "TCGA-MN-A4N1",
+        "position": "286",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.V274D",
+        "id": "TCGA-MN-A4N4",
+        "position": "274",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.E343*",
+        "id": "TCGA-MN-A4N5",
+        "position": "343",
+        "type": "Nonsense_Mutation"
+      },
+      {
+        "aachange": "p.Y236C",
+        "id": "TCGA-MP-A4SV",
+        "position": "236",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.R158P",
+        "id": "TCGA-MP-A4T4",
+        "position": "158",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.Q331Q",
+        "id": "TCGA-MP-A4T9",
+        "position": "331",
+        "type": "Splice_Site"
+      },
+      {
+        "aachange": "p.R280I",
+        "id": "TCGA-MP-A4TA",
+        "position": "280",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.A159V",
+        "id": "TCGA-MP-A4TC",
+        "position": "159",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.R249M",
+        "id": "TCGA-MP-A4TF",
+        "position": "249",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.A161D",
+        "id": "TCGA-MP-A4TI",
+        "position": "161",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.F54F",
+        "id": "TCGA-MP-A4TI",
+        "position": "54",
+        "type": "Silent"
+      },
+      {
+        "aachange": "p.C242F",
+        "id": "TCGA-MP-A4TK",
+        "position": "242",
+        "type": "Missense_Mutation"
+      },
+      {
+        "aachange": "p.E198*",
+        "id": "TCGA-NJ-A4YF",
+        "position": "198",
+        "type": "Nonsense_Mutation"
+      },
+      {
+        "aachange": "p.E298*",
+        "id": "TCGA-O1-A52J",
+        "position": "298",
+        "type": "Nonsense_Mutation"
+      }
+    ],
+    "title": "LUAD: TP53,ENST00000269305",
+    "x_axis_title": "aa",
+    "y_axis_title": "# Mutations"
+  },
+  "message": "OK",
+  "status": 0
+}
