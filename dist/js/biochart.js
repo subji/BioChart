@@ -1320,6 +1320,8 @@ var exclusive = (function ()	{
 		selectBox({
 			element: '#exclusivity_select_geneset',
 			initText: model.nowSet,
+			className: 'exclusivity-geneset',
+			viewName: 'geneset',
 			items: model.data.geneset.map(function (d)	{
 				return d.join(' ');
 			}),
