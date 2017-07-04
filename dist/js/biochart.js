@@ -1315,8 +1315,6 @@ var exclusive = (function ()	{
 		// 	},
 		// });
 
-		console.log(model.nowSet)
-
 		selectBox({
 			element: '#exclusivity_select_geneset',
 			initText: model.nowSet,
