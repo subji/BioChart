@@ -55,6 +55,6 @@ gulp.task('concatcss', () => {
 gulp.task('concatugcss', () => {
 	return gulp.src(SRC.CSS)
 			   .pipe(concat('biochart.min.css'))
-			   .pipe(cleanCSS({compatibility: 'ie8'}))
+			   .pipe(cleanCSS({compatibility: 'ie11'}))
 			   .pipe(gulp.dest(DEST.CSS));
 });
