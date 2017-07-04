@@ -1299,22 +1299,7 @@ var exclusive = (function ()	{
 		model.ids = size.chart.exclusivity(e, w, h);
 		model.svg = layout.exclusivity(model.ids, model);
 		model.nowSet = model.data.geneset[0].join(' ');
-		// For survival data.
-		// divideSurvivalData();
 		// make select box of geneset.
-		// model.nowSet = selectGeneSet.set({
-		// 	element: '#exclusivity_select_geneset',
-		// 	data: model.data.geneset,
-		// 	change: function (e)	{
-		// 		model.nowSet = this.value;
-
-		// 		console.log(model.nowSet)
-		// 		layout.removeG();
-		// 		// even change value it appear another geneset.
-		// 		drawExclusivity();
-		// 	},
-		// });
-
 		selectBox({
 			element: '#exclusivity_select_geneset',
 			initText: model.nowSet,
