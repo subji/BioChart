@@ -1307,11 +1307,15 @@ var exclusive = (function ()	{
 		// 	data: model.data.geneset,
 		// 	change: function (e)	{
 		// 		model.nowSet = this.value;
+
+		// 		console.log(model.nowSet)
 		// 		layout.removeG();
 		// 		// even change value it appear another geneset.
 		// 		drawExclusivity();
 		// 	},
 		// });
+
+		console.log(model.nowSet)
 
 		selectBox({
 			element: '#exclusivity_select_geneset',
@@ -1320,7 +1324,7 @@ var exclusive = (function ()	{
 				return d.join(' ');
 			}),
 			click: function (v)	{
-				model.nowSet = v;
+				model.nowSet = v.toUpperCase();
 
 				layout.removeG();
 				drawExclusivity();
