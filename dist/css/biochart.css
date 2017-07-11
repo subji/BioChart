@@ -22,59 +22,35 @@
 #exclusivity_legend { float: left; }
 #expression_title {	background: #EFEFEF; padding-top: 0.3%; font-size: 30px; font-weight: bold; font-family: initial; text-shadow: 2px 1px #D6D6D6; }
 
-#expression_survival {
-	background: #235352;	
-	float: left;
-}
+#expression_survival { float: left; }
+/* Survival tab css */
+#expression_survival input, 
+#os,
+#dfs { clear: both; display: none; margin: 10px; }
+#expression_survival label { font-weight: bold; font-size: 14px; text-shadow: 1px 1px rgba(0, 0, 0, 0.2); display: block; float: left; padding: 10px 30px; border-top: 2px solid transparent; border-right: 1px solid transparent; border-left: 1px solid transparent; border-bottom: 1px solid #DDD; }
+#expression_survival label:hover { cursor: pointer; }
+#os_survival:checked ~ #os,
+#dfs_survival:checked ~ #dfs { display: block; }
+#expression_survival input:checked + label { border-top-color: #A5A4A4; border-right-color: #DDD; border-left-color: #DDD; border-bottom-color: transparent; }
+#os_stat_table td,
+#dfs_stat_table td { font-size: 14px; width: 250px;}
 
-#expression_bar {
-	background: #351511;
-	float: left;
-}
+#expression_bar_plot { float: left; }
+#expression_bar_legend { float: right; }
 
-#expression_function {
-	background: #083081;
-	float: right;
-}
+#expression_function { float: right; }
 
-#expression_color_mapping {
-	background: #319381;
-	float: right;
-}
+#expression_color_mapping { float: right; }
 
-#expression_bar_legend {
-	background: #700101;
-	float: right;
-}
+#expression_scatter_plot { float: left; }
+#expression_scatter_empty { float: right; }
+#expression_scatter_legend { float: left; }
 
-#expression_scatter {
-	background: #688928;
-	float: left;
-}
+#expression_heatmap { float: left; overflow-y: auto; }
 
-#expression_scatter_empty {
-	float: right;
-}
+#expression_signature { float: left; }
 
-#expression_scatter_legend {
-	background: #839152;
-	float: left;
-}
-
-#expression_heatmap {
-	background: #515136;
-	float: left;
-}
-
-#expression_geneset {
-	background: #917581;
-	float: left;
-}
-
-#expression_color_gradient {
-	background: #415251;	
-	float: left;
-}
+#expression_color_gradient { float: left; }
 #landscape_title { background: #EFEFEF; padding-left: 15%; padding-top: 0.3%; font-size: 30px; font-weight: bold; font-family: initial; text-shadow: 2px 1px #D6D6D6; }
 
 #landscape_sample { float: left; overflow-x: hidden; overflow-y: hidden; }
@@ -122,12 +98,12 @@
   transition: all .5s ease;
   position: relative;
   color: #474747;
-  text-align: left
+  text-align: left;
 }
 .drop-menu .select {
     cursor: pointer;
     display: block;
-    padding: 10px
+    /*padding: 10px*/
 }
 .drop-menu .select i {
     font-size: 13px;
@@ -137,19 +113,19 @@
     float: right;
 }
 .drop-menu:hover {
-    box-shadow: 0 0 4px rgb(204, 204, 204)
+    box-shadow: 0 0 4px rgb(204, 204, 204);
 }
 .drop-menu:active {
-    background-color: #f8f8f8
+    background-color: #f8f8f8;
 }
 .drop-menu.active:hover,
 .drop-menu.active {
     box-shadow: 0 0 4px rgb(204, 204, 204);
     border-radius: 5px 5px 0 0;
-    background-color: #f8f8f8
+    background-color: #f8f8f8;
 }
 .drop-menu.active .select i {
-    transform: rotate(180deg)
+    transform: rotate(180deg);
 }
 .drop-menu .dropeddown {
     position: absolute;
@@ -163,24 +139,24 @@
     display: none;
     max-height: 144px;
     overflow-y: auto;
-    z-index: 9
+    z-index: 9;
 }
 .drop-menu .dropeddown li {
     padding: 10px;
     transition: all .2s ease;
-    cursor: pointer
+    cursor: pointer;
 } 
 .drop-menu .dropeddown {
     padding: 0;
-    list-style: none
+    list-style: none;
 }
 .drop-menu .dropeddown li:hover {
     background-color: #5B5959;
-    color: #fff
+    color: #fff;
 }
 .drop-menu .dropeddown li:active {
     background-color: #512DA8;
-    color: #fff
+    color: #fff;
 }
 body {
   /*padding: 50px;

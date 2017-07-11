@@ -67,6 +67,10 @@ var axis = (function (axis)	{
 			채운다.
 		 */
 		tickValues: function (d, n)	{
+			if (util.varType(n) === 'Array')	{
+				return n;
+			}
+
 			var v = (util.minmax(d).max / (n - 1)),
 					r = [];
 
@@ -83,10 +87,11 @@ var axis = (function (axis)	{
 				s = draw.size(model.current),
 				p = d.position || [m.top, m.left],
 				c = scale.get(d.data, [m.left, s.w - m.right]),
-				g = render.addGroup(model.current, p[0], p[1]);
+				g = render.addGroup(model.current, p[0], p[1]),
+				o = d.opt ? d.opt : {};
 
 		return g.call(options(byVersion(c, 'top'), d.opt, d.data)), 
-					 isRemove(g, d.opt.remove), g;
+					 isRemove(g, o.remove), g;
 	};
 	/*
 		축이 종 방향이고 축의 값이 왼쪽에 표기될때 호출되는 함수.
@@ -96,10 +101,11 @@ var axis = (function (axis)	{
 				s = draw.size(model.current),
 				p = d.position || [m.top, s.w - m.right],
 				c = scale.get(d.data, [m.top, s.h - m.bottom]),
-				g = render.addGroup(model.current, p[0], p[1]);
+				g = render.addGroup(model.current, p[0], p[1]),
+				o = d.opt ? d.opt : {};
 
 		return g.call(options(byVersion(c, 'left'), d.opt, d.data)), 
-					 isRemove(g, d.opt.remove), g;
+					 isRemove(g, o.remove), g;
 	};
 
 	axis.bottom = function (d)	{
@@ -107,10 +113,11 @@ var axis = (function (axis)	{
 				s = draw.size(model.current),
 				p = d.position || [s.h - m.bottom, m.left],
 				c = scale.get(d.data, [m.left, s.w - m.right]),
-				g = render.addGroup(model.current, p[0], p[1]);
+				g = render.addGroup(model.current, p[0], p[1]),
+				o = d.opt ? d.opt : {};
 
 		return g.call(options(byVersion(c, 'bottom'), d.opt, d.data)), 
-					 isRemove(g, d.opt.remove), g;
+					 isRemove(g, o.remove), g;
 	};
 
 	axis.right = function (d)	{
@@ -118,10 +125,11 @@ var axis = (function (axis)	{
 				s = draw.size(model.current),
 				p = d.position || [m.top, m.left],
 				c = scale.get(d.data, [m.top, s.h - m.bottom]),
-				g = render.addGroup(model.current, p[0], p[1]);
+				g = render.addGroup(model.current, p[0], p[1]),
+				o = d.opt ? d.opt : {};
 
 		return g.call(options(byVersion(c, 'right'), d.opt, d.data)), 
-					 isRemove(g, d.opt.remove), g;
+					 isRemove(g, o.remove), g;
 	};
 
 	return axis;
@@ -134,9 +142,8 @@ var bar = (function (bar)	{
 		bar 의 방향에 따라 range 값을 반환해주는 함수.
 	 */
 	function range (d) {
-		var s = draw.size(model.e),
-				x = [model.m.left, (model.w || s.w) - model.m.right], 
-				y = [model.m.top, (model.h || s.h) - model.m.bottom];
+		var x = [model.m.left, model.w - model.m.right], 
+				y = [model.m.top, model.h - model.m.bottom];
 
 		return {
 			x: d === 'top' || d === 'bottom' || d === 'right' ? 
@@ -157,16 +164,15 @@ var bar = (function (bar)	{
 													util.varType(o.element) === 'Array' ? 
 							o.element : (/\W/).test(o.element[0]) ? 
 							d3.select(o.element) : d3.select('#' + o.element);
-		model.w = o.width || null;
-		model.h = o.height || null;
+		model.w = o.width || model.e.attr('width') || 0;
+		model.h = o.height || model.e.attr('height') || 0;
 		model.m = size.setMargin(o.margin);
-		model.t = model.m.top || 0;
-		model.l = model.m.left || 0;
-		model.g = render.addGroup(model.e, model.t, model.l);
-		model.dx = o.xaxis;
-		model.dy = o.yaxis;
-		model.sx = setScale(o.direction, o.xaxis, 'x');
-		model.sy = setScale(o.direction, o.yaxis, 'y');
+		model.dr = o.direction || 'top';
+		model.g = render.addGroup(model.e, model.m.top, model.m.left);
+		model.dx = new Array().concat(o.xaxis);
+		model.dy = new Array().concat(o.yaxis);
+		model.sx = setScale(model.dr, model.dx, 'x');
+		model.sy = setScale(model.dr, model.dy, 'y');
 
 		var id = model.e.attr('id');
 		/*
@@ -177,27 +183,31 @@ var bar = (function (bar)	{
 			data: o.data,
 			attr: {
 				id: function (d) { return id + '_rect'; },
-				x: function (d) { 
-					return o.attr.x ? o.attr.x.call(model, d) : o.attr.x(d); 
+				x: function (d, i) { 
+					return o.attr.x ? 
+								 o.attr.x.call(model, d, i) : o.attr.x(d); 
 				},
-				y: function (d) { 
-					return o.attr.y ? o.attr.y.call(model, d) : o.attr.y(d); 
+				y: function (d, i) { 
+					return o.attr.y ? 
+								 o.attr.y.call(model, d, i) : o.attr.y(d); 
 				},
-				width: function (d) { 
-					return o.attr.width ? o.attr.width.call(model, d) : 
-								 o.attr.width(d); 
+				width: function (d, i) { 
+					return o.attr.width ? 
+								 o.attr.width.call(model, d, i) : 10; 
 				},
-				height: function (d) { 
-					return o.attr.height ? o.attr.height.call(model, d) : 
-								 o.attr.height(d); 
+				height: function (d, i) { 
+					return o.attr.height ? 
+								 o.attr.height.call(model, d, i) : 10; 
 				},
 			},
 			style: {
-				fill: function (d) { 
-					return o.style.fill ? o.style.fill(d) : '#000000'; 
+				fill: function (d, i) { 
+					return o.style.fill ? 
+								 o.style.fill.call(model, d, i) : '#000000'; 
 				},
-				stroke: function (d) { 
-					return o.style.stroke ? o.style.stroke(d) : '#FFFFFF'; 
+				stroke: function (d, i) { 
+					return o.style.stroke ? 
+								 o.style.stroke.call(model, d, i) : '#FFFFFF'; 
 				},
 			},
 		});
@@ -205,10 +215,74 @@ var bar = (function (bar)	{
 		return model;
 	};
 }(bar || {}));
+var colorGradient = (function (colorGradient)	{
+	'use strict';
+
+	var model = {};
+	/*
+		Offset 과 색상을 설정하고 배열에 넣어주는 함수.
+	 */
+	function setOffset (off, col)	{
+		model.offsets.show.push({offset: off, color: col});
+		model.offsets.data.push({offset: off, color: col});
+	};
+	/*
+		Gradiend 색상과 비율을 설정해주는 함수.
+	 */
+	function makeColorRate (o, c)	{
+		var mm = util.minmax(o),
+				cpo = new Array().concat(o)
+												 .splice(1, o.length - 2);
+
+		setOffset('0%', c[0]);
+		util.loop(cpo, function (d, i)	{
+			var v = Math.round((mm.max - mm.min) / d * 10);
+
+			model.offsets.show.push({ 
+				offset: v - model.adj + '%', 
+				color: c[i + 1] 
+			});
+			model.offsets.data.push({ 
+				offset: v + '%', 
+				color: c[i + 1] 
+			});
+		});
+
+		setOffset('100%', c[o.length - 1]);
+	};
+
+	return function (o)	{
+		model = {offsets: {show:[], data: []}};
+		model.e = o.element = util.varType(o.element) === 'Object' || 
+													util.varType(o.element) === 'Array' ? 
+							o.element : (/\W/).test(o.element[0]) ? 
+							d3.select(o.element) : d3.select('#' + o.element);
+		model.adj = o.adjustValue || 0;
+		model.id = o.id || 'linear_gradient';
+		model.colors = o.colors || ['#000000', '#FFFFFF'];
+		model.offset = o.offset || [0, 100];
+		model.defs = model.e.append('defs');
+		model.lineGradient = 
+		model.defs.append('linearGradient').attr('id', model.id);
+
+		makeColorRate(model.offset, model.colors)
+		// Linear Gradient setting.
+		model.lineGradient
+			.selectAll('stop')
+		  .data(model.offsets.show)
+		  .enter().append('stop')
+		  .attr('offset', function (d) { return d.offset; })
+		  .attr('stop-color', function (d) { return d.color; });
+
+		return model;
+	};
+
+}(colorGradient||{}));
 'use strict';
 
 var config = {
 	exclusivity: {},
+	expression: {},
 	landscape: {},
 	variants: {},
 };
@@ -626,18 +700,21 @@ config.exclusivity.heatmap = {
 };
 
 config.exclusivity.division = {
-	margin: [11, 40, 0, 48],
-	dashed: '4, 5',
+	margin: [10, 40, 0, 50],
 	attr: {
-		x: function (d) {return this.sx ? this.sx(d.value) : 0;},
-		y: function (d) {return this.sy ? this.sy(d.value) : 0;},
-		width: function (d) {return this.direction === 'h' ? d.size : this.w;},
-		height: function (d) {return this.direction !== 'h' ? d.size : this.h;},
+		x: function (d, i) {return i > 0 ? this.isText ? this.scale(this.axis[this.axis.length - 1]) - draw.getTextWidth(d.text.toUpperCase()) + this.padding * 1.5 : this.scale(d.point) : this.isText ? this.m.left + this.padding : this.m.left;},
+		y: function (d) {return this.isText ? this.m.top + (this.textHeight + this.padding): this.m.top;},
+		width: function (d, i) {return i > 0 ? this.w - this.scale(d.point) - this.m.right : this.scale(d.point) - this.m.left;},
+		height: function (d) {return this.textHeight + this.padding * 4;},
+		rx: function (d) {return 3;},
+		ry: function (d) {return 3;},
 	},
 	style: {
-		fill: function (d, i) {return d.color;},
-		stroke: function (d, i)	{return '#FFFFFF';},
-	}
+		fill: function (d, i) {return this.isText ? '#FFFFFF' : d.color;},
+		stroke: function (d, i)	{return this.isLine ? '#000000' : '#FFFFFF';},
+		dashed: function (d, i) {return '4,2'},
+	},
+	text: function (d, i)	{return d.text;},
 };
 // ============================ Mutual Exclusivity ==================================
 // ============================ Variants ==================================
@@ -782,143 +859,305 @@ config.variants.patient = {
 	},
 };
 // ============================ Variants ==================================
+// ============================ Expression ==================================
+config.expression.legend = {
+	bar: {
+		margin: [5, 5, 5, 5],
+		text: function (d) {return draw.textOverflow(d, '10px', this.w * 0.7);},
+		attr: {
+			x: function (d, i) {return this.isText ? this.m.left + this.p * 2 : this.p;},
+			y: function (d, i) {
+				return this.isText ? this.mh * i + this.mh / 2.5 : this.mh * i;},
+			width: function (d, i) {return this.mh / 3;}, 
+			height: function (d, i) {return this.mh / 2.5;},
+		},
+		style: {
+			fill: function (d, i) {return '#000000';},
+			stroke: function (d, i) {return '#FFFFFF';},
+			fontSize: function (d) {return '10px';}
+		},
+	},
+	scatter: {
+		margin: [30, 10, 10, 10],
+		text: function (d) {return d;},
+		attr: {
+			x: function (d, i) {return this.isText ? this.m.left + this.m.right : this.p;},
+			y: function (d, i) {return this.isText ? (this.mh * i) + this.p / 1.2: (this.mh * i);},
+			r: function (d, i)	{return this.p;},
+		},
+		style: {
+			fill: function (d, i) {return d === 'Alive' ? '#5D5DD8' : '#D86561';},
+			fontSize: function (d) {return '12px';},
+		},
+	},
+};
+
+config.expression.scatter = {
+	margin: [10, 30, 30, 20],
+	attr: {
+		x: function (d, i) {return this.sx(d.x) - this.m.left;},
+		y: function (d, i) {return this.sy(d.y);},
+		r: function (d, i) {return this.ss;},
+	},
+	style: {
+		fill: function (d, i) {return d.value === undefined ? '#333333' : d.value === 1 ? '#D86561': '#5D5DD8';},
+		fillOpacity: function (d, i) {return '0.6';},
+	},
+};
+
+config.expression.bar = {
+	margin: [10, 30, 50, 20],
+	attr: {
+		x: function (d, i) {return this.sx(d.x) - this.m.left;},
+		y: function (d, i) {return (d.y - d.value) < 0 ? this.sy(d.value) : this.sy(d.y);},
+		width: function (d, i) {return scale.compatibleBand(this.sx);},
+		height: function (d, i) {
+			return (d.y - d.value) < 0 ? 
+			this.sy(d.y) - this.sy(d.value) : 
+			this.sy(d.value) - this.sy(d.y);},
+	},
+	style: {
+		fill: function (d, i) {
+			if (d.y - d.value === 0)	{
+				return '#000';
+			}
+			return '#62C2E0';
+		},
+		stroke: function (d, i) {
+			if (d.y - d.value === 0)	{
+				return '#000';
+			}
+			return '#62C2E0';
+		},
+	},
+};
+
+config.expression.heatmap = {
+	margin: [10, 30, 0, 20],
+	attr: {
+		x: function (d, i) {return this.sx(d.x) - this.m.left;},
+		y: function (d, i) {return this.sy(d.y);},
+		width: function (d, i) {return scale.compatibleBand(this.sx);},
+		height: function (d, i) {return scale.compatibleBand(this.sy);},
+	},
+};
+
+config.expression.division = {
+	margin: [0, 30, 25, 20],
+	marginScatter: [0, 30, 10, 20],
+	attr: {
+		x: function (d, i) {
+			return i > 0 ? 
+						this.isText ? this.scale(this.axis[this.axis.length - 1]) - draw.getTextWidth(d.text.toUpperCase(), this.font) + this.padding : 
+						this.scale(d.point) : 
+						this.isText ? this.scale(this.axis[0]) + this.padding : this.scale(this.axis[0]);
+			return i > 0 ? this.isText ? this.w - draw.getTextWidth(d.text.toUpperCase(), this.font) - this.m.right : this.scale(d.point) : this.isText ? this.m.left + this.padding * 2 : this.m.left;},
+		y: function (d) {return this.isText ? this.h - this.m.bottom + this.textHeight - this.padding : this.h - this.m.bottom;},
+		width: function (d, i) {
+			return i > 0 ? 
+			this.scale(this.axis[this.axis.length - 1]) - 
+			this.scale(d.point) - this.m.left : 
+			this.scale(d.point) - this.m.left;
+		},
+		height: function (d) {return this.textHeight + this.padding * 2;},
+		rx: function (d, i) {return 3;},
+		ry: function (d, i) {return 3;},
+	},
+	style: {
+		fill: function (d, i) {return this.isText ? '#F1F1F1' : d.color;},
+		stroke: function (d, i)	{return this.isLine ? '#000000' : '#FFFFFF';},
+		dashed: function (d, i) {return '4, 2';},
+	},
+	text: function (d, i)	{return d.text;},
+	figure: {
+		data: function (d)	{return this.id.indexOf('bar') > 0 ? [d[0]] : [d[1]];},
+		attr: {
+			id: function (d, i) {return this.id + '_marker';},
+			cx: function (d, i) {return this.scale(this.point);},
+			cy: function (d, i) {return this.id.indexOf('scatter') > 0 ? this.h - this.m.bottom + 4 : this.lineStart - 4;},
+			r: function (d, i) {return 3;},
+		},
+		style: {
+			fill: function (d, i)	{ return d.color; },
+		},
+	},
+};
+// ============================ Expression ==================================
 var divisionLine = (function (divisionLine)	{
 	'use strict';
 
 	var model = {};
-	/*
-		도형이 색칠될 길이를 구해주는 함수.
-	 */
-	function setShapeSize ()	{
-		return {
-			first: model[model.sw](model.point)
-					 - model[model.sw](model.a[0]),
-			last: model[model.sw](model.a[model.a.length - 1])
-				  - model[model.sw](model.point),
-		};
-	};
-	/*
-		문자열의 높이를 설정해주는 함수.
-	 */
-	function setTextHeight (h, t)	{
-		var b = 1,
-				h = h / 3;
 
-		while (draw.getTextHeight(b + 'px').height < h)	{
-			b += 1;
-		}
-
-		return b + 'px';
-	};
-
-	return function (o)	{
+	return function (o) {
 		model = {};
 		model.e = o.element = util.varType(o.element) === 'Object' || 
 													util.varType(o.element) === 'Array' ? 
 							o.element : (/\W/).test(o.element[0]) ? 
 							d3.select(o.element) : d3.select('#' + o.element);
 		model.m = size.setMargin(o.margin);
-		model.s = draw.size(model.e);
-		model.t = model.m.top || 0;
-		model.l = model.m.left || 0;
-		model.direction = o.direction || 'h';
-		model.point = o.point || 0;
-		model.a = o.axis;
-		model.sw = 's' + (model.direction === 'h' ? 'x' : 'y');
-		model[model.sw] = scale.get(o.axis, model.direction === 'h' ? 
-	 [model.m.left, model.s.w - model.m.right] : 
-	 [model.m.top, model.s.h - model.m.bottom]);
-		model.g = render.addGroup(model.e, model.t, model.l);
-		model.lg = render.addGroup(model.e, model.t, model.l);
-		model.h = o.height || 30;
-		model.w = o.width || 30;
-		model.th = setTextHeight(model.h);
-
-		model.line = (util.d3v4() ? d3.line() : d3.svg.line())
-								 .x(function (d) { return d.x; })
-								 .y(function (d) { return d.y; });
-
-		var s = setShapeSize();
-
-		render.rect({
-			element: model.g.selectAll('#' + model.e.attr('id') + '_div'),
-			data: [
-				{ value: o.axis[0], color: o.color[0], size: s.first }, 
-				{ value: o.point, color: o.color[1], size: s.last }
-			],
-			attr: {
-				id: function (d) { return model.e.attr('id') + '_div'; },
-				x: function (d) { 
-					return o.attr.x ? o.attr.x.call(model, d) : 0; 
-				},
-				y: function (d) { 
-					return o.attr.y ? o.attr.y.call(model, d) : 0; 
-				},
-				width: function (d) { 
-					return o.attr.width ? o.attr.width.call(model, d) : model.w; 
-				},
-				height: function (d) { 
-					return o.attr.height ? o.attr.height.call(model, d) : model.h; 
-				},
-				rx: 5,
-				ry: 5,
-			},
-			style: {
-				fill: function (d, i) { 
-					return o.style.fill ? o.style.fill.call(model, d, i) : '#000000'; 
-				},
-				stroke: function (d, i) { 
-					return o.style.stroke ? o.style.stroke.call(model, d, i) : '#FFFFFF'; 
-				},
-			},
+		model.id = model.e.attr('id');
+		model.w = o.width || model.e.attr('width');
+		model.h = o.height || model.e.attr('height');
+		model.g = render.addGroup(model.e, model.m.top, model.m.left);
+		model.axis = (o.xaxis || o.yaxis || ['']);
+		model.scale = scale.get(model.axis, 
+			(o.xaxis ? [model.m.left, model.w - model.m.right] : 
+								 [model.m.top, model.h - model.m.bottom]));
+		model.point = util.varType(o.point) === 'Array' ? 
+									util.median(o.point) : o.point;
+		model.font = o.font || '10px';
+		model.padding = o.padding || 5;
+		model.textHeight = draw.getTextHeight(model.font).height;
+		// Data is..
+		// { color: 'color', text: 'text', point: 'model.point' };
+		model.data = o.data.map(function (d)	{
+			return d.point = model.point, d;
 		});
+		model.line = (util.d3v4() ? d3.line() : d3.svg.line())
+									.x(function (d) { return d.x; })
+									.y(function (d) { return d.y; });
+		model.lineStart = o.lineStart || 0;
+		model.showRect = o.showRect === undefined && 
+										 o.showRect !== false ? true : o.showRect;
+		model.showText = o.showText === undefined && 
+										 o.showText !== false ? true : o.showText;
+		model.showLine = o.showLine === undefined && 
+										 o.showLine !== false ? true : o.showLine;
+		model.marker = o.marker === undefined && 
+									 o.marker !== false ? false : 
+									(o.marker || 'circle');
 
-		render.text({
-			element: model.g.selectAll('#' + model.e.attr('id') + '_text'),
-			data: [{ text: o.text[0] }, { text: o.text[1] }],
-			attr: {
-				id: model.e.attr('id') + '_text',
-				x: function (d, i) {
-					return i === 0 ? 
-								 model[model.sw](model.a[0]) + 5 : 
-								 model[model.sw](model.a[model.a.length - 1]) - 5;
+		if (model.showRect)	{
+			render.rect({
+				element: model.g.selectAll('#' + model.id + '_rect'),
+				data: model.data,
+				attr: {
+					id: function (d) { return model.id + '_rect'; },
+					x: function (d, i)	{
+						return o.attr.x ? o.attr.x.call(model, d, i) : 0;
+					},
+					y: function (d, i)	{
+						return o.attr.y ? o.attr.y.call(model, d, i) : 0;
+					},
+					width: function (d, i)	{
+						return o.attr.width ? 
+									 o.attr.width.call(model, d, i) : 0;
+					},
+					height: function (d, i)	{
+						return o.attr.height ? 
+									 o.attr.height.call(model, d, i) : 0;
+					},
+					rx: function (d, i)	{
+						return o.attr.rx ? o.attr.rx.call(model, d, i) : 0;
+					},
+					ry: function (d, i)	{
+						return o.attr.ry ? o.attr.ry.call(model, d, i) : 0;
+					},
 				},
-				y: function (d, i)	{
-					return model.h - model.h * 0.25;
+				style: {
+					fill: function (d, i)	{
+						return o.style.fill ? 
+									 o.style.fill.call(model, d, i) : '#000';
+					},
+					stroke: function (d, i)	{
+						return o.style.stroke ? 
+									 o.style.stroke.call(model, d, i) : '#000';
+					},
 				},
-			},
-			style: {
-				fill: '#F1F1F1',
-				'text-anchor': function (d, i)	{
-					return i === 0 ? 'start' : 'end';
-				},
-				'alignment-baseline': 'middle',
-				// TODO.
-				// bar 에 맞는 글자 크기를 설정하여야 한다.
-				'font-size': model.th,
-				'font-weight': 'bold',
-				'text-shadow': '1px 1px rgba(0, 0, 0, 0.5)',
-			},
-			text: function (d)	{
-				return d.text;
-			},
-		})
+			});
+		}
 
-		render.line({
-			element: model.lg,
-			attr: {
-				id: function (d) { return model.e.attr('id') + '_line'; },
-				d: model.line([
-					{ x: model[model.sw](model.point), y: model.h},
-					{ x: model[model.sw](model.point), y: model.s.h }
-				]),
-				'stroke-dasharray': o.dashed || '0',
-				'stroke-width': 0.8,
-			},
-			style: {
-				stroke: '#000000',
-			},
-		})
+		if (model.showText)	{
+			render.text({
+				element: model.g.selectAll('#' + model.id + '_text'),
+				data: model.data,
+				attr:{
+					id: function (d) { 
+						return model.isText = true, model.id + '_text'; },
+					x: function (d, i)	{
+						return o.attr.x ? o.attr.x.call(model, d, i) : 0;
+					},
+					y: function (d, i)	{
+						return o.attr.y ? o.attr.y.call(model, d, i) : 0;
+					},
+				},
+				style: {
+					fill: function (d, i)	{
+						return o.style.fill ? 
+									 o.style.fill.call(model, d, i) : '#000';
+					},
+					'alignment-baseline': 'middle',
+					'font-size': model.font,
+				},
+				text: function (d, i) { 
+					return o.text ? o.text.call(model, d, i) : '' 
+				},
+			});
+		}
+
+		if (model.showLine)	{
+			var x = o.xaxis ? model.scale(model.point) : 
+												model.m.left + model.lineStart,
+					y = o.yaxis ? model.scale(model.point) : 
+												model.m.top + model.lineStart;
+
+			render.line({
+				element: model.g,
+				attr: {
+					id: function (d) { 
+						return model.isLine = true, model.id + '_line'; },
+					d: model.line([
+						{	x: x, y: y }, 
+						{	x: x, y: model.h - model.m.bottom }]),
+				},
+				style: {
+					stroke: function (d, i) {
+						return o.style.stroke ? 
+									 o.style.stroke.call(model, d, i) : '#000';
+					},
+					'stroke-dasharray': function (d, i)	{
+						return o.style.dashed ? 
+									 o.style.dashed.call(model, d, i) : '5, 10';
+					},
+				}
+			});
+		}
+
+		if (model.marker && model.marker === 'circle')	{
+			render.circle({
+				element: model.g.selectAll('#' + model.id + '_marker'),
+				data: o.figure.data ? 
+							o.figure.data.call(model, model.data) : model.data,
+				attr: {
+					id: function (d, i) { 
+						return o.figure.attr.id ? 
+									 o.figure.attr.id.call(model, d, i) : ''; 
+					},
+					cx: function (d, i) {
+						return o.figure.attr.cx ? 
+									 o.figure.attr.cx.call(model, d, i) : 0;
+					},
+					cy: function (d, i)	{
+						return o.figure.attr.cy ? 
+									 o.figure.attr.cy.call(model, d, i) : 0;
+					},
+					r: function (d, i)	{
+						return o.figure.attr.r ? 
+									 o.figure.attr.r.call(model, d, i) : 0;
+					}
+				},
+				style: {
+					fill: function (d, i)	{
+						return o.figure.style.fill ? 
+									 o.figure.style.fill.call(model, d, i) : 0;
+					},
+					stroke: function (d, i)	{
+						return o.figure.style.stroke ? 
+									 o.figure.style.stroke.call(model, d, i) : 0;
+					},
+				}
+			});
+		}	
 	};
 
 }(divisionLine||{}));
@@ -958,7 +1197,7 @@ var draw = (function (draw)	{
 				width = 0;
 
 		canv.id = 'get-text-width'
-		ctx.font = (font || '10px') + 'arial';
+		ctx.font = (font ? font + ' arial' : '10px arial');
 
 		document.body.appendChild(canv);
 
@@ -968,6 +1207,20 @@ var draw = (function (draw)	{
 		document.getElementById('get-text-width'));
 
 		return width;
+	};
+	/*
+		Text 배열에서 가장 긴 Text 의 길이를 반환하는 함수.
+	 */
+	draw.getMostTextWidth = function (txtArr, font)	{
+		var result = 0;
+
+		util.loop(txtArr, function (d)	{
+			var w = draw.getTextWidth(d, font);
+
+			result = result > w ? result : w;
+		});
+
+		return result;
 	};
 	/*
 		문자의 크기와 문자의 종류에 따라 해당 문자열의
@@ -1072,6 +1325,19 @@ var draw = (function (draw)	{
 			w: parseFloat(svg.attr('width')), 
 			h: parseFloat(svg.attr('height')),
 		};
+	};
+	/*
+		Width 에 대하여 font 를 가진 txt 를 자르고
+		뒤에 ellipsis 를 붙여주는 함수.
+	 */
+	draw.textOverflow = function (txt, font, width)	{
+		var fit = '';
+
+		txt.split('').some(function (d)	{
+			return draw.getTextWidth(fit += d, font) > width;
+		});
+
+		return (fit === txt) ? txt : fit + '...';
 	};
 
 	return draw;
@@ -1233,16 +1499,19 @@ var exclusive = (function ()	{
 		layout.getSVG(model.svg, ['heatmap'], function (k, v)	{
 			divisionLine({
 				element: v,
-				height: 45,
-				direction: 'h',
-				color: ['#FF6252', '#00AC52'],
+				data: [
+					{ text: 'Altered group', color: '#FF6252' },
+					{ text: 'Unaltered group', color: '#00AC52' }
+				],
+				xaxis: model.data.axis.heatmap.x[model.nowSet],
+				margin: config.exclusivity.division.margin,
+				padding: 6,
+				text: config.exclusivity.division.text,
 				attr: config.exclusivity.division.attr,
 				style: config.exclusivity.division.style,
-				text: ['Altered group', 'Unaltered group'],
-				margin: config.exclusivity.division.margin,
-				axis: model.data.axis.heatmap.x[model.nowSet],
-				point: '' + model.data.divisionIdx[model.nowSet].idx,
-				dashed: config.exclusivity.division.dashed,
+				lineStart: 40,
+				font: '12px',
+				point: model.data.divisionIdx[model.nowSet].idx + 1,
 			});
 		});
 	};
@@ -1326,50 +1595,421 @@ var exclusive = (function ()	{
 var expression = (function (expression)	{
 	'use strict';
 
-	var model = {};
+	var model = {
+		init: {
+			func: 'Average',
+			sig: null,
+			col: null,
+		},
+		now: {
+			func: null,
+			sig: null,
+			col: null,
+			osdfs: 'os',
+		},
+	};
+	/*
+		Survival 을 그리기 위해 Function 값의 
+		Median 을 기준으로 altered / unaltered 데이터를 
+		나눠주는 함수이다.
+	 */
+	function dividedData (data, med)	{
+		model.data.survival.divide = {};
 
+		util.loop(data, function (d, i)	{
+			d.value <= med ? 
+			model.data.survival.divide[d.x] = 'unaltered' : 
+			model.data.survival.divide[d.x] = 'altered';
+		});
+	};
+	/*
+		Survival Tab 의 변화에 따라서 Scatter 를 호출하며,
+		단, 이미 선택된 탭에 대해선 변화를 주지 않는다.
+	 */
+	function callScatterBySurvival (type)	{
+		if (model.now.osdfs !== type) {
+			layout.removeG(['expression_scatter_plot']);
+			drawScatter(model.now.osdfs = type, model.now.osdfs);			
+		}
+	};
+	/*
+		Survival Tab 이 변경됬을 때 호출되는 함수.
+	 */
+	function expSurvivalTabChange ()	{
+		var inp = document.getElementById('expression_survival')
+											.querySelectorAll('input');
+		// OS Tab.
+		inp[0].onclick = function (e) 	{
+			callScatterBySurvival('os');
+		};
+		// DFS Tab.
+		inp[1].onclick = function (e)	{
+			callScatterBySurvival('dfs');
+		};
+	};
+	/*
+		Survival 을 그려주는 함수.
+	 */
 	function drawSurvival ()	{
+		var e = document.querySelector('#expression_survival'),
+				w = parseFloat(e.style.width),
+				h = parseFloat(e.style.height) / 1.4;
 
+		SurvivalCurveBroilerPlate.settings = {
+			canvas_width 			 : w,
+			canvas_height 		 : h,
+		 	chart_width 			 : w - 30,
+	  	chart_height 			 : h - 30,
+		  chart_left 				 : 50,
+		  chart_top 				 : 15,
+		  include_info_table : false,
+			include_legend 		 : true,
+			include_pvalue 		 : true,
+			pval_x 						 : w - 190,
+			pval_y 						 : 42,
+		};
+
+		SurvivalCurveBroilerPlate.style = {
+		  censored_sign_size : 5,
+		  axis_stroke_width  : 1,
+		  axisX_title_pos_x  : w / 2,
+		  axisX_title_pos_y  : h - 25,
+		  axisY_title_pos_x  : -(w / 2) + 25,
+		  axisY_title_pos_y  : 10,
+		  axis_color 				 : "black",
+			pval_font_size 		 : 12,
+			pval_font_style 	 : 'normal',
+		};
+
+		var div = dividedData(
+				model.data.bar, model.data.axis.bar.y[1]);
+		var suv = survival({
+			element: '#expression_survival',
+			margin: [20, 20, 20, 20],
+			data: model.origin.patient_list,
+			divisionData: model.data.survival.divide,
+		});
+
+		model.data.survival.data = suv.survivalData;
+		model.data.scatter = model.data.survival.data.all;
+
+		expSurvivalTabChange();
 	};
-
+	/*
+		Bar 를 그리는 함수.
+	 */
 	function drawBar ()	{
+		layout.getSVG(model.svg, ['bar_plot'], function (k, v)	{
+			var y = model.data.axis.bar.y;
 
+			config.expression.bar.margin.splice(
+			1, 1, model.data.axisLeft);
+
+			console.log(model.data.axis)
+
+			bar({
+				element: v,
+				data: model.data.bar,
+				direction: 'bottom',
+				margin: config.expression.bar.margin,
+				attr: config.expression.bar.attr,
+				style: config.expression.bar.style,
+				xaxis: model.data.axis.bar.x,
+				yaxis: [y[2], y[0]],
+			});
+
+			axis.element(v)
+					.left({
+						margin: [10, 0, 50, v.attr('width')
+										 - model.data.axisLeft],
+						data: [y[2], y[0]],
+						opt: {
+							tickValues: y,
+						},
+					})
+					.style('stroke-width', '0.3');
+		});
 	};
-
+	/*
+		Function Select Box 와 현재 function 을 바꿔주는
+		함수.
+	 */
 	function drawFunctionOption ()	{
-
+		selectBox({
+			element: '#expression_function',
+			className: 'expression-function',
+			margin: [3, 3, 0, 0],
+			initText: 'Average',
+			viewName: 'function',
+			items: ['Average'],
+			click: function (v)	{
+				model.now.func = v;
+				console.log('Function is: ', model.now.func);
+			},
+		});
 	};
-
+	/*
+		Color Mapping 을 그려주는 함수.
+	 */
 	function drawColorMapping ()	{
+		console.log(model.data.axis.bar.x)
+		selectBox({
+			element: '#expression_color_mapping',
+			margin: [3, 3, 0, 0],
+			className: 'expression-color-mapping',
+			initText: 'Color Mapping',
+			viewName: 'color_mapping',
+			items: model.data.subtype.map(function (d)	{
+				return d.key; 
+			}),
+			click: function (v)	{
+				console.log(this, model.data.axis.bar.x)
+				model.now.col = v;
+				console.log('Color mapping set is: ', model.now.col);
+				model.data.subtype.some(function (d)	{
+					return model.now.colorSet = d.value, 
+								 model.now.col === d.key;
+				});
 
+				layout.removeG([
+					'expression_bar_legend', 'expression_bar_plot',
+					'expression_scatter_plot'
+				]);
+
+				drawColorMappingLegend();
+				drawBar();
+				drawScatter(model.now.osdfs);
+				drawDivisionBar();
+			},
+		});
 	};
-
+	/*
+		Color Mapping 된 범례를 그려주는 함수.
+	 */
+	function drawColorMappingLegend ()	{
+		if (model.now.colorSet)	{
+			layout.getSVG(model.svg, ['bar_legend'], 
+			function (k, v)	{
+				legend({
+					element: v,
+					data: model.now.colorSet,
+					text: config.expression.legend.bar.text,
+					attr: config.expression.legend.bar.attr,
+					style: config.expression.legend.bar.style,
+					margin: config.expression.legend.bar.margin,
+				})
+			});
+		}
+	};
+	/*
+		Divided line 을 그려주는 함수.
+	 */
 	function drawDivisionBar ()	{
+		var obj = {
+			padding: 3,
+			font: '12px',
+			lineStart: 20,
+			xaxis: model.data.axis.bar.x,
+			margin: config.expression.division.margin,
+			point: util.median(model.data.axis.bar.x),
+			data: [
+				{ text: 'Low score group', color: '#00AC52' }, 
+				{ text: 'High score group', color: '#FF6252' }
+			],
+			text: config.expression.division.text,
+			attr: config.expression.division.attr,
+			style: config.expression.division.style,
+			figure: config.expression.division.figure,
+			marker: 'circle',
+		};
 
+		layout.getSVG(model.svg, ['bar_plot'], function (k, v)	{
+			obj.element = v;
+
+			divisionLine(obj);
+		});
+
+		layout.getSVG(model.svg, ['scatter_plot'], function (k, v)	{
+			obj.element  = v;
+			obj.lineStart = 0;
+			obj.showRect = false;
+			obj.showText = false;
+			obj.margin = config.expression.division.marginScatter;
+
+			divisionLine(obj);
+		});
 	};
+	/*
+		Scatter 를 그리는 데 필요한 데이터를 재 가공한다.
+	 */
+	function makeExpScatterData (osdfs)	{
+		var r = [];
 
-	function drawScatter ()	{
+		util.loop(model.data.scatter[osdfs], function (d)	{
+			util.loop(d, function (k, v)	{
+				if (model.data.axis.scatter.x.indexOf(k) > -1)	{
+					r.push({x: k, y: v.months, value: v.status});
+				}
+			});
+		});
 
+		return r;
+	}
+	/*
+		Scatter plot 을 그려주는 함수.
+	 */
+	function drawScatter (osdfs)	{
+		layout.getSVG(model.svg, ['scatter_plot'], 
+		function (k, v)	{
+			var y = new Array().concat(
+				model.data.axis.scatter.y[osdfs]).reverse(),
+					mm = util.minmax(y);
+			// Left Margin 을 Heatmap 최장길이 텍스트에 맞추는 
+			// 작업이다.
+			config.expression.scatter.margin.splice(
+			1, 1, model.data.axisLeft);
+
+			scatter({
+				element: v,
+				data: makeExpScatterData(osdfs),
+				margin: config.expression.scatter.margin,
+				attr: config.expression.scatter.attr,
+				style: config.expression.scatter.style,
+				xaxis: model.data.axis.scatter.x,
+				yaxis: y,
+			});
+
+			axis.element(v)
+					.left({
+						margin: [10, 0, 30, v.attr('width')
+										 - model.data.axisLeft],
+						data: y,
+						opt: {},
+					})
+					.style('stroke-width', '0.3');
+		});
 	};
-
+	/*
+		Scatter Legend 를 그려주는 함수.
+	 */
 	function drawScatterLegend ()	{
-
+		layout.getSVG(model.svg, 'scatter_legend', 
+		function (k, v)	{
+			legend({
+				element: v,
+				data: ['Alive', 'Dead'],
+				text: config.expression.legend.scatter.text,
+				attr: config.expression.legend.scatter.attr,
+				style: config.expression.legend.scatter.style,
+				margin: config.expression.legend.scatter.margin,
+			});
+		});
 	};
-
+	/*
+		Heatmap 을 그려주는 함수.
+	 */
 	function drawHeatmap ()	{
+		layout.getSVG(model.svg, ['heatmap'], function (k, v)	{
+			var th = draw.getTextHeight('12px').height,
+					ts = scale.get(model.data.axis.gradient.x,
+							 ['#FF0000', '#000000', '#00FF00']);
+			// 한 줄당 10 정도의 px 을 주기위함이다.
+			v.attr('height', model.data.axis.heatmap.y.length * th);
+			// 왼쪽 여백을 Heatmap 의 최장길이의 Text 에 맞춘다.
+			config.expression.heatmap.margin.splice(
+			1, 1, model.data.axisLeft);
 
+			heatmap({
+				element: v,
+				data: model.data.heatmap,
+				xaxis: model.data.axis.heatmap.x,
+				yaxis: model.data.axis.heatmap.y,
+				margin: config.expression.heatmap.margin,
+				attr: config.expression.heatmap.attr,
+				style: {
+					fill: function (d, i)	{
+						return ts(d.value);
+					},
+				},
+			});
+
+			axis.element(v)
+					.left({
+						margin: [10, 0, 0, v.attr('width')
+										 - model.data.axisLeft],
+						data: model.data.axis.heatmap.y,
+						opt: {
+							remove: 'path, line',
+						},
+					});
+		});
 	};
-
+	/*
+		Signature 리스트를 Select box 로 만들어주는 함수.
+	 */
 	function drawSignatureList ()	{
-
+		selectBox({
+			element: '#expression_signature',
+			className: 'expression-signature',
+			margin: [3, 3, 0, 0],
+			initText: model.init.sig,
+			viewName: 'signature',
+			items: model.origin.signature_list.map(function (d) {
+				return d.signature;
+			}),
+			click: function (v)	{
+				model.now.sig = v;
+				console.log('Signature set is: ', model.now.sig);
+			},
+		});
 	};
-
+	/*
+		Color Gradient 를 그려주는 함수.
+		현재 (2017. 07. 07) 기준으로 CGIS 와
+		값에 차이가 있지만 CGIS 는 Log 가 2번 취해진 값이다.
+		그러므로 새로 만드는 현재 버전이 맞는 값이다.
+	 */
 	function drawColorGradient ()	{
-
-	};
-
-	function drawExpression ()	{
-
+		layout.getSVG(model.svg, ['gradient'], 
+		function (k, v)	{
+			// Set Color Gradiation.
+			model.data.colorGradient = colorGradient({
+				element: v,
+				offset: model.data.axis.gradient.x,
+				adjustValue: 6,
+				colors: ['#FF0000', '#000000', '#00FF00'],
+			});
+			// Draw Linear Color Gradient Bar.
+			render.rect({
+				element: render.addGroup(v, 5, 3),
+				attr: {
+					id: k + '_rect',
+					x: 0,
+					y: 0,
+					rx: 3,
+					rx: 3,
+					width: v.attr('width') - 6,
+					height: v.attr('height') * 0.1,
+				},
+				style: {
+					fill: 'url(#' + model.data.colorGradient.id + ')',
+				},
+			});
+			// Draw Linear Color Gradient Axis.
+			axis.element(v)
+					.bottom({
+						margin: [0, 3, v.attr('height') * 0.9, 10],
+						data: [
+						model.data.axis.gradient.x[0],
+						model.data.axis.gradient.x[2]],
+						opt: {
+							tickValues: model.data.axis.gradient.x,
+							remove: 'path, line',
+						},
+					})
+					.selectAll('text')
+					.style('fill', '#999999');
+		});
 	};
 
 	return function (o)	{
@@ -1383,6 +2023,24 @@ var expression = (function (expression)	{
 		model.data = preprocessing.expression(o.data);
 		model.ids = size.chart.expression(e, w, h);
 		model.svg = layout.expression(model.ids, model);
+		// Set Initialize signature gene set.
+		model.init.sig = model.origin.signature_list[0].signature;
+		model.now.sig = model.init.sig;
+		var most = draw.getMostTextWidth(
+		model.data.axis.heatmap.y, '12px');
+		model.data.axisLeft = Math.ceil(most / 10) * 10;
+		// When the site had loaded complete, draw the chart below.
+		drawFunctionOption();
+		drawColorMapping();
+		drawColorMappingLegend();
+		drawSurvival();
+		drawBar();
+		drawDivisionBar();
+		drawScatter(model.now.osdfs);
+		drawScatterLegend();
+		drawHeatmap();
+		drawSignatureList();
+		drawColorGradient();
 
 		console.log('Expression Model data: ', model);
 	};
@@ -1411,7 +2069,7 @@ var heatmap = (function (heatmap)	{
 		같은 위치의 중복된 데이터를 제거하기 위한 데이터를 만들기 
 		위한 데이터를 새로 만들어주는 함수.
 	 */
-	function prepareRemoveDuplication (data)	{
+	function removeDuplicate (data)	{
 		util.loop(data, function (d, i)	{
 			var k = d.x + d.y,
 					p = config.landscape.case(d.value);
@@ -1430,7 +2088,8 @@ var heatmap = (function (heatmap)	{
 	};
 
 	return function (o)	{
-		// repaint 할 때, 중복되며 표시되므로 이를 방지하기 위해 초기화를 시켜준다.
+		// repaint 할 때, 중복되며 표시되므로 이를 방지하기 위해 초기화를 
+		// 시켜준다.
 		model = { mt: ['cnv', 'var'], v: {}, d: [] };
 		model.e = o.element = util.varType(o.element) === 'Object' || 
 													util.varType(o.element) === 'Array' ? 
@@ -1438,27 +2097,46 @@ var heatmap = (function (heatmap)	{
 							d3.select(o.element) : d3.select('#' + o.element);
 		model.s = draw.size(model.e);
 		model.m = size.setMargin(o.margin);
-		model.t = model.m.top || 0;
-		model.l = model.m.left || 0;
-		model.g = render.addGroup(model.e, model.t, model.l);
+		model.g = render.addGroup(model.e, model.m.top, model.m.left);
 		model.sx = scale.get(o.xaxis, 
-							[model.m.left, (o.width || model.s.w) - model.m.right]);
+							[model.m.left, (o.width || model.s.w) - 
+							 model.m.right]);
 		model.sy = scale.get(o.yaxis, 
-							[model.m.top, (o.height || model.s.h) - model.m.bottom]);
+							[model.m.top, (o.height || model.s.h) - 
+							 model.m.bottom]);
+
+		var id = model.e.attr('id');
 
 		render.rect({
-			element: model.g.selectAll('#' + model.e.attr('id') + '_rect'),
-			data: o.dup ? (prepareRemoveDuplication(o.data), model.d) : o.data,
+			element: model.g.selectAll('#' + id + '_rect'),
+			data: o.dup ? 
+						(removeDuplicate(o.data), model.d) : o.data,
 			attr: {
-				id: function (d) { return model.e.attr('id') + '_rect'; },
-				x: function (d) { return o.attr.x.call(model, d); },
-				y: function (d) { return o.attr.y.call(model, d); },
-				width: function (d) { return o.attr.width.call(model, d); },
-				height: function (d) { return o.attr.height.call(model, d); },
+				id: function (d, i) { return id + '_rect'; },
+				x: function (d, i) { 
+					return o.attr.x ? o.attr.x.call(model, d, i) : 0; 
+				},
+				y: function (d, i) { 
+					return o.attr.y ? o.attr.y.call(model, d, i) : 0; 
+				},
+				width: function (d, i) { 
+					return o.attr.width ? 
+								 o.attr.width.call(model, d, i) : 0; 
+				},
+				height: function (d, i) { 
+					return o.attr.height ? 
+								 o.attr.height.call(model, d, i) : 0; 
+				},
 			},
 			style: {
-				fill: function (d) { return o.style.fill(d); },
-				stroke: function (d) { return o.style.stroke(d); },
+				fill: function (d, i) { 
+					return o.style.fill ? 
+								 o.style.fill.call(model, d, i) : '#000000'; 
+				},
+				stroke: function (d, i) { 
+					return o.style.stroke ? 
+								 o.style.stroke.call(model, d, i) : false; 
+				},
 			},
 		});
 
@@ -2286,12 +2964,32 @@ var layout = (function (layout)	{
 		return model[t];
 	};
 	/*
+		SVG 를 가져오는데 필요한 조건을 충족시키지 못하면
+		발생하는 에러이다.
+	 */
+	function getSVGError (args)	{
+		var a = Array.prototype.slice.call(args),
+				ta = a.map(function (d)	{
+					return util.varType(d);
+				});
+
+		if (ta.indexOf('Object') < 0)	{
+			throw new Error ('Not found svg set');
+		} else if (ta.indexOf('Function') < 0)	{
+			throw new Error ('Not found CallBack function');
+		}
+	};
+	/*
 		사용자가 전달한 id set (i) 에 맞는 svg 들을 
 		콜백함수로 반환하는 함수.
 	 */
 	layout.getSVG = function (s, i, cb)	{
+		getSVGError(arguments);
+
+		i = util.varType(i) === 'Array' ? i : [i];
+
 		util.loop(s, function (k, v)	{
-			util.loop(i, function (d, j)	{
+			util.loop((i || ['']), function (d, j)	{
 				if (k.indexOf(d) > -1)	{
 					return cb(k, v);
 				}
@@ -2299,10 +2997,22 @@ var layout = (function (layout)	{
 		});
 	};
 	/*
+		Specific 된 svg 가 없을 경우,
 		'g-tag' 클래스를 가진 g tag 를 모두 지워주는 함수.
 	 */
-	layout.removeG = function ()	{
-		d3.selectAll('svg .g-tag').remove();
+	layout.removeG = function (specify)	{
+		if (specify)	{
+			specify = util.varType(specify) === 'Array' ? 
+			specify : [specify];
+
+			util.loop(specify, function (d)	{
+				var id = d.indexOf('#') > -1 ? d : '#' + d;
+
+				d3.selectAll(id + ' svg .g-tag').remove();
+			});
+		} else {
+			d3.selectAll('svg .g-tag').remove();
+		}
 	};	
 	/*
 		ID (select_geneset, network, survival) 를 
@@ -2332,7 +3042,9 @@ var layout = (function (layout)	{
 		svg 태그를 만들어 div 태그에 삽입한다.
 	 */
 	layout.expression = function (ids)	{
-		return create(['title'], 'expression', ids);
+		return create([
+			'title', 'function', 'color_mapping', 'signature'
+		], 'expression', ids);
 	};
 
 	return layout;
@@ -2355,7 +3067,8 @@ var legend = (function (legend)	{
 
 	return function (o)	{
 		model = {};
-		model.d = o.data.sort(function (a, b)	{
+		model.d = !o.priority ? o.data : 
+		o.data.sort(function (a, b)	{
 			return o.priority(a) > o.priority(b) ? 1 : -1;
 		});
 		model.e = o.element = util.varType(o.element) === 'Object' || 
@@ -2363,8 +3076,8 @@ var legend = (function (legend)	{
 							o.element : (/\W/).test(o.element[0]) ? 
 							d3.select(o.element) : d3.select('#' + o.element);
 		model.m = size.setMargin(o.margin);
-		model.w = model.e.attr('width'),
-		model.h = model.e.attr('height'),
+		model.w = model.e.attr('width');
+		model.h = model.e.attr('height');
 		model.t = model.m.top || 0;
 		model.l = model.m.left || 0;
 		model.p = o.padding || 5;
@@ -2374,7 +3087,8 @@ var legend = (function (legend)	{
 		model.mw = getMostWidthOfText(model.d, '10px Arial');
 		model.mh = draw.getTextHeight('10px Arial').height;
 		model.dr = (model.w - model.m.left - model.m.right)
-						 > (model.h - model.m.top - model.m.bottom) ? 'h' : 'v';
+						 > (model.h - model.m.top - model.m.bottom) ? 
+						 	 'h' : 'v';
 
 		var id = model.e.attr('id');
 
@@ -2410,8 +3124,8 @@ var legend = (function (legend)	{
 				attr: {
 					id: function (d) { return id + '_triangle'; },
 					points: function (d, i) { 
-						return o.attr.points ? o.attr.points.call(model, d, i) : 
-									 [0, 0];
+						return o.attr.points ? 
+									 o.attr.points.call(model, d, i) : [0, 0];
 					},
 				},
 				style: {
@@ -2422,7 +3136,8 @@ var legend = (function (legend)	{
 						return o.style.stroke ? o.style.stroke(d) : false;
 					},
 					'stroke-width': function (d)	{
-						return o.style.strokeWidth ? o.style.strokeWidth(d) : '1px';
+						return o.style.strokeWidth ? 
+									 o.style.strokeWidth(d) : '1px';
 					},
 				},
 			});
@@ -2439,10 +3154,12 @@ var legend = (function (legend)	{
 						return o.attr.y ? o.attr.y.call(model, d, i) : 0;
 					},
 					width: function (d, i) { 
-						return o.attr.width ? o.attr.width.call(model, d, i) : 5; 
+						return o.attr.width ? 
+									 o.attr.width.call(model, d, i) : 5; 
 					},
 					height: function (d, i) { 
-						return o.attr.height ? o.attr.height.call(model, d, i) : 5; 
+						return o.attr.height ? 
+									 o.attr.height.call(model, d, i) : 5; 
 					},
 				},
 				style: {
@@ -2457,11 +3174,11 @@ var legend = (function (legend)	{
 		}
 
 		render.text({
-			element: model.tg.selectAll('#' + model.e.attr('id') + '_text'),
+			element: model.tg.selectAll('#' + id + '_text'),
 			data: model.d,
 			attr: {
 				id: function (d) { 
-					return (model.isText = true, model.e.attr('id') + '_text'); 
+					return (model.isText = true, id + '_text'); 
 				},
 				x: function (d, i) { 
 					return o.attr.x ? o.attr.x.call(model, d, i) : 0; 
@@ -2472,17 +3189,21 @@ var legend = (function (legend)	{
 			},
 			style: {
 				'font-size': function (d) { 
-					return o.style.fontSize ? o.style.fontSize(d) : '10px'; 
+					return o.style.fontSize ? 
+								 o.style.fontSize(d) : '10px'; 
 				},
 				'font-family': function (d) { 
-					return o.style.fontFamily ? o.style.fontFamily(d) : 'Arial'; 
+					return o.style.fontFamily ? 
+								 o.style.fontFamily(d) : 'Arial'; 
 				},
 				'alignment-baseline': function (d)	{
-					return o.style.alignmentBaseline ? o.style.alignmentBaseline : 'middel';
+					return o.style.alignmentBaseline ? 
+								 o.style.alignmentBaseline : 'middel';
 				}
 			},
 			text: function (d, i)	{ 
-				return o.text(d, i, model) || ('legend' + i); 
+				return o.text ? 
+							 o.text.call(model, d, i) : ('legend ' + i);
 			},
 		});
 	};
@@ -2503,16 +3224,17 @@ var legend = (function (legend)	{
 			bar: bar,
 			legend: legend,
 			needle: needle,
-			needleGraph: needleGraph,
-			needleNavi: needleNavi,
 			network: network,
 			heatmap: heatmap,
+			scatter: scatter,
 			survival: survival,
 		},
 		tools: {
 			selectBox: selectBox,
+			needleNavi: needleNavi,
+			needleGraph: needleGraph,
 			divisionLine: divisionLine,
-			selectGeneSet: selectGeneSet,
+			colorGradient: colorGradient,
 			landscapeSort: landscapeSort,
 			landscapeScaleOption: landscapeScaleOption,
 		},
@@ -2908,12 +3630,25 @@ var preprocessing = (function (preprocessing)	{
 	 */
 	var model = {
 		expression: {
-			heatmap: {},
+			func: {
+				default: 'average',
+				now: null,
+				avg: [],
+			},
+			tpms: [],
+			heatmap: [],
 			scatter: {},
-			bar: {},
+			subtype: [],
 			survival: {
 
-			}
+			},
+			bar: [],
+			axis: {
+				gradient: {x: {}, y: {}},
+				heatmap: {x: {}, y: {}},
+				scatter: {x: {}, y: {}},
+				bar: {x: {}, y: {}},
+			},
 		},
 		exclusivity: {
 			heatmap: {},
@@ -3539,8 +4274,187 @@ var preprocessing = (function (preprocessing)	{
 	};
 	// ============== Mutational Landscape =================
 	// ============== Expression =================
+	/*
+		Tpm 에 자연로그를 취해주는 함수.
+	 */
+	function tpmLog (tpm)	{
+		return Math.log((tpm + 1)) / Math.LN2;
+	};
+	/*
+		Scatter plot Y 축에 사용될
+		데이터를 만들어 주는 함수.
+	 */
+	function expScatterMonths (list)	{
+		exp.axis.scatter.y = {os: [], dfs: []};
+
+		util.loop(list, function (d)	{
+			// d.os_days = (!d.os_days ? 0 : d.os_days);
+			// d.dfs_days = (!d.dfs_days ? 0 : d.dfs_days);
+
+			exp.axis.scatter.y.os.push((d.os_days / 30));
+			exp.axis.scatter.y.dfs.push((d.dfs_days / 30));
+		});
+
+		var osmm = util.minmax(exp.axis.scatter.y.os),
+				dfsmm = util.minmax(exp.axis.scatter.y.dfs);
+
+		exp.axis.scatter.y.os = [osmm.min, osmm.max];
+		exp.axis.scatter.y.dfs = [dfsmm.min, dfsmm.max];
+	};
+	/*
+		Sample 별 gene 들의 Tpm 값의 합을 
+		저장하는 배열을 만드는 함수.
+	 */
+	function expTpmListBySample (d)	{
+		exp.axis.heatmap.x[d.participant_id] ? 
+		exp.axis.heatmap.x[d.participant_id].push({
+			key: d.hugo_symbol, value: d.tpm
+		}) : 
+		exp.axis.heatmap.x[d.participant_id] = [{
+			key: d.hugo_symbol, value: d.tpm
+		}];
+	};
+	/*
+		Tpm 의 최소값과 최대값을 구하는 함수.
+	 */
+	function expMinMaxTpm (tpms)	{
+		var mm = util.minmax(tpms),
+				md = util.median(tpms);
+
+		exp.axis.gradient.x = [mm.min, md, mm.max];
+		exp.axis.gradient.y = [''];
+	};
+	/*
+		Function 이 Average 일 때 호출되는 함수.
+	 */
+	function expAvgOfFunc (data)	{
+		util.loop(data, function (k, v)	{
+			var sum = 0,
+					avg = 0;
+
+			util.loop(v, function (d)	{
+				// Heatmap 의 y 축 데이터를 만들어준다.
+				// TODO.
+				// 나중에 따로 뺄 수 있는지 고민해봐야겠다.
+				exp.axis.heatmap.y[d.key] = '';
+
+				sum += d.value;
+			});
+
+			avg = sum / v.length;
+			// Bar 데이터를 만들어준다. y 는 중간값이 되므로
+			// 초기 호출된 함수에서 설정해준다.
+			exp.bar.push({ x: k, value: avg });
+			exp.func.avg.push(avg);
+		});
+		// Min, Median, Max 값도 구해준다.
+		var amm = util.minmax(exp.func.avg),
+				amd = util.median(exp.func.avg);
+
+		exp.axis.bar.y = [amm.min, amd, amm.max];
+	};
+	/*
+		Function 유형에 따라 min, median, max 값을
+		정해주는 함수.
+	 */
+	function expMinMedMaxByFunc (func, data)	{
+		return {
+			average: expAvgOfFunc(data),
+		}[func];
+	};
+	/*
+		Average function 으로 데이터를 정렬해주는
+		함수.
+	 */
+	function expAvgAlign (data)	{
+		var avg = new Array().concat(exp.func.avg),
+				r = [];
+		// Bar 데이터를 이용하여 avg 로 정리된 value 값들의
+		// index 를 대조해 Average 로 정렬된 데이터를 만들
+		// 었다.
+		util.loop(data, function (d)	{
+			r[avg.indexOf(d.value)] = d.x;
+		});
+
+		exp.axis.heatmap.x = r;
+	};
+	/*
+		Sample 의 순서를 Function 대로 다시 정해주는
+		함수.
+	 */
+	function expAlignByFunc (func, data)	{
+		return {
+			average: expAvgAlign(data),
+		}[func];
+	};
+	/*
+		Cohort 리스트를 순회하는 함수.
+		이 안에서 합과, 최소 & 최대값을 만들 것이다.
+	 */
+	function expCohortLoop (list)	{
+		var func = exp.func.now || exp.func.default;
+
+		util.loop(list, function (d, i)	{
+			d.tpm = tpmLog(d.tpm + 1);
+
+			expTpmListBySample(d);
+			exp.tpms.push(d.tpm);
+			// Heatmap 데이터를 재 포맷 해준다.
+			exp.heatmap.push({
+				x: d.participant_id, 
+				y: d.hugo_symbol,
+				value: d.tpm,
+			});
+		});
+
+		expMinMaxTpm(exp.tpms);
+		expMinMedMaxByFunc(func, exp.axis.heatmap.x);
+		expAlignByFunc(func, exp.bar);
+
+		exp.axis.heatmap.y = util.keyToArr(exp.axis.heatmap.y);
+		exp.axis.scatter.x = exp.axis.heatmap.x;
+		exp.axis.bar.x = exp.axis.heatmap.x;
+	};
+	/*
+		Subtype 에 따른 값을 정리해주는 함수.
+	 */
+	function toObjectExpSubtype (list)	{
+		var obj = {};
+
+		util.loop(list, function (d, i)	{
+			!obj[d.subtype] ? 
+			 obj[d.subtype] = [d.value] : 
+			 obj[d.subtype].push(d.value);
+		});
+
+		return obj;
+	};
+	/*
+		Subtype List 를 만드는 함수.
+	 */
+	function expSubtype (list)	{
+		var tempObj = toObjectExpSubtype(list);
+
+		util.loop(tempObj, function (k, v)	{
+			exp.subtype.push({ key: k, value: v });
+		});
+	};
+
 	preprocessing.expression = function (d)	{
-		console.log(d);
+		exp.allRna = new Array().concat(
+			d.cohort_rna_list.concat(d.sample_rna_list));
+
+		exp.genes = d.gene_list.map(function (d)	{
+			return d.hugo_symbol;
+		});
+
+		expSubtype(d.subtype_list);
+		expCohortLoop(d.cohort_rna_list);
+		expScatterMonths(d.patient_list);
+
+		util.loop(exp.bar, function (d)	{
+			d.y = exp.axis.bar.y[1];
+		});
 
 		console.log('Preprocessing of Expression: ', exp);
 		return exp;
@@ -3597,7 +4511,12 @@ var render = (function (render)	{
 	};
 
 	function defsShape (target)	{
-		var t = this.element.data(this.data).enter().append(target);
+		if (!this.element)	{
+			throw new Error ('Not defined SVG Element');
+		}
+		
+		var t = !this.data ? this.element.append(target) : 
+						 this.element.data(this.data).enter().append(target);
 
 		this.text ? setText(t, this.text) : false;
 
@@ -3652,13 +4571,15 @@ var scale = (function (scale)	{
 		len: [],
 	};
 	/**
-	 It is a function that make a domain data that is available for scale of d3's function and
+	 It is a function that make a domain data that is 
+	 available for scale of d3's function and
 	 calculate data length. 
 	 */
 	function domainData (type, data)	{
 		var result = [];
 
-		if (typeof data[0] === 'number' && typeof data[1] === 'number')	{
+		if (typeof data[0] === 'number' && 
+				typeof data[1] === 'number' && data.length < 3)	{
 			var max = Math.max(data[0], data[1]),
 					min = Math.min(data[0], data[1]),
 					len = (max + min) - min;
@@ -3672,12 +4593,14 @@ var scale = (function (scale)	{
 				type === 'ordinal' ? result : [data[0], data[1]]
 			);
 		} else {
-			return model.data.push(data), model.len.push(data.length), data;
+			return model.data.push(data), 
+						 model.len.push(data.length), data;
 		}
 	};
 	/**
 	 It is a function that generate scale about ordinal. 
-	 currently it is only use d3js but later it should changes to native code.
+	 currently it is only use d3js but later 
+	 it should changes to native code.
 	 */
 	scale.ordinal = function (domain, range)	{
 		var dd = domainData('ordinal', domain);
@@ -3688,7 +4611,8 @@ var scale = (function (scale)	{
 	}
 	/**
 	 It is a function that generate scale about linear. 
-	 currently it is only use d3js but later it should changes to native code.
+	 currently it is only use d3js but later 
+	 it should changes to native code.
 	 */
 	scale.linear = function (domain, range)	{
 		var dd = domainData('linear', domain);
@@ -3737,6 +4661,158 @@ var scale = (function (scale)	{
 
 	return scale;
 }(scale||{}));
+var scatter = (function (scatter)	{
+	'use strict';
+
+	var model = {};
+
+	return function (o)	{
+		model = {};
+		model.e = o.element = util.varType(o.element) === 'Object' || 
+													util.varType(o.element) === 'Array' ? 
+							o.element : (/\W/).test(o.element[0]) ? 
+							d3.select(o.element) : d3.select('#' + o.element);
+		model.m = size.setMargin(o.margin);
+		model.d = o.data;
+		model.w = model.e.attr('width');
+		model.h = model.e.attr('height');
+		model.t = o.top || model.m.top || 0;
+		model.l = o.left || model.m.left || 0;
+		model.f = o.fontSize || '10px';
+		model.ss = o.shapeSize || 5;
+		model.sx = scale.get(o.xaxis, [
+		model.m.left, model.w - model.m.right ]);
+		model.sy = scale.get(o.yaxis, [
+		model.m.top, model.h - model.m.bottom ]);
+		model.g = render.addGroup(model.e, model.t, model.l);
+
+		var id = model.e.attr('id');
+
+		if (o.attr.r)	{
+			render.circle({
+				element: model.g.selectAll('#' + id + '_circle'),
+				data: model.d,
+				attr: {
+					id: function (d) { return id + '_circle'; },
+					cx: function (d, i)	{
+						return o.attr.x ? o.attr.x.call(model, d, i) : 0;
+					},
+					cy: function (d, i)	{
+						return o.attr.y ? o.attr.y.call(model, d, i) : 0;
+					},
+					r: function (d, i)	{
+						return o.attr.r ? o.attr.r.call(model, d, i) : 0;
+					},
+				}, 
+				style: {
+					fill: function (d)	{
+						return o.style.fill ? o.style.fill(d) : '#000000';
+					},
+					'fill-opacity': function (d)	{
+						return o.style.fillOpacity ? 
+									 o.style.fillOpacity(d) : '1';
+					},
+					stroke: function (d)	{
+						return o.style.stroke ? o.style.stroke(d) : false;
+					},
+				},
+			})
+		} else if (o.attr.points)	{
+			render.triangle({
+				element: model.g.selectAll('#' + id + '_triangle'),
+				data: model.d,
+				attr: {
+					id: function (d) { return id + '_triangle'; },
+					points: function (d, i) { 
+						return o.attr.points ? o.attr.points.call(model, d, i) : 
+									 [0, 0];
+					},
+				},
+				style: {
+					fill: function (d)	{
+						return o.style.fill ? o.style.fill(d) : '#000000';
+					},
+					'fill-opacity': function (d)	{
+						return o.style.fillOpacity ? 
+									 o.style.fillOpacity(d) : '1';
+					},
+					stroke: function (d)	{
+						return o.style.stroke ? o.style.stroke(d) : false;
+					},
+					'stroke-width': function (d)	{
+						return o.style.strokeWidth ? o.style.strokeWidth(d) : '1px';
+					},
+				},
+			});
+		} else {
+			render.rect({	
+				element: model.g.selectAll('#' + id + '_rect'),
+				data: model.d,
+				attr: {
+					id: function (d) { return id + '_rect'; },
+					x: function (d, i) { 
+						return o.attr.x ? o.attr.x.call(model, d, i) : 0;
+					},
+					y: function (d, i) { 
+						return o.attr.y ? o.attr.y.call(model, d, i) : 0;
+					},
+					width: function (d, i) { 
+						return o.attr.width ? o.attr.width.call(model, d, i) : 5; 
+					},
+					height: function (d, i) { 
+						return o.attr.height ? o.attr.height.call(model, d, i) : 5; 
+					},
+				},
+				style: {
+					fill: function (d) { 
+						return o.style.fill ? o.style.fill(d) : '#000000'; 
+					},
+					'fill-opacity': function (d)	{
+						return o.style.fillOpacity ? 
+									 o.style.fillOpacity(d) : '1';
+					},
+					stroke: function (d) { 
+						return o.style.stroke ? o.style.stroke(d) : false; 
+					},
+				},
+			});
+		}
+
+		if (o.text)	{
+			render.text({
+				element: model.g.selectAll('#' + model.e.attr('id') + '_text'),
+				data: model.d,
+				attr: {
+					id: function (d) { 
+						return (model.isText = true, model.e.attr('id') + '_text'); 
+					},
+					x: function (d, i) { 
+						return o.attr.x ? o.attr.x.call(model, d, i) : 0; 
+					},
+					y: function (d, i) { 
+						return o.attr.y ? o.attr.y.call(model, d, i) : 0; 
+					},
+				},
+				style: {
+					'font-size': function (d) { 
+						return o.style.fontSize ? o.style.fontSize(d) : '10px'; 
+					},
+					'font-family': function (d) { 
+						return o.style.fontFamily ? o.style.fontFamily(d) : 'Arial'; 
+					},
+					'alignment-baseline': function (d)	{
+						return o.style.alignmentBaseline ? 
+									 o.style.alignmentBaseline : 'middel';
+					}
+				},
+				text: function (d, i)	{ 
+					return o.text ? o.text.call(model, d, i) : ('legend ' + i);
+				},
+			});
+		}	
+	};
+
+}(scatter||{}));
 var selectBox = (function (selectBox)	{
 	'use strict';
 
@@ -3745,13 +4821,16 @@ var selectBox = (function (selectBox)	{
 		Select Box 가 그려질 Frame 을 만드는 함수.
 	 */
 	function makeSBFrame (className)	{
-		var div = document.createElement('div');
+		var div = document.createElement('div'),
+				height = (model.h - model.m.top * 2) < 40 ? 
+								 (model.h - model.m.top * 2) : 40;
 
 		div.className = (className + ' drop-menu');
 		div.style.width = (model.w - model.m.left * 2) + 'px';
+		div.style.height = height + 'px';
 		div.style.marginLeft = model.m.left + 'px';
-		div.style.height = model.h;
-		div.style.fontSize = '14px';
+		div.style.marginTop = model.m.top + 'px';
+		div.style.fontSize = model.fontSize;
 
 		return div;
 	};
@@ -3763,8 +4842,14 @@ var selectBox = (function (selectBox)	{
 				spn = document.createElement('span'),
 				itg = document.createElement('i');
 
-		div.className = (className || '') + ' select';
-		spn.innerHTML = text || 'Select ...';
+		div.className = className + ' select';
+		// 기본값을 10으로 했는데, 그보다 더 커지면 방법을 또 
+		// 찾아야 한다.
+		div.style.paddingTop = 10 - model.m.top + 1 + 'px';
+		div.style.paddingBottom = 10 - model.m.top + 1 + 'px';
+		div.style.paddingLeft = 10 - model.m.left + 1 + 'px';
+		div.style.paddingRight = 10 - model.m.left + 1 + 'px';
+		spn.innerHTML = text;
 		itg.className = 'fa fa-chevron-down';
 
 		return div.appendChild(spn), 
@@ -3788,12 +4873,14 @@ var selectBox = (function (selectBox)	{
 		var ult = document.createElement('ul');
 
 		ult.className = 'dropeddown';
-		console.log(list)
+		
 		util.loop(list, function (d)	{
 			var lit = document.createElement('li');
 
 			lit.id = d.toLowerCase();
-			lit.innerHTML = d;
+			lit.title = d;
+			lit.innerHTML = draw.textOverflow(
+				d, model.fontSize, model.w * 0.40);
 
 			ult.appendChild(lit);
 		});	
@@ -3803,146 +4890,63 @@ var selectBox = (function (selectBox)	{
 	/*
 		Slide 동작 및 기타 동작을 실행해주는 함수.
 	 */
-	function execution (callback)	{
-		$('.drop-menu').click(function () {
+	function execution (className, callback)	{
+		// Click Event 중복 발생 금지 방법.
+		$('.' + className + '.drop-menu')
+		.unbind('click').bind('click', function (e) {
       $(this).attr('tabindex', 1).focus();
       $(this).toggleClass('active');
       $(this).find('.dropeddown').slideToggle(300);
     });
-    $('.drop-menu').focusout(function () {
+    $('.' + className + '.drop-menu').focusout(function () {
       $(this).removeClass('active');
       $(this).find('.dropeddown').slideUp(300);
     });
-    $('.drop-menu .dropeddown li').click(function () {
+    $('.' + className + '.drop-menu .dropeddown li')
+    .unbind('click').bind('click', function (e) {
       $(this).parents('.drop-menu')
       			 .find('span').text($(this).text());
       $(this).parents('.drop-menu')
+      			 .find('span').attr('title', $(this).attr('id'));
+      $(this).parents('.drop-menu')
       			 .find('input').attr('value', $(this).attr('id'));
 
-      callback.call(this, $(this).text().toLowerCase());
+      return !callback ? false : 
+       				callback.call(this, 
+       				$(this).attr('id').toLowerCase());
     });
 	};
 
 	return function (o)	{
+		// Set configurations.
+		model = {};
 		model.e = document.querySelector(o.element);
 		model.m = size.setMargin(o.margin || [0, 0, 0, 0]);
 		model.w = o.width || parseFloat(model.e.style.width);
 		model.h = o.height || parseFloat(model.e.style.height);
-		
-		var f = makeSBFrame(o.className),
-				i = initText(o.className, o.initText),
-				v = inputView(o.viewName || 'Select ...'),
-				l = addItems(o.items);
+		model.className = o.className || '';
+		model.initText = o.initText || 'Select item';
+		model.viewName = o.viewName || 'select';
+		model.fontSize = o.fontSize || '14px';
+		model.items = o.items || [''];
+		model.click = o.click || null;
+		model.frame = makeSBFrame(model.className);
+		model.initText = initText(model.className, model.initText);
+		model.viewer = inputView(model.viewName);
+		model.setItemts = addItems(model.items);
 
-		f.appendChild(i);
-		f.appendChild(v);
-		f.appendChild(l);
-		model.e.appendChild(f);
-
-		execution(o.click);
+		if (model.e.children.length < 1)	{
+			// Make select box.
+			model.frame.appendChild(model.initText);
+			model.frame.appendChild(model.viewer);
+			model.frame.appendChild(model.setItemts);
+			model.e.appendChild(model.frame);
+			// Add click event.
+			execution(model.className, model.click);
+		}
 	};
 
 }(selectBox||{}));
-var selectGeneSet = (function (selectGeneSet)	{
-	'use strict';
-
-	var model = {};
-
-	function makeLabel ()	{
-		model.l = document.createElement('label');
-	};
-	/*
-		select box 를 만드는 함수.
-	 */
-	function makeSelect (e)	{
-		model.s = document.createElement('select');
-		model.s.id = e.replace('#', '') + '_view';
-		model.l.appendChild(model.s);
-	};
-	/*
-		option 을 추가하는 함수.
-	 */
-	function addOption (o)	{
-		util.loop(o, function (d, i)	{
-			var o = document.createElement('option'),
-					g = d.join(' ');
-
-			o.text = g;
-			o.value = g;
-
-			model.s.options.add(o);
-		});
-	};
-	/*
-		Geneset 에서 문자열이 가장 킨 텍스트를 
-		반환한다.
-	 */
-	function mostLargeText (t)	{
-		var l = '';
-
-		util.loop(t, function (d, i)	{
-			var r = d.join(' ');
-			
-			l = r.length > l.length ? r : l;
-		});
-
-		return l;
-	};
-	/*
-		세로 길이에 맞는 텍스트길이 하지만
-		가로길이가 칸을 벗어나서는 안된다.
-	 */
-	function adjustText (t, w, h)	{
-		var b = 1,
-				std = mostLargeText(t);
-
-		while (draw.getTextHeight(b + 'px').height < h / 4.8)	{
-			b += 1;
-		}
-
-		model.view.style.fontSize = b + 'px';
-	};
-	/*
-		Geneset select box 의 스타일 설정을 조절해주는
-		함수.
-	 */
-	function adjustStyle (t)	{
-		model.area = document.querySelector(
-			'#exclusivity_select_geneset');
-		model.view = document.querySelector(
-			'#exclusivity_select_geneset_view');
-		model.label = document.querySelector(
-			'#exclusivity_select_geneset label');
-		var w = parseFloat(model.area.style.width),
-				h = parseFloat(model.area.style.height);
-
-		model.label.style.width = w  * 0.8 + 'px';
-		model.view.style.width = w * 0.8 + 'px';
-		model.label.style.padding = w * 0.05 + 'px';
-		model.label.style.marginTop = w * 0.03 + 'px';
-		model.label.style.marginLeft = w * 0.03 + 'px';
-
-		adjustText(t, w, h);
-	};	
-
-	selectGeneSet.set = function (o)	{
-		var e = document.querySelector(o.element);
-
-		makeLabel();
-		makeSelect(o.element);
-		addOption(o.data);
-		// register change event to select option.
-		model.s.onchange = o.change || null;
-
-		e.appendChild(model.l);
-
-		adjustStyle(o.data);
-
-		return model.s.value;
-	};
-
-	return selectGeneSet;
-}(selectGeneSet||{}));
 var size = (function (size)	{
 	'use strict';
 
@@ -4059,16 +5063,16 @@ var size = (function (size)	{
 		var ids = {
 			expression_title: {w: w, h: h * 0.05},
 			expression_survival: {w: w * 0.4, h: h * 0.95},
-			expression_bar: {w: w * 0.4, h: h * 0.4},
+			expression_bar_plot: {w: w * 0.4, h: h * 0.4},
 			expression_function: {w: w * 0.2, h: h * 0.05},
 			expression_color_mapping: {w: w * 0.2, h: h * 0.05},
 			expression_bar_legend: {w: w * 0.2, h: h * 0.3},
-			expression_scatter: {w: w * 0.4, h: h * 0.3},
+			expression_scatter_plot: {w: w * 0.4, h: h * 0.3},
 			expression_scatter_empty: {w: w * 0.2, h: h * 0.2},
 			expression_scatter_legend: {w: w * 0.2, h: h * 0.1},
-			expression_heatmap: {w: w * 0.4, h: h * 0.25},
-			expression_geneset: {w: w * 0.2, h: h * 0.05},
-			expression_color_gradient: {w: w * 0.2, h: h * 0.1},
+			expression_heatmap: {w: w * 0.4, h: h * 0.24},
+			expression_signature: {w: w * 0.2, h: h * 0.05},
+			expression_color_gradient: {w: w * 0.2, h: h * 0.25},
 		};
 
 		return makeFrames.call(size.setSize(e, w, h), ids), model.ids;
@@ -4118,7 +5122,7 @@ var survival = (function (survival)	{
 				}
 
 				forPatient(d.participant_id, osm, d.os_status, all.os);
-				forPatient(d.participant_id, osm, d.dfs_status, all.dfs);
+				forPatient(d.participant_id, dfsm, d.dfs_status, all.dfs);
 			}
 		});
 
@@ -4187,11 +5191,13 @@ var survival = (function (survival)	{
 	};
 
 	return function (o)	{
-		var pureData = getSurvivalData(o.data).pure;
+		model.survivalData = getSurvivalData(o.data);
 
 		makeTab(o.element, ['OS', 'DFS'])
 
-		SurvivalTab.init(o.divisionData, pureData);
+		SurvivalTab.init(o.divisionData, model.survivalData.pure);
+
+		return model;
 	};
 }(survival || {}));
 var util = (function (util)	{
@@ -4274,6 +5280,15 @@ var util = (function (util)	{
 		};
 	};
 	/*
+		Median (중간값) 을 구하고 반환하는 함수.
+	 */
+	util.median = function (list)	{
+		var mIdx = list.length % 2 === 1 ? 
+							(list.length + 1) / 2 : list.length / 2;
+
+		return list.sort(1)[mIdx];
+	}
+	/*
 		문자열 사이의 공백을 지워 반환하는 함수.
 	 */
 	util.removeWhiteSpace = function (t)	{
@@ -4286,7 +5301,7 @@ var util = (function (util)	{
 	 */
 	String.prototype.replaceAt = function (idx, rep)	{
 		return this.substr(0, idx) + rep + 
-					 this.substr(idx + rep.length)
+					 this.substr(idx + rep.length);
 	};
 	/*
 		Array 를 특정한 하나의 값으로 채워주는 함수.
