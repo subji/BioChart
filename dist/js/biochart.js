@@ -702,7 +702,7 @@ config.exclusivity.heatmap = {
 config.exclusivity.division = {
 	margin: [10, 40, 0, 50],
 	attr: {
-		x: function (d, i) {return i > 0 ? this.isText ? this.scale(this.axis[this.axis.length - 1]) - draw.getTextWidth(d.text.toUpperCase()) - this.padding / 2: this.scale(d.point) : this.isText ? this.m.left + this.padding : this.m.left;},
+		x: function (d, i) {return i > 0 ? this.isText ? this.scale(this.axis[this.axis.length - 1]) - draw.getTextWidth(d.text, this.font) - this.padding : this.scale(d.point) : this.isText ? this.m.left + this.padding : this.m.left;},
 		y: function (d) {return this.isText ? this.m.top + (this.textHeight + this.padding): this.m.top;},
 		width: function (d, i) {return i > 0 ? this.w - this.scale(d.point) - this.m.right : this.scale(d.point) - this.m.left;},
 		height: function (d) {return this.textHeight + this.padding * 4;},
@@ -1192,16 +1192,37 @@ var draw = (function (draw)	{
 		함수.
 	 */
 	draw.getTextWidth = function (text, font)	{
-		var canv = document.createElement('canvas'),
-				ctx = canv.getContext('2d'),
+		// var canv = document.createElement('canvas'),
+		// 		ctx = canv.getContext('2d'),
+		// 		width = 0;
+
+		// canv.id = 'get-text-width'
+		// ctx.font = (font ? font + ' arial' : '10px arial');
+
+		// document.body.appendChild(canv);
+
+		// width = ctx.measureText(text).width;
+
+		// document.body.removeChild(
+		// document.getElementById('get-text-width'));
+
+		// return width;
+
+		var div = document.createElement('div'),
 				width = 0;
 
-		canv.id = 'get-text-width'
-		ctx.font = (font ? font + ' arial' : '10px arial');
+		div.id = 'get-text-width';
+		div.style.position = 'absolute';
+		div.style.visibility = 'hidden';
+		div.style.height = 'auto';
+		div.style.width = 'auto';
+		div.style.whiteSpace = 'nowrap';
+		div.style.fontSize = font || '10px';
+		div.innerHTML = text;
 
-		document.body.appendChild(canv);
+		document.body.appendChild(div);
 
-		width = ctx.measureText(text).width;
+		width = (div.clientWidth + 1);
 
 		document.body.removeChild(
 		document.getElementById('get-text-width'));
