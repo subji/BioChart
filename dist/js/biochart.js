@@ -695,7 +695,7 @@ config.exclusivity.heatmap = {
 	},
 	style: {
 		fill: function (d)	{return config.exclusivity.color(d.value);},
-		stroke: function (d)	{return '#FFFFFF';},
+		stroke: function (d)	{return false;},
 	},
 };
 
@@ -1510,7 +1510,7 @@ var exclusive = (function ()	{
 				attr: config.exclusivity.division.attr,
 				style: config.exclusivity.division.style,
 				lineStart: 40,
-				font: '12px',
+				font: '14px',
 				point: model.data.divisionIdx[model.nowSet].idx + 1,
 			});
 		});
@@ -1525,6 +1525,7 @@ var exclusive = (function ()	{
 				data: model.data.type[model.nowSet],
 				priority: config.exclusivity.priority,
 				text: config.exclusivity.legend.text,
+				font: '14px',
 				attr: config.exclusivity.legend.attr,
 				style: config.exclusivity.legend.style,
 				margin: config.exclusivity.legend.margin,
@@ -1705,8 +1706,6 @@ var expression = (function (expression)	{
 			config.expression.bar.margin.splice(
 			1, 1, model.data.axisLeft);
 
-			console.log(model.data.axis)
-
 			bar({
 				element: v,
 				data: model.data.bar,
@@ -1720,8 +1719,7 @@ var expression = (function (expression)	{
 
 			axis.element(v)
 					.left({
-						margin: [10, 0, 50, v.attr('width')
-										 - model.data.axisLeft],
+						margin: [10, 0, 50, v.attr('width') - model.data.axisLeft],
 						data: [y[2], y[0]],
 						opt: {
 							tickValues: y,
@@ -1735,6 +1733,7 @@ var expression = (function (expression)	{
 		함수.
 	 */
 	function drawFunctionOption ()	{
+		console.log(model.data.axis.bar.x);
 		selectBox({
 			element: '#expression_function',
 			className: 'expression-function',
@@ -1745,6 +1744,7 @@ var expression = (function (expression)	{
 			click: function (v)	{
 				model.now.func = v;
 				console.log('Function is: ', model.now.func);
+				console.log(model.data.axis.bar.x);
 			},
 		});
 	};
@@ -1752,7 +1752,6 @@ var expression = (function (expression)	{
 		Color Mapping 을 그려주는 함수.
 	 */
 	function drawColorMapping ()	{
-		console.log(model.data.axis.bar.x)
 		selectBox({
 			element: '#expression_color_mapping',
 			margin: [3, 3, 0, 0],
@@ -1763,23 +1762,25 @@ var expression = (function (expression)	{
 				return d.key; 
 			}),
 			click: function (v)	{
-				console.log(this, model.data.axis.bar.x)
-				model.now.col = v;
-				console.log('Color mapping set is: ', model.now.col);
-				model.data.subtype.some(function (d)	{
-					return model.now.colorSet = d.value, 
-								 model.now.col === d.key;
-				});
+				console.log(model.data.axis.bar.x,
+					model.data.axis.heatmap.x,
+					model.data.axis.scatter.x);
+				// model.now.col = v;
+				// console.log('Color mapping set is: ', model.now.col);
+				// model.data.subtype.some(function (d)	{
+				// 	return model.now.colorSet = d.value, 
+				// 				 model.now.col === d.key;
+				// });
 
-				layout.removeG([
-					'expression_bar_legend', 'expression_bar_plot',
-					'expression_scatter_plot'
-				]);
+				// layout.removeG([
+				// 	'expression_bar_legend', 'expression_bar_plot',
+				// 	'expression_scatter_plot'
+				// ]);
 
-				drawColorMappingLegend();
-				drawBar();
-				drawScatter(model.now.osdfs);
-				drawDivisionBar();
+				// drawColorMappingLegend();
+				// drawBar();
+				// drawScatter(model.now.osdfs);
+				// drawDivisionBar();
 			},
 		});
 	};
@@ -1806,38 +1807,38 @@ var expression = (function (expression)	{
 	 */
 	function drawDivisionBar ()	{
 		var obj = {
-			padding: 3,
-			font: '12px',
-			lineStart: 20,
-			xaxis: model.data.axis.bar.x,
-			margin: config.expression.division.margin,
-			point: util.median(model.data.axis.bar.x),
-			data: [
-				{ text: 'Low score group', color: '#00AC52' }, 
-				{ text: 'High score group', color: '#FF6252' }
-			],
-			text: config.expression.division.text,
-			attr: config.expression.division.attr,
-			style: config.expression.division.style,
-			figure: config.expression.division.figure,
-			marker: 'circle',
+			// padding: 3,
+			// font: '12px',
+			// lineStart: 20,
+			// xaxis: model.data.axis.bar.x,
+			// margin: config.expression.division.margin,
+			// point: util.median(model.data.axis.bar.x),
+			// data: [
+			// 	{ text: 'Low score group', color: '#00AC52' }, 
+			// 	{ text: 'High score group', color: '#FF6252' }
+			// ],
+			// text: config.expression.division.text,
+			// attr: config.expression.division.attr,
+			// style: config.expression.division.style,
+			// figure: config.expression.division.figure,
+			// marker: 'circle',
 		};
 
-		layout.getSVG(model.svg, ['bar_plot'], function (k, v)	{
-			obj.element = v;
+		// layout.getSVG(model.svg, ['bar_plot'], function (k, v)	{
+		// 	obj.element = v;
 
-			divisionLine(obj);
-		});
+		// 	divisionLine(obj);
+		// });
 
-		layout.getSVG(model.svg, ['scatter_plot'], function (k, v)	{
-			obj.element  = v;
-			obj.lineStart = 0;
-			obj.showRect = false;
-			obj.showText = false;
-			obj.margin = config.expression.division.marginScatter;
+		// layout.getSVG(model.svg, ['scatter_plot'], function (k, v)	{
+		// 	obj.element  = v;
+		// 	obj.lineStart = 0;
+		// 	obj.showRect = false;
+		// 	obj.showText = false;
+		// 	obj.margin = config.expression.division.marginScatter;
 
-			divisionLine(obj);
-		});
+		// 	divisionLine(obj);
+		// });
 	};
 	/*
 		Scatter 를 그리는 데 필요한 데이터를 재 가공한다.
@@ -1881,8 +1882,7 @@ var expression = (function (expression)	{
 
 			axis.element(v)
 					.left({
-						margin: [10, 0, 30, v.attr('width')
-										 - model.data.axisLeft],
+						margin: [10, 0, 30, v.attr('width') - model.data.axisLeft],
 						data: y,
 						opt: {},
 					})
@@ -1948,6 +1948,7 @@ var expression = (function (expression)	{
 		Signature 리스트를 Select box 로 만들어주는 함수.
 	 */
 	function drawSignatureList ()	{
+		console.log(model.data.axis.bar.x);
 		selectBox({
 			element: '#expression_signature',
 			className: 'expression-signature',
@@ -1959,6 +1960,7 @@ var expression = (function (expression)	{
 			}),
 			click: function (v)	{
 				model.now.sig = v;
+				console.log(model.data.axis.bar.x);
 				console.log('Signature set is: ', model.now.sig);
 			},
 		});
@@ -2029,6 +2031,7 @@ var expression = (function (expression)	{
 		var most = draw.getMostTextWidth(
 		model.data.axis.heatmap.y, '12px');
 		model.data.axisLeft = Math.ceil(most / 10) * 10;
+		console.log(model.data.axis.bar.x)
 		// When the site had loaded complete, draw the chart below.
 		drawFunctionOption();
 		drawColorMapping();
@@ -3081,11 +3084,12 @@ var legend = (function (legend)	{
 		model.t = model.m.top || 0;
 		model.l = model.m.left || 0;
 		model.p = o.padding || 5;
+		model.font = o.font || '10px';
 		model.sw = 
 		model.sg = render.addGroup(model.e, model.t, model.l);
 		model.tg = render.addGroup(model.e, model.t, model.l);		
-		model.mw = getMostWidthOfText(model.d, '10px Arial');
-		model.mh = draw.getTextHeight('10px Arial').height;
+		model.mw = getMostWidthOfText(model.d, model.font);
+		model.mh = draw.getTextHeight(model.font).height;
 		model.dr = (model.w - model.m.left - model.m.right)
 						 > (model.h - model.m.top - model.m.bottom) ? 
 						 	 'h' : 'v';
@@ -3188,10 +3192,7 @@ var legend = (function (legend)	{
 				},
 			},
 			style: {
-				'font-size': function (d) { 
-					return o.style.fontSize ? 
-								 o.style.fontSize(d) : '10px'; 
-				},
+				'font-size': model.font,
 				'font-family': function (d) { 
 					return o.style.fontFamily ? 
 								 o.style.fontFamily(d) : 'Arial'; 
@@ -4376,7 +4377,11 @@ var preprocessing = (function (preprocessing)	{
 			r[avg.indexOf(d.value)] = d.x;
 		});
 
-		exp.axis.heatmap.x = r;
+		exp.axis.heatmap.x = r.sort(function (a, b)	{
+			return a > b ? 1 : -1;
+		});
+
+		console.log(exp.axis.heatmap.x)
 	};
 	/*
 		Sample 의 순서를 Function 대로 다시 정해주는
@@ -4411,6 +4416,7 @@ var preprocessing = (function (preprocessing)	{
 		expMinMedMaxByFunc(func, exp.axis.heatmap.x);
 		expAlignByFunc(func, exp.bar);
 
+		// exp.axis.heatmap.x.sort(1);
 		exp.axis.heatmap.y = util.keyToArr(exp.axis.heatmap.y);
 		exp.axis.scatter.x = exp.axis.heatmap.x;
 		exp.axis.bar.x = exp.axis.heatmap.x;
@@ -4891,19 +4897,19 @@ var selectBox = (function (selectBox)	{
 		Slide 동작 및 기타 동작을 실행해주는 함수.
 	 */
 	function execution (className, callback)	{
+		var cls = '.' + className;
+
 		// Click Event 중복 발생 금지 방법.
-		$('.' + className + '.drop-menu')
-		.unbind('click').bind('click', function (e) {
+		$(cls).click(function (e) {
       $(this).attr('tabindex', 1).focus();
       $(this).toggleClass('active');
       $(this).find('.dropeddown').slideToggle(300);
     });
-    $('.' + className + '.drop-menu').focusout(function () {
+    $(cls).focusout(function () {
       $(this).removeClass('active');
       $(this).find('.dropeddown').slideUp(300);
     });
-    $('.' + className + '.drop-menu .dropeddown li')
-    .unbind('click').bind('click', function (e) {
+    $(cls + ' .dropeddown li').click(function (e) {
       $(this).parents('.drop-menu')
       			 .find('span').text($(this).text());
       $(this).parents('.drop-menu')
@@ -4912,8 +4918,7 @@ var selectBox = (function (selectBox)	{
       			 .find('input').attr('value', $(this).attr('id'));
 
       return !callback ? false : 
-       				callback.call(this, 
-       				$(this).attr('id').toLowerCase());
+      				callback($(this).attr('id').toLowerCase());
     });
 	};
 
@@ -5283,10 +5288,11 @@ var util = (function (util)	{
 		Median (중간값) 을 구하고 반환하는 함수.
 	 */
 	util.median = function (list)	{
-		var mIdx = list.length % 2 === 1 ? 
+		var cp = new Array().concat(list),
+				mIdx = list.length % 2 === 1 ? 
 							(list.length + 1) / 2 : list.length / 2;
 
-		return list.sort(1)[mIdx];
+		return cp.sort(1)[mIdx];
 	}
 	/*
 		문자열 사이의 공백을 지워 반환하는 함수.
