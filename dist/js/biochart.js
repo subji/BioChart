@@ -690,7 +690,7 @@ config.exclusivity.color = function (value)	{
 };
 
 config.exclusivity.legend = {
-	margin: [30, 80, 0, 0],
+	margin: [20, 80, 0, 0],
 	attr: {
 		x: function (d, i) {
 			var x = this.dr === 'h' ? (this.p * 10 + this.mw) * i : 0;
@@ -5065,7 +5065,7 @@ var render = (function (render)	{
 	 */
 	render.star = function (defs)	{
 		var s = (util.d3v4() ? d3.symbol() : d3.svg.symbol())
-						.type(d3.svg.symbolStar),
+						.type((util.d3v4() ? d3.symbolStar : 'star')),
 				t = defs.element
 						.append('path')
 						.attr('d', s.size(defs.size));
