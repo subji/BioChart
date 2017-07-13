@@ -1,0 +1,350 @@
+{
+  "data": {
+    "sample_variants": [
+      {
+        "class": "Missense_Mutation",
+        "gene": "ABLIM3"
+      },
+      {
+        "class": "Missense_Mutation",
+        "gene": "ACOT9"
+      },
+      {
+        "class": "Splice_Site",
+        "gene": "ADAM15"
+      },
+      {
+        "class": "Missense_Mutation",
+        "gene": "AIM1L"
+      },
+      {
+        "class": "Missense_Mutation",
+        "gene": "ANK2"
+      },
+      {
+        "class": "Nonsense_Mutation",
+        "gene": "ARID2"
+      },
+      {
+        "class": "Silent",
+        "gene": "ATP10B"
+      },
+      {
+        "class": "Missense_Mutation",
+        "gene": "ATP1A3"
+      },
+      {
+        "class": "Missense_Mutation",
+        "gene": "BRAF"
+      },
+      {
+        "class": "Missense_Mutation",
+        "gene": "BRF1"
+      },
+      {
+        "class": "Missense_Mutation",
+        "gene": "BRS3"
+      },
+      {
+        "class": "Missense_Mutation",
+        "gene": "C15orf43"
+      },
+      {
+        "class": "Missense_Mutation",
+        "gene": "C9orf3"
+      },
+      {
+        "class": "Missense_Mutation",
+        "gene": "CCDC146"
+      },
+      {
+        "class": "Missense_Mutation",
+        "gene": "CCNI"
+      },
+      {
+        "class": "Missense_Mutation",
+        "gene": "CDHR1"
+      },
+      {
+        "class": "Missense_Mutation",
+        "gene": "CDHR3"
+      },
+      {
+        "class": "Nonsense_Mutation",
+        "gene": "CEP192"
+      },
+      {
+        "class": "Silent",
+        "gene": "COCH"
+      },
+      {
+        "class": "Missense_Mutation",
+        "gene": "COL11A1"
+      },
+      {
+        "class": "Missense_Mutation",
+        "gene": "CRTAM"
+      },
+      {
+        "class": "Missense_Mutation",
+        "gene": "CTDSP1"
+      },
+      {
+        "class": "Missense_Mutation",
+        "gene": "DAB2IP"
+      },
+      {
+        "class": "Frame_Shift_Del",
+        "gene": "DHX40"
+      },
+      {
+        "class": "Silent",
+        "gene": "DMD"
+      },
+      {
+        "class": "Missense_Mutation",
+        "gene": "DNAJA3"
+      },
+      {
+        "class": "Splice_Site",
+        "gene": "DYNC2LI1"
+      },
+      {
+        "class": "Splice_Site",
+        "gene": "EIF2B3"
+      },
+      {
+        "class": "Missense_Mutation",
+        "gene": "ERAP2"
+      },
+      {
+        "class": "Missense_Mutation",
+        "gene": "ERBB4"
+      },
+      {
+        "class": "Splice_Site",
+        "gene": "FBXO32"
+      },
+      {
+        "class": "Missense_Mutation",
+        "gene": "FRG1B"
+      },
+      {
+        "class": "Missense_Mutation",
+        "gene": "GABRD"
+      },
+      {
+        "class": "Missense_Mutation",
+        "gene": "GIPC2"
+      },
+      {
+        "class": "Missense_Mutation",
+        "gene": "GPR37L1"
+      },
+      {
+        "class": "Silent",
+        "gene": "GYPB"
+      },
+      {
+        "class": "Splice_Site",
+        "gene": "IFI44L"
+      },
+      {
+        "class": "Missense_Mutation",
+        "gene": "IGF1R"
+      },
+      {
+        "class": "Missense_Mutation",
+        "gene": "IPO8"
+      },
+      {
+        "class": "Missense_Mutation",
+        "gene": "KCNJ11"
+      },
+      {
+        "class": "Missense_Mutation",
+        "gene": "KLC2"
+      },
+      {
+        "class": "Missense_Mutation",
+        "gene": "L1CAM"
+      },
+      {
+        "class": "Missense_Mutation",
+        "gene": "LRRC71"
+      },
+      {
+        "class": "Missense_Mutation",
+        "gene": "MMP3"
+      },
+      {
+        "class": "Silent",
+        "gene": "MUC2"
+      },
+      {
+        "class": "Splice_Site",
+        "gene": "MYO18A"
+      },
+      {
+        "class": "Missense_Mutation",
+        "gene": "NDUFB2"
+      },
+      {
+        "class": "Silent",
+        "gene": "NRXN2"
+      },
+      {
+        "class": "Missense_Mutation",
+        "gene": "NUMA1"
+      },
+      {
+        "class": "Missense_Mutation",
+        "gene": "OR10W1"
+      },
+      {
+        "class": "Silent",
+        "gene": "OR12D2"
+      },
+      {
+        "class": "Silent",
+        "gene": "OR2H2"
+      },
+      {
+        "class": "Missense_Mutation",
+        "gene": "OR2T27"
+      },
+      {
+        "class": "Missense_Mutation",
+        "gene": "OR52E2"
+      },
+      {
+        "class": "Missense_Mutation",
+        "gene": "PACSIN2"
+      },
+      {
+        "class": "Missense_Mutation",
+        "gene": "PARP15"
+      },
+      {
+        "class": "Silent",
+        "gene": "PGAP1"
+      },
+      {
+        "class": "Missense_Mutation",
+        "gene": "PRKD3"
+      },
+      {
+        "class": "Missense_Mutation",
+        "gene": "PRSS27"
+      },
+      {
+        "class": "Missense_Mutation",
+        "gene": "RALYL"
+      },
+      {
+        "class": "Silent",
+        "gene": "RNF213"
+      },
+      {
+        "class": "Silent",
+        "gene": "RRP7A"
+      },
+      {
+        "class": "Missense_Mutation",
+        "gene": "RTN4"
+      },
+      {
+        "class": "Nonsense_Mutation",
+        "gene": "SETD2"
+      },
+      {
+        "class": "Silent",
+        "gene": "SLC17A1"
+      },
+      {
+        "class": "Missense_Mutation",
+        "gene": "SLC1A2"
+      },
+      {
+        "class": "Missense_Mutation",
+        "gene": "SLC9B1"
+      },
+      {
+        "class": "Nonsense_Mutation",
+        "gene": "SMAD4"
+      },
+      {
+        "class": "Missense_Mutation",
+        "gene": "SNX27"
+      },
+      {
+        "class": "Silent",
+        "gene": "SRRD"
+      },
+      {
+        "class": "Missense_Mutation",
+        "gene": "SYBU"
+      },
+      {
+        "class": "Silent",
+        "gene": "TBC1D29"
+      },
+      {
+        "class": "Missense_Mutation",
+        "gene": "TBPL1"
+      },
+      {
+        "class": "Missense_Mutation",
+        "gene": "TENM3"
+      },
+      {
+        "class": "Nonsense_Mutation",
+        "gene": "TKTL2"
+      },
+      {
+        "class": "Nonsense_Mutation",
+        "gene": "TNFSF9"
+      },
+      {
+        "class": "Missense_Mutation",
+        "gene": "TRIML1"
+      },
+      {
+        "class": "Silent",
+        "gene": "TRPM6"
+      },
+      {
+        "class": "Missense_Mutation",
+        "gene": "TTN"
+      },
+      {
+        "class": "Frame_Shift_Del",
+        "gene": "UGT1A5"
+      },
+      {
+        "class": "Missense_Mutation",
+        "gene": "USP10"
+      },
+      {
+        "class": "Silent",
+        "gene": "USP10"
+      },
+      {
+        "class": "Missense_Mutation",
+        "gene": "ZIK1"
+      },
+      {
+        "class": "Silent",
+        "gene": "ZNF154"
+      },
+      {
+        "class": "Silent",
+        "gene": "ZNF597"
+      },
+      {
+        "class": "Missense_Mutation",
+        "gene": "ZNF697"
+      }
+    ]
+  }
+}

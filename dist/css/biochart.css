@@ -20,6 +20,8 @@
 #exclusivity_heatmap { float: left; }
 
 #exclusivity_legend { float: left; }
+
+#exclusivity_sample_legend { float: left; }
 #expression_title {	background: #EFEFEF; padding-top: 0.3%; font-size: 30px; font-weight: bold; font-family: initial; text-shadow: 2px 1px #D6D6D6; }
 
 #expression_survival { float: left; }
@@ -46,7 +48,7 @@
 #expression_scatter_empty { float: right; }
 #expression_scatter_legend { float: left; }
 
-#expression_heatmap { float: left; overflow-y: auto; }
+#expression_heatmap { float: left; overflow-y: hidden; overflow-x: hidden; }
 
 #expression_signature { float: left; }
 

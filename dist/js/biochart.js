@@ -210,6 +210,14 @@ var bar = (function (bar)	{
 								 o.style.stroke.call(model, d, i) : '#FFFFFF'; 
 				},
 			},
+			on: {
+				mouseover: function (d, i)	{
+					if (!o.on)	{ return false; }
+					
+					return o.on.mouseover ? 
+								 o.on.mouseover.call(model, d, i) : false;
+				},
+			},
 		});
 
 		return model;
@@ -622,6 +630,32 @@ config.exclusivity.separate = function (v)	{
 				 v === 'M' ? ['.', 'M'] : [v];
 };
 /*
+	Config.landscape.case 에서 분류된 종류와 이름을 토대로
+	Exclusivity 에서도 다시 분류해준다.
+ */
+config.exclusivity.case = function (v, n)	{
+	if (v === 'var')	{
+		return 'Mutation';
+	} else {
+		if (n.toUpperCase().indexOf('AMP') > -1)	{
+			return 'Amplification';
+		} else {
+			return 'Deletion';
+		}
+	}
+};
+/*
+	Exclusivity Name 을 Symbol 로 변경해주는 함수.
+ */
+config.exclusivity.symbol = function (name)	{
+	return {
+		'Amplification': 'A',
+		'Deletion': 'D',
+		'Mutation': 'M',
+		'None': '.',
+	}[name];
+};
+/*
 	Exclusivity symbol 이 갖는 이름을 정의한 함수.
  */
 config.exclusivity.name = function (value)	{
@@ -667,7 +701,7 @@ config.exclusivity.legend = {
 			var h = this.height || 15,
 					y = this.dr === 'h' ? 0 : ((this.p + this.mh) * i);
 
-			return this.isText ? y + this.mh - this.mh / 2 + this.p / 2 : 
+			return this.isText ? y + this.mh - this.mh / 2 : 
 						 d === 'Mutation' ? y + h / 3 : y;
 		},
 		width: function (d, i) {return this.width || 5;},
@@ -678,9 +712,7 @@ config.exclusivity.legend = {
 		},
 	},
 	style: {
-		fill: function (d)	{return config.exclusivity.color(d);},
-		fontSize: function (d) 	{return '12px';},
-		fontFamily: function (d) {return 'Times Roman';},
+		fill: function (d)	{if (!this.isText)	{ return config.exclusivity.color(d); }},
 	},
 	text: function (d)	{return d;},
 };
@@ -714,7 +746,56 @@ config.exclusivity.division = {
 		stroke: function (d, i)	{return this.isLine ? '#000000' : '#FFFFFF';},
 		dashed: function (d, i) {return '4,2'},
 	},
+	line: {
+		x: function () {return this.scale(this.point);},
+		y: function () {return this.m.left + this.m.top * 1.2;},
+	},
 	text: function (d, i)	{return d.text;},
+};
+
+config.exclusivity.sample = {
+	division: {
+		marginFirst: function (e, d)	{
+			return d.indexOf('Un') > -1 ? 
+			[10, e.attr('width') - 20, 0, 0] : [10, 85, 0, 0];
+		},
+		marginSecond: function (e, d)	{
+			return d.indexOf('Un') > -1 ? 
+			[10, e.attr('width') - 15, 0, 0] : [10, 90, 0, 0];
+		},
+		size: 30,
+		style: {
+			fill: function (d, i)	{
+				if (this.id && this.id.indexOf('sample') > -1)	{
+					return i > 0 ? d.indexOf('Un') > -1 ? 
+								 '#00AC52' : '#FF6252' : '#333333';
+				} else {
+					return d.indexOf('Un') > -1 ? '#00AC52' : '#FF6252'
+				}
+			},
+		},
+	},
+	legend: {
+		margin: [35, 80, 0, 0],
+		marginFirst: [34, 75, 0, 0],
+		marginSecond: [34, 80, 0, 0],
+		attr: {
+			x: function (d, i)	{return this.isText ? i > 0 ? draw.getTextWidth(this.d[0], this.font) + 15 : 10 : 0;},
+			y: function (d, i)	{return 0;},
+		},
+		style: {
+			fill: function (d, i)	{
+				if (this.id && this.id.indexOf('sample') > -1)	{
+					return i > 0 ? d.indexOf('Un') > -1 ? 
+								 '#00AC52' : '#FF6252' : '#333333';
+				} else {
+					return d.indexOf('Un') > -1 ? '#00AC52' : '#FF6252'
+				}
+			},
+		},
+		size: 30,
+		text: function (d, i)	{return d;},
+	},
 };
 // ============================ Mutual Exclusivity ==================================
 // ============================ Variants ==================================
@@ -893,7 +974,7 @@ config.expression.legend = {
 };
 
 config.expression.scatter = {
-	margin: [10, 30, 30, 20],
+	margin: [10, 30, 35, 20],
 	attr: {
 		x: function (d, i) {return this.sx(d.x) - this.m.left;},
 		y: function (d, i) {return this.sy(d.y);},
@@ -903,6 +984,11 @@ config.expression.scatter = {
 		fill: function (d, i) {return d.value === undefined ? '#333333' : d.value === 1 ? '#D86561': '#5D5DD8';},
 		fillOpacity: function (d, i) {return '0.6';},
 	},
+	on: {
+		mouseover: function (d, i)	{
+			console.log('Scatter: ', d);
+		},
+	}
 };
 
 config.expression.bar = {
@@ -930,33 +1016,45 @@ config.expression.bar = {
 			return '#62C2E0';
 		},
 	},
+	on: {
+		mouseover: function (d, i)	{
+			console.log('Bar: ', d);
+		},
+	}
 };
 
 config.expression.heatmap = {
-	margin: [10, 30, 0, 20],
+	margin: [2, 30, 0, 20],
 	attr: {
 		x: function (d, i) {return this.sx(d.x) - this.m.left;},
 		y: function (d, i) {return this.sy(d.y);},
 		width: function (d, i) {return scale.compatibleBand(this.sx);},
 		height: function (d, i) {return scale.compatibleBand(this.sy);},
 	},
+	on: {
+		mouseover: function (d, i)	{
+			console.log('Heatmap: ', d);
+		},	
+	}
 };
 
 config.expression.division = {
 	margin: [0, 30, 25, 20],
-	marginScatter: [0, 30, 10, 20],
+	marginScatter: [0, 30, 15, 20],
 	attr: {
 		x: function (d, i) {
 			return i > 0 ? 
-						this.isText ? this.scale(this.axis[this.axis.length - 1]) - draw.getTextWidth(d.text.toUpperCase(), this.font) + this.padding : 
-						this.scale(d.point) : 
-						this.isText ? this.scale(this.axis[0]) + this.padding : this.scale(this.axis[0]);
+						this.isText ? 
+						this.scale(this.axis[this.axis.length - 1]) - 
+						draw.getTextWidth(d.text.toUpperCase(), this.font) + this.padding * 5 - this.m.left : 
+						this.scale(d.point) - this.m.left: 
+						this.isText ? this.scale(this.axis[0]) - this.m.left + this.padding * 2 : this.scale(this.axis[0]) - this.m.left;
 			return i > 0 ? this.isText ? this.w - draw.getTextWidth(d.text.toUpperCase(), this.font) - this.m.right : this.scale(d.point) : this.isText ? this.m.left + this.padding * 2 : this.m.left;},
 		y: function (d) {return this.isText ? this.h - this.m.bottom + this.textHeight - this.padding : this.h - this.m.bottom;},
 		width: function (d, i) {
 			return i > 0 ? 
 			this.scale(this.axis[this.axis.length - 1]) - 
-			this.scale(d.point) - this.m.left : 
+			this.scale(d.point) : 
 			this.scale(d.point) - this.m.left;
 		},
 		height: function (d) {return this.textHeight + this.padding * 2;},
@@ -968,13 +1066,17 @@ config.expression.division = {
 		stroke: function (d, i)	{return this.isLine ? '#000000' : '#FFFFFF';},
 		dashed: function (d, i) {return '4, 2';},
 	},
+	line: {
+		x: function ()	{return this.scale(this.point) - this.m.left;},
+		y: function () 	{return this.id.indexOf('bar') > 0 ? this.m.bottom / 2 : 0;},
+	},
 	text: function (d, i)	{return d.text;},
 	figure: {
 		data: function (d)	{return this.id.indexOf('bar') > 0 ? [d[0]] : [d[1]];},
 		attr: {
 			id: function (d, i) {return this.id + '_marker';},
-			cx: function (d, i) {return this.scale(this.point);},
-			cy: function (d, i) {return this.id.indexOf('scatter') > 0 ? this.h - this.m.bottom + 4 : this.lineStart - 4;},
+			cx: function (d, i) {return this.scale(this.point) - this.m.left;},
+			cy: function (d, i) {return this.id.indexOf('scatter') > 0 ? this.h - this.m.bottom + 4 : this.m.bottom / 2 - 4;},
 			r: function (d, i) {return 3;},
 		},
 		style: {
@@ -982,6 +1084,30 @@ config.expression.division = {
 		},
 	},
 };
+
+config.expression.patient = {
+	margin: [10, 30, 50, 20],
+	attr: {
+		points: function (d, i)	{
+			var x = this.sx(d.x),
+					y = this.id.indexOf('bar') > 0 ? ((d.y - d.value) < 0 ? this.sy(d.value) : this.sy(d.y)) + 5 : this.h;
+
+			return x + ', ' + y + 
+					 ' ' + (x - 4) + ',' + (y - 7) + 
+					 ' ' + (x + 4) + ',' + (y - 7) + 
+					 ' ' + x + ',' + y;
+		},
+	},
+	style: {
+		fill: function (d, i)	{
+			return '#000000';
+		},
+		stroke: function (d, i)	{
+			return '#B7B7B7';
+		},
+		'stroke-width': '1px',
+	},
+}
 // ============================ Expression ==================================
 var divisionLine = (function (divisionLine)	{
 	'use strict';
@@ -1016,7 +1142,6 @@ var divisionLine = (function (divisionLine)	{
 		model.line = (util.d3v4() ? d3.line() : d3.svg.line())
 									.x(function (d) { return d.x; })
 									.y(function (d) { return d.y; });
-		model.lineStart = o.lineStart || 0;
 		model.showRect = o.showRect === undefined && 
 										 o.showRect !== false ? true : o.showRect;
 		model.showText = o.showText === undefined && 
@@ -1064,6 +1189,14 @@ var divisionLine = (function (divisionLine)	{
 									 o.style.stroke.call(model, d, i) : '#000';
 					},
 				},
+				on: {
+					mouseover: function (d, i)	{
+						if (!o.on)	{ return false; }
+
+						return o.on.mouseover ? 
+									 o.on.mouseover.call(model, d, i) : false;
+					},
+				},
 			});
 		}
 
@@ -1096,10 +1229,8 @@ var divisionLine = (function (divisionLine)	{
 		}
 
 		if (model.showLine)	{
-			var x = o.xaxis ? model.scale(model.point) : 
-												model.m.left + model.lineStart,
-					y = o.yaxis ? model.scale(model.point) : 
-												model.m.top + model.lineStart;
+			var x = o.lineX ? o.lineX.call(model) : 0,
+					y = o.lineY ? o.lineY.call(model) : 0;
 
 			render.line({
 				element: model.g,
@@ -1155,7 +1286,15 @@ var divisionLine = (function (divisionLine)	{
 						return o.figure.style.stroke ? 
 									 o.figure.style.stroke.call(model, d, i) : 0;
 					},
-				}
+				},
+				on: {
+					mouseover: function (d, i)	{
+						if (!o.on)	{ return false; }
+						
+						return o.on.mouseover ? 
+									 o.on.mouseover.call(model, d, i) : false;
+					},
+				},
 			});
 		}	
 	};
@@ -1192,6 +1331,8 @@ var draw = (function (draw)	{
 		함수.
 	 */
 	draw.getTextWidth = function (text, font)	{
+		// MeasureText 가 OS 별로 지원하는 수치가 달라서
+		// 아래와 같이 Div 의 크기를 계산하는 방식으로 했다.
 		// var canv = document.createElement('canvas'),
 		// 		ctx = canv.getContext('2d'),
 		// 		width = 0;
@@ -1404,23 +1545,80 @@ var eventHandler = (function (eventHandler)	{
 		target = typeof target === 'object' ? target : document.querySelector(target);
 		target.addEventListener('scroll', callback);
 	};
+	/*
+	 	특정 이벤트 동작 중 해당 이벤트가 바디태그에서는
+	 	Disable 하게 만들어주는 함수.
+	 */
+	function preventBodyEvent (ele, events)	{
+		var DOEVENT = false;
+
+		// 사용자가 지정한 DIV 에 마우스 휠을 작동할때는, 바디에 마우스 휠
+		// 이벤트를 막아놓는다.
+		document.body.addEventListener(events, function (e)	{
+			if (DOEVENT)	{
+				if (e.preventDefault) {
+					e.preventDefault();
+				}
+				// 이건 왜 한건지 모르겠음.
+				// e.returnValue = false;
+
+				return false;
+			}
+		});
+
+		ele.addEventListener('mouseenter', function (e)	{
+			DOEVENT = true;
+		});
+
+		ele.addEventListener('mouseleave', function (e)	{
+			DOEVENT = false;
+		});
+	};
+	/*
+		Scroll : hidden 에서 스크롤 작업을 하게 도와주는 이벤트 함수.
+	 */
+	eventHandler.verticalScroll = function (ele, cb)	{
+		if (!ele)	{
+			throw new Error('There are not given dom element');
+		}
+
+		preventBodyEvent(ele, 'mousewheel');
+
+		ele.addEventListener('mousewheel', function (e)	{
+			ele.scrollTop += e.wheelDelta;
+
+			if (cb)	{ cb.call(ele, e); }
+		});
+	};
+	/*
+		SVG Element 에 마우스를 올려놓았을 때, Element 가 가진
+		데이터등을 반환해주는 함수.
+	 */
+	eventHandler.hoverSVG = function (data, idx)	{
+		console.log(data);
+	};
 
 	return eventHandler;
 }(eventHandler || {}));
 var exclusive = (function ()	{
 	'use strict';
 
-	var model = {};
+	var model = {
+		now: {
+			geneset: null,
+		},
+	};
 	/*
 		Survival 에 사용될 데이터를 나누는 함수.
 	 */
 	function divideSurvivalData ()	{
 		var result = {};
 
-		util.loop(model.data.survival.data[model.nowSet], 
+		util.loop(model.data.survival.data[model.now.geneset], 
 		function (d, i)	{
 			if (d)	{
-				if (i <= model.data.divisionIdx[model.nowSet].idx)	{
+				if (i <= model.data.divisionIdx[
+						model.now.geneset].idx)	{
 					result[d.participant_id] = 'altered';
 				} else {
 					result[d.participant_id] = 'unaltered';
@@ -1464,10 +1662,15 @@ var exclusive = (function ()	{
 			pval_font_style 	 : 'normal',
 		};
 
+		SurvivalCurveBroilerPlate.subGroupSettings.legend = {
+			low: 'Unaltered group',
+			high: 'Altered group',
+		};
+
 		survival({
 			element: '#exclusivity_survival',
 			margin: [20, 20, 20, 20],
-			data: model.data.survival.data[model.nowSet],
+			data: model.data.survival.data[model.now.geneset],
 			divisionData: divideSurvivalData(),
 		});
 	};
@@ -1476,7 +1679,7 @@ var exclusive = (function ()	{
 	 */
 	function drawNetwork ()	{
 		network({
-			data: model.data.network[model.nowSet],
+			data: model.data.network[model.now.geneset],
 			element: '#exclusivity_network',
 		});
 	};
@@ -1488,7 +1691,7 @@ var exclusive = (function ()	{
 			axis.element(v)
 					.left({
 						margin: [35, 0, 35, v.attr('width') - 80],
-						data: model.nowSet.split(' '),
+						data: model.now.geneset.split(' '),
 						opt: {
 							remove: 'line, path',
 						},
@@ -1503,13 +1706,13 @@ var exclusive = (function ()	{
 		layout.getSVG(model.svg, ['heatmap'], function (k, v)	{
 			heatmap({
 				element: v,
-				data: model.data.heatmap[model.nowSet],
+				data: model.data.heatmap[model.now.geneset],
 				opt: config.exclusivity.heatmap.opt,
 				attr: config.exclusivity.heatmap.attr,
 				style: config.exclusivity.heatmap.style,
 				margin: config.exclusivity.heatmap.margin,
-				xaxis: model.data.axis.heatmap.x[model.nowSet],
-				yaxis: model.data.axis.heatmap.y[model.nowSet],
+				xaxis: model.data.axis.heatmap.x[model.now.geneset],
+				yaxis: model.data.axis.heatmap.y[model.now.geneset],
 			});
 		});
 	};
@@ -1524,15 +1727,16 @@ var exclusive = (function ()	{
 					{ text: 'Altered group', color: '#FF6252' },
 					{ text: 'Unaltered group', color: '#00AC52' }
 				],
-				xaxis: model.data.axis.heatmap.x[model.nowSet],
+				xaxis: model.data.axis.heatmap.x[model.now.geneset],
 				margin: config.exclusivity.division.margin,
 				padding: 6,
 				text: config.exclusivity.division.text,
 				attr: config.exclusivity.division.attr,
 				style: config.exclusivity.division.style,
-				lineStart: 40,
 				font: '14px',
-				point: model.data.divisionIdx[model.nowSet].idx + 1,
+				lineX: config.exclusivity.division.line.x,
+				lineY: config.exclusivity.division.line.y,
+				point: model.data.divisionIdx[model.now.geneset].idx + 1,
 			});
 		});
 	};
@@ -1540,10 +1744,10 @@ var exclusive = (function ()	{
 		Legend 차트를 그리는 함수.
 	 */
 	function drawLegend()	{
-		layout.getSVG(model.svg, ['legend'], function (k, v)	{
+		layout.getSVG(model.svg, ['ty_legend'], function (k, v)	{
 			legend({
 				element: v,
-				data: model.data.type[model.nowSet],
+				data: model.data.type[model.now.geneset],
 				priority: config.exclusivity.priority,
 				text: config.exclusivity.legend.text,
 				font: '14px',
@@ -1557,24 +1761,142 @@ var exclusive = (function ()	{
 		Exclusivity 차트를 그리는 함수.
 	 */
 	function drawExclusivity ()	{
-		// Draw survival.
+		getDataOfPatient(model.origin.sample);
 		drawSurvival();
-		// Draw Network.
 		drawNetwork();
-		// Draw axis.
 		drawAxis();
-		// Draw HEATMAP.
 		drawHeatmap();
-		// Draw division bar.
 		drawDivisionBar();
-		// Draw legend.
 		drawLegend();
+		drawSample();
+	};
+	/*
+		Sample 이 현재 Geneset 에서 Altered 인지
+		Unaltered 인지 결정해주는 함수.
+	 */
+	function isAltered (s, h)	{
+		if (s.length < 1)	{
+			return ['Belong to', 'Unaltered group'];
+		}
+
+		var genesetArr = model.now.geneset.split(' '),
+				result = '.';
+
+		util.loop(s, function (d)	{
+			var gStr = h[genesetArr.indexOf(d.gene)];
+
+			if (gStr.indexOf(d.value) > -1)	{
+				result = result !== '.' ? 
+				result : gStr[gStr.indexOf(d.value)];
+			}
+		});
+
+		return result === '.' ? ['Belong to', 'Unaltered group'] : 
+														['Belong to', 'Altered group'];
 	};
 
-	function getDataOfPatient ()	{
-		util.loop(model.data.mutual.data, function (k, v)	{
-			console.log(k, Object.keys(v), model.nowSet)
+	/*
+		Sample 관련 데이터(색상, Variant type, 등) 를 만드는 함수.
+	*/
+	function getDataOfPatient (list)	{
+		model.data.sample = { data: [], isAltered: false };
+
+		util.loop(list, function (d)	{
+			if (model.now.geneset.indexOf(d.gene) > -1)	{
+				model.data.sample.data.push({
+					gene: d.gene,
+					value: config.exclusivity.symbol(
+								 config.exclusivity.case(
+								 config.landscape.case(d.class), d.class)),
+				});
+			} 
 		});
+
+		model.data.sample.isAltered = 
+			isAltered(model.data.sample.data, 
+								model.data.survival.heat[model.now.geneset]);
+	};
+	/*
+		Sample Legend 를 추가한다.
+	 */
+	function drawSampleLegend ()	{
+		layout.getSVG(model.svg, ['sample_legend'], 
+		function (k, v)	{
+			var cs = config.exclusivity.sample.legend,
+					obj = {
+						m0: size.setMargin(cs.marginFirst),
+						m1: size.setMargin(cs.marginSecond) 
+					};
+
+			legend({
+				element: v,
+				font: '14px',
+				data: model.data.sample.isAltered,
+				attr: config.exclusivity.sample.legend.attr,
+				style: config.exclusivity.sample.legend.style,
+				text: config.exclusivity.sample.legend.text,
+				margin: config.exclusivity.sample.legend.margin,
+			});
+
+			for (var i = 0; i < 2; i++)	{
+				render.star({
+					element: render.addGroup(v, obj['m' + i].top, 
+																			obj['m' + i].left),
+					size: config.exclusivity.sample.legend.size,
+					style: {
+						fill: function (d, i)	{
+							return cs.style.fill(model.data.sample.isAltered[1]);
+						},
+					},
+				});				
+			}
+		});
+	};
+	/*
+		Division 위에 ** 를 추가한다.
+	 */
+	function drawSampleDivision ()	{
+		layout.getSVG(model.svg, ['heatmap'], function (k, v)	{
+			var cs = config.exclusivity.sample.division,
+					obj = {
+						m0: size.setMargin(cs.marginFirst(v, 
+								model.data.sample.isAltered[1])),
+						m1: size.setMargin(cs.marginSecond(v, 
+								model.data.sample.isAltered[1])) 
+					};
+
+			for (var i = 0; i < 2; i++)	{
+				render.star({
+					element: render.addGroup(v, obj['m' + i].top, 
+																			obj['m' + i].left),
+					size: config.exclusivity.sample.legend.size,
+					style: {
+						fill: function (d, i)	{
+							return cs.style.fill(model.data.sample.isAltered[1]);
+						},
+					},
+				});				
+			}
+		});
+	};
+	/*
+		Survival 의 Legend 와 Table 에
+		** 를 추가한다. 
+	 */
+	function drawSampleSurvival ()	{
+		var ostb = document.getElementById('os_stat_table'),
+				dfstb = document.getElementById('dfs_stat_table'),
+				leg = d3.selectAll('.legend');
+
+		console.log(ostb.childNodes.length, dfstb.childNodes.length, leg)
+	};
+	/*
+		Sample 관련 Legend 와 Astarik 를 추가할 함수.
+	 */
+	function drawSample ()	{
+		drawSampleLegend();
+		drawSampleDivision();
+		drawSampleSurvival();
 	};
 
 	return function (o)	{
@@ -1589,26 +1911,24 @@ var exclusive = (function ()	{
 		model.data = preprocessing.exclusivity(o.data);
 		model.ids = size.chart.exclusivity(e, w, h);
 		model.svg = layout.exclusivity(model.ids, model);
-		model.nowSet = model.data.geneset[0].join(' ');
+		model.now.geneset = model.data.geneset[0].join(' ');
 		// make select box of geneset.
 		selectBox({
 			element: '#exclusivity_select_geneset',
-			initText: model.nowSet,
+			initText: model.now.geneset,
 			className: 'exclusivity-geneset',
 			viewName: 'geneset',
 			items: model.data.geneset.map(function (d)	{
 				return d.join(' ');
 			}),
 			click: function (v)	{
-				model.nowSet = v.toUpperCase();
+				model.now.geneset = v.toUpperCase();
 
 				layout.removeG();
 				drawExclusivity();
 			},
 		});
-		// Survival 에 그려질 데이터를 가져온다.
-		// getDataOfPatient();
-		// using init geneset
+
 		drawExclusivity();
 
 		console.log('Exclusivity Model data: ', model);
@@ -1703,6 +2023,11 @@ var expression = (function (expression)	{
 			pval_font_style 	 : 'normal',
 		};
 
+		SurvivalCurveBroilerPlate.subGroupSettings.legend = {
+			low: 'Low score group',
+			high: 'High score group',
+		};
+
 		var div = dividedData(
 				model.data.bar, model.data.axis.bar.y[1]);
 		var suv = survival({
@@ -1736,6 +2061,7 @@ var expression = (function (expression)	{
 				style: config.expression.bar.style,
 				xaxis: model.data.axis.bar.x,
 				yaxis: [y[2], y[0]],
+				on: config.expression.bar.on,
 			});
 
 			axis.element(v)
@@ -1754,7 +2080,6 @@ var expression = (function (expression)	{
 		함수.
 	 */
 	function drawFunctionOption ()	{
-		console.log(model.data.axis.bar.x);
 		selectBox({
 			element: '#expression_function',
 			className: 'expression-function',
@@ -1765,7 +2090,6 @@ var expression = (function (expression)	{
 			click: function (v)	{
 				model.now.func = v;
 				console.log('Function is: ', model.now.func);
-				console.log(model.data.axis.bar.x);
 			},
 		});
 	};
@@ -1783,25 +2107,22 @@ var expression = (function (expression)	{
 				return d.key; 
 			}),
 			click: function (v)	{
-				console.log(model.data.axis.bar.x,
-					model.data.axis.heatmap.x,
-					model.data.axis.scatter.x);
-				// model.now.col = v;
-				// console.log('Color mapping set is: ', model.now.col);
-				// model.data.subtype.some(function (d)	{
-				// 	return model.now.colorSet = d.value, 
-				// 				 model.now.col === d.key;
-				// });
+				model.now.col = v;
+				console.log('Color mapping set is: ', model.now.col);
+				model.data.subtype.some(function (d)	{
+					return model.now.colorSet = d.value, 
+								 model.now.col === d.key;
+				});
 
-				// layout.removeG([
-				// 	'expression_bar_legend', 'expression_bar_plot',
-				// 	'expression_scatter_plot'
-				// ]);
+				layout.removeG([
+					'expression_bar_legend', 'expression_bar_plot',
+					'expression_scatter_plot'
+				]);
 
-				// drawColorMappingLegend();
-				// drawBar();
-				// drawScatter(model.now.osdfs);
-				// drawDivisionBar();
+				drawColorMappingLegend();
+				drawBar();
+				drawScatter(model.now.osdfs);
+				drawDivisionBar();
 			},
 		});
 	};
@@ -1827,39 +2148,46 @@ var expression = (function (expression)	{
 		Divided line 을 그려주는 함수.
 	 */
 	function drawDivisionBar ()	{
+		config.expression.division.margin.splice(
+			1, 1, model.data.axisLeft);
+		config.expression.division.marginScatter.splice(
+			1, 1, model.data.axisLeft);
+
 		var obj = {
-			// padding: 3,
-			// font: '12px',
-			// lineStart: 20,
-			// xaxis: model.data.axis.bar.x,
-			// margin: config.expression.division.margin,
-			// point: util.median(model.data.axis.bar.x),
-			// data: [
-			// 	{ text: 'Low score group', color: '#00AC52' }, 
-			// 	{ text: 'High score group', color: '#FF6252' }
-			// ],
-			// text: config.expression.division.text,
-			// attr: config.expression.division.attr,
-			// style: config.expression.division.style,
-			// figure: config.expression.division.figure,
-			// marker: 'circle',
+			padding: 3,
+			font: '12px',
+			xaxis: model.data.axis.bar.x,
+			margin: config.expression.division.margin,
+			point: model.data.axis.bar.x[
+						 util.medIndex(model.data.axis.bar.x)],
+			data: [
+				{ text: 'Low score group', color: '#00AC52' }, 
+				{ text: 'High score group', color: '#FF6252' }
+			],
+			text: config.expression.division.text,
+			attr: config.expression.division.attr,
+			style: config.expression.division.style,
+			figure: config.expression.division.figure,
+			lineX: config.expression.division.line.x,
+			lineY: config.expression.division.line.y,
+			marker: 'circle',
 		};
 
-		// layout.getSVG(model.svg, ['bar_plot'], function (k, v)	{
-		// 	obj.element = v;
+		layout.getSVG(model.svg, ['bar_plot'], function (k, v)	{
+			obj.element = v;
 
-		// 	divisionLine(obj);
-		// });
+			divisionLine(obj);
+		});
 
-		// layout.getSVG(model.svg, ['scatter_plot'], function (k, v)	{
-		// 	obj.element  = v;
-		// 	obj.lineStart = 0;
-		// 	obj.showRect = false;
-		// 	obj.showText = false;
-		// 	obj.margin = config.expression.division.marginScatter;
+		layout.getSVG(model.svg, ['scatter_plot'], function (k, v)	{
+			obj.element  = v;
+			obj.yAdjust = 0;
+			obj.showRect = false;
+			obj.showText = false;
+			obj.margin = config.expression.division.marginScatter;
 
-		// 	divisionLine(obj);
-		// });
+			divisionLine(obj);
+		});
 	};
 	/*
 		Scatter 를 그리는 데 필요한 데이터를 재 가공한다.
@@ -1899,11 +2227,12 @@ var expression = (function (expression)	{
 				style: config.expression.scatter.style,
 				xaxis: model.data.axis.scatter.x,
 				yaxis: y,
+				on: config.expression.scatter.on,
 			});
 
 			axis.element(v)
 					.left({
-						margin: [10, 0, 30, v.attr('width') - model.data.axisLeft],
+						margin: [10, 0, 35, v.attr('width') - model.data.axisLeft],
 						data: y,
 						opt: {},
 					})
@@ -1952,24 +2281,26 @@ var expression = (function (expression)	{
 						return ts(d.value);
 					},
 				},
+				on: config.expression.heatmap.on,
 			});
 
 			axis.element(v)
 					.left({
-						margin: [10, 0, 0, v.attr('width')
+						margin: [2, 0, 0, v.attr('width')
 										 - model.data.axisLeft],
 						data: model.data.axis.heatmap.y,
 						opt: {
 							remove: 'path, line',
 						},
 					});
+
+			eventHandler.verticalScroll(v.node().parentNode);
 		});
 	};
 	/*
 		Signature 리스트를 Select box 로 만들어주는 함수.
 	 */
 	function drawSignatureList ()	{
-		console.log(model.data.axis.bar.x);
 		selectBox({
 			element: '#expression_signature',
 			className: 'expression-signature',
@@ -1981,7 +2312,6 @@ var expression = (function (expression)	{
 			}),
 			click: function (v)	{
 				model.now.sig = v;
-				console.log(model.data.axis.bar.x);
 				console.log('Signature set is: ', model.now.sig);
 			},
 		});
@@ -2034,6 +2364,41 @@ var expression = (function (expression)	{
 					.style('fill', '#999999');
 		});
 	};
+	/*
+		Patient 를 표시해줄 함수.
+	 */
+	function drawPatient ()	{
+		layout.getSVG(model.svg, ['bar_plot', 'scatter_plot'], function (k, v)	{
+			var obj = {},
+					y = model.data.axis.bar.y;  
+
+			obj.g = render.addGroup(v, 0, 0);
+			obj.id = v.attr('id');
+			obj.m = size.setMargin(config.expression.patient.margin);
+			obj.w = v.attr('width');
+			obj.h = v.attr('height');
+			obj.sx = scale.get(model.data.axis.heatmap.x, [
+				obj.m.left, obj.w - obj.m.right ]);
+			obj.sy = scale.get([y[2], y[0]], [
+				obj.m.top, obj.h - obj.m.bottom ]);
+
+			render.triangle({
+				element: obj.g.selectAll('#' + obj.id + '_tri'),
+				data: model.data.bar.filter(function (d)	{
+					if (d.x === model.data.patient)	{
+						return d;
+					}
+				}),
+				attr: {
+					id: function (d) { return obj.id + '_tri'; },
+					points: function (d, i)	{
+						return config.expression.patient.attr.points.call(obj, d, i);
+					},	
+				},
+				style: config.expression.patient.style,
+			});
+		});
+	};
 
 	return function (o)	{
 		var e = document.querySelector(o.element || null),
@@ -2052,7 +2417,6 @@ var expression = (function (expression)	{
 		var most = draw.getMostTextWidth(
 		model.data.axis.heatmap.y, '12px');
 		model.data.axisLeft = Math.ceil(most / 10) * 10;
-		console.log(model.data.axis.bar.x)
 		// When the site had loaded complete, draw the chart below.
 		drawFunctionOption();
 		drawColorMapping();
@@ -2065,6 +2429,7 @@ var expression = (function (expression)	{
 		drawHeatmap();
 		drawSignatureList();
 		drawColorGradient();
+		drawPatient();
 
 		console.log('Expression Model data: ', model);
 	};
@@ -2162,6 +2527,14 @@ var heatmap = (function (heatmap)	{
 								 o.style.stroke.call(model, d, i) : false; 
 				},
 			},
+			on: {
+				mouseover: function (d, i)	{
+					if (!o.on) { return false; }
+					
+					return o.on.mouseover ? 
+								 o.on.mouseover.call(model, d, i) : false;
+				},
+			}
 		});
 
 		return model;
@@ -3099,6 +3472,7 @@ var legend = (function (legend)	{
 													util.varType(o.element) === 'Array' ? 
 							o.element : (/\W/).test(o.element[0]) ? 
 							d3.select(o.element) : d3.select('#' + o.element);
+		model.id = model.e.attr('id');
 		model.m = size.setMargin(o.margin);
 		model.w = model.e.attr('width');
 		model.h = model.e.attr('height');
@@ -3115,14 +3489,12 @@ var legend = (function (legend)	{
 						 > (model.h - model.m.top - model.m.bottom) ? 
 						 	 'h' : 'v';
 
-		var id = model.e.attr('id');
-
-		if (o.attr.r)	{
+		if (o.attr && o.attr.r)	{
 			render.circle({
-				element: model.sg.selectAll('#' + id + '_circle'),
+				element: model.sg.selectAll('#' + model.id + '_circle'),
 				data: model.d,
 				attr: {
-					id: function (d) { return id + '_circle'; },
+					id: function (d) { return model.id + '_circle'; },
 					cx: function (d, i)	{
 						return o.attr.x ? o.attr.x.call(model, d, i) : 0;
 					},
@@ -3141,13 +3513,19 @@ var legend = (function (legend)	{
 						return o.style.stroke ? o.style.stroke(d) : false;
 					},
 				},
+				on: {
+					mouseover: function (d, i)	{
+						return o.on.mouseover ? 
+									 o.on.mouseover.call(model, d, i) : false;
+					},
+				},
 			})
-		} else if (o.attr.points)	{
+		} else if (o.attr && o.attr.points)	{
 			render.triangle({
-				element: model.sg.selectAll('#' + id + '_triangle'),
+				element: model.sg.selectAll('#' + model.id + '_triangle'),
 				data: model.d,
 				attr: {
-					id: function (d) { return id + '_triangle'; },
+					id: function (d) { return model.id + '_triangle'; },
 					points: function (d, i) { 
 						return o.attr.points ? 
 									 o.attr.points.call(model, d, i) : [0, 0];
@@ -3165,13 +3543,51 @@ var legend = (function (legend)	{
 									 o.style.strokeWidth(d) : '1px';
 					},
 				},
+				on: {
+					mouseover: function (d, i)	{
+						return o.on.mouseover ? 
+									 o.on.mouseover.call(model, d, i) : false;
+					},
+				},
 			});
-		} else {
+		} 
+		// else if (o.type)	{
+		// 	model.type = o.type || 'star';
+
+		// 	render[model.type]({
+		// 		element: model.sg.select(
+		// 			 '#' + model.id + '_' + model.type),
+		// 		attr: {
+		// 			id: function (d) { 
+		// 				return model.id + '_' + model.type; },
+		// 		},
+		// 		style: {
+		// 			fill: function (d, i) { 
+		// 				return o.style.fill ? 
+		// 							 o.style.fill.call(model, d, i) : '#000000'; 
+		// 			},
+		// 			stroke: function (d, i) { 
+		// 				return o.style.stroke ? 
+		// 							 o.style.stroke.call(model, d, i) : false; 
+		// 			},
+		// 		},
+		// 		size: o.size || 5,
+		// 		on: {
+		// 			mouseover: function (d)	{
+		// 				if (!o.on) { return false; }
+
+		// 				return o.on.mouseover ? 
+		// 							 o.on.mouseover.call(model, d, i) : false;
+		// 			},
+		// 		},
+		// 	});
+		// }	
+		else if (o.attr && o.attr.width && o.attr.height) {
 			render.rect({	
-				element: model.sg.selectAll('#' + id + '_rect'),
+				element: model.sg.selectAll('#' + model.id + '_rect'),
 				data: model.d,
 				attr: {
-					id: function (d) { return id + '_rect'; },
+					id: function (d) { return model.id + '_rect'; },
 					x: function (d, i) { 
 						return o.attr.x ? o.attr.x.call(model, d, i) : 0;
 					},
@@ -3195,15 +3611,23 @@ var legend = (function (legend)	{
 						return o.style.stroke ? o.style.stroke(d) : false; 
 					},
 				},
+				on: {
+					mouseover: function (d, i)	{
+						if (!o.on) { return false; }
+
+						return o.on.mouseover ? 
+									 o.on.mouseover.call(model, d, i) : false;
+					},
+				},
 			});
 		}
 
 		render.text({
-			element: model.tg.selectAll('#' + id + '_text'),
+			element: model.tg.selectAll('#' + model.id + '_text'),
 			data: model.d,
 			attr: {
 				id: function (d) { 
-					return (model.isText = true, id + '_text'); 
+					return (model.isText = true, model.id + '_text'); 
 				},
 				x: function (d, i) { 
 					return o.attr.x ? o.attr.x.call(model, d, i) : 0; 
@@ -3213,15 +3637,30 @@ var legend = (function (legend)	{
 				},
 			},
 			style: {
-				'font-size': model.font,
+				'font-size': function (d, i)	{
+					return o.style.fontSize ? 
+								 o.style.fontSize.call(model, d, i) : model.font;
+				},
 				'font-family': function (d) { 
 					return o.style.fontFamily ? 
-								 o.style.fontFamily(d) : 'Arial'; 
+								 o.style.fontFamily.call(model, d) : 'Arial'; 
 				},
 				'alignment-baseline': function (d)	{
 					return o.style.alignmentBaseline ? 
-								 o.style.alignmentBaseline : 'middel';
-				}
+								 o.style.alignmentBaseline : 'middle';
+				},
+				fill: function (d, i)	{
+					return o.style.fill ?
+								 o.style.fill.call(model, d, i) : '#333333';
+				},
+			},
+			on: {
+				mouseover: function (d, i)	{
+					if (!o.on) { return false; }
+
+					return o.on.mouseover ? 
+								 o.on.mouseover.call(model, d, i) : false;
+				},
 			},
 			text: function (d, i)	{ 
 				return o.text ? 
@@ -3280,6 +3719,7 @@ var needle = (function (needle)	{
 							o.element : (/\W/).test(o.element[0]) ? 
 							d3.select(o.element) : d3.select('#' + o.element);
 		model.s = draw.size(model.e);
+		model.id = model.e.attr('id');
 		model.m = size.setMargin(o.margin);
 		model.t = model.m.top || 0;
 		model.l = model.m.left || 0;
@@ -3297,7 +3737,7 @@ var needle = (function (needle)	{
 			render.line({
 				element: model.g,
 				attr: {
-					id: function (d) { return model.e.attr('id') + '_line'; },
+					id: function (d) { return model.id + '_line'; },
 					d: model.line(d.value),
 				},
 				style: {
@@ -3307,28 +3747,38 @@ var needle = (function (needle)	{
 		});
 
 		render.circle({
-			element: model.g.selectAll('#' + model.e.attr('id') + '_circle'),
+			element: model.g.selectAll('#' + model.id + '_circle'),
 			data: o.circleData,
 			attr: {
-				id: function (d) { return model.e.attr('id') + '_circle'; },
+				id: function (d) { return model.id + '_circle'; },
 				cx: function (d, i)	{ 
 					return o.attr.x ? o.attr.x.call(model, d, i) : 0; 
 				},
 				cy: function (d, i)	{ 
-					return o.attr.y ? o.attr.y.call(model, d, i) : 0; 
+					return o.attr.y ? 
+								 o.attr.y.call(model, d, i) : 0; 
 				},
 				r: function (d, i)	{ 
-					return o.attr.r ? o.attr.r.call(model, d, i) : model.radius; 
+					return o.attr.r ? 
+								 o.attr.r.call(model, d, i) : model.radius; 
 				},
 			},
 			style: {
 				fill: function (d, i) { 
-					return o.style.fill ? o.style.fill.call(model, d, i) : '#000000';
+					return o.style.fill ? 
+								 o.style.fill.call(model, d, i) : '#000000';
 				},
 				stroke: function (d, i)	{
-					return o.style.stroke ? o.style.stroke.call(model, d, i) : '#FFFFFF';
+					return o.style.stroke ? 
+								 o.style.stroke.call(model, d, i) : '#FFFFFF';
 				},
-			}
+			},
+			on: {
+				mouseover: function (d, i)	{
+					return o.on.mouseover ? 
+								 o.on.mouseover.call(model, d, i) : false;
+				},
+			},
 		});
 	};
 }(needle||{}));
@@ -4369,6 +4819,10 @@ var preprocessing = (function (preprocessing)	{
 			exp.bar.push({ x: k, value: avg });
 			exp.func.avg.push(avg);
 		});
+
+		exp.func.avg.sort = exp.func.avg.sort(function (a, b)	{
+			return a > b ? 1 : -1;
+		});
 		// Min, Median, Max 값도 구해준다.
 		var amm = util.minmax(exp.func.avg),
 				amd = util.median(exp.func.avg);
@@ -4398,11 +4852,7 @@ var preprocessing = (function (preprocessing)	{
 			r[avg.indexOf(d.value)] = d.x;
 		});
 
-		exp.axis.heatmap.x = r.sort(function (a, b)	{
-			return a > b ? 1 : -1;
-		});
-
-		console.log(exp.axis.heatmap.x)
+		exp.axis.heatmap.x = r;
 	};
 	/*
 		Sample 의 순서를 Function 대로 다시 정해주는
@@ -4424,6 +4874,7 @@ var preprocessing = (function (preprocessing)	{
 			d.tpm = tpmLog(d.tpm + 1);
 
 			expTpmListBySample(d);
+
 			exp.tpms.push(d.tpm);
 			// Heatmap 데이터를 재 포맷 해준다.
 			exp.heatmap.push({
@@ -4470,13 +4921,15 @@ var preprocessing = (function (preprocessing)	{
 	preprocessing.expression = function (d)	{
 		exp.allRna = new Array().concat(
 			d.cohort_rna_list.concat(d.sample_rna_list));
-
 		exp.genes = d.gene_list.map(function (d)	{
 			return d.hugo_symbol;
 		});
+		// Patient 이름을 뽑아낸다.
+		exp.patient = d.sample_rna_list[0].participant_id;
 
 		expSubtype(d.subtype_list);
-		expCohortLoop(d.cohort_rna_list);
+		expCohortLoop(exp.allRna);
+		// expCohortLoop(d.cohort_rna_list);
 		expScatterMonths(d.patient_list);
 
 		util.loop(exp.bar, function (d)	{
@@ -4492,7 +4945,9 @@ var preprocessing = (function (preprocessing)	{
 }(preprocessing||{}));
 var render = (function (render)	{
 	'use strict';
-
+	/*
+		SVG 를 만들어주는 함수.
+	 */
 	render.createSVG = function (id, width, height)	{
 		var id = id.indexOf('#') < 0 ? '#' + id : id,
 				dom = document.querySelector(id);
@@ -4509,7 +4964,9 @@ var render = (function (render)	{
 					.attr('width', (width || parseFloat(dom.style.width)) + 1)
 					.attr('height', (height || parseFloat(dom.style.height)));
 	};
-
+	/*
+		SVG 태그에 그룹을 추가해주는 함수.
+	 */
 	render.addGroup = function (svg, top, left)	{
 		svg = util.d3v4() ? svg : svg[0][0];
 		svg = util.varType(svg) === 'Array' || 
@@ -4520,23 +4977,40 @@ var render = (function (render)	{
 					 .attr('transform', 
 								 'translate(' + left + ', ' + top + ')');			
 	};
-
+	/*
+		Attribute 를 SVG 에 등록시켜주는 함수.
+	 */
 	function setAttributes (svgElement, attrs)	{
 		for (var attr in attrs)	{
 			svgElement.attr(attr, attrs[attr]);
 		}
 	};
-
+	/*
+		Style 을 SVG 에 등록시켜주는 함수.
+	 */
 	function setStyles (svgElement, styles)	{
 		for (var style in styles)	{
 			svgElement.style(style, styles[style]);
 		}
 	};
-
+	/*
+		Event 를 SVG 에 등록시켜주는 함수.
+	 */
+	function setOnEvents (svgElement, events)	{
+		for (var event in events)	{
+			svgElement.on(event, events[event]);
+		}
+	};
+	/*
+		Text 를 등록시켜주는 함수.
+	 */
 	function setText (svgElement, text)	{
 		svgElement.text(text);
 	};
-
+	/*
+		Rectangle, Text, Circle, ... 등에 
+		Attribute, Style, Event 등을 등록시켜주는 함수.
+	 */
 	function defsShape (target)	{
 		if (!this.element)	{
 			throw new Error ('Not defined SVG Element');
@@ -4549,6 +5023,7 @@ var render = (function (render)	{
 
 		setAttributes(t, this.attr);
 		setStyles(t, this.style);
+		setOnEvents(t, this.on);
 	}
 	/*
 		Draw rectangle.
@@ -4580,10 +5055,23 @@ var render = (function (render)	{
 		setStyles(t, defs.style);
 	};
 	/*
-		Draw Patient.
+		Draw Triangle.
 	 */
 	render.triangle = function (defs)	{
 		defsShape.call(defs, 'polygon');
+	};
+	/*
+		Draw Star.
+	 */
+	render.star = function (defs)	{
+		var s = (util.d3v4() ? d3.symbol() : d3.svg.symbol())
+						.type(d3.symbolStar),
+				t = defs.element
+						.append('path')
+						.attr('d', s.size(defs.size));
+
+		setStyles(t, defs.style);
+		setOnEvents(t, defs.on);
 	};
 
 	return render;
@@ -4743,6 +5231,12 @@ var scatter = (function (scatter)	{
 						return o.style.stroke ? o.style.stroke(d) : false;
 					},
 				},
+				on: {
+					mouseover: function (d, i)	{
+						return o.on.mouseover ? 
+									 o.on.mouseover.call(model, d, i) : false;
+					},
+				},
 			})
 		} else if (o.attr.points)	{
 			render.triangle({
@@ -4768,6 +5262,12 @@ var scatter = (function (scatter)	{
 					},
 					'stroke-width': function (d)	{
 						return o.style.strokeWidth ? o.style.strokeWidth(d) : '1px';
+					},
+				},
+				on: {
+					mouseover: function (d, i)	{
+						return o.on.mouseover ? 
+									 o.on.mouseover.call(model, d, i) : false;
 					},
 				},
 			});
@@ -4802,6 +5302,12 @@ var scatter = (function (scatter)	{
 						return o.style.stroke ? o.style.stroke(d) : false; 
 					},
 				},
+				on: {
+					mouseover: function (d, i)	{
+						return o.on.mouseover ? 
+									 o.on.mouseover.call(model, d, i) : false;
+					},
+				},
 			});
 		}
 
@@ -4831,6 +5337,12 @@ var scatter = (function (scatter)	{
 						return o.style.alignmentBaseline ? 
 									 o.style.alignmentBaseline : 'middel';
 					}
+				},
+				on: {
+					mouseover: function (d, i)	{
+						return o.on.mouseover ? 
+									 o.on.mouseover.call(model, d, i) : false;
+					},
 				},
 				text: function (d, i)	{ 
 					return o.text ? o.text.call(model, d, i) : ('legend ' + i);
@@ -5033,7 +5545,8 @@ var size = (function (size)	{
 			exclusivity_survival: {w: w * 0.4, h: h},
 			exclusivity_network: {w: w * 0.25, h: h * 0.55},
 			exclusivity_heatmap: {w: w * 0.35, h: h * 0.3},
-			exclusivity_legend: {w: w * 0.35, h: h * 0.1},
+			exclusivity_legend: {w: w * 0.35, h: h * 0.05},
+			exclusivity_sample_legend: {w: w * 0.35, h: h * 0.05},
 
 			// Layout 1.
 			// exclusivity_survival: {w: (w * 0.3), h: h * 0.85},
@@ -5309,11 +5822,15 @@ var util = (function (util)	{
 		Median (중간값) 을 구하고 반환하는 함수.
 	 */
 	util.median = function (list)	{
-		var cp = new Array().concat(list),
-				mIdx = list.length % 2 === 1 ? 
-							(list.length + 1) / 2 : list.length / 2;
-
-		return cp.sort(1)[mIdx];
+		return new Array().concat(list)
+					.sort()[util.medIndex(list)];
+	};
+	/*
+		Median 의 인덱스를 반환하는 함수.
+	 */
+	util.medIndex = function (list) {
+		return list.length % 2 === 1 ? 
+					(list.length + 1) / 2 : list.length / 2;
 	}
 	/*
 		문자열 사이의 공백을 지워 반환하는 함수.
