@@ -5065,7 +5065,7 @@ var render = (function (render)	{
 	 */
 	render.star = function (defs)	{
 		var s = (util.d3v4() ? d3.symbol() : d3.svg.symbol())
-						.type(d3.symbolStar),
+						.type(d3.svg.symbolStar),
 				t = defs.element
 						.append('path')
 						.attr('d', s.size(defs.size));
