@@ -1343,21 +1343,21 @@ var draw = (function (draw)	{
 	draw.getTextWidth = function (text, font)	{
 		// MeasureText 가 OS 별로 지원하는 수치가 달라서
 		// 아래와 같이 Div 의 크기를 계산하는 방식으로 했다.
-		// var canv = document.createElement('canvas'),
-		// 		ctx = canv.getContext('2d'),
-		// 		width = 0;
+		var canv = document.createElement('canvas'),
+				ctx = canv.getContext('2d'),
+				width = 0;
 
-		// canv.id = 'get-text-width'
-		// ctx.font = (font ? font + ' arial' : '10px arial');
+		canv.id = 'get-text-width'
+		ctx.font = (font ? font + ' arial' : '10px arial');
 
-		// document.body.appendChild(canv);
+		document.body.appendChild(canv);
 
-		// width = ctx.measureText(text).width;
+		width = ctx.measureText(text).width;
 
-		// document.body.removeChild(
-		// document.getElementById('get-text-width'));
+		document.body.removeChild(
+		document.getElementById('get-text-width'));
 
-		// return width;
+		return width;
 
 		var div = document.createElement('div'),
 				width = 0;
@@ -1785,7 +1785,8 @@ var exclusive = (function ()	{
 		Unaltered 인지 결정해주는 함수.
 	 */
 	function isAltered (s, h)	{
-		var sample = document.getElementById('sample_id').value,
+		var sample = 'SMCLUAD1690060028',
+		// var sample = document.getElementById('sample_id').value,
 				genesetArr = model.now.geneset.split(' '),
 				result = '.';
 
