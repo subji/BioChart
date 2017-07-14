@@ -794,7 +794,7 @@ config.exclusivity.sample = {
 			},
 			y: function (d, i)	{
 				if (i > 0)	{
-					return -draw.getTextHeight('25px').height / 4.5;
+					return -draw.getTextHeight('25px').height / 5;
 				} 
 
 				return 0;
