@@ -776,8 +776,8 @@ config.exclusivity.sample = {
 						return draw.getTextWidth(this.d[0], '25px') + 5;	
 					} else {
 						return draw.getTextWidth(this.d[0].toUpperCase(), this.font) + 
-									 draw.getTextWidth(this.d[1], this.font) + 
-									 draw.getTextWidth('aa', this.font);	
+									 draw.getTextWidth(this.d[1].toUpperCase(), this.font) - 
+									 draw.getTextWidth('a', this.font);	
 					}
 				}
 			},
