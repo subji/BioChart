@@ -776,7 +776,8 @@ config.exclusivity.sample = {
 						return draw.getTextWidth(this.d[0], '25px') + 5;	
 					} else {
 						return draw.getTextWidth(this.d[0].toUpperCase(), this.font) + 
-									 draw.getTextWidth(this.d[1].toUpperCase(), this.font);	
+									 draw.getTextWidth(this.d[1], this.font) + 
+									 draw.getTextWidth('aa', this.font);	
 					}
 				}
 			},
@@ -1784,8 +1785,7 @@ var exclusive = (function ()	{
 		Unaltered 인지 결정해주는 함수.
 	 */
 	function isAltered (s, h)	{
-		var sample = 'sample',
-				// sample = document.getElementById('sample_id').id,
+		var sample = document.getElementById('sample_id').id,
 				genesetArr = model.now.geneset.split(' '),
 				result = '.';
 
