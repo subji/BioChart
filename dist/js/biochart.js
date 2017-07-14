@@ -1359,26 +1359,26 @@ var draw = (function (draw)	{
 
 		return width;
 
-		var div = document.createElement('div'),
-				width = 0;
+		// var div = document.createElement('div'),
+		// 		width = 0;
 
-		div.id = 'get-text-width';
-		div.style.position = 'absolute';
-		div.style.visibility = 'hidden';
-		div.style.height = 'auto';
-		div.style.width = 'auto';
-		div.style.whiteSpace = 'nowrap';
-		div.style.fontSize = font || '10px';
-		div.innerHTML = text;
+		// div.id = 'get-text-width';
+		// div.style.position = 'absolute';
+		// div.style.visibility = 'hidden';
+		// div.style.height = 'auto';
+		// div.style.width = 'auto';
+		// div.style.whiteSpace = 'nowrap';
+		// div.style.fontSize = font || '10px';
+		// div.innerHTML = text;
 
-		document.body.appendChild(div);
+		// document.body.appendChild(div);
 
-		width = (div.clientWidth + 1);
+		// width = (div.clientWidth + 1);
 
-		document.body.removeChild(
-		document.getElementById('get-text-width'));
+		// document.body.removeChild(
+		// document.getElementById('get-text-width'));
 
-		return width;
+		// return width;
 	};
 	/*
 		Text 배열에서 가장 긴 Text 의 길이를 반환하는 함수.
