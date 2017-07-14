@@ -794,7 +794,7 @@ config.exclusivity.sample = {
 			},
 			y: function (d, i)	{
 				if (i > 0)	{
-					return -draw.getTextHeight('25px').height / 5;
+					return -draw.getTextHeight('25px').height / 4.5;
 				} 
 
 				return 0;
@@ -1941,7 +1941,7 @@ var exclusive = (function ()	{
 				drawSampleSurvivalLegend(suv.legends);
 				clearInterval(chkDone);				
 			}
-		}, 1000);
+		}, 10);
 	};
 	/*
 		Sample 관련 Legend 와 Astarik 를 추가할 함수.
