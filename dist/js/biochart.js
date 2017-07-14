@@ -984,7 +984,7 @@ config.expression.legend = {
 		text: function (d) {return d;},
 		attr: {
 			x: function (d, i) {return this.isText ? this.m.left + this.m.right : this.p;},
-			y: function (d, i) {return this.isText ? (this.mh * i) + this.p / 1.2: (this.mh * i);},
+			y: function (d, i) {return this.isText ? (this.mh * i) + 1: (this.mh * i);},
 			r: function (d, i)	{return this.p;},
 		},
 		style: {
@@ -1067,10 +1067,10 @@ config.expression.division = {
 			return i > 0 ? 
 						this.isText ? 
 						this.scale(this.axis[this.axis.length - 1]) - 
-						draw.getTextWidth(d.text.toUpperCase(), this.font) + this.padding * 5 - this.m.left : 
+						draw.getTextWidth(d.text, this.font) - this.padding / 2 - this.m.left : 
 						this.scale(d.point) - this.m.left: 
 						this.isText ? this.scale(this.axis[0]) - this.m.left + this.padding * 2 : this.scale(this.axis[0]) - this.m.left;
-			return i > 0 ? this.isText ? this.w - draw.getTextWidth(d.text.toUpperCase(), this.font) - this.m.right : this.scale(d.point) : this.isText ? this.m.left + this.padding * 2 : this.m.left;},
+			return i > 0 ? this.isText ? this.w - draw.getTextWidth(d.text, this.font) - this.m.right : this.scale(d.point) : this.isText ? this.m.left + this.padding * 2 : this.m.left;},
 		y: function (d) {return this.isText ? this.h - this.m.bottom + this.textHeight - this.padding : this.h - this.m.bottom;},
 		width: function (d, i) {
 			return i > 0 ? 
@@ -1128,6 +1128,18 @@ config.expression.patient = {
 		},
 		'stroke-width': '1px',
 	},
+}
+
+config.expression.sample = {
+	attr: {
+		x: function (d, i)	{return this.data.patient.data === d.text ? draw.getTextWidth(d.text, '15px') + draw.getTextWidth(d.text, '15px') / 6 : -5;},
+		y: function (d, i)	{return this.data.patient.data === d.text ? draw.getTextHeight('15px').height / 1.3 : 0;},
+	},
+	style: {
+		fill: function (d, i)	{return this.data.patient.data === d.text ? d.color : '#FFFFFF';},
+		fontSize: function (d) {return '25px';},
+	},
+	text: function (d, i)	{return this.data.patient.data === d.text ? ' **' : '';},
 }
 // ============================ Expression ==================================
 var divisionLine = (function (divisionLine)	{
@@ -2438,7 +2450,7 @@ var expression = (function (expression)	{
 			render.triangle({
 				element: obj.g.selectAll('#' + obj.id + '_tri'),
 				data: model.data.bar.filter(function (d)	{
-					if (d.x === model.data.patient)	{
+					if (d.x === model.data.patient.name)	{
 						return d;
 					}
 				}),
@@ -2451,6 +2463,8 @@ var expression = (function (expression)	{
 				style: config.expression.patient.style,
 			});
 		});
+
+		drawSampleSurvival();
 	};
 
 	/*
@@ -2461,7 +2475,7 @@ var expression = (function (expression)	{
 			var o = ostb[i],
 					d = dfstb[i];
 
-			if (model.data.sample.isAltered.indexOf(o.innerHTML) > -1)	{
+			if (model.data.patient.data === o.innerHTML)	{
 				o.innerHTML += ' **';
 				d.innerHTML += ' **';
 			}
@@ -2471,7 +2485,7 @@ var expression = (function (expression)	{
 		Survival plot 의 legend 에도 심볼을 넣어준다.
 	 */
 	function drawSampleSurvivalLegend (l)	{
-		var es = config.exclusivity.sample.survival;
+		var es = config.expression.sample;
 
 		render.text({
 			element: l,
@@ -2504,11 +2518,11 @@ var expression = (function (expression)	{
 					suv.dfstb.length > 0 && 
 					suv.legends.node())	{
 
-				// drawSampleSurvivalTable(suv.ostb, suv.dfstb);
-				// drawSampleSurvivalLegend(suv.legends);
+				drawSampleSurvivalTable(suv.ostb, suv.dfstb);
+				drawSampleSurvivalLegend(suv.legends);
 				clearInterval(chkDone);				
 			}
-		}, 1000);
+		}, 10);
 	};
 
 	return function (o)	{
@@ -2541,7 +2555,6 @@ var expression = (function (expression)	{
 		drawSignatureList();
 		drawColorGradient();
 		drawPatient();
-		drawSampleSurvival();
 
 		console.log('Expression Model data: ', model);
 	};
@@ -5001,6 +5014,16 @@ var preprocessing = (function (preprocessing)	{
 			exp.subtype.push({ key: k, value: v });
 		});
 	};
+	/*
+		Patient 데이터를 만들어준다. 어느 그룹에 속하는
+		지를 결정한 데이터를 포함한다.
+	 */
+	function expMakePatientData (sample)	{
+		var m = exp.axis.bar.y[1],
+				p = exp.func.avg[exp.axis.bar.x.indexOf(sample)];
+
+		return m >= p ? 'Low score group' : 'High score group';
+	};
 
 	preprocessing.expression = function (d)	{
 		exp.allRna = new Array().concat(
@@ -5008,13 +5031,17 @@ var preprocessing = (function (preprocessing)	{
 		exp.genes = d.gene_list.map(function (d)	{
 			return d.hugo_symbol;
 		});
-		// Patient 이름을 뽑아낸다.
-		exp.patient = d.sample_rna_list[0].participant_id;
 
 		expSubtype(d.subtype_list);
 		expCohortLoop(exp.allRna);
 		// expCohortLoop(d.cohort_rna_list);
 		expScatterMonths(d.patient_list);
+
+		// Patient 이름을 뽑아낸다.
+		exp.patient = {
+			name: d.sample_rna_list[0].participant_id,
+			data: expMakePatientData(d.sample_rna_list[0].participant_id),
+		};
 
 		util.loop(exp.bar, function (d)	{
 			d.y = exp.axis.bar.y[1];
