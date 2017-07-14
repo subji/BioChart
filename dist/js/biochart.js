@@ -754,6 +754,17 @@ config.exclusivity.division = {
 };
 
 config.exclusivity.sample = {
+	survival: {
+		attr: {
+			x: function (d, i)	{return this.data.sample.isAltered.indexOf(d.text) > -1 ? draw.getTextWidth(d.text, '15px') + draw.getTextWidth(d.text, '15px') / 4 : -5;},
+			y: function (d, i)	{return this.data.sample.isAltered.indexOf(d.text) > -1 ? draw.getTextHeight('15px').height / 1.3 : 0;},
+		},
+		style: {
+			fill: function (d, i)	{return this.data.sample.isAltered.indexOf(d.text) > -1 ? d.color : '#FFFFFF';},
+			fontSize: function (d) {return '25px';},
+		},
+		text: function (d, i)	{return this.data.sample.isAltered.indexOf(d.text) > -1 ? ' **' : '';},
+	},
 	division: {
 		margin: [15, 80, 0, 50],
 		attr: {
@@ -783,7 +794,7 @@ config.exclusivity.sample = {
 			},
 			y: function (d, i)	{
 				if (i > 0)	{
-					return -draw.getTextHeight('25px').height / 4;
+					return -draw.getTextHeight('25px').height / 5;
 				} 
 
 				return 0;
@@ -1028,7 +1039,7 @@ config.expression.bar = {
 	},
 	on: {
 		mouseover: function (d, i)	{
-			console.log('Bar: ', d);
+			// console.log('Bar: ', d);
 		},
 	}
 };
@@ -1874,17 +1885,63 @@ var exclusive = (function ()	{
 				text: function (d, i) { return cd.text.call(obj, d, i); },
 			});
 		});
+	};	
+	/*
+		Survival Plot 의 테이블 이름에도 심볼을 넣어주는함수.
+	 */
+	function drawSampleSurvivalTable (ostb, dfstb)	{
+		for (var i = 0, l = ostb.length; i < l; i++)	{
+			var o = ostb[i],
+					d = dfstb[i];
+
+			if (model.data.sample.isAltered.indexOf(o.innerHTML) > -1)	{
+				o.innerHTML += ' **';
+				d.innerHTML += ' **';
+			}
+		}
+	};
+	/*
+		Survival plot 의 legend 에도 심볼을 넣어준다.
+	 */
+	function drawSampleSurvivalLegend (l)	{
+		var es = config.exclusivity.sample.survival;
+
+		render.text({
+			element: l,
+			attr: {
+				x: function (d) { return es.attr.x.call(model, d); },
+				y: function (d) { return es.attr.y.call(model, d); },
+			},
+			style: {
+				fill: function (d) {
+					return es.style.fill.call(model, d); },
+				'font-size': function (d) {
+					return es.style.fontSize.call(model, d); }, 
+			},
+			text: function (d) { return es.text.call(model, d); },
+		});
 	};
 	/*
 		Survival 의 Legend 와 Table 에
 		** 를 추가한다. 
 	 */
 	function drawSampleSurvival ()	{
-		var ostb = document.getElementById('os_stat_table'),
-				dfstb = document.getElementById('dfs_stat_table'),
-				leg = d3.selectAll('.legend');
+		var suv = {},
+				chkDone = setInterval(function () {
 
-		console.log(ostb.childNodes.length, dfstb.childNodes.length, leg)
+			suv.ostb = document.querySelectorAll('#dfs_stat_table td b');
+			suv.dfstb = document.querySelectorAll('#os_stat_table td b');
+			suv.legends = d3.selectAll('.legend');
+
+			if (suv.ostb.length > 0 && 
+					suv.dfstb.length > 0 && 
+					suv.legends.node())	{
+
+				drawSampleSurvivalTable(suv.ostb, suv.dfstb);
+				drawSampleSurvivalLegend(suv.legends);
+				clearInterval(chkDone);				
+			}
+		}, 1000);
 	};
 	/*
 		Sample 관련 Legend 와 Astarik 를 추가할 함수.
@@ -2396,6 +2453,64 @@ var expression = (function (expression)	{
 		});
 	};
 
+	/*
+		Survival Plot 의 테이블 이름에도 심볼을 넣어주는함수.
+	 */
+	function drawSampleSurvivalTable (ostb, dfstb)	{
+		for (var i = 0, l = ostb.length; i < l; i++)	{
+			var o = ostb[i],
+					d = dfstb[i];
+
+			if (model.data.sample.isAltered.indexOf(o.innerHTML) > -1)	{
+				o.innerHTML += ' **';
+				d.innerHTML += ' **';
+			}
+		}
+	};
+	/*
+		Survival plot 의 legend 에도 심볼을 넣어준다.
+	 */
+	function drawSampleSurvivalLegend (l)	{
+		var es = config.exclusivity.sample.survival;
+
+		render.text({
+			element: l,
+			attr: {
+				x: function (d) { return es.attr.x.call(model, d); },
+				y: function (d) { return es.attr.y.call(model, d); },
+			},
+			style: {
+				fill: function (d) {
+					return es.style.fill.call(model, d); },
+				'font-size': function (d) {
+					return es.style.fontSize.call(model, d); }, 
+			},
+			text: function (d) { return es.text.call(model, d); },
+		});
+	};
+	/*
+		Survival 의 Legend 와 Table 에
+		** 를 추가한다. 
+	 */
+	function drawSampleSurvival ()	{
+		var suv = {},
+				chkDone = setInterval(function () {
+
+			suv.ostb = document.querySelectorAll('#dfs_stat_table td b');
+			suv.dfstb = document.querySelectorAll('#os_stat_table td b');
+			suv.legends = d3.selectAll('.legend');
+
+			if (suv.ostb.length > 0 && 
+					suv.dfstb.length > 0 && 
+					suv.legends.node())	{
+
+				// drawSampleSurvivalTable(suv.ostb, suv.dfstb);
+				// drawSampleSurvivalLegend(suv.legends);
+				clearInterval(chkDone);				
+			}
+		}, 1000);
+	};
+
 	return function (o)	{
 		var e = document.querySelector(o.element || null),
 				w = parseFloat(o.width || e.style.width || 1400),
@@ -2426,6 +2541,7 @@ var expression = (function (expression)	{
 		drawSignatureList();
 		drawColorGradient();
 		drawPatient();
+		drawSampleSurvival();
 
 		console.log('Expression Model data: ', model);
 	};
