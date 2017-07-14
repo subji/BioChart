@@ -755,45 +755,54 @@ config.exclusivity.division = {
 
 config.exclusivity.sample = {
 	division: {
-		marginFirst: function (e, d)	{
-			return d.indexOf('Un') > -1 ? 
-			[10, e.attr('width') - 20, 0, 0] : [10, 85, 0, 0];
-		},
-		marginSecond: function (e, d)	{
-			return d.indexOf('Un') > -1 ? 
-			[10, e.attr('width') - 15, 0, 0] : [10, 90, 0, 0];
-		},
-		size: 30,
-		style: {
-			fill: function (d, i)	{
-				if (this.id && this.id.indexOf('sample') > -1)	{
-					return i > 0 ? d.indexOf('Un') > -1 ? 
-								 '#00AC52' : '#FF6252' : '#333333';
-				} else {
-					return d.indexOf('Un') > -1 ? '#00AC52' : '#FF6252'
-				}
-			},
-		},
-	},
-	legend: {
-		margin: [35, 80, 0, 0],
-		marginFirst: [34, 75, 0, 0],
-		marginSecond: [34, 80, 0, 0],
+		margin: [15, 80, 0, 50],
 		attr: {
-			x: function (d, i)	{return this.isText ? i > 0 ? draw.getTextWidth(this.d[0], this.font) + 15 : 10 : 0;},
+			x: function (d, i)	{return d.type.indexOf('Altered group') > -1 ? 0 : this.e.attr('width') - this.m.left - (this.m.left - this.m.right);},
 			y: function (d, i)	{return 0;},
 		},
 		style: {
-			fill: function (d, i)	{
-				if (this.id && this.id.indexOf('sample') > -1)	{
-					return i > 0 ? d.indexOf('Un') > -1 ? 
-								 '#00AC52' : '#FF6252' : '#333333';
-				} else {
-					return d.indexOf('Un') > -1 ? '#00AC52' : '#FF6252'
+			fill: function (d, i)	{return d.type.indexOf('Altered group') > -1 ? '#FF6252' : '#00AC52';},
+		},
+		text: function (d, i)	{return d.value;},
+	},
+	legend: {
+		margin: [35, 80, 0, 0],
+		attr: {
+			x: function (d, i)	{
+				if (this.isText)	{
+					if (i === 0)	{
+						return 0;	
+					} else if (i === 1)	{
+						return draw.getTextWidth(this.d[0], '25px') + 5;	
+					} else {
+						return draw.getTextWidth(this.d[0].toUpperCase(), this.font) + 
+									 draw.getTextWidth(this.d[1].toUpperCase(), this.font);	
+					}
 				}
 			},
+			y: function (d, i)	{
+				if (i > 0)	{
+					return -draw.getTextHeight('25px').height / 4;
+				} 
+
+				return 0;
+			},
 		},
-		size: 30,
+		style: {
+			fill: function (d, i)	{
+				if (this.isText)	{
+					if (i === 1)	{
+						return '#333';	
+					} else {
+						return this.d[2].toUpperCase()
+									.indexOf('UN') > -1 ? '#00AC52' : '#FF6252';
+					}
+				}
+			},
+			fontSize: function (d, i)	{
+				return i === 0 ? '25px' : this.font;
+			},
+		},
 		text: function (d, i)	{return d;},
 	},
 };
@@ -1775,12 +1784,14 @@ var exclusive = (function ()	{
 		Unaltered 인지 결정해주는 함수.
 	 */
 	function isAltered (s, h)	{
-		if (s.length < 1)	{
-			return ['Belong to', 'Unaltered group'];
-		}
-
-		var genesetArr = model.now.geneset.split(' '),
+		var sample = 'sample',
+				// sample = document.getElementById('sample_id').id,
+				genesetArr = model.now.geneset.split(' '),
 				result = '.';
+
+		if (s.length < 1)	{
+			return ['**', sample + ' Belongs to', 'Unaltered group'];
+		}
 
 		util.loop(s, function (d)	{
 			var gStr = h[genesetArr.indexOf(d.gene)];
@@ -1791,8 +1802,9 @@ var exclusive = (function ()	{
 			}
 		});
 
-		return result === '.' ? ['Belong to', 'Unaltered group'] : 
-														['Belong to', 'Altered group'];
+		return result === '.' ? 
+		['**', sample + ' Belongs to', 'Unaltered group'] : 
+		['**', sample + ' Belongs to', 'Altered group'];
 	};
 
 	/*
@@ -1822,34 +1834,15 @@ var exclusive = (function ()	{
 	function drawSampleLegend ()	{
 		layout.getSVG(model.svg, ['sample_legend'], 
 		function (k, v)	{
-			var cs = config.exclusivity.sample.legend,
-					obj = {
-						m0: size.setMargin(cs.marginFirst),
-						m1: size.setMargin(cs.marginSecond) 
-					};
-
 			legend({
 				element: v,
-				font: '14px',
 				data: model.data.sample.isAltered,
+				font: '14px',
 				attr: config.exclusivity.sample.legend.attr,
 				style: config.exclusivity.sample.legend.style,
 				text: config.exclusivity.sample.legend.text,
 				margin: config.exclusivity.sample.legend.margin,
 			});
-
-			for (var i = 0; i < 2; i++)	{
-				render.star({
-					element: render.addGroup(v, obj['m' + i].top, 
-																			obj['m' + i].left),
-					size: config.exclusivity.sample.legend.size,
-					style: {
-						fill: function (d, i)	{
-							return cs.style.fill(model.data.sample.isAltered[1]);
-						},
-					},
-				});				
-			}
 		});
 	};
 	/*
@@ -1857,26 +1850,28 @@ var exclusive = (function ()	{
 	 */
 	function drawSampleDivision ()	{
 		layout.getSVG(model.svg, ['heatmap'], function (k, v)	{
-			var cs = config.exclusivity.sample.division,
-					obj = {
-						m0: size.setMargin(cs.marginFirst(v, 
-								model.data.sample.isAltered[1])),
-						m1: size.setMargin(cs.marginSecond(v, 
-								model.data.sample.isAltered[1])) 
-					};
+			var cd = config.exclusivity.sample.division,
+					obj = {};
 
-			for (var i = 0; i < 2; i++)	{
-				render.star({
-					element: render.addGroup(v, obj['m' + i].top, 
-																			obj['m' + i].left),
-					size: config.exclusivity.sample.legend.size,
-					style: {
-						fill: function (d, i)	{
-							return cs.style.fill(model.data.sample.isAltered[1]);
-						},
-					},
-				});				
-			}
+			obj.e = v;
+			obj.m = size.setMargin(cd.margin);
+			obj.g = render.addGroup(v, obj.m.top, obj.m.left);
+
+			render.text({
+				element: obj.g.selectAll('#' + v.attr('id') + '_sample'),
+				data: [{ value: '**', type: model.data.sample.isAltered }],
+				attr: {
+					id: function (d) { return v.attr('id') + '_sample'; },
+					x: function (d, i)	{ return cd.attr.x.call(obj, d, i); },
+					y: function (d, i) { return cd.attr.y.call(obj, d, i); },
+				},
+				style: {
+					fill: function (d, i) { return cd.style.fill.call(obj, d, i); },
+					'font-size': '25px',
+					'alignment-baseline': 'middle',
+				},
+				text: function (d, i) { return cd.text.call(obj, d, i); },
+			});
 		});
 	};
 	/*
@@ -3550,39 +3545,7 @@ var legend = (function (legend)	{
 					},
 				},
 			});
-		} 
-		// else if (o.type)	{
-		// 	model.type = o.type || 'star';
-
-		// 	render[model.type]({
-		// 		element: model.sg.select(
-		// 			 '#' + model.id + '_' + model.type),
-		// 		attr: {
-		// 			id: function (d) { 
-		// 				return model.id + '_' + model.type; },
-		// 		},
-		// 		style: {
-		// 			fill: function (d, i) { 
-		// 				return o.style.fill ? 
-		// 							 o.style.fill.call(model, d, i) : '#000000'; 
-		// 			},
-		// 			stroke: function (d, i) { 
-		// 				return o.style.stroke ? 
-		// 							 o.style.stroke.call(model, d, i) : false; 
-		// 			},
-		// 		},
-		// 		size: o.size || 5,
-		// 		on: {
-		// 			mouseover: function (d)	{
-		// 				if (!o.on) { return false; }
-
-		// 				return o.on.mouseover ? 
-		// 							 o.on.mouseover.call(model, d, i) : false;
-		// 			},
-		// 		},
-		// 	});
-		// }	
-		else if (o.attr && o.attr.width && o.attr.height) {
+		} else if (o.attr && o.attr.width && o.attr.height) {
 			render.rect({	
 				element: model.sg.selectAll('#' + model.id + '_rect'),
 				data: model.d,
@@ -3644,6 +3607,10 @@ var legend = (function (legend)	{
 				'font-family': function (d) { 
 					return o.style.fontFamily ? 
 								 o.style.fontFamily.call(model, d) : 'Arial'; 
+				},
+				'font-weight': function (d) {
+					return o.style.fontWeight ? 
+								 o.style.fontWeight.call(model, d) : '1';
 				},
 				'alignment-baseline': function (d)	{
 					return o.style.alignmentBaseline ? 
