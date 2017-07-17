@@ -139,6 +139,13 @@ var bar = (function (bar)	{
 	
 	var model = {};
 	/*
+		Bar 의 Tooltip 의 위치를 설정해주기 위해
+		Base position (x 또는 y) 를 구해주는 함수.
+	 */
+	function getBaseOfBar (direction, g)	{
+		console.log(g.selectAll('rect'));
+	};
+	/*
 		bar 의 방향에 따라 range 값을 반환해주는 함수.
 	 */
 	function range (d) {
@@ -164,50 +171,50 @@ var bar = (function (bar)	{
 													util.varType(o.element) === 'Array' ? 
 							o.element : (/\W/).test(o.element[0]) ? 
 							d3.select(o.element) : d3.select('#' + o.element);
+		model.id = model.e.attr('id');
 		model.w = o.width || model.e.attr('width') || 0;
 		model.h = o.height || model.e.attr('height') || 0;
 		model.m = size.setMargin(o.margin);
-		model.dr = o.direction || 'top';
+		model.data = o.data;
+		model.direction = o.direction || 'top';
 		model.g = render.addGroup(model.e, model.m.top, model.m.left);
 		model.dx = new Array().concat(o.xaxis);
 		model.dy = new Array().concat(o.yaxis);
-		model.sx = setScale(model.dr, model.dx, 'x');
-		model.sy = setScale(model.dr, model.dy, 'y');
-
-		var id = model.e.attr('id');
+		model.sx = setScale(model.direction, model.dx, 'x');
+		model.sy = setScale(model.direction, model.dy, 'y');
 		/*
 		 	Bar, Stacked Bar, ... 를 그려주는 렌더링 함수를 호출하는 부분.
 		 */
 		render.rect({
-			element: model.g.selectAll('#' + id + '_rect'),
-			data: o.data,
+			element: model.g.selectAll('#' + model.id + '_rect'),
+			data: model.data,
 			attr: {
-				id: function (d) { return id + '_rect'; },
+				id: function (d) { return model.id + '_rect'; },
 				x: function (d, i) { 
 					return o.attr.x ? 
-								 o.attr.x.call(model, d, i) : o.attr.x(d); 
+								 o.attr.x(d, i, model) : o.attr.x(d); 
 				},
 				y: function (d, i) { 
 					return o.attr.y ? 
-								 o.attr.y.call(model, d, i) : o.attr.y(d); 
+								 o.attr.y(d, i, model) : o.attr.y(d); 
 				},
 				width: function (d, i) { 
 					return o.attr.width ? 
-								 o.attr.width.call(model, d, i) : 10; 
+								 o.attr.width(d, i, model) : 10; 
 				},
 				height: function (d, i) { 
 					return o.attr.height ? 
-								 o.attr.height.call(model, d, i) : 10; 
+								 o.attr.height(d, i, model) : 10; 
 				},
 			},
 			style: {
 				fill: function (d, i) { 
 					return o.style.fill ? 
-								 o.style.fill.call(model, d, i) : '#000000'; 
+								 o.style.fill(d, i, model) : '#000000'; 
 				},
 				stroke: function (d, i) { 
 					return o.style.stroke ? 
-								 o.style.stroke.call(model, d, i) : '#FFFFFF'; 
+								 o.style.stroke(d, i, model) : '#FFFFFF'; 
 				},
 			},
 			on: {
@@ -215,10 +222,18 @@ var bar = (function (bar)	{
 					if (!o.on)	{ return false; }
 					
 					return o.on.mouseover ? 
-								 o.on.mouseover.call(model, d, i) : false;
+								 o.on.mouseover.call(this, d, i, model) : false;
+				},
+				mouseout: function (d, i)	{
+					if (!o.on)	{ return false; }
+					
+					return o.on.mouseout ? 
+								 o.on.mouseout.call(this, d, i, model) : false;
 				},
 			},
 		});
+
+		model.base = getBaseOfBar(model.direction, model.g);
 
 		return model;
 	};
@@ -475,14 +490,14 @@ config.landscape.color = function (value)	{
  */
 config.landscape.sample = {
 	attr: {
-		x: function (d) {return d.x.indexOf('-') > -1 ? this.sx(d.x) : this.sx(d.x) + 3;},
-		y: function (d) {return this.sy(util.minmax(this.dy).max) - this.sy(d.y + d.value) + this.sy(util.minmax(this.dy).min);},
-		width: function (d) {return d.x.indexOf('-') > -1 ? scale.compatibleBand(this.sx) : scale.compatibleBand(this.sx) - 7.5},
-		height: function (d) {return this.sy(d.value) - this.sy(util.minmax(this.dy).min);},	
+		x: function (d, i, m) {return d.x.indexOf('-') > -1 ? m.sx(d.x) : m.sx(d.x) + 3;},
+		y: function (d, i, m) {return m.sy(util.minmax(m.dy).max) - m.sy(d.y + d.value) + m.sy(util.minmax(m.dy).min);},
+		width: function (d, i, m) {return d.x.indexOf('-') > -1 ? scale.compatibleBand(m.sx) : scale.compatibleBand(m.sx) - 7.5},
+		height: function (d, i, m) {return m.sy(d.value) - m.sy(util.minmax(m.dy).min);},	
 	},
 	style: {
-		fill: function (d)	{ return config.landscape.color(d.info); },
-		stroke: function (d) { return '#FFFFFF'; },
+		fill: function (d, i, m)	{ return config.landscape.color(d.info); },
+		stroke: function (d, i, m) { return '#FFFFFF'; },
 	},
 };
 /*
@@ -490,14 +505,14 @@ config.landscape.sample = {
  */
 config.landscape.gene = {
 	attr: {
-		x: function (d) {return this.sx(util.minmax(this.dx).max - d.x) - this.sx(d.value) + this.m.left;},
-		y: function (d) {return this.sy(d.y);},
-		width: function (d) {return this.sx(d.value) - this.m.left;},
-		height: function (d) { return scale.compatibleBand(this.sy); },
+		x: function (d, i, m) {return m.sx(util.minmax(m.dx).max - d.x) - m.sx(d.value) + m.m.left;},
+		y: function (d, i, m) {return m.sy(d.y);},
+		width: function (d, i, m) {return m.sx(d.value) - m.m.left;},
+		height: function (d, i, m) { return scale.compatibleBand(m.sy); },
 	},
 	style: {
-		fill: function (d)	{ return config.landscape.color(d.info); },
-		stroke: function (d) { return '#FFFFFF'; },	
+		fill: function (d, i, m)	{ return config.landscape.color(d.info); },
+		stroke: function (d, i, m) { return '#FFFFFF'; },	
 	},
 };
 /*
@@ -505,14 +520,14 @@ config.landscape.gene = {
  */
 config.landscape.pq = {
 	attr: {
-		x: function (d) { return this.sx(util.minmax(this.dx).min); },
-		y: function (d) { return this.sy(d.y); },
-		width: function (d) { return this.sx(d.value); },
-		height: function (d) { return scale.compatibleBand(this.sy); },
+		x: function (d, i, m) { return m.sx(util.minmax(m.dx).min); },
+		y: function (d, i, m) { return m.sy(d.y); },
+		width: function (d, i, m) { return m.sx(d.value); },
+		height: function (d, i, m) { return scale.compatibleBand(m.sy); },
 	},
 	style: {
-		fill: function (d)	{ return '#BFBFBF'; },
-		stroke: function (d) { return '#FFFFFF'; },
+		fill: function (d, i, m)	{ return '#BFBFBF'; },
+		stroke: function (d, i, m) { return '#FFFFFF'; },
 	},
 };
 /*
@@ -520,14 +535,14 @@ config.landscape.pq = {
  */
 config.landscape.heatmap = {
 	attr: {
-		x: function (d)	{return this.sx(d.x);},
-		y: function (d)	{return config.landscape.case(d.value) !== 'cnv' ? (scale.compatibleBand(this.sy) / 3) + this.sy(d.y) : this.sy(d.y);},
-		width: function (d)	{return scale.compatibleBand(this.sx);},
-		height: function (d)	{return config.landscape.case(d.value) !== 'cnv' ? scale.compatibleBand(this.sy) / 3 : scale.compatibleBand(this.sy);},
+		x: function (d, i, m)	{return m.sx(d.x);},
+		y: function (d, i, m)	{return config.landscape.case(d.value) !== 'cnv' ? (scale.compatibleBand(m.sy) / 3) + m.sy(d.y) : m.sy(d.y);},
+		width: function (d, i, m)	{return scale.compatibleBand(m.sx);},
+		height: function (d, i, m)	{return config.landscape.case(d.value) !== 'cnv' ? scale.compatibleBand(m.sy) / 3 : scale.compatibleBand(m.sy);},
 	},
 	style: {
-		fill: function (d)	{return config.landscape.color(d.value);},
-		stroke: function (d)	{return '#FFFFFF';}
+		fill: function (d, i, m)	{return config.landscape.color(d.value);},
+		stroke: function (d, i, m)	{return '#FFFFFF';}
 	},
 };
 /*
@@ -535,30 +550,30 @@ config.landscape.heatmap = {
  */
 config.landscape.group = {
 	attr: {
-		x: function (d) {return this.sx(d.x);},
-		y: function (d) {return this.sy(d.y);},
-		width: function (d) {return scale.compatibleBand(this.sx);},
-		height: function (d) {return scale.compatibleBand(this.sy);},
+		x: function (d, i, m) {return m.sx(d.x);},
+		y: function (d, i, m) {return m.sy(d.y);},
+		width: function (d, i, m) {return scale.compatibleBand(m.sx);},
+		height: function (d, i, m) {return scale.compatibleBand(m.sy);},
 	},
 	style: {
-		fill: function (d) { return config.landscape.color(d.value); },
-		stroke: function (d) { return '#FFFFFF'; },
+		fill: function (d, i, m) { return config.landscape.color(d.value); },
+		stroke: function (d, i, m) { return '#FFFFFF'; },
 	}
 };
 
 config.landscape.legend = {
 	attr: {
-		x: function (d, i) {
-			var x = this.dr === 'h' ? (this.p * 2 + this.mw) * i : 0;
+		x: function (d, i, m) {
+			var x = m.dr === 'h' ? (m.p * 2 + m.mw) * i : 0;
 
-			return this.isText ? (x + this.p * 2) : x;
+			return m.isText ? (x + m.p * 2) : x;
 		},
-		y: function (d, i) { 
-			var h = this.height || 15,
-					y = this.dr === 'h' ? 0 : ((this.p + this.mh) * i);
+		y: function (d, i, m) { 
+			var h = m.height || 15,
+					y = m.dr === 'h' ? 0 : ((m.p + m.mh) * i);
 
-			if (this.isText)	{
-				return y + this.mh - this.mh / 2 + this.p / 2;
+			if (m.isText)	{
+				return y + m.mh - m.mh / 2.5;
 			} else {
 				if (config.landscape.case(d))	{
 					return config.landscape.case(d) === 'var' ? y + h / 3 : y;
@@ -567,21 +582,21 @@ config.landscape.legend = {
 
 			return y;
 		},
-		width: function (d, i) {return this.width || 5;},
-		height: function (d, i) { 
-			var h = this.height || 15;
+		width: function (d, i, m) {return m.width || 5;},
+		height: function (d, i, m) { 
+			var h = m.height || 15;
 
 			return config.landscape.case(d) ? 
 						 config.landscape.case(d) === 'var' ? h / 3 : h : h;
 		},
 	},
 	style: {
-		fill: function (d) { return config.landscape.color(d); },
-		stroke: function (d) { return '#FFFFFF'; },	
-		fontFamily: function (d) { return 'Times Roman'; },
-		fontSize: function (d) { return '12px'; },
+		fill: function (d, i, m) { return m.isText ? '#333333' : config.landscape.color(d); },
+		stroke: function (d, i, m) { return '#FFFFFF'; },	
+		fontFamily: function (d, i, m) { return 'Times Roman'; },
+		fontSize: function (d, i, m) { return '12px'; },
 	},
-	text: function (d)	{ return d; },
+	text: function (d, i, m)	{ return d; },
 }
 
 /*
@@ -692,107 +707,107 @@ config.exclusivity.color = function (value)	{
 config.exclusivity.legend = {
 	margin: [20, 80, 0, 0],
 	attr: {
-		x: function (d, i) {
-			var x = this.dr === 'h' ? (this.p * 10 + this.mw) * i : 0;
+		x: function (d, i, m) {
+			var x = m.dr === 'h' ? (m.p * 10 + m.mw) * i : 0;
 
-			return this.isText ? (x + this.p * 2) : x;
+			return m.isText ? (x + m.p * 2) : x;
 		},
-		y: function (d, i) { 
-			var h = this.height || 15,
-					y = this.dr === 'h' ? 0 : ((this.p + this.mh) * i);
+		y: function (d, i, m) { 
+			var h = m.height || 15,
+					y = m.dr === 'h' ? 0 : ((m.p + m.mh) * i);
 
-			return this.isText ? y + this.mh - this.mh / 2 : 
+			return m.isText ? y + m.mh - m.mh / 2 : 
 						 d === 'Mutation' ? y + h / 3 : y;
 		},
-		width: function (d, i) {return this.width || 5;},
-		height: function (d, i) { 
-			var h = this.height || 15;
+		width: function (d, i, m) {return m.width || 5;},
+		height: function (d, i, m) { 
+			var h = m.height || 15;
 
 			return d === 'Mutation' ? h / 3 : h;
 		},
 	},
 	style: {
-		fill: function (d)	{if (!this.isText)	{ return config.exclusivity.color(d); }},
+		fill: function (d, i, m)	{if (!m.isText)	{ return config.exclusivity.color(d); }},
 	},
-	text: function (d)	{return d;},
+	text: function (d, i, m)	{return d;},
 };
 
 config.exclusivity.heatmap = {
 	margin: [35, 40, 35, 50],
 	attr: {
-		x: function (d)	{return this.sx(d.x);},
-		y: function (d)	{return d.value === 'Mutation' ? this.sy(d.y) + scale.compatibleBand(this.sy) / 3 : this.sy(d.y);},
-		width: function (d)	{return scale.compatibleBand(this.sx);},
-		height: function (d)	{return d.value === 'Mutation' ? scale.compatibleBand(this.sy) / 3 : scale.compatibleBand(this.sy);},
+		x: function (d, i, m)	{return m.sx(d.x);},
+		y: function (d, i, m)	{return d.value === 'Mutation' ? m.sy(d.y) + scale.compatibleBand(m.sy) / 3 : m.sy(d.y);},
+		width: function (d, i, m)	{return scale.compatibleBand(m.sx);},
+		height: function (d, i, m)	{return d.value === 'Mutation' ? scale.compatibleBand(m.sy) / 3 : scale.compatibleBand(m.sy);},
 	},
 	style: {
-		fill: function (d)	{return config.exclusivity.color(d.value);},
-		stroke: function (d)	{return false;},
+		fill: function (d, i, m)	{return config.exclusivity.color(d.value);},
+		stroke: function (d, i, m)	{return false;},
 	},
 };
 
 config.exclusivity.division = {
 	margin: [10, 40, 0, 50],
 	attr: {
-		x: function (d, i) {return i > 0 ? this.isText ? this.scale(this.axis[this.axis.length - 1]) - draw.getTextWidth(d.text, this.font) - this.padding : this.scale(d.point) : this.isText ? this.m.left + this.padding : this.m.left;},
-		y: function (d) {return this.isText ? this.m.top + (this.textHeight + this.padding): this.m.top;},
-		width: function (d, i) {return i > 0 ? this.w - this.scale(d.point) - this.m.right : this.scale(d.point) - this.m.left;},
-		height: function (d) {return this.textHeight + this.padding * 4;},
-		rx: function (d) {return 3;},
-		ry: function (d) {return 3;},
+		x: function (d, i, m) {return i > 0 ? m.isText ? m.scale(m.axis[m.axis.length - 1]) - draw.getTextWidth(d.text, m.font) - m.padding : m.scale(d.point) : m.isText ? m.m.left + m.padding : m.m.left;},
+		y: function (d, i, m) {return m.isText ? m.m.top + (m.textHeight + m.padding): m.m.top;},
+		width: function (d, i, m) {return i > 0 ? m.w - m.scale(d.point) - m.m.right : m.scale(d.point) - m.m.left;},
+		height: function (d, i, m) {return m.textHeight + m.padding * 4;},
+		rx: function (d, i, m) {return 3;},
+		ry: function (d, i, m) {return 3;},
 	},
 	style: {
-		fill: function (d, i) {return this.isText ? '#FFFFFF' : d.color;},
-		stroke: function (d, i)	{return this.isLine ? '#000000' : '#FFFFFF';},
-		dashed: function (d, i) {return '4,2'},
+		fill: function (d, i, m) {return m.isText ? '#FFFFFF' : d.color;},
+		stroke: function (d, i, m)	{return m.isLine ? '#000000' : '#FFFFFF';},
+		dashed: function (d, i, m) {return '4,2'},
 	},
 	line: {
-		x: function () {return this.scale(this.point);},
-		y: function () {return this.m.left + this.m.top * 1.2;},
+		x: function (m) {return m.scale(m.point);},
+		y: function (m) {return m.m.left + m.m.top * 1.2;},
 	},
-	text: function (d, i)	{return d.text;},
+	text: function (d, i, m)	{return d.text;},
 };
 
 config.exclusivity.sample = {
 	survival: {
 		attr: {
-			x: function (d, i)	{return this.data.sample.isAltered.indexOf(d.text) > -1 ? draw.getTextWidth(d.text, '15px') + draw.getTextWidth(d.text, '15px') / 4 : -5;},
-			y: function (d, i)	{return this.data.sample.isAltered.indexOf(d.text) > -1 ? draw.getTextHeight('15px').height / 1.3 : 0;},
+			x: function (d, i, m)	{return m.data.sample.isAltered.indexOf(d.text) > -1 ? draw.getTextWidth(d.text, '15px') + draw.getTextWidth(d.text, '15px') / 4 : -5;},
+			y: function (d, i, m)	{return m.data.sample.isAltered.indexOf(d.text) > -1 ? draw.getTextHeight('15px').height / 1.3 : 0;},
 		},
 		style: {
-			fill: function (d, i)	{return this.data.sample.isAltered.indexOf(d.text) > -1 ? d.color : '#FFFFFF';},
-			fontSize: function (d) {return '25px';},
+			fill: function (d, i, m)	{return m.data.sample.isAltered.indexOf(d.text) > -1 ? d.color : '#FFFFFF';},
+			fontSize: function (d, i, m) {return '25px';},
 		},
-		text: function (d, i)	{return this.data.sample.isAltered.indexOf(d.text) > -1 ? ' **' : '';},
+		text: function (d, i, m)	{return m.data.sample.isAltered.indexOf(d.text) > -1 ? ' **' : '';},
 	},
 	division: {
 		margin: [15, 80, 0, 50],
 		attr: {
-			x: function (d, i)	{return d.type.indexOf('Altered group') > -1 ? 0 : this.e.attr('width') - this.m.left - (this.m.left - this.m.right);},
-			y: function (d, i)	{return 0;},
+			x: function (d, i, m)	{return d.type.indexOf('Altered group') > -1 ? 0 : m.e.attr('width') - m.m.left - (m.m.left - m.m.right);},
+			y: function (d, i, m)	{return 0;},
 		},
 		style: {
-			fill: function (d, i)	{return d.type.indexOf('Altered group') > -1 ? '#FF6252' : '#00AC52';},
+			fill: function (d, i, m)	{return d.type.indexOf('Altered group') > -1 ? '#FF6252' : '#00AC52';},
 		},
-		text: function (d, i)	{return d.value;},
+		text: function (d, i, m)	{return d.value;},
 	},
 	legend: {
 		margin: [35, 80, 0, 0],
 		attr: {
-			x: function (d, i)	{
-				if (this.isText)	{
+			x: function (d, i, m)	{
+				if (m.isText)	{
 					if (i === 0)	{
 						return 0;	
 					} else if (i === 1)	{
-						return draw.getTextWidth(this.d[0], '25px') + 5;	
+						return draw.getTextWidth(m.d[0], '25px') + 5;	
 					} else {
-						return draw.getTextWidth(this.d[0].toUpperCase(), this.font) + 
-									 draw.getTextWidth(this.d[1].toUpperCase(), this.font) - 
-									 draw.getTextWidth('a', this.font);	
+						return draw.getTextWidth(m.d[0].toUpperCase(), m.font) + 
+									 draw.getTextWidth(m.d[1].toUpperCase(), m.font) - 
+									 draw.getTextWidth('a', m.font);	
 					}
 				}
 			},
-			y: function (d, i)	{
+			y: function (d, i, m)	{
 				if (i > 0)	{
 					return -draw.getTextHeight('25px').height / 5;
 				} 
@@ -801,21 +816,21 @@ config.exclusivity.sample = {
 			},
 		},
 		style: {
-			fill: function (d, i)	{
-				if (this.isText)	{
+			fill: function (d, i, m)	{
+				if (m.isText)	{
 					if (i === 1)	{
 						return '#333';	
 					} else {
-						return this.d[2].toUpperCase()
+						return m.d[2].toUpperCase()
 									.indexOf('UN') > -1 ? '#00AC52' : '#FF6252';
 					}
 				}
 			},
-			fontSize: function (d, i)	{
-				return i === 0 ? '25px' : this.font;
+			fontSize: function (d, i, m)	{
+				return i === 0 ? '25px' : m.font;
 			},
 		},
-		text: function (d, i)	{return d;},
+		text: function (d, i, m)	{return d;},
 	},
 };
 // ============================ Mutual Exclusivity ==================================
@@ -823,24 +838,23 @@ config.exclusivity.sample = {
 config.variants.legend = {
 	margin: [20, 20, 0, 0],
 	attr: {
-		x: function (d, i) { 
-			var x = this.dr === 'h' ? (this.p * 10 + this.mw) * i : 
-							this.isText ? this.p : 0;
+		x: function (d, i, m) { 
+			var x = m.dr === 'h' ? (m.p * 10 + m.mw) * i : m.isText ? m.p : 0;
 
-			return this.isText ? (x + this.p * 2) : x;
+			return m.isText ? (x + m.p * 2) : x;
 		},
-		y: function (d, i) { 
-			var h = this.height || 5;
+		y: function (d, i, m) { 
+			var h = m.height || 5;
 
-			return this.isText ? this.mh * i + (h * 0.7) : this.mh * i;
+			return m.isText ? m.mh * i + 1 : m.mh * i;
 		},
-		r: function (d) {return 5;},
+		r: function (d, i, m) {return 5;},
 	},
 	style: {
-		fontSize: function (d) {return '12px'},
-		fill: function (d) {return config.landscape.color(d);},
+		fontSize: function (d, i, m) {return '12px'},
+		fill: function (d, i, m) {return m.isText ? '#333333' : config.landscape.color(d);},
 	},
-	text: function (d) {return d;},
+	text: function (d, i, m) {return d;},
 };
 /*
 	Needle plot 의 원의 크기를 정하는 함수.
@@ -853,29 +867,29 @@ function needleRadius (c)	{
 config.variants.needle = {
 	margin: [20, 30, 100, 60],
 	attr: {
-		x: function (d, i)	{return this.sx(d.x);},
-		y: function (d, i)	{return this.sy(d.y);},
-		r: function (d, i)	{return d.value ? needleRadius(d.value) : this.radius;},
+		x: function (d, i, m)	{return m.sx(d.x);},
+		y: function (d, i, m)	{return m.sy(d.y);},
+		r: function (d, i, m)	{return d.value ? needleRadius(d.value) : m.radius;},
 	},
 	style: {
-		fill: function (d)	{ return d.info ? config.landscape.color(d.info[0].type) : false;},
-		stroke: function (d)	{return '#FFFFFF';},
+		fill: function (d, i, m)	{ return d.info ? config.landscape.color(d.info[0].type) : false;},
+		stroke: function (d, i, m)	{return '#FFFFFF';},
 	},
 };
 
 config.variants.needleGraph = {
 	margin: [0, 30, 80, 60],
 	attr: {
-		x: function (d, i)	{return this.isText ? this.sx(d.x) + 5 : this.sx(d.x);},
-		y: function (d, i)	{return this.isText ? this.sh / 2 : 0;},
-		width: function (d, i)	{return this.sx(d.width);},
-		height: function (d, i)	{return this.sh;},
+		x: function (d, i, m)	{return m.isText ? m.sx(d.x) + 5 : m.sx(d.x);},
+		y: function (d, i, m)	{return m.isText ? m.sh / 2 : 0;},
+		width: function (d, i, m)	{return m.sx(d.width);},
+		height: function (d, i, m)	{return m.sh;},
 	},
 	style: {
-		fill: function (d)	{return d.color;},
-		stroke: function (d)	{return '#FFFFFF';},
+		fill: function (d, i, m)	{return d.color;},
+		stroke: function (d, i, m)	{return '#FFFFFF';},
 	},
-	text: function (d) {return d.info.identifier;}
+	text: function (d, i, m) {return d.info.identifier;}
 };
 
 config.variants.axis = {
@@ -886,11 +900,11 @@ config.variants.axis = {
 config.variants.navi = {
 	margin: [0, 30, 5, 60],
 	style: {
-		fill: function (d) {
+		fill: function (d, i, m) {
 			var c = d.info ? 
 							d3.rgb(config.landscape.color(d.info[0].type)) : false;
 
-			this.g.selectAll('path').style('stroke', 'rgba(0, 0, 0, 0.1)');
+			m.g.selectAll('path').style('stroke', 'rgba(0, 0, 0, 0.1)');
 			
 			return c ? (c.opacity = 0.3, c) : false;
 		},
@@ -901,18 +915,18 @@ config.variants.patient = {
 	needle: {
 		margin: [0, 30, 48, 60],
 		attr: {
-			points: function (d, i)	{
-				var x = this.s(d.position);
+			points: function (d, i, m)	{
+				var x = m.s(d.position);
 				
-				return x + ',' + this.len / 2.5 + 
-				' ' + (x - this.len) + ',' + this.len * 2 + 
-				' ' + (x + this.len) + ',' + this.len * 2 + 
-				' ' + x + ',' + this.len / 2.5;
+				return x + ',' + m.len / 2.5 + 
+				' ' + (x - m.len) + ',' + m.len * 2 + 
+				' ' + (x + m.len) + ',' + m.len * 2 + 
+				' ' + x + ',' + m.len / 2.5;
 			},
 		},
 		style: {
-			fill: function (d, i)	{return config.landscape.color(d.type);},
-			stroke: function (d, i)	{
+			fill: function (d, i, m)	{return config.landscape.color(d.type);},
+			stroke: function (d, i, m)	{
 				var c = d3.rgb(config.landscape.color(d.type));
 				
 				return c.opacity = 0.3, c;
@@ -922,7 +936,7 @@ config.variants.patient = {
 	legend: {
 		margin: [0, 0, 0, 0],
 		attr: {
-			points: function (d, i)	{
+			points: function (d, i, m)	{
 				// 기존에 그려진 type legend 의 위치를 알아낸 뒤,
 				// 그 아래에 위치하기 위해서 getBoundingClientRect 함수
 				// 를 사용하였다.
@@ -935,61 +949,71 @@ config.variants.patient = {
 				 ' ' + (x + bcr.width / 2) + ',' + bcr.bottom + 
 				 ' ' + x + ',' + (bcr.bottom - bcr.width);
 			},
-			x: function (d, i)	{
+			x: function (d, i, m)	{
 				var l = document.querySelector('#variants_legend_chart').firstChild,
 						bcr = l.getBoundingClientRect();
 
-				return bcr.right - bcr.left + (bcr.width * 2) + this.p;
+				return bcr.right - bcr.left + (bcr.width * 2) + m.p;
 			},
-			y: function (d, i)	{
-				var l = document.querySelector('#variants_legend_chart').firstChild;
+			y: function (d, i, m)	{
+				var l = document.querySelector('#variants_legend_chart').firstChild,
+						bcr = l.getBoundingClientRect();
 
-				return l.getBoundingClientRect().bottom;
+				return bcr.bottom - m.mh / 3;
 			},
 		},
 		style: {
-			fill: function (d, i)	{return config.landscape.color(d.type);},
-			stroke: function (d, i)	{
+			fill: function (d, i, m)	{return m.isText ? '#333333' : config.landscape.color(d.type);},
+			stroke: function (d, i, m)	{
 				var c = d3.rgb(config.landscape.color(d.type));
 				
 				return c.opacity = 0.3, c;
 			},
-			fontSize: function (d) {return '12px';},
-			strokeWidth: function (d) {return '3px';},
+			fontSize: function (d, i, m) {return '12px';},
+			strokeWidth: function (d, i, m) {return '3px';},
 		},
-		text: function (d) { return 'Patients'; }
+		text: function (d, i, m) { return 'Patients'; }
 	},
 };
 // ============================ Variants ==================================
 // ============================ Expression ==================================
+/*
+	최대 길이에 맞춰 컬러를 생산할 함수.
+ */
+config.expression.colorSet = [
+	'#B82647', '#0A8D5E', '#F9D537', '#0B6DB7', '#E3DDCB',
+	'#9F494C', '#CBDD61', '#ED9149', '#89236A', '#D8C8B2',
+	'#CA5E59', '#006494', '#2E674E', '#9A6B31', '#403F95',
+	'#616264', '#E2A6B4', '#5AC6D0', '#733E7F', '#45436C'
+];
+
 config.expression.legend = {
 	bar: {
 		margin: [5, 5, 5, 5],
-		text: function (d) {return draw.textOverflow(d, '10px', this.w * 0.7);},
+		text: function (d, i, m) {return draw.textOverflow(d, '10px', m.w * 0.7);},
 		attr: {
-			x: function (d, i) {return this.isText ? this.m.left + this.p * 2 : this.p;},
-			y: function (d, i) {
-				return this.isText ? this.mh * i + this.mh / 2.5 : this.mh * i;},
-			width: function (d, i) {return this.mh / 3;}, 
-			height: function (d, i) {return this.mh / 2.5;},
+			x: function (d, i, m) {return m.isText ? m.m.left + m.p * 2 : m.p;},
+			y: function (d, i, m) {return m.isText ? m.mh * i + m.mh / 3 / 2 : m.mh * i;},
+			width: function (d, i, m) {return m.mh / 3;}, 
+			height: function (d, i, m) {return m.mh / 3;},
 		},
 		style: {
-			fill: function (d, i) {return '#000000';},
-			stroke: function (d, i) {return '#FFFFFF';},
-			fontSize: function (d) {return '10px';}
+			fill: function (d, i, m) {return m.isText ? '#333333': d === 'NA' ? '#A4AAA7' : config.expression.colorSet[i];},
+			stroke: function (d, i, m) {return '#FFFFFF';},
+			fontSize: function (d, i, m) {return '10px';}
 		},
 	},
 	scatter: {
 		margin: [30, 10, 10, 10],
 		text: function (d) {return d;},
 		attr: {
-			x: function (d, i) {return this.isText ? this.m.left + this.m.right : this.p;},
-			y: function (d, i) {return this.isText ? (this.mh * i) + 1: (this.mh * i);},
-			r: function (d, i)	{return this.p;},
+			x: function (d, i, m) {return m.isText ? m.m.left + m.m.right : m.p;},
+			y: function (d, i, m) {return m.isText ? (m.mh * i) + 1: (m.mh * i);},
+			r: function (d, i, m)	{return m.p;},
 		},
 		style: {
-			fill: function (d, i) {return d === 'Alive' ? '#5D5DD8' : '#D86561';},
-			fontSize: function (d) {return '12px';},
+			fill: function (d, i, m) {return d === 'Alive' ? '#5D5DD8' : '#D86561';},
+			fontSize: function (d, i, m) {return '12px';},
 		},
 	},
 };
@@ -997,16 +1021,16 @@ config.expression.legend = {
 config.expression.scatter = {
 	margin: [10, 30, 35, 20],
 	attr: {
-		x: function (d, i) {return this.sx(d.x) - this.m.left;},
-		y: function (d, i) {return this.sy(d.y);},
-		r: function (d, i) {return this.ss;},
+		x: function (d, i, m) {return m.sx(d.x) - m.m.left;},
+		y: function (d, i, m) {return m.sy(d.y);},
+		r: function (d, i, m) {return m.ss;},
 	},
 	style: {
-		fill: function (d, i) {return d.value === undefined ? '#333333' : d.value === 1 ? '#D86561': '#5D5DD8';},
-		fillOpacity: function (d, i) {return '0.6';},
+		fill: function (d, i, m) {return d.value === undefined ? '#333333' : d.value === 1 ? '#D86561': '#5D5DD8';},
+		fillOpacity: function (d, i, m) {return '0.6';},
 	},
 	on: {
-		mouseover: function (d, i)	{
+		mouseover: function (d, i, m)	{
 			console.log('Scatter: ', d);
 		},
 	}
@@ -1015,22 +1039,20 @@ config.expression.scatter = {
 config.expression.bar = {
 	margin: [10, 30, 50, 20],
 	attr: {
-		x: function (d, i) {return this.sx(d.x) - this.m.left;},
-		y: function (d, i) {return (d.y - d.value) < 0 ? this.sy(d.value) : this.sy(d.y);},
-		width: function (d, i) {return scale.compatibleBand(this.sx);},
-		height: function (d, i) {
-			return (d.y - d.value) < 0 ? 
-			this.sy(d.y) - this.sy(d.value) : 
-			this.sy(d.value) - this.sy(d.y);},
+		x: function (d, i, m) {return m.sx(d.x) - m.m.left;},
+		y: function (d, i, m) {return (d.y - d.value) < 0 ? m.sy(d.value) : m.sy(d.y);},
+		width: function (d, i, m) {return scale.compatibleBand(m.sx);},
+		height: function (d, i, m) {return (d.y - d.value) < 0 ? m.sy(d.y) - m.sy(d.value) : m.sy(d.value) - m.sy(d.y);},
 	},
 	style: {
-		fill: function (d, i) {
+		fill: function (d, i, m) {
 			if (d.y - d.value === 0)	{
 				return '#000';
 			}
+
 			return '#62C2E0';
 		},
-		stroke: function (d, i) {
+		stroke: function (d, i, m) {
 			if (d.y - d.value === 0)	{
 				return '#000';
 			}
@@ -1038,8 +1060,18 @@ config.expression.bar = {
 		},
 	},
 	on: {
-		mouseover: function (d, i)	{
-			// console.log('Bar: ', d);
+		mouseover: function (d, i, m)	{
+			// console.log(m, m.sx(m.dx[0]), m.sy(m.data[0].y),
+			// 	m.g.selectAll('rect'))
+			tooltip({
+				element: this,
+				baseX: 0,
+				baseY: 0,
+				text: d,
+			});
+		},
+		mouseout: function ()	{
+			tooltip('hide');
 		},
 	}
 };
@@ -1047,13 +1079,17 @@ config.expression.bar = {
 config.expression.heatmap = {
 	margin: [2, 30, 0, 20],
 	attr: {
-		x: function (d, i) {return this.sx(d.x) - this.m.left;},
-		y: function (d, i) {return this.sy(d.y);},
-		width: function (d, i) {return scale.compatibleBand(this.sx);},
-		height: function (d, i) {return scale.compatibleBand(this.sy);},
+		x: function (d, i, m) {return m.sx(d.x) - m.m.left;},
+		y: function (d, i, m) {return m.sy(d.y);},
+		width: function (d, i, m) {return scale.compatibleBand(m.sx);},
+		height: function (d, i, m) {return scale.compatibleBand(m.sy);},
 	},
 	on: {
-		mouseover: function (d, i)	{
+		mouseover: function (d, i, m)	{
+			tooltip({
+				element: d3.select(this),
+				data: d,
+			});
 			console.log('Heatmap: ', d);
 		},	
 	}
@@ -1063,42 +1099,32 @@ config.expression.division = {
 	margin: [0, 30, 25, 20],
 	marginScatter: [0, 30, 15, 20],
 	attr: {
-		x: function (d, i) {
-			return i > 0 ? 
-						this.isText ? 
-						this.scale(this.axis[this.axis.length - 1]) - 
-						draw.getTextWidth(d.text, this.font) - this.padding / 2 - this.m.left : 
-						this.scale(d.point) - this.m.left: 
-						this.isText ? this.scale(this.axis[0]) - this.m.left + this.padding * 2 : this.scale(this.axis[0]) - this.m.left;
-			return i > 0 ? this.isText ? this.w - draw.getTextWidth(d.text, this.font) - this.m.right : this.scale(d.point) : this.isText ? this.m.left + this.padding * 2 : this.m.left;},
-		y: function (d) {return this.isText ? this.h - this.m.bottom + this.textHeight - this.padding : this.h - this.m.bottom;},
-		width: function (d, i) {
-			return i > 0 ? 
-			this.scale(this.axis[this.axis.length - 1]) - 
-			this.scale(d.point) : 
-			this.scale(d.point) - this.m.left;
-		},
-		height: function (d) {return this.textHeight + this.padding * 2;},
-		rx: function (d, i) {return 3;},
-		ry: function (d, i) {return 3;},
+		x: function (d, i, m) {
+			return i > 0 ? m.isText ? m.scale(m.axis[m.axis.length - 1]) - draw.getTextWidth(d.text, m.font) - m.padding / 2 - m.m.left : m.scale(d.point) - m.m.left : m.isText ? m.scale(m.axis[0]) - m.m.left + m.padding * 2 : m.scale(m.axis[0]) - m.m.left;},
+			// return i > 0 ? m.isText ? m.w - draw.getTextWidth(d.text, m.font) - m.m.right : m.scale(d.point) : m.isText ? this.m.left + this.padding * 2 : this.m.left;},
+		y: function (d, i, m) {return m.isText ? m.h - m.m.bottom + m.textHeight - m.padding : m.h - m.m.bottom;},
+		width: function (d, i, m) {return i > 0 ? m.scale(m.axis[m.axis.length - 1]) - m.scale(d.point) : m.scale(d.point) - m.m.left;},
+		height: function (d, i, m) {return m.textHeight + m.padding * 2;},
+		rx: function (d, i, m) {return 3;},
+		ry: function (d, i, m) {return 3;},
 	},
 	style: {
-		fill: function (d, i) {return this.isText ? '#F1F1F1' : d.color;},
-		stroke: function (d, i)	{return this.isLine ? '#000000' : '#FFFFFF';},
-		dashed: function (d, i) {return '4, 2';},
+		fill: function (d, i, m) {return m.isText ? '#F1F1F1' : d.color;},
+		stroke: function (d, i, m)	{return m.isLine ? '#000000' : '#FFFFFF';},
+		dashed: function (d, i, m) {return '4, 2';},
 	},
 	line: {
-		x: function ()	{return this.scale(this.point) - this.m.left;},
-		y: function () 	{return this.id.indexOf('bar') > 0 ? this.m.bottom / 2 : 0;},
+		x: function (m)	{return m.scale(m.point) - m.m.left;},
+		y: function (m) 	{return m.id.indexOf('bar') > 0 ? m.m.bottom / 2 : 0;},
 	},
-	text: function (d, i)	{return d.text;},
+	text: function (d, i, m)	{return d.text;},
 	figure: {
-		data: function (d)	{return this.id.indexOf('bar') > 0 ? [d[0]] : [d[1]];},
+		data: function (d, m)	{return m.id.indexOf('bar') > 0 ? [d[0]] : [d[1]];},
 		attr: {
-			id: function (d, i) {return this.id + '_marker';},
-			cx: function (d, i) {return this.scale(this.point) - this.m.left;},
-			cy: function (d, i) {return this.id.indexOf('scatter') > 0 ? this.h - this.m.bottom + 4 : this.m.bottom / 2 - 4;},
-			r: function (d, i) {return 3;},
+			id: function (d, i, m) {return m.id + '_div_marker';},
+			cx: function (d, i, m) {return m.scale(m.point) - m.m.left;},
+			cy: function (d, i, m) {return m.id.indexOf('scatter') > -1 ? m.h - m.m.bottom : m.m.bottom / 2;},
+			r: function (d, i, m) {return 3;},
 		},
 		style: {
 			fill: function (d, i)	{ return d.color; },
@@ -1109,37 +1135,30 @@ config.expression.division = {
 config.expression.patient = {
 	margin: [10, 30, 50, 20],
 	attr: {
-		points: function (d, i)	{
-			var x = this.sx(d.x),
-					y = this.id.indexOf('bar') > 0 ? ((d.y - d.value) < 0 ? this.sy(d.value) : this.sy(d.y)) + 5 : this.h;
+		points: function (d, i, m)	{
+			var x = m.sx(d.x),
+					y = m.id.indexOf('bar') > 0 ? ((d.y - d.value) < 0 ? m.sy(d.value) : m.sy(d.y)) + 5 : m.h;
 
-			return x + ', ' + y + 
-					 ' ' + (x - 4) + ',' + (y - 7) + 
-					 ' ' + (x + 4) + ',' + (y - 7) + 
-					 ' ' + x + ',' + y;
+			return x + ', ' + y + ' ' + (x - 4) + ',' + (y - 7) + ' ' + (x + 4) + ',' + (y - 7) + ' ' + x + ',' + y;
 		},
 	},
 	style: {
-		fill: function (d, i)	{
-			return '#000000';
-		},
-		stroke: function (d, i)	{
-			return '#B7B7B7';
-		},
+		fill: function (d, i)	{return '#000000';},
+		stroke: function (d, i)	{return '#B7B7B7';},
 		'stroke-width': '1px',
 	},
 }
 
 config.expression.sample = {
 	attr: {
-		x: function (d, i)	{return this.data.patient.data === d.text ? draw.getTextWidth(d.text, '15px') + draw.getTextWidth(d.text, '15px') / 6 : -5;},
-		y: function (d, i)	{return this.data.patient.data === d.text ? draw.getTextHeight('15px').height / 1.3 : 0;},
+		x: function (d, m)	{return m.data.patient.data === d.text ? draw.getTextWidth(d.text, '15px') + draw.getTextWidth(d.text, '15px') / 6 : -5;},
+		y: function (d, m)	{return m.data.patient.data === d.text ? draw.getTextHeight('15px').height / 1.3 : 0;},
 	},
 	style: {
-		fill: function (d, i)	{return this.data.patient.data === d.text ? d.color : '#FFFFFF';},
+		fill: function (d, m)	{return m.data.patient.data === d.text ? d.color : '#FFFFFF';},
 		fontSize: function (d) {return '25px';},
 	},
-	text: function (d, i)	{return this.data.patient.data === d.text ? ' **' : '';},
+	text: function (d, m)	{return m.data.patient.data === d.text ? ' **' : '';},
 }
 // ============================ Expression ==================================
 var divisionLine = (function (divisionLine)	{
@@ -1187,39 +1206,39 @@ var divisionLine = (function (divisionLine)	{
 
 		if (model.showRect)	{
 			render.rect({
-				element: model.g.selectAll('#' + model.id + '_rect'),
+				element: model.g.selectAll('#' + model.id + '_div_rect'),
 				data: model.data,
 				attr: {
-					id: function (d) { return model.id + '_rect'; },
+					id: function (d) { return model.id + '_div_rect'; },
 					x: function (d, i)	{
-						return o.attr.x ? o.attr.x.call(model, d, i) : 0;
+						return o.attr.x ? o.attr.x.call(this, d, i, model) : 0;
 					},
 					y: function (d, i)	{
-						return o.attr.y ? o.attr.y.call(model, d, i) : 0;
+						return o.attr.y ? o.attr.y.call(this, d, i, model) : 0;
 					},
 					width: function (d, i)	{
 						return o.attr.width ? 
-									 o.attr.width.call(model, d, i) : 0;
+									 o.attr.width.call(this, d, i, model) : 0;
 					},
 					height: function (d, i)	{
 						return o.attr.height ? 
-									 o.attr.height.call(model, d, i) : 0;
+									 o.attr.height.call(this, d, i, model) : 0;
 					},
 					rx: function (d, i)	{
-						return o.attr.rx ? o.attr.rx.call(model, d, i) : 0;
+						return o.attr.rx ? o.attr.rx.call(this, d, i, model) : 0;
 					},
 					ry: function (d, i)	{
-						return o.attr.ry ? o.attr.ry.call(model, d, i) : 0;
+						return o.attr.ry ? o.attr.ry.call(this, d, i, model) : 0;
 					},
 				},
 				style: {
 					fill: function (d, i)	{
 						return o.style.fill ? 
-									 o.style.fill.call(model, d, i) : '#000';
+									 o.style.fill.call(this, d, i, model) : '#000';
 					},
 					stroke: function (d, i)	{
 						return o.style.stroke ? 
-									 o.style.stroke.call(model, d, i) : '#000';
+									 o.style.stroke.call(this, d, i, model) : '#000';
 					},
 				},
 				on: {
@@ -1227,7 +1246,7 @@ var divisionLine = (function (divisionLine)	{
 						if (!o.on)	{ return false; }
 
 						return o.on.mouseover ? 
-									 o.on.mouseover.call(model, d, i) : false;
+									 o.on.mouseover.call(this, d, i, model) : false;
 					},
 				},
 			});
@@ -1235,41 +1254,41 @@ var divisionLine = (function (divisionLine)	{
 
 		if (model.showText)	{
 			render.text({
-				element: model.g.selectAll('#' + model.id + '_text'),
+				element: model.g.selectAll('#' + model.id + '_div_text'),
 				data: model.data,
 				attr:{
 					id: function (d) { 
-						return model.isText = true, model.id + '_text'; },
+						return model.isText = true, model.id + '_div_text'; },
 					x: function (d, i)	{
-						return o.attr.x ? o.attr.x.call(model, d, i) : 0;
+						return o.attr.x ? o.attr.x.call(this, d, i, model) : 0;
 					},
 					y: function (d, i)	{
-						return o.attr.y ? o.attr.y.call(model, d, i) : 0;
+						return o.attr.y ? o.attr.y.call(this, d, i, model) : 0;
 					},
 				},
 				style: {
 					fill: function (d, i)	{
 						return o.style.fill ? 
-									 o.style.fill.call(model, d, i) : '#000';
+									 o.style.fill.call(this, d, i, model) : '#000';
 					},
 					'alignment-baseline': 'middle',
 					'font-size': model.font,
 				},
 				text: function (d, i) { 
-					return o.text ? o.text.call(model, d, i) : '' 
+					return o.text ? o.text.call(this, d, i, model) : '' 
 				},
 			});
 		}
 
 		if (model.showLine)	{
-			var x = o.lineX ? o.lineX.call(model) : 0,
-					y = o.lineY ? o.lineY.call(model) : 0;
+			var x = o.lineX ? o.lineX(model) : 0,
+					y = o.lineY ? o.lineY(model) : 0;
 
 			render.line({
 				element: model.g,
 				attr: {
 					id: function (d) { 
-						return model.isLine = true, model.id + '_line'; },
+						return model.isLine = true, model.id + '_div_line'; },
 					d: model.line([
 						{	x: x, y: y }, 
 						{	x: x, y: model.h - model.m.bottom }]),
@@ -1277,11 +1296,11 @@ var divisionLine = (function (divisionLine)	{
 				style: {
 					stroke: function (d, i) {
 						return o.style.stroke ? 
-									 o.style.stroke.call(model, d, i) : '#000';
+									 o.style.stroke.call(this, d, i, model) : '#000';
 					},
 					'stroke-dasharray': function (d, i)	{
 						return o.style.dashed ? 
-									 o.style.dashed.call(model, d, i) : '5, 10';
+									 o.style.dashed.call(this, d, i, model) : '5, 10';
 					},
 				}
 			});
@@ -1289,35 +1308,35 @@ var divisionLine = (function (divisionLine)	{
 
 		if (model.marker && model.marker === 'circle')	{
 			render.circle({
-				element: model.g.selectAll('#' + model.id + '_marker'),
+				element: model.g.selectAll('#' + model.id + '_div_marker'),
 				data: o.figure.data ? 
-							o.figure.data.call(model, model.data) : model.data,
+							o.figure.data(model.data, model) : model.data,
 				attr: {
 					id: function (d, i) { 
 						return o.figure.attr.id ? 
-									 o.figure.attr.id.call(model, d, i) : ''; 
+									 o.figure.attr.id.call(this, d, i, model) : ''; 
 					},
 					cx: function (d, i) {
 						return o.figure.attr.cx ? 
-									 o.figure.attr.cx.call(model, d, i) : 0;
+									 o.figure.attr.cx.call(this, d, i, model) : 0;
 					},
 					cy: function (d, i)	{
 						return o.figure.attr.cy ? 
-									 o.figure.attr.cy.call(model, d, i) : 0;
+									 o.figure.attr.cy.call(this, d, i, model) : 0;
 					},
 					r: function (d, i)	{
 						return o.figure.attr.r ? 
-									 o.figure.attr.r.call(model, d, i) : 0;
+									 o.figure.attr.r.call(this, d, i, model) : 0;
 					}
 				},
 				style: {
 					fill: function (d, i)	{
 						return o.figure.style.fill ? 
-									 o.figure.style.fill.call(model, d, i) : 0;
+									 o.figure.style.fill.call(this, d, i, model) : 0;
 					},
 					stroke: function (d, i)	{
 						return o.figure.style.stroke ? 
-									 o.figure.style.stroke.call(model, d, i) : 0;
+									 o.figure.style.stroke.call(this, d, i, model) : 0;
 					},
 				},
 				on: {
@@ -1325,7 +1344,7 @@ var divisionLine = (function (divisionLine)	{
 						if (!o.on)	{ return false; }
 						
 						return o.on.mouseover ? 
-									 o.on.mouseover.call(model, d, i) : false;
+									 o.on.mouseover.call(this, d, i, model) : false;
 					},
 				},
 			});
@@ -1364,8 +1383,7 @@ var draw = (function (draw)	{
 		함수.
 	 */
 	draw.getTextWidth = function (text, font)	{
-		// MeasureText 가 OS 별로 지원하는 수치가 달라서
-		// 아래와 같이 Div 의 크기를 계산하는 방식으로 했다.
+		// MeasureText 가 OS 별로 지원하는 수치가 다르므로 주의할 것.
 		var canv = document.createElement('canvas'),
 				ctx = canv.getContext('2d'),
 				width = 0;
@@ -1381,27 +1399,6 @@ var draw = (function (draw)	{
 		document.getElementById('get-text-width'));
 
 		return width;
-
-		// var div = document.createElement('div'),
-		// 		width = 0;
-
-		// div.id = 'get-text-width';
-		// div.style.position = 'absolute';
-		// div.style.visibility = 'hidden';
-		// div.style.height = 'auto';
-		// div.style.width = 'auto';
-		// div.style.whiteSpace = 'nowrap';
-		// div.style.fontSize = font || '10px';
-		// div.innerHTML = text;
-
-		// document.body.appendChild(div);
-
-		// width = (div.clientWidth + 1);
-
-		// document.body.removeChild(
-		// document.getElementById('get-text-width'));
-
-		// return width;
 	};
 	/*
 		Text 배열에서 가장 긴 Text 의 길이를 반환하는 함수.
@@ -1808,8 +1805,8 @@ var exclusive = (function ()	{
 		Unaltered 인지 결정해주는 함수.
 	 */
 	function isAltered (s, h)	{
-		var sample = 'SMCLUAD1690060028',
-		// var sample = document.getElementById('sample_id').value,
+		// var sample = 'SMCLUAD1690060028',
+		var sample = document.getElementById('sample_id').value,
 				genesetArr = model.now.geneset.split(' '),
 				result = '.';
 
@@ -1886,15 +1883,19 @@ var exclusive = (function ()	{
 				data: [{ value: '**', type: model.data.sample.isAltered }],
 				attr: {
 					id: function (d) { return v.attr('id') + '_sample'; },
-					x: function (d, i)	{ return cd.attr.x.call(obj, d, i); },
-					y: function (d, i) { return cd.attr.y.call(obj, d, i); },
+					x: function (d, i)	{ 
+						return cd.attr.x.call(this, d, i, obj); },
+					y: function (d, i) { 
+						return cd.attr.y.call(this, d, i, obj); },
 				},
 				style: {
-					fill: function (d, i) { return cd.style.fill.call(obj, d, i); },
+					fill: function (d, i) { 
+						return cd.style.fill.call(this, d, i, obj); },
 					'font-size': '25px',
 					'alignment-baseline': 'middle',
 				},
-				text: function (d, i) { return cd.text.call(obj, d, i); },
+				text: function (d, i) { 
+					return cd.text.call(this, d, i, obj); },
 			});
 		});
 	};	
@@ -1921,16 +1922,17 @@ var exclusive = (function ()	{
 		render.text({
 			element: l,
 			attr: {
-				x: function (d) { return es.attr.x.call(model, d); },
-				y: function (d) { return es.attr.y.call(model, d); },
+				x: function (d, i, m) { return es.attr.x.call(this, d, i, model); },
+				y: function (d, i, m) { return es.attr.y.call(this, d, i, model); },
 			},
 			style: {
-				fill: function (d) {
-					return es.style.fill.call(model, d); },
-				'font-size': function (d) {
-					return es.style.fontSize.call(model, d); }, 
+				fill: function (d, i, m) {
+					return es.style.fill.call(this, d, i, model); },
+				'font-size': function (d, i, m) {
+					return es.style.fontSize.call(this, d, i, model); }, 
 			},
-			text: function (d) { return es.text.call(model, d); },
+			text: function (d, i) { 
+				return es.text.call(this, d, i, model); },
 		});
 	};
 	/*
@@ -2162,6 +2164,20 @@ var expression = (function (expression)	{
 		Color Mapping 을 그려주는 함수.
 	 */
 	function drawColorMapping ()	{
+		/*
+			Bar 의 색을 변경해주는함수.
+		 */
+		function changeBarColor (d)	{
+			var state = d.info ? d.info[model.now.col] : 'NA';
+
+			console.log(state, config.expression.colorSet[
+						model.now.colorSet.indexOf(state)])
+
+			return state === 'NA' ? '#A4AAA7' : 
+						config.expression.colorSet[
+						model.now.colorSet.indexOf(state)];
+		};
+
 		selectBox({
 			element: '#expression_color_mapping',
 			margin: [3, 3, 0, 0],
@@ -2173,19 +2189,19 @@ var expression = (function (expression)	{
 			}),
 			click: function (v)	{
 				model.now.col = v;
-				console.log('Color mapping set is: ', model.now.col);
 				model.data.subtype.some(function (d)	{
 					return model.now.colorSet = d.value, 
 								 model.now.col === d.key;
 				});
 
 				layout.removeG([
-					'expression_bar_legend', 'expression_bar_plot',
-					'expression_scatter_plot'
+					'expression_bar_legend', 'expression_scatter_plot'
 				]);
 
 				drawColorMappingLegend();
-				drawBar();
+				d3.selectAll('#expression_bar_plot_chart_rect')
+					.style('fill', changeBarColor)
+					.style('stroke', changeBarColor)
 				drawScatter(model.now.osdfs);
 				drawDivisionBar();
 			},
@@ -2457,7 +2473,8 @@ var expression = (function (expression)	{
 				attr: {
 					id: function (d) { return obj.id + '_tri'; },
 					points: function (d, i)	{
-						return config.expression.patient.attr.points.call(obj, d, i);
+						return config.expression.patient.attr.points
+												 .call(this, d, i, obj);
 					},	
 				},
 				style: config.expression.patient.style,
@@ -2490,16 +2507,16 @@ var expression = (function (expression)	{
 		render.text({
 			element: l,
 			attr: {
-				x: function (d) { return es.attr.x.call(model, d); },
-				y: function (d) { return es.attr.y.call(model, d); },
+				x: function (d) { return es.attr.x(d, model); },
+				y: function (d) { return es.attr.y(d, model); },
 			},
 			style: {
 				fill: function (d) {
-					return es.style.fill.call(model, d); },
+					return es.style.fill(d, model); },
 				'font-size': function (d) {
-					return es.style.fontSize.call(model, d); }, 
+					return es.style.fontSize(d, model); }, 
 			},
-			text: function (d) { return es.text.call(model, d); },
+			text: function (d) { return es.text(d, model); },
 		});
 	};
 	/*
@@ -2559,10 +2576,6 @@ var expression = (function (expression)	{
 		console.log('Expression Model data: ', model);
 	};
 }(expression||{}));
-
-
-
-
 var heatmap = (function (heatmap)	{
 	'use strict';
 
@@ -2628,28 +2641,28 @@ var heatmap = (function (heatmap)	{
 			attr: {
 				id: function (d, i) { return id + '_rect'; },
 				x: function (d, i) { 
-					return o.attr.x ? o.attr.x.call(model, d, i) : 0; 
+					return o.attr.x ? o.attr.x.call(this, d, i, model) : 0; 
 				},
 				y: function (d, i) { 
-					return o.attr.y ? o.attr.y.call(model, d, i) : 0; 
+					return o.attr.y ? o.attr.y.call(this, d, i, model) : 0; 
 				},
 				width: function (d, i) { 
 					return o.attr.width ? 
-								 o.attr.width.call(model, d, i) : 0; 
+								 o.attr.width.call(this, d, i, model) : 0; 
 				},
 				height: function (d, i) { 
 					return o.attr.height ? 
-								 o.attr.height.call(model, d, i) : 0; 
+								 o.attr.height.call(this, d, i, model) : 0; 
 				},
 			},
 			style: {
 				fill: function (d, i) { 
 					return o.style.fill ? 
-								 o.style.fill.call(model, d, i) : '#000000'; 
+								 o.style.fill.call(this, d, i, model) : '#000000'; 
 				},
 				stroke: function (d, i) { 
 					return o.style.stroke ? 
-								 o.style.stroke.call(model, d, i) : false; 
+								 o.style.stroke.call(this, d, i, model) : false; 
 				},
 			},
 			on: {
@@ -2657,7 +2670,7 @@ var heatmap = (function (heatmap)	{
 					if (!o.on) { return false; }
 					
 					return o.on.mouseover ? 
-								 o.on.mouseover.call(model, d, i) : false;
+								 o.on.mouseover.call(this, d, i, model) : false;
 				},
 			}
 		});
@@ -3621,27 +3634,29 @@ var legend = (function (legend)	{
 				attr: {
 					id: function (d) { return model.id + '_circle'; },
 					cx: function (d, i)	{
-						return o.attr.x ? o.attr.x.call(model, d, i) : 0;
+						return o.attr.x ? o.attr.x.call(this, d, i, model) : 0;
 					},
 					cy: function (d, i)	{
-						return o.attr.y ? o.attr.y.call(model, d, i) : 0;
+						return o.attr.y ? o.attr.y.call(this, d, i, model) : 0;
 					},
 					r: function (d, i)	{
-						return o.attr.r ? o.attr.r.call(model, d, i) : 0;
+						return o.attr.r ? o.attr.r.call(this, d, i, model) : 0;
 					},
 				}, 
 				style: {
-					fill: function (d)	{
-						return o.style.fill ? o.style.fill(d) : '#000000';
+					fill: function (d, i)	{
+						return o.style.fill ? 
+									 o.style.fill.call(this, d, i, model) : '#000000';
 					},
-					stroke: function (d)	{
-						return o.style.stroke ? o.style.stroke(d) : false;
+					stroke: function (d, i)	{
+						return o.style.stroke ? 
+									 o.style.stroke.call(this, d, i, model) : false;
 					},
 				},
 				on: {
 					mouseover: function (d, i)	{
 						return o.on.mouseover ? 
-									 o.on.mouseover.call(model, d, i) : false;
+									 o.on.mouseover.call(this, d, i, model) : false;
 					},
 				},
 			})
@@ -3653,25 +3668,27 @@ var legend = (function (legend)	{
 					id: function (d) { return model.id + '_triangle'; },
 					points: function (d, i) { 
 						return o.attr.points ? 
-									 o.attr.points.call(model, d, i) : [0, 0];
+									 o.attr.points.call(this, d, i, model) : [0, 0];
 					},
 				},
 				style: {
-					fill: function (d)	{
-						return o.style.fill ? o.style.fill(d) : '#000000';
+					fill: function (d, i)	{
+						return o.style.fill ? 
+									 o.style.fill.call(this, d, i, model) : '#000000';
 					},
-					stroke: function (d)	{
-						return o.style.stroke ? o.style.stroke(d) : false;
+					stroke: function (d, i)	{
+						return o.style.stroke ? 
+									 o.style.stroke.call(this, d, i, model) : false;
 					},
-					'stroke-width': function (d)	{
+					'stroke-width': function (d, i)	{
 						return o.style.strokeWidth ? 
-									 o.style.strokeWidth(d) : '1px';
+									 o.style.strokeWidth.call(this, d, i, model) : '1px';
 					},
 				},
 				on: {
 					mouseover: function (d, i)	{
 						return o.on.mouseover ? 
-									 o.on.mouseover.call(model, d, i) : false;
+									 o.on.mouseover.call(this, d, i, model) : false;
 					},
 				},
 			});
@@ -3682,26 +3699,28 @@ var legend = (function (legend)	{
 				attr: {
 					id: function (d) { return model.id + '_rect'; },
 					x: function (d, i) { 
-						return o.attr.x ? o.attr.x.call(model, d, i) : 0;
+						return o.attr.x ? o.attr.x.call(this, d, i, model) : 0;
 					},
 					y: function (d, i) { 
-						return o.attr.y ? o.attr.y.call(model, d, i) : 0;
+						return o.attr.y ? o.attr.y.call(this, d, i, model) : 0;
 					},
 					width: function (d, i) { 
 						return o.attr.width ? 
-									 o.attr.width.call(model, d, i) : 5; 
+									 o.attr.width.call(this, d, i, model) : 5; 
 					},
 					height: function (d, i) { 
 						return o.attr.height ? 
-									 o.attr.height.call(model, d, i) : 5; 
+									 o.attr.height.call(this, d, i, model) : 5; 
 					},
 				},
 				style: {
-					fill: function (d) { 
-						return o.style.fill ? o.style.fill(d) : '#000000'; 
+					fill: function (d, i) { 
+						return o.style.fill ? 
+									 o.style.fill.call(this, d, i, model) : '#000000'; 
 					},
-					stroke: function (d) { 
-						return o.style.stroke ? o.style.stroke(d) : false; 
+					stroke: function (d, i) { 
+						return o.style.stroke ? 
+									 o.style.stroke.call(this, d, i, model) : false; 
 					},
 				},
 				on: {
@@ -3709,7 +3728,7 @@ var legend = (function (legend)	{
 						if (!o.on) { return false; }
 
 						return o.on.mouseover ? 
-									 o.on.mouseover.call(model, d, i) : false;
+									 o.on.mouseover.call(this, d, i, model) : false;
 					},
 				},
 			});
@@ -3723,32 +3742,32 @@ var legend = (function (legend)	{
 					return (model.isText = true, model.id + '_text'); 
 				},
 				x: function (d, i) { 
-					return o.attr.x ? o.attr.x.call(model, d, i) : 0; 
+					return o.attr.x ? o.attr.x.call(this, d, i, model) : 0; 
 				},
 				y: function (d, i) { 
-					return o.attr.y ? o.attr.y.call(model, d, i) : 0; 
+					return o.attr.y ? o.attr.y.call(this, d, i, model) : 0; 
 				},
 			},
 			style: {
 				'font-size': function (d, i)	{
 					return o.style.fontSize ? 
-								 o.style.fontSize.call(model, d, i) : model.font;
+								 o.style.fontSize.call(this, d, i, model) : model.font;
 				},
-				'font-family': function (d) { 
+				'font-family': function (d, i) { 
 					return o.style.fontFamily ? 
-								 o.style.fontFamily.call(model, d) : 'Arial'; 
+								 o.style.fontFamily.call(this, d, i, model) : 'Arial'; 
 				},
-				'font-weight': function (d) {
+				'font-weight': function (d, i) {
 					return o.style.fontWeight ? 
-								 o.style.fontWeight.call(model, d) : '1';
+								 o.style.fontWeight.call(this, d, i, model) : '1';
 				},
-				'alignment-baseline': function (d)	{
+				'alignment-baseline': function (d, i)	{
 					return o.style.alignmentBaseline ? 
-								 o.style.alignmentBaseline : 'middle';
+								 o.style.alignmentBaseline.call(this, d, i, model) : 'middle';
 				},
 				fill: function (d, i)	{
 					return o.style.fill ?
-								 o.style.fill.call(model, d, i) : '#333333';
+								 o.style.fill.call(this, d, i, model) : '#333333';
 				},
 			},
 			on: {
@@ -3756,12 +3775,12 @@ var legend = (function (legend)	{
 					if (!o.on) { return false; }
 
 					return o.on.mouseover ? 
-								 o.on.mouseover.call(model, d, i) : false;
+								 o.on.mouseover.call(this, d, i, model) : false;
 				},
 			},
 			text: function (d, i)	{ 
 				return o.text ? 
-							 o.text.call(model, d, i) : ('legend ' + i);
+							 o.text.call(this, d, i, model) : ('legend ' + i);
 			},
 		});
 	};
@@ -3788,6 +3807,7 @@ var legend = (function (legend)	{
 			survival: survival,
 		},
 		tools: {
+			tooltip: tooltip,
 			selectBox: selectBox,
 			needleNavi: needleNavi,
 			needleGraph: needleGraph,
@@ -3849,31 +3869,33 @@ var needle = (function (needle)	{
 			attr: {
 				id: function (d) { return model.id + '_circle'; },
 				cx: function (d, i)	{ 
-					return o.attr.x ? o.attr.x.call(model, d, i) : 0; 
+					return o.attr.x ? o.attr.x.call(this, d, i, model) : 0; 
 				},
 				cy: function (d, i)	{ 
 					return o.attr.y ? 
-								 o.attr.y.call(model, d, i) : 0; 
+								 o.attr.y.call(this, d, i, model) : 0; 
 				},
 				r: function (d, i)	{ 
 					return o.attr.r ? 
-								 o.attr.r.call(model, d, i) : model.radius; 
+								 o.attr.r.call(this, d, i, model) : model.radius; 
 				},
 			},
 			style: {
 				fill: function (d, i) { 
 					return o.style.fill ? 
-								 o.style.fill.call(model, d, i) : '#000000';
+								 o.style.fill.call(this, d, i, model) : '#000000';
 				},
 				stroke: function (d, i)	{
 					return o.style.stroke ? 
-								 o.style.stroke.call(model, d, i) : '#FFFFFF';
+								 o.style.stroke.call(this, d, i, model) : '#FFFFFF';
 				},
 			},
 			on: {
 				mouseover: function (d, i)	{
+					if (!o.on) { return false; }
+					
 					return o.on.mouseover ? 
-								 o.on.mouseover.call(model, d, i) : false;
+								 o.on.mouseover.call(this, d, i, model) : false;
 				},
 			},
 		});
@@ -3938,26 +3960,26 @@ var needleGraph = (function (needleGraph)	{
 			attr: {
 				id: function (d) { return model.e.attr('id') + '_rect'; },
 				x: function (d, i) { 
-					return o.attr.x ? o.attr.x.call(model, d, i) : 0;
+					return o.attr.x ? o.attr.x.call(this, d, i, model) : 0;
 				},
 				y: function (d, i) { 
-					return o.attr.y ? o.attr.y.call(model, d, i) : 0;
+					return o.attr.y ? o.attr.y.call(this, d, i, model) : 0;
 				},
 				width: function (d, i) { 
-					return o.attr.width ? o.attr.width.call(model, d, i) : 0;
+					return o.attr.width ? o.attr.width.call(this, d, i, model) : 0;
 				},
 				height: function (d, i) { 
-					return o.attr.height ? o.attr.height.call(model, d, i) : 0;
+					return o.attr.height ? o.attr.height.call(this, d, i, model) : 0;
 				},
 				rx: 3,
 				ry: 3,
 			},
 			style: {
 				fill: function (d, i)	{
-					return o.style.fill ? o.style.fill.call(model, d, i) : '#000000';
+					return o.style.fill ? o.style.fill.call(this, d, i, model) : '#000000';
 				},
 				stroke: function (d, i)	{
-					return o.style.stroke ? o.style.stroke.call(model, d, i) : '#FFFFFF';
+					return o.style.stroke ? o.style.stroke.call(this, d, i, model) : '#FFFFFF';
 				},
 			}
 		});
@@ -3970,10 +3992,10 @@ var needleGraph = (function (needleGraph)	{
 					return model.isText = true, model.e.attr('id') + '_text';
 				},
 				x: function (d, i)	{
-					return o.attr.x ? o.attr.x.call(model, d, i) : 0;
+					return o.attr.x ? o.attr.x.call(this, d, i, model) : 0;
 				},
 				y: function (d, i) { 
-					return o.attr.y ? o.attr.y.call(model, d, i) : 0;
+					return o.attr.y ? o.attr.y.call(this, d, i, model) : 0;
 				},
 			},
 			style: {
@@ -3982,7 +4004,7 @@ var needleGraph = (function (needleGraph)	{
 				'alignment-baseline': 'middle',
 			},
 			text: function (d, i) {
-				return o.text ? o.text.call(model, d, i) : 0;
+				return o.text ? o.text.call(this, d, i, model) : 0;
 			},
 		})
 	};
@@ -4855,13 +4877,13 @@ var preprocessing = (function (preprocessing)	{
 	 */
 	function expScatterMonths (list)	{
 		exp.axis.scatter.y = {os: [], dfs: []};
+		exp.patSubtype = {};
 
 		util.loop(list, function (d)	{
-			// d.os_days = (!d.os_days ? 0 : d.os_days);
-			// d.dfs_days = (!d.dfs_days ? 0 : d.dfs_days);
-
 			exp.axis.scatter.y.os.push((d.os_days / 30));
 			exp.axis.scatter.y.dfs.push((d.dfs_days / 30));
+			// Patient subtype object list 를 만든다.
+			exp.patSubtype[d.participant_id] = d;
 		});
 
 		var osmm = util.minmax(exp.axis.scatter.y.os),
@@ -4913,7 +4935,9 @@ var preprocessing = (function (preprocessing)	{
 			avg = sum / v.length;
 			// Bar 데이터를 만들어준다. y 는 중간값이 되므로
 			// 초기 호출된 함수에서 설정해준다.
-			exp.bar.push({ x: k, value: avg });
+			exp.bar.push({ 
+				x: k, value: avg, info: exp.patSubtype[k]
+			});
 			exp.func.avg.push(avg);
 		});
 
@@ -5032,11 +5056,9 @@ var preprocessing = (function (preprocessing)	{
 			return d.hugo_symbol;
 		});
 
+		expScatterMonths(d.patient_list);
 		expSubtype(d.subtype_list);
 		expCohortLoop(exp.allRna);
-		// expCohortLoop(d.cohort_rna_list);
-		expScatterMonths(d.patient_list);
-
 		// Patient 이름을 뽑아낸다.
 		exp.patient = {
 			name: d.sample_rna_list[0].participant_id,
@@ -5321,31 +5343,33 @@ var scatter = (function (scatter)	{
 				attr: {
 					id: function (d) { return id + '_circle'; },
 					cx: function (d, i)	{
-						return o.attr.x ? o.attr.x.call(model, d, i) : 0;
+						return o.attr.x ? o.attr.x.call(this, d, i, model) : 0;
 					},
 					cy: function (d, i)	{
-						return o.attr.y ? o.attr.y.call(model, d, i) : 0;
+						return o.attr.y ? o.attr.y.call(this, d, i, model) : 0;
 					},
 					r: function (d, i)	{
-						return o.attr.r ? o.attr.r.call(model, d, i) : 0;
+						return o.attr.r ? o.attr.r.call(this, d, i, model) : 0;
 					},
 				}, 
 				style: {
-					fill: function (d)	{
-						return o.style.fill ? o.style.fill(d) : '#000000';
+					fill: function (d, i)	{
+						return o.style.fill ? 
+									 o.style.fill.call(this, d, i, model) : '#000000';
 					},
-					'fill-opacity': function (d)	{
+					'fill-opacity': function (d, i)	{
 						return o.style.fillOpacity ? 
-									 o.style.fillOpacity(d) : '1';
+									 o.style.fillOpacity.call(this, d, i, model) : '1';
 					},
-					stroke: function (d)	{
-						return o.style.stroke ? o.style.stroke(d) : false;
+					stroke: function (d, i)	{
+						return o.style.stroke ? 
+									 o.style.stroke.call(this, d, i, model) : false;
 					},
 				},
 				on: {
 					mouseover: function (d, i)	{
 						return o.on.mouseover ? 
-									 o.on.mouseover.call(model, d, i) : false;
+									 o.on.mouseover.call(this, d, i, model) : false;
 					},
 				},
 			})
@@ -5356,29 +5380,32 @@ var scatter = (function (scatter)	{
 				attr: {
 					id: function (d) { return id + '_triangle'; },
 					points: function (d, i) { 
-						return o.attr.points ? o.attr.points.call(model, d, i) : 
-									 [0, 0];
+						return o.attr.points ? 
+									 o.attr.points.call(this, d, i, model) : [0, 0];
 					},
 				},
 				style: {
-					fill: function (d)	{
-						return o.style.fill ? o.style.fill(d) : '#000000';
+					fill: function (d, i)	{
+						return o.style.fill ? 
+									 o.style.fill.call(this, d, i, model) : '#000000';
 					},
-					'fill-opacity': function (d)	{
+					'fill-opacity': function (d, i)	{
 						return o.style.fillOpacity ? 
-									 o.style.fillOpacity(d) : '1';
+									 o.style.fillOpacity.call(this, d, i, model) : '1';
 					},
-					stroke: function (d)	{
-						return o.style.stroke ? o.style.stroke(d) : false;
+					stroke: function (d, i)	{
+						return o.style.stroke ? 
+									 o.style.stroke.call(this, d, i, model) : false;
 					},
-					'stroke-width': function (d)	{
-						return o.style.strokeWidth ? o.style.strokeWidth(d) : '1px';
+					'stroke-width': function (d, i)	{
+						return o.style.strokeWidth ? 
+									 o.style.strokeWidth.call(this, d, i, model) : '1px';
 					},
 				},
 				on: {
 					mouseover: function (d, i)	{
 						return o.on.mouseover ? 
-									 o.on.mouseover.call(model, d, i) : false;
+									 o.on.mouseover.call(this, d, i, model) : false;
 					},
 				},
 			});
@@ -5603,6 +5630,17 @@ var size = (function (size)	{
 
 	size.chart = {};
 	/*
+		Tooltip Tag 를 만드는 함수.
+	 */
+	function makeTooltip ()	{
+		var div = document.createElement('div');
+
+		div.id = 'biochart_tooltip';
+		div.className = 'biochart-tooltip';
+
+		document.body.appendChild(div);
+	};
+	/*
 		Chart frame in div.
 	 */
 	function makeFrames (ids)	{
@@ -5617,6 +5655,8 @@ var size = (function (size)	{
 
 			this.appendChild(e);
 		});
+
+		makeTooltip();
 	};
 	/*
 		About parameters then produces margin set.
@@ -5650,7 +5690,6 @@ var size = (function (size)	{
 	 */
 	size.chart.exclusivity = function (e, w, h)	{
 		var ids =  {
-			// Layout 2.
 			exclusivity_select_geneset: {w: w * 0.25, h: h * 0.1},
 			exclusivity_upper_empty: {w: w * 0.34, h: h * 0.2},
 			exclusivity_survival: {w: w * 0.4, h: h},
@@ -5658,14 +5697,6 @@ var size = (function (size)	{
 			exclusivity_heatmap: {w: w * 0.35, h: h * 0.3},
 			exclusivity_legend: {w: w * 0.35, h: h * 0.05},
 			exclusivity_sample_legend: {w: w * 0.35, h: h * 0.05},
-
-			// Layout 1.
-			// exclusivity_survival: {w: (w * 0.3), h: h * 0.85},
-			// exclusivity_group: {w: (w * 0.7), h: (h * 0.25)},
-			// exclusivity_select_geneset: {w: (w * 0.7) * 0.3, h: (h * 0.1)},
-			// exclusivity_heatmap: {w: (w * 0.7) * 0.7, h: (h * 0.5)},
-			// exclusivity_network: {w: (w * 0.7) * 0.3, h: (h * 0.5)},
-			// exclusivity_legend: {w: (w * 0.7) * 0.7, h: (h * 0.1)},
 		};
 
 		return makeFrames.call(size.setSize(e, w, h), ids), model.ids;
@@ -5850,6 +5881,71 @@ var survival = (function (survival)	{
 		return model;
 	};
 }(survival || {}));
+var tooltip = (function (tooltip)	{
+	'use strict';
+
+	var model = {};
+	/*
+		Tooltip 이 위치할 곳을 설정해주는 함수.
+	 */
+	function tooltipPosition (target)	{
+		if (!target)	{ 
+			throw new Error('None of any targeted element');
+		}
+
+		var bcr = target.getBoundingClientRect();
+
+		// console.log(bcr);
+
+		return {
+			top: bcr.top,
+			left: bcr.left,
+		};
+	};	
+	/*
+		Tooltip 을 띄워주는 함수.
+	 */
+	function show (div, pos, txt)	{
+		if (!model.tDiv)	{
+			throw new Error('Do not find a Tooltip element');
+		}
+
+		div.style.display = 'block';
+		div.style.top = pos.top + 'px';
+		div.style.left = pos.left + 'px';
+		div.style.width = '10px';
+		div.style.height = '10px';
+		div.style.background = 'rgba(10, 10, 10, 0.5)';
+		div.innerHTML = txt;
+	};
+	/*
+		Tooltip 을 가려주는 함수.
+	 */
+	function hide ()	{
+		if (!model.tDiv)	{
+			throw new Error('Do not find a Tooltip element');
+		}
+
+		model.tDiv.innerHTML = '';
+		model.tDiv.style.top = '0px';
+		model.tDiv.style.left = '0px';
+		model.tDiv.style.display = 'none';
+	};
+
+	return function (o)	{
+		if (util.varType(o) === 'String')	{
+			return hide(model.tDiv);
+		}
+
+		model.target = o.element || null;
+		model.tDiv = document.getElementById('biochart_tooltip');
+		model.pos = tooltipPosition(model.target);
+		model.text = o.text || '';
+
+		return show(model.tDiv, model.pos, model.text);
+	};
+
+}(tooltip||{}));
 var util = (function (util)	{
 	'use strict';
 	/*
@@ -6088,17 +6184,17 @@ var variants = (function (variants)	{
 					id: function (d, i) { return v.attr('id') + '_tri'; },
 					points: function (d, i) { 
 						return cp.attr.points ? 
-									 cp.attr.points.call(md, d, i) : [0, 0];
+									 cp.attr.points.call(this, d, i, md) : [0, 0];
 					},
 				},
 				style: {
 					fill: function (d, i) { 
 						return cp.style.fill ? 
-									 cp.style.fill.call(md, d, i) : '#000000';
+									 cp.style.fill.call(this, d, i, md) : '#000000';
 					},
 					stroke: function (d, i)	{
 						return cp.style.stroke ? 
-									 cp.style.stroke.call(md, d, i) : '#FFFFFF';
+									 cp.style.stroke.call(this, d, i, md) : '#FFFFFF';
 					},
 					'stroke-width': '3px',
 				},

@@ -169,6 +169,11 @@ a {
   color: #00B7FF;
 }
 
+#biochart_tooltip 	{
+	display: hidden;
+	position: absolute;
+}
+
 #variants_title { float: left; background: #EFEFEF; padding-left: 5%; padding-top: 0.3%; font-size: 30px; font-weight: bold; font-family: initial; text-shadow: 2px 1px #D6D6D6; }
 
 #variants_needle {
