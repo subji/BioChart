@@ -143,7 +143,30 @@ var bar = (function (bar)	{
 		Base position (x 또는 y) 를 구해주는 함수.
 	 */
 	function getBaseOfBar (direction, g)	{
-		console.log(g.selectAll('rect'));
+		var first = {},
+				second = {},
+				result = null;
+
+		g.selectAll('rect').each(function (d)	{
+			var bcr = this.getBoundingClientRect();
+
+			if (direction === 'top' || direction === 'bottom')	{
+				first[bcr.top] = true;
+				second[bcr.bottom] = true;
+
+				if (second[bcr.top])	{
+					result = bcr.top;
+				} else if (first[bcr.bottom])	{
+					result = bcr.bottom;
+				}
+			} else {
+				// TODO.
+				// 가로로 되는 Bar 에 대해서도 값을 구해야한다.
+				console.log('This is left or right');
+			}
+		});
+
+		return result;
 	};
 	/*
 		bar 의 방향에 따라 range 값을 반환해주는 함수.
@@ -1061,12 +1084,9 @@ config.expression.bar = {
 	},
 	on: {
 		mouseover: function (d, i, m)	{
-			// console.log(m, m.sx(m.dx[0]), m.sy(m.data[0].y),
-			// 	m.g.selectAll('rect'))
 			tooltip({
 				element: this,
-				baseX: 0,
-				baseY: 0,
+				baseY: m.base,
 				text: d,
 			});
 		},
@@ -1708,6 +1728,8 @@ var exclusive = (function ()	{
 		Network 차트를 그리는 함수.
 	 */
 	function drawNetwork ()	{
+		console.log(model.now.geneset,
+			model.data.network)
 		network({
 			data: model.data.network[model.now.geneset],
 			element: '#exclusivity_network',
@@ -1805,8 +1827,8 @@ var exclusive = (function ()	{
 		Unaltered 인지 결정해주는 함수.
 	 */
 	function isAltered (s, h)	{
-		// var sample = 'SMCLUAD1690060028',
-		var sample = document.getElementById('sample_id').value,
+		var sample = 'SMCLUAD1690060028',
+		// var sample = document.getElementById('sample_id').value,
 				genesetArr = model.now.geneset.split(' '),
 				result = '.';
 
@@ -4100,7 +4122,7 @@ var network = (function ()	{
 		var data = [],
 				nodes = {},
 				members = '';
-
+				
 		opts.data.map(function (d)	{
 			if (d.type === 'compound')	{
 				members = d.members;
@@ -4539,6 +4561,13 @@ var preprocessing = (function (preprocessing)	{
 	 			el.geneset.push(t);
  			}
  		});
+
+ 		// TODO. 
+		// 정렬방식 설정 코드를 짜야된다.
+		var temp = el.geneset[4];
+
+		el.geneset[4] = el.geneset[0];
+		el.geneset[0] = temp;
  	};
  	/*
  		GEne list 를 만들어준다.
@@ -5888,19 +5917,24 @@ var tooltip = (function (tooltip)	{
 	/*
 		Tooltip 이 위치할 곳을 설정해주는 함수.
 	 */
-	function tooltipPosition (target)	{
+	function tooltipPosition (target, bx, by)	{
 		if (!target)	{ 
 			throw new Error('None of any targeted element');
 		}
 
 		var bcr = target.getBoundingClientRect();
 
-		// console.log(bcr);
-
-		return {
-			top: bcr.top,
-			left: bcr.left,
-		};
+		if (bx && by)	{
+			console.log('All');
+		} else if (bx)	{
+			console.log('only bx');
+		} else if (by) {
+			return bcr.top === by ? 
+						 { top: bcr.bottom, left: bcr.left } : 
+						 { top: bcr.top, left: bcr.left };
+		} else {
+			return { top: bcr.top, left: bcr.left };
+		}
 	};	
 	/*
 		Tooltip 을 띄워주는 함수.
@@ -5913,9 +5947,10 @@ var tooltip = (function (tooltip)	{
 		div.style.display = 'block';
 		div.style.top = pos.top + 'px';
 		div.style.left = pos.left + 'px';
-		div.style.width = '10px';
-		div.style.height = '10px';
-		div.style.background = 'rgba(10, 10, 10, 0.5)';
+		div.style.padding = '10px';
+		div.style.width = 'auto';
+		div.style.height = 'auto';
+		div.style.background = 'rgba(255, 253, 239, 0.7)';
 		div.innerHTML = txt;
 	};
 	/*
@@ -5939,7 +5974,9 @@ var tooltip = (function (tooltip)	{
 
 		model.target = o.element || null;
 		model.tDiv = document.getElementById('biochart_tooltip');
-		model.pos = tooltipPosition(model.target);
+		model.bx = o.baseX || null;
+		model.by = o.baseY || null;
+		model.pos = tooltipPosition(model.target, model.bx, model.by);
 		model.text = o.text || '';
 
 		return show(model.tDiv, model.pos, model.text);

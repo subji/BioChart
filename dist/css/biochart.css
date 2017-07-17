@@ -172,7 +172,34 @@ a {
 #biochart_tooltip 	{
 	display: hidden;
 	position: absolute;
+	border: 1px solid #C2E1F5;
 }
+
+#biochart_tooltip:after, #biochart_tooltip:before {
+	bottom: 100%;
+	left: 50%;
+	border: solid transparent;
+	content: '';
+	height: 0;
+	width: 0;
+	poition absolute;
+	pointer_events: none;
+}
+
+#biochart_tooltip:after {
+	border-color: rgba(136, 183, 213, 0);
+	border-bottom-color: #88b7d5;
+	border-width: 10px;
+	margin-left: -50px;
+}
+
+#biochart_tooltip:before {
+	border-color: rgba(136, 183, 213, 0);
+	border-bottom-color: #C2E1F5;
+	border-width: 10px;
+	margin-left: -10px;
+}
+
 
 #variants_title { float: left; background: #EFEFEF; padding-left: 5%; padding-top: 0.3%; font-size: 30px; font-weight: bold; font-family: initial; text-shadow: 2px 1px #D6D6D6; }
 
