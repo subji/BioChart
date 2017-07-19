@@ -87,7 +87,8 @@ var axis = (function (axis)	{
 				s = draw.size(model.current),
 				p = d.position || [m.top, m.left],
 				c = scale.get(d.data, [m.left, s.w - m.right]),
-				g = render.addGroup(model.current, p[0], p[1]),
+				g = render.addGroup(
+						model.current, p[0], p[1], 'top-axis'),
 				o = d.opt ? d.opt : {};
 
 		return g.call(options(byVersion(c, 'top'), d.opt, d.data)), 
@@ -101,7 +102,8 @@ var axis = (function (axis)	{
 				s = draw.size(model.current),
 				p = d.position || [m.top, s.w - m.right],
 				c = scale.get(d.data, [m.top, s.h - m.bottom]),
-				g = render.addGroup(model.current, p[0], p[1]),
+				g = render.addGroup(
+						model.current, p[0], p[1], 'left-axis'),
 				o = d.opt ? d.opt : {};
 
 		return g.call(options(byVersion(c, 'left'), d.opt, d.data)), 
@@ -113,7 +115,8 @@ var axis = (function (axis)	{
 				s = draw.size(model.current),
 				p = d.position || [s.h - m.bottom, m.left],
 				c = scale.get(d.data, [m.left, s.w - m.right]),
-				g = render.addGroup(model.current, p[0], p[1]),
+				g = render.addGroup(
+						model.current, p[0], p[1], 'bottom-axis'),
 				o = d.opt ? d.opt : {};
 
 		return g.call(options(byVersion(c, 'bottom'), d.opt, d.data)), 
@@ -125,7 +128,8 @@ var axis = (function (axis)	{
 				s = draw.size(model.current),
 				p = d.position || [m.top, m.left],
 				c = scale.get(d.data, [m.top, s.h - m.bottom]),
-				g = render.addGroup(model.current, p[0], p[1]),
+				g = render.addGroup(
+						model.current, p[0], p[1], 'right-axis'),
 				o = d.opt ? d.opt : {};
 
 		return g.call(options(byVersion(c, 'right'), d.opt, d.data)), 
@@ -138,36 +142,6 @@ var bar = (function (bar)	{
 	'use strict';
 	
 	var model = {};
-	/*
-		Bar 의 Tooltip 의 위치를 설정해주기 위해
-		Base position (x 또는 y) 를 구해주는 함수.
-	 */
-	function getBaseOfBar (direction, g)	{
-		var first = {},
-				second = {},
-				result = null;
-
-		g.selectAll('rect').each(function (d)	{
-			var bcr = this.getBoundingClientRect();
-
-			if (direction === 'top' || direction === 'bottom')	{
-				first[bcr.top] = true;
-				second[bcr.bottom] = true;
-
-				if (second[bcr.top])	{
-					result = bcr.top;
-				} else if (first[bcr.bottom])	{
-					result = bcr.bottom;
-				}
-			} else {
-				// TODO.
-				// 가로로 되는 Bar 에 대해서도 값을 구해야한다.
-				console.log('This is left or right');
-			}
-		});
-
-		return result;
-	};
 	/*
 		bar 의 방향에 따라 range 값을 반환해주는 함수.
 	 */
@@ -200,7 +174,8 @@ var bar = (function (bar)	{
 		model.m = size.setMargin(o.margin);
 		model.data = o.data;
 		model.direction = o.direction || 'top';
-		model.g = render.addGroup(model.e, model.m.top, model.m.left);
+		model.g = render.addGroup(
+		model.e, model.m.top, model.m.left, 'bar');
 		model.dx = new Array().concat(o.xaxis);
 		model.dy = new Array().concat(o.yaxis);
 		model.sx = setScale(model.direction, model.dx, 'x');
@@ -255,8 +230,6 @@ var bar = (function (bar)	{
 				},
 			},
 		});
-
-		model.base = getBaseOfBar(model.direction, model.g);
 
 		return model;
 	};
@@ -332,7 +305,7 @@ var config = {
 	landscape: {},
 	variants: {},
 };
-// For Mutational Landscape ==============================================
+// For Mutational Landscape =========================
 config.landscape.name = function (value)	{
 	value = value.replace(/(_ins|_del)$/ig, '_indel');
 	value = value.substring(0, 1).toUpperCase() + 
@@ -342,7 +315,8 @@ config.landscape.name = function (value)	{
 };
 
 config.landscape.case = function (mutation)	{
-	switch (config.landscape.priority(config.landscape.name(mutation))) {
+	switch (config.landscape.priority(
+					config.landscape.name(mutation))) {
 		case 0: return 'cnv'; break;
 		case 1: return 'cnv'; break;
 		default: return 'var'; break;
@@ -507,20 +481,37 @@ config.landscape.color = function (value)	{
 		'NA': '#D6E2E3',
 	}[value];
 };
-// ============================ Mutatinonal Landscape ==================================
+// ===================== Mutatinonal Landscape =================
 /*
 	Sample, Patient_sample 이 그려지는 차트의 속성과 모양 정의 객체.
  */
 config.landscape.sample = {
 	attr: {
-		x: function (d, i, m) {return d.x.indexOf('-') > -1 ? m.sx(d.x) : m.sx(d.x) + 3;},
-		y: function (d, i, m) {return m.sy(util.minmax(m.dy).max) - m.sy(d.y + d.value) + m.sy(util.minmax(m.dy).min);},
-		width: function (d, i, m) {return d.x.indexOf('-') > -1 ? scale.compatibleBand(m.sx) : scale.compatibleBand(m.sx) - 7.5},
-		height: function (d, i, m) {return m.sy(d.value) - m.sy(util.minmax(m.dy).min);},	
+		x: function (d, i, m) {
+			return d.x.indexOf('-') > -1 ? 
+						 m.sx(d.x) : m.sx(d.x) + 3;
+		},
+		y: function (d, i, m) {
+			return m.sy(util.minmax(m.dy).max) - 
+						 m.sy(d.y + d.value) + 
+						 m.sy(util.minmax(m.dy).min);
+		},
+		width: function (d, i, m) {
+			return d.x.indexOf('-') > -1 ? 
+						 scale.compatibleBand(m.sx) : 
+						 scale.compatibleBand(m.sx) - 7.5
+		},
+		height: function (d, i, m) {
+			return m.sy(d.value) - m.sy(util.minmax(m.dy).min);
+		},	
 	},
 	style: {
-		fill: function (d, i, m)	{ return config.landscape.color(d.info); },
-		stroke: function (d, i, m) { return '#FFFFFF'; },
+		fill: function (d, i, m)	{ 
+			return config.landscape.color(d.info); 
+		},
+		stroke: function (d, i, m) { 
+			return '#FFFFFF'; 
+		},
 	},
 };
 /*
@@ -528,14 +519,27 @@ config.landscape.sample = {
  */
 config.landscape.gene = {
 	attr: {
-		x: function (d, i, m) {return m.sx(util.minmax(m.dx).max - d.x) - m.sx(d.value) + m.m.left;},
-		y: function (d, i, m) {return m.sy(d.y);},
-		width: function (d, i, m) {return m.sx(d.value) - m.m.left;},
-		height: function (d, i, m) { return scale.compatibleBand(m.sy); },
+		x: function (d, i, m) {
+			return m.sx(util.minmax(m.dx).max - d.x) - 
+						 m.sx(d.value) + m.m.left;
+		},
+		y: function (d, i, m) {
+			return m.sy(d.y);
+		},
+		width: function (d, i, m) {
+			return m.sx(d.value) - m.m.left;
+		},
+		height: function (d, i, m) { 
+			return scale.compatibleBand(m.sy); 
+		},
 	},
 	style: {
-		fill: function (d, i, m)	{ return config.landscape.color(d.info); },
-		stroke: function (d, i, m) { return '#FFFFFF'; },	
+		fill: function (d, i, m)	{ 
+			return config.landscape.color(d.info); 
+		},
+		stroke: function (d, i, m) { 
+			return '#FFFFFF'; 
+		},	
 	},
 };
 /*
@@ -543,14 +547,26 @@ config.landscape.gene = {
  */
 config.landscape.pq = {
 	attr: {
-		x: function (d, i, m) { return m.sx(util.minmax(m.dx).min); },
-		y: function (d, i, m) { return m.sy(d.y); },
-		width: function (d, i, m) { return m.sx(d.value); },
-		height: function (d, i, m) { return scale.compatibleBand(m.sy); },
+		x: function (d, i, m) { 
+			return m.sx(util.minmax(m.dx).min); 
+		},
+		y: function (d, i, m) { 
+			return m.sy(d.y); 
+		},
+		width: function (d, i, m) { 
+			return m.sx(d.value); 
+		},
+		height: function (d, i, m) { 
+			return scale.compatibleBand(m.sy); 
+		},
 	},
 	style: {
-		fill: function (d, i, m)	{ return '#BFBFBF'; },
-		stroke: function (d, i, m) { return '#FFFFFF'; },
+		fill: function (d, i, m)	{ 
+			return '#BFBFBF'; 
+		},
+		stroke: function (d, i, m) { 
+			return '#FFFFFF'; 
+		},
 	},
 };
 /*
@@ -558,14 +574,30 @@ config.landscape.pq = {
  */
 config.landscape.heatmap = {
 	attr: {
-		x: function (d, i, m)	{return m.sx(d.x);},
-		y: function (d, i, m)	{return config.landscape.case(d.value) !== 'cnv' ? (scale.compatibleBand(m.sy) / 3) + m.sy(d.y) : m.sy(d.y);},
-		width: function (d, i, m)	{return scale.compatibleBand(m.sx);},
-		height: function (d, i, m)	{return config.landscape.case(d.value) !== 'cnv' ? scale.compatibleBand(m.sy) / 3 : scale.compatibleBand(m.sy);},
+		x: function (d, i, m)	{
+			return m.sx(d.x);
+		},
+		y: function (d, i, m)	{
+			return config.landscape.case(d.value) !== 'cnv' ? 
+						(scale.compatibleBand(m.sy) / 3) + m.sy(d.y) : 
+						 m.sy(d.y);
+		},
+		width: function (d, i, m)	{
+			return scale.compatibleBand(m.sx);
+		},
+		height: function (d, i, m)	{
+			return config.landscape.case(d.value) !== 'cnv' ? 
+						 scale.compatibleBand(m.sy) / 3 : 
+						 scale.compatibleBand(m.sy);
+		},
 	},
 	style: {
-		fill: function (d, i, m)	{return config.landscape.color(d.value);},
-		stroke: function (d, i, m)	{return '#FFFFFF';}
+		fill: function (d, i, m)	{
+			return config.landscape.color(d.value);
+		},
+		stroke: function (d, i, m)	{
+			return '#FFFFFF';
+		}
 	},
 };
 /*
@@ -573,17 +605,31 @@ config.landscape.heatmap = {
  */
 config.landscape.group = {
 	attr: {
-		x: function (d, i, m) {return m.sx(d.x);},
-		y: function (d, i, m) {return m.sy(d.y);},
-		width: function (d, i, m) {return scale.compatibleBand(m.sx);},
-		height: function (d, i, m) {return scale.compatibleBand(m.sy);},
+		x: function (d, i, m) {
+			return m.sx(d.x);
+		},
+		y: function (d, i, m) {
+			return m.sy(d.y);
+		},
+		width: function (d, i, m) {
+			return scale.compatibleBand(m.sx);
+		},
+		height: function (d, i, m) {
+			return scale.compatibleBand(m.sy);
+		},
 	},
 	style: {
-		fill: function (d, i, m) { return config.landscape.color(d.value); },
-		stroke: function (d, i, m) { return '#FFFFFF'; },
+		fill: function (d, i, m) { 
+			return config.landscape.color(d.value); 
+		},
+		stroke: function (d, i, m) { 
+			return '#FFFFFF'; 
+		},
 	}
 };
-
+/*
+	Landscape 의 범례 설정 객체.
+ */
 config.landscape.legend = {
 	attr: {
 		x: function (d, i, m) {
@@ -599,65 +645,190 @@ config.landscape.legend = {
 				return y + m.mh - m.mh / 2.5;
 			} else {
 				if (config.landscape.case(d))	{
-					return config.landscape.case(d) === 'var' ? y + h / 3 : y;
+					return config.landscape.case(d) === 'var' ? 
+								 y + h / 3 : y;
 				}
 			}	
 
 			return y;
 		},
-		width: function (d, i, m) {return m.width || 5;},
+		width: function (d, i, m) {
+			return m.width || 5;
+		},
 		height: function (d, i, m) { 
 			var h = m.height || 15;
 
 			return config.landscape.case(d) ? 
-						 config.landscape.case(d) === 'var' ? h / 3 : h : h;
+						 config.landscape.case(d) === 'var' ? 
+						 h / 3 : h : h;
 		},
 	},
 	style: {
-		fill: function (d, i, m) { return m.isText ? '#333333' : config.landscape.color(d); },
-		stroke: function (d, i, m) { return '#FFFFFF'; },	
-		fontFamily: function (d, i, m) { return 'Times Roman'; },
-		fontSize: function (d, i, m) { return '12px'; },
+		fill: function (d, i, m) { 
+			return m.isText ? '#333333' : 
+						 config.landscape.color(d); 
+		},
+		stroke: function (d, i, m) { 
+			return '#FFFFFF'; 
+		},	
+		fontFamily: function (d, i, m) { 
+			return 'Times Roman'; 
+		},
+		fontSize: function (d, i, m) { 
+			return '12px'; 
+		},
 	},
-	text: function (d, i, m)	{ return d; },
+	text: function (d, i, m)	{ 
+		return d; 
+	},
 }
 
 /*
-	Mutational Landscape 에 그려지는 Axis 들의 방향, 마진, 위치값들을
-	정의해놓은 객체.
+	Mutational Landscape 의 Axis 설정 객체.
  */
 config.landscape.axis = {
-	sample: {direction: 'left', margin: [5, 0, 10, 5], opt: {tickValues: 3}},
-	group: {direction: 'right', margin: [0, 0, 0, 0], opt: {remove: 'line, path'}},
-	gene: [{direction: 'right', margin: [5, 150, 40, 0], opt: {remove: 'line, path'}},
-				 {direction: 'bottom', margin: [0, 10, 35, 71], opt: {tickValues: 3}}],
-	pq: {direction: 'bottom', margin: [0, 10, 35, 20], opt: {tickValues: 3}},
+	sample: {
+		direction: 'left', 
+		margin: [5, 0, 10, 5], 
+		opt: { tickValues: 3 }
+	},
+	group: {
+		direction: 'right', 
+		margin: [0, 0, 0, 0], 
+		opt: { remove: 'line, path' }
+	},
+	gene: [{
+		direction: 'right', 
+		margin: [5, 150, 40, 0], 
+		opt: { remove: 'line, path' }
+	},
+	{
+		direction: 'bottom', 
+		margin: [0, 10, 35, 71], 
+		opt: { tickValues: 3 }
+	}],
+	pq: {
+		direction: 'bottom', 
+		margin: [0, 10, 35, 20], 
+		opt: { tickValues: 3 }
+	},
 };
 /*
-	Mutational Landscape 에 그려지는 Bar 들의 방향, 여백, 위치값등을
-	정의해놓은 객체.
+	Mutational Landscape 의 PQ 설정 객체.
  */
 config.landscape.bar = {
-	pq: {direction: 'right', margin: [5, 10, 41, 30], xaxis: function () {return this.pq.x;}, yaxis: function () {return this.pq.y;}, attr: config.landscape.pq.attr, style: config.landscape.pq.style},
+	pq: {
+		direction: 'right', 
+		margin: [5, 10, 41, 30], 
+		xaxis: function () {
+			return this.pq.x;
+		}, 
+		yaxis: function () {
+			return this.pq.y;
+		}, 
+		attr: config.landscape.pq.attr, 
+		style: config.landscape.pq.style
+	},
 };
-
+/*
+	Landscape 의 patient, sample, gene stack 설정 객체.
+ */
 config.landscape.stack = {
-	patient: {direction: 'top', margin: [5, 0, 10, 0], xaxis: function () {return this.patient.x;}, yaxis: function () {return this.sample.y}, attr: config.landscape.sample.attr, style: config.landscape.sample.style},
-	sample: {direction: 'top', margin: [5, 1, 10, 1], xaxis: function () {return this.sample.x;}, yaxis: function () {return this.sample.y;}, attr: config.landscape.sample.attr, style: config.landscape.sample.style},
-	gene: {direction: 'left', margin: [5, 10, 41, 70], xaxis: function () {return this.gene.x;}, yaxis: function () {return this.gene.y;}, attr: config.landscape.gene.attr, style: config.landscape.gene.style},
+	patient: {
+		direction: 'top', 
+		margin: [5, 0, 10, 0], 
+		xaxis: function () {
+			return this.patient.x;
+		}, 
+		yaxis: function () {
+			return this.sample.y
+		}, 
+		attr: config.landscape.sample.attr, 
+		style: config.landscape.sample.style
+	},
+	sample: {
+		direction: 'top', 
+		margin: [5, 1, 10, 1], 
+		xaxis: function () {
+			return this.sample.x;
+		}, 
+		yaxis: function () {
+			return this.sample.y;
+		}, 
+		attr: config.landscape.sample.attr, 
+		style: config.landscape.sample.style
+	},
+	gene: {
+		direction: 'left', 
+		margin: [5, 10, 41, 70], 
+		xaxis: function () {
+			return this.gene.x;
+		}, 
+		yaxis: function () {
+			return this.gene.y;
+		}, 
+		attr: config.landscape.gene.attr, 
+		style: config.landscape.gene.style
+	},
 };
-
+/*
+	Heatmap of landscape configuration object.
+ */
 config.landscape.heatmap = {
-	heatmap: {direction: 'left', margin: [5, 1, 41, 1], opt: {}, xaxis: function () {return this.sample.x;}, yaxis: function () {return this.gene.y;}, attr: config.landscape.heatmap.attr, style: config.landscape.heatmap.style},
-	patient: {direction: 'left', margin: [5, 1, 41, 3.5], opt: {}, xaxis: function () {return this.patient.x;}, yaxis: function () {return this.gene.y;}, attr: config.landscape.heatmap.attr, style: config.landscape.heatmap.style},
+	heatmap: {
+		direction: 'left', 
+		margin: [5, 1, 41, 1], 
+		opt: {}, 
+		xaxis: function () {
+			return this.sample.x;
+		}, 
+		yaxis: function () {
+			return this.gene.y;
+		}, 
+		attr: config.landscape.heatmap.attr, 
+		style: config.landscape.heatmap.style
+	},
+	patient: {
+		direction: 'left', 
+		margin: [5, 1, 41, 3.5], 
+		opt: {}, 
+		xaxis: function () {
+			return this.patient.x;
+		}, 
+		yaxis: function () {
+			return this.gene.y;
+		}, 
+		attr: config.landscape.heatmap.attr, 
+		style: config.landscape.heatmap.style
+	},
 };
-
+/*
+	Group heatmap of landscape configuration object.
+ */
 config.landscape.group = {
-	group: {direction: 'left', margin: [2, 1, 4, 1], opt: {}, xaxis: function () {return this.sample.x;}, attr: config.landscape.group.attr, style: config.landscape.group.style},
-	patient: {direction: 'left', margin: [2, 1, 4, 4], opt: {}, xaxis: function () {return this.patient.x;}, attr: config.landscape.group.attr, style: config.landscape.group.style},
+	group: {
+		direction: 'left', 
+		margin: [2, 1, 4, 1], 
+		opt: {}, 
+		xaxis: function () {
+			return this.sample.x;
+		}, 
+		attr: config.landscape.group.attr, 
+		style: config.landscape.group.style
+	},
+	patient: {
+		direction: 'left', 
+		margin: [2, 1, 4, 4], 
+		opt: {}, 
+		xaxis: function () {
+			return this.patient.x;
+		}, 
+		attr: config.landscape.group.attr, 
+		style: config.landscape.group.style
+	},
 };
-// ============================ Mutatinonal Landscape ==================================
-// ============================ Mutual Exclusivity ==================================
+// ===================== Mutatinonal Landscape ==================
+// ===================== Mutual Exclusivity =====================
 /*
 	하나 이상의 variant 로 구성된 symbol 을 해체해주는 함수.
  */
@@ -742,7 +913,9 @@ config.exclusivity.legend = {
 			return m.isText ? y + m.mh - m.mh / 2 : 
 						 d === 'Mutation' ? y + h / 3 : y;
 		},
-		width: function (d, i, m) {return m.width || 5;},
+		width: function (d, i, m) {
+			return m.width || 5;
+		},
 		height: function (d, i, m) { 
 			var h = m.height || 15;
 
@@ -750,69 +923,155 @@ config.exclusivity.legend = {
 		},
 	},
 	style: {
-		fill: function (d, i, m)	{if (!m.isText)	{ return config.exclusivity.color(d); }},
+		fill: function (d, i, m)	{
+			if (!m.isText)	{ 
+				return config.exclusivity.color(d); 
+			}
+		},
 	},
-	text: function (d, i, m)	{return d;},
+	text: function (d, i, m)	{
+		return d;
+	},
 };
-
+/*
+	heatmap of exclusivity configuration object.
+ */
 config.exclusivity.heatmap = {
 	margin: [35, 40, 35, 50],
 	attr: {
-		x: function (d, i, m)	{return m.sx(d.x);},
-		y: function (d, i, m)	{return d.value === 'Mutation' ? m.sy(d.y) + scale.compatibleBand(m.sy) / 3 : m.sy(d.y);},
-		width: function (d, i, m)	{return scale.compatibleBand(m.sx);},
-		height: function (d, i, m)	{return d.value === 'Mutation' ? scale.compatibleBand(m.sy) / 3 : scale.compatibleBand(m.sy);},
+		x: function (d, i, m)	{
+			return m.sx(d.x);
+		},
+		y: function (d, i, m)	{
+			return d.value === 'Mutation' ? 
+						 m.sy(d.y) + scale.compatibleBand(m.sy) / 3 : 
+						 m.sy(d.y);
+		},
+		width: function (d, i, m)	{
+			return scale.compatibleBand(m.sx);
+		},
+		height: function (d, i, m)	{
+			return d.value === 'Mutation' ? 
+						 scale.compatibleBand(m.sy) / 3 : 
+						 scale.compatibleBand(m.sy);
+		},
 	},
 	style: {
-		fill: function (d, i, m)	{return config.exclusivity.color(d.value);},
-		stroke: function (d, i, m)	{return false;},
+		fill: function (d, i, m)	{
+			return config.exclusivity.color(d.value);
+		},
+		stroke: function (d, i, m)	{
+			return false;
+		},
 	},
 };
-
+/*
+	Division of exclusivity configuration object.
+ */
 config.exclusivity.division = {
 	margin: [10, 40, 0, 50],
 	attr: {
-		x: function (d, i, m) {return i > 0 ? m.isText ? m.scale(m.axis[m.axis.length - 1]) - draw.getTextWidth(d.text, m.font) - m.padding : m.scale(d.point) : m.isText ? m.m.left + m.padding : m.m.left;},
-		y: function (d, i, m) {return m.isText ? m.m.top + (m.textHeight + m.padding): m.m.top;},
-		width: function (d, i, m) {return i > 0 ? m.w - m.scale(d.point) - m.m.right : m.scale(d.point) - m.m.left;},
-		height: function (d, i, m) {return m.textHeight + m.padding * 4;},
-		rx: function (d, i, m) {return 3;},
-		ry: function (d, i, m) {return 3;},
+		x: function (d, i, m) {
+			return i > 0 ? m.isText ? 
+						 m.scale(m.axis[m.axis.length - 1]) - 
+						 draw.getTextWidth(d.text, m.font) - m.padding : 
+						 m.scale(d.point) : m.isText ? 
+						 m.m.left + m.padding : m.m.left;
+		},
+		y: function (d, i, m) {
+			return m.isText ? 
+						 m.m.top + (m.textHeight + m.padding): 
+						 m.m.top;
+		},
+		width: function (d, i, m) {
+			return i > 0 ? 
+						 m.w - m.scale(d.point) - m.m.right : 
+						 m.scale(d.point) - m.m.left;
+		},
+		height: function (d, i, m) {
+			return m.textHeight + m.padding * 4;
+		},
+		rx: function (d, i, m) {
+			return 3;
+		},
+		ry: function (d, i, m) {
+			return 3;
+		},
 	},
 	style: {
-		fill: function (d, i, m) {return m.isText ? '#FFFFFF' : d.color;},
-		stroke: function (d, i, m)	{return m.isLine ? '#000000' : '#FFFFFF';},
-		dashed: function (d, i, m) {return '4,2'},
+		fill: function (d, i, m) {
+			return m.isText ? '#FFFFFF' : d.color;
+		},
+		stroke: function (d, i, m)	{
+			return m.isLine ? '#000000' : '#FFFFFF';
+		},
+		dashed: function (d, i, m) {
+			return '4,2';
+		},
 	},
 	line: {
-		x: function (m) {return m.scale(m.point);},
-		y: function (m) {return m.m.left + m.m.top * 1.2;},
+		x: function (m) {
+			return m.scale(m.point);
+		},
+		y: function (m) {
+			return m.m.left + m.m.top * 1.2;
+		},
 	},
-	text: function (d, i, m)	{return d.text;},
+	text: function (d, i, m)	{
+		return d.text;
+	},
 };
-
+/*
+	Sample (patient symbol) of exclusivity configuration object.
+ */
 config.exclusivity.sample = {
 	survival: {
 		attr: {
-			x: function (d, i, m)	{return m.data.sample.isAltered.indexOf(d.text) > -1 ? draw.getTextWidth(d.text, '15px') + draw.getTextWidth(d.text, '15px') / 4 : -5;},
-			y: function (d, i, m)	{return m.data.sample.isAltered.indexOf(d.text) > -1 ? draw.getTextHeight('15px').height / 1.3 : 0;},
+			x: function (d, i, m)	{
+				return m.data.sample.isAltered.indexOf(d.text) > -1 ? 
+							 draw.getTextWidth(d.text, '15px') + 
+							 draw.getTextWidth(d.text, '15px') / 4 : -5;
+			},
+			y: function (d, i, m)	{
+				return m.data.sample.isAltered.indexOf(d.text) > -1 ? 
+							 draw.getTextHeight('15px').height / 1.3 : 0;
+			},
 		},
 		style: {
-			fill: function (d, i, m)	{return m.data.sample.isAltered.indexOf(d.text) > -1 ? d.color : '#FFFFFF';},
-			fontSize: function (d, i, m) {return '25px';},
+			fill: function (d, i, m)	{
+				return m.data.sample.isAltered.indexOf(d.text) > -1 ? 
+							 d.color : '#FFFFFF';
+			},
+			fontSize: function (d, i, m) {
+				return '25px';
+			},
 		},
-		text: function (d, i, m)	{return m.data.sample.isAltered.indexOf(d.text) > -1 ? ' **' : '';},
+		text: function (d, i, m)	{
+			return m.data.sample.isAltered.indexOf(d.text) > -1 ? 
+						 ' **' : '';
+		},
 	},
 	division: {
 		margin: [15, 80, 0, 50],
 		attr: {
-			x: function (d, i, m)	{return d.type.indexOf('Altered group') > -1 ? 0 : m.e.attr('width') - m.m.left - (m.m.left - m.m.right);},
-			y: function (d, i, m)	{return 0;},
+			x: function (d, i, m)	{
+				return d.type.indexOf('Altered group') > -1 ? 
+						   0 : m.e.attr('width') - m.m.left - 
+						      (m.m.left - m.m.right);
+			},
+			y: function (d, i, m)	{
+				return 0;
+			},
 		},
 		style: {
-			fill: function (d, i, m)	{return d.type.indexOf('Altered group') > -1 ? '#FF6252' : '#00AC52';},
+			fill: function (d, i, m)	{
+				return d.type.indexOf('Altered group') > -1 ? 
+							'#FF6252' : '#00AC52';
+			},
 		},
-		text: function (d, i, m)	{return d.value;},
+		text: function (d, i, m)	{
+			return d.value;
+		},
 	},
 	legend: {
 		margin: [35, 80, 0, 0],
@@ -824,8 +1083,10 @@ config.exclusivity.sample = {
 					} else if (i === 1)	{
 						return draw.getTextWidth(m.d[0], '25px') + 5;	
 					} else {
-						return draw.getTextWidth(m.d[0].toUpperCase(), m.font) + 
-									 draw.getTextWidth(m.d[1].toUpperCase(), m.font) - 
+						return draw.getTextWidth(
+												m.d[0].toUpperCase(), m.font) + 
+									 draw.getTextWidth(
+									 			m.d[1].toUpperCase(), m.font) - 
 									 draw.getTextWidth('a', m.font);	
 					}
 				}
@@ -844,8 +1105,8 @@ config.exclusivity.sample = {
 					if (i === 1)	{
 						return '#333';	
 					} else {
-						return m.d[2].toUpperCase()
-									.indexOf('UN') > -1 ? '#00AC52' : '#FF6252';
+						return m.d[2].toUpperCase().indexOf('UN') > -1 ? 
+									'#00AC52' : '#FF6252';
 					}
 				}
 			},
@@ -853,16 +1114,22 @@ config.exclusivity.sample = {
 				return i === 0 ? '25px' : m.font;
 			},
 		},
-		text: function (d, i, m)	{return d;},
+		text: function (d, i, m)	{
+			return d;
+		},
 	},
 };
-// ============================ Mutual Exclusivity ==================================
-// ============================ Variants ==================================
+// ===================== Mutual Exclusivity =====================
+// ======================= Variants ===========================
+/*
+	Legend of variants configuraion object.
+ */
 config.variants.legend = {
 	margin: [20, 20, 0, 0],
 	attr: {
 		x: function (d, i, m) { 
-			var x = m.dr === 'h' ? (m.p * 10 + m.mw) * i : m.isText ? m.p : 0;
+			var x = m.dr === 'h' ? 
+						 (m.p * 10 + m.mw) * i : m.isText ? m.p : 0;
 
 			return m.isText ? (x + m.p * 2) : x;
 		},
@@ -871,13 +1138,22 @@ config.variants.legend = {
 
 			return m.isText ? m.mh * i + 1 : m.mh * i;
 		},
-		r: function (d, i, m) {return 5;},
+		r: function (d, i, m) {
+			return 5;
+		},
 	},
 	style: {
-		fontSize: function (d, i, m) {return '12px'},
-		fill: function (d, i, m) {return m.isText ? '#333333' : config.landscape.color(d);},
+		fontSize: function (d, i, m) {
+			return '12px'
+		},
+		fill: function (d, i, m) {
+			return m.isText ? 
+						'#333333' : config.landscape.color(d);
+		},
 	},
-	text: function (d, i, m) {return d;},
+	text: function (d, i, m) {
+		return d;
+	},
 };
 /*
 	Needle plot 의 원의 크기를 정하는 함수.
@@ -890,50 +1166,86 @@ function needleRadius (c)	{
 config.variants.needle = {
 	margin: [20, 30, 100, 60],
 	attr: {
-		x: function (d, i, m)	{return m.sx(d.x);},
-		y: function (d, i, m)	{return m.sy(d.y);},
-		r: function (d, i, m)	{return d.value ? needleRadius(d.value) : m.radius;},
+		x: function (d, i, m)	{
+			return m.sx(d.x);
+		},
+		y: function (d, i, m)	{
+			return m.sy(d.y);
+		},
+		r: function (d, i, m)	{
+			return d.value ? needleRadius(d.value) : m.radius;
+		},
 	},
 	style: {
-		fill: function (d, i, m)	{ return d.info ? config.landscape.color(d.info[0].type) : false;},
-		stroke: function (d, i, m)	{return '#FFFFFF';},
+		fill: function (d, i, m)	{ 
+			return d.info ? 
+						 config.landscape.color(d.info[0].type) : false;
+		},
+		stroke: function (d, i, m)	{
+			return '#FFFFFF';
+		},
 	},
 };
-
+/*
+	Graph on needleplot of variants configuration object.
+ */
 config.variants.needleGraph = {
 	margin: [0, 30, 80, 60],
 	attr: {
-		x: function (d, i, m)	{return m.isText ? m.sx(d.x) + 5 : m.sx(d.x);},
-		y: function (d, i, m)	{return m.isText ? m.sh / 2 : 0;},
-		width: function (d, i, m)	{return m.sx(d.width);},
-		height: function (d, i, m)	{return m.sh;},
+		x: function (d, i, m)	{
+			return m.isText ? m.sx(d.x) + 5 : m.sx(d.x);
+		},
+		y: function (d, i, m)	{
+			return m.isText ? m.sh / 2 : 0;
+		},
+		width: function (d, i, m)	{
+			return m.sx(d.width);
+		},
+		height: function (d, i, m)	{
+			return m.sh;
+		},
 	},
 	style: {
-		fill: function (d, i, m)	{return d.color;},
-		stroke: function (d, i, m)	{return '#FFFFFF';},
+		fill: function (d, i, m)	{
+			return d.color;
+		},
+		stroke: function (d, i, m)	{
+			return '#FFFFFF';
+		},
 	},
-	text: function (d, i, m) {return d.info.identifier;}
+	text: function (d, i, m) {
+		return d.info.identifier;
+	},
 };
-
+/*
+	Axises of variants configuration object.
+ */
 config.variants.axis = {
-	left: {margin: [20, 60, 100, 0]},
-	top: {margin: [2, 30, 0, 60]},
+	left: { margin: [20, 60, 100, 0] },
+	top: { margin: [2, 30, 0, 60] },
 };
-
+/*
+	Navigation of variants configuration object.
+ */
 config.variants.navi = {
 	margin: [0, 30, 5, 60],
 	style: {
 		fill: function (d, i, m) {
 			var c = d.info ? 
-							d3.rgb(config.landscape.color(d.info[0].type)) : false;
+							d3.rgb(
+								config.landscape.color(d.info[0].type)) : 
+							false;
 
-			m.g.selectAll('path').style('stroke', 'rgba(0, 0, 0, 0.1)');
+			m.g.selectAll('path')
+				 .style('stroke', 'rgba(0, 0, 0, 0.1)');
 			
 			return c ? (c.opacity = 0.3, c) : false;
 		},
-	}
+	},
 };
-
+/*
+	Patient symbol of variants configuration object.
+ */
 config.variants.patient = {
 	needle: {
 		margin: [0, 30, 48, 60],
@@ -948,7 +1260,9 @@ config.variants.patient = {
 			},
 		},
 		style: {
-			fill: function (d, i, m)	{return config.landscape.color(d.type);},
+			fill: function (d, i, m)	{
+				return config.landscape.color(d.type);
+			},
 			stroke: function (d, i, m)	{
 				var c = d3.rgb(config.landscape.color(d.type));
 				
@@ -963,7 +1277,8 @@ config.variants.patient = {
 				// 기존에 그려진 type legend 의 위치를 알아낸 뒤,
 				// 그 아래에 위치하기 위해서 getBoundingClientRect 함수
 				// 를 사용하였다.
-				var l = document.querySelector('#variants_legend_chart').firstChild,
+				var l = document.querySelector(
+								'#variants_legend_chart').firstChild,
 						bcr = l.getBoundingClientRect(),
 						x = bcr.right - bcr.left + bcr.width;
 
@@ -973,33 +1288,44 @@ config.variants.patient = {
 				 ' ' + x + ',' + (bcr.bottom - bcr.width);
 			},
 			x: function (d, i, m)	{
-				var l = document.querySelector('#variants_legend_chart').firstChild,
+				var l = document.querySelector(
+									'#variants_legend_chart').firstChild,
 						bcr = l.getBoundingClientRect();
 
 				return bcr.right - bcr.left + (bcr.width * 2) + m.p;
 			},
 			y: function (d, i, m)	{
-				var l = document.querySelector('#variants_legend_chart').firstChild,
+				var l = document.querySelector(
+									'#variants_legend_chart').firstChild,
 						bcr = l.getBoundingClientRect();
 
 				return bcr.bottom - m.mh / 3;
 			},
 		},
 		style: {
-			fill: function (d, i, m)	{return m.isText ? '#333333' : config.landscape.color(d.type);},
+			fill: function (d, i, m)	{
+				return m.isText ? 
+							'#333333' : config.landscape.color(d.type);
+			},
 			stroke: function (d, i, m)	{
 				var c = d3.rgb(config.landscape.color(d.type));
 				
 				return c.opacity = 0.3, c;
 			},
-			fontSize: function (d, i, m) {return '12px';},
-			strokeWidth: function (d, i, m) {return '3px';},
+			fontSize: function (d, i, m) {
+				return '12px';
+			},
+			strokeWidth: function (d, i, m) {
+				return '3px';
+			},
 		},
-		text: function (d, i, m) { return 'Patients'; }
+		text: function (d, i, m) { 
+			return 'Patients'; 
+		},
 	},
 };
-// ============================ Variants ==================================
-// ============================ Expression ==================================
+// ======================= Variants =============================
+// ======================= Expression ===========================
 /*
 	최대 길이에 맞춰 컬러를 생산할 함수.
  */
@@ -1009,63 +1335,144 @@ config.expression.colorSet = [
 	'#CA5E59', '#006494', '#2E674E', '#9A6B31', '#403F95',
 	'#616264', '#E2A6B4', '#5AC6D0', '#733E7F', '#45436C'
 ];
-
+/*
+	Legend of expression confguration object.
+ */
 config.expression.legend = {
 	bar: {
 		margin: [5, 5, 5, 5],
-		text: function (d, i, m) {return draw.textOverflow(d, '10px', m.w * 0.7);},
+		text: function (d, i, m) {
+			return draw.textOverflow(d, '10px', m.w * 0.7);
+		},
 		attr: {
-			x: function (d, i, m) {return m.isText ? m.m.left + m.p * 2 : m.p;},
-			y: function (d, i, m) {return m.isText ? m.mh * i + m.mh / 3 / 2 : m.mh * i;},
-			width: function (d, i, m) {return m.mh / 3;}, 
-			height: function (d, i, m) {return m.mh / 3;},
+			x: function (d, i, m) {
+				return m.isText ? m.m.left + m.p * 2 : m.p;
+			},
+			y: function (d, i, m) {
+				return m.isText ? m.mh * i + m.mh / 3 / 2 : m.mh * i;
+			},
+			width: function (d, i, m) {
+				return m.mh / 3;}
+				, 
+			height: function (d, i, m) {
+				return m.mh / 3;
+			},
 		},
 		style: {
-			fill: function (d, i, m) {return m.isText ? '#333333': d === 'NA' ? '#A4AAA7' : config.expression.colorSet[i];},
-			stroke: function (d, i, m) {return '#FFFFFF';},
-			fontSize: function (d, i, m) {return '10px';}
+			fill: function (d, i, m) {
+				return m.isText ? 
+							 '#333333': d === 'NA' ? 
+							 '#A4AAA7' : 
+							 config.expression.colorSet[i];
+			},
+			stroke: function (d, i, m) {
+				return '#FFFFFF';
+			},
+			fontSize: function (d, i, m) {
+				return '10px';
+			}
 		},
 	},
 	scatter: {
 		margin: [30, 10, 10, 10],
-		text: function (d) {return d;},
+		text: function (d) {
+			return d;
+		},
 		attr: {
-			x: function (d, i, m) {return m.isText ? m.m.left + m.m.right : m.p;},
-			y: function (d, i, m) {return m.isText ? (m.mh * i) + 1: (m.mh * i);},
-			r: function (d, i, m)	{return m.p;},
+			x: function (d, i, m) {
+				return m.isText ? m.m.left + m.m.right : m.p;
+			},
+			y: function (d, i, m) {
+				return m.isText ? (m.mh * i) + 1: (m.mh * i);
+			},
+			r: function (d, i, m)	{
+				return m.p;
+			},
 		},
 		style: {
-			fill: function (d, i, m) {return d === 'Alive' ? '#5D5DD8' : '#D86561';},
-			fontSize: function (d, i, m) {return '12px';},
+			fill: function (d, i, m) {
+				return d === 'Alive' ? '#5D5DD8' : '#D86561';
+			},
+			fontSize: function (d, i, m) {
+				return '12px';
+			},
+		},
+	},
+	patient: {
+		margin: [0, 0, 0, 0],
+		text: function (d)	{ 
+			return d; 
+		},
+		attr: {
+
+		},
+		style: {
+
 		},
 	},
 };
-
+/*
+	Scatter of expression configuration object.
+ */
 config.expression.scatter = {
 	margin: [10, 30, 35, 20],
 	attr: {
-		x: function (d, i, m) {return m.sx(d.x) - m.m.left;},
-		y: function (d, i, m) {return m.sy(d.y);},
-		r: function (d, i, m) {return m.ss;},
+		x: function (d, i, m) {
+			return m.sx(d.x) - m.m.left;
+		},
+		y: function (d, i, m) {
+			return m.sy(d.y);
+		},
+		r: function (d, i, m) {
+			return m.ss;
+		},
 	},
 	style: {
-		fill: function (d, i, m) {return d.value === undefined ? '#333333' : d.value === 1 ? '#D86561': '#5D5DD8';},
-		fillOpacity: function (d, i, m) {return '0.6';},
+		fill: function (d, i, m) {
+			return d.value === undefined ? 
+					 	'#333333' : d.value === 1 ? 
+					 	'#D86561': '#5D5DD8';
+		},
+		fillOpacity: function (d, i, m) {
+			return '0.6';
+		},
 	},
 	on: {
 		mouseover: function (d, i, m)	{
-			console.log('Scatter: ', d);
+			tooltip({
+				element: this,
+				contents: 'ID: <b>' + d.x + '</b></br>' + 
+									'Months: <b>' + d.y + '</b></br>' + 
+									'Status: <b>' + (d.value === '0' ? 
+									'Alive' : 'Dead') + '</b>',
+			});
+		},
+		mouseout: function ()	{
+			tooltip('hide');
 		},
 	}
 };
-
+/*
+	Bar of expression configuration object.
+ */
 config.expression.bar = {
 	margin: [10, 30, 50, 20],
 	attr: {
-		x: function (d, i, m) {return m.sx(d.x) - m.m.left;},
-		y: function (d, i, m) {return (d.y - d.value) < 0 ? m.sy(d.value) : m.sy(d.y);},
-		width: function (d, i, m) {return scale.compatibleBand(m.sx);},
-		height: function (d, i, m) {return (d.y - d.value) < 0 ? m.sy(d.y) - m.sy(d.value) : m.sy(d.value) - m.sy(d.y);},
+		x: function (d, i, m) {
+			return m.sx(d.x) - m.m.left;
+		},
+		y: function (d, i, m) {
+			return (d.y - d.value) < 0 ? 
+							m.sy(d.value) : m.sy(d.y);
+		},
+		width: function (d, i, m) {
+			return scale.compatibleBand(m.sx);
+		},
+		height: function (d, i, m) {
+			return (d.y - d.value) < 0 ? 
+							m.sy(d.y) - m.sy(d.value) : 
+							m.sy(d.value) - m.sy(d.y);
+		},
 	},
 	style: {
 		fill: function (d, i, m) {
@@ -1086,8 +1493,9 @@ config.expression.bar = {
 		mouseover: function (d, i, m)	{
 			tooltip({
 				element: this,
-				baseY: m.base,
-				text: d,
+				direction: d.value > d.y ? 'top' : 'bottom',
+				contents: 'ID: <b>' + d.x + '</b></br>' + 
+							'Average: <b>' + d.value + '</b>',
 			});
 		},
 		mouseout: function ()	{
@@ -1095,92 +1503,281 @@ config.expression.bar = {
 		},
 	}
 };
-
+/*
+	Heatmap of expression configuration object.
+ */
 config.expression.heatmap = {
 	margin: [2, 30, 0, 20],
 	attr: {
-		x: function (d, i, m) {return m.sx(d.x) - m.m.left;},
-		y: function (d, i, m) {return m.sy(d.y);},
-		width: function (d, i, m) {return scale.compatibleBand(m.sx);},
-		height: function (d, i, m) {return scale.compatibleBand(m.sy);},
+		x: function (d, i, m) {
+			return m.sx(d.x) - m.m.left;
+		},
+		y: function (d, i, m) {
+			return m.sy(d.y);
+		},
+		width: function (d, i, m) {
+			return scale.compatibleBand(m.sx);
+		},
+		height: function (d, i, m) {
+			return scale.compatibleBand(m.sy);
+		},
 	},
 	on: {
 		mouseover: function (d, i, m)	{
 			tooltip({
-				element: d3.select(this),
-				data: d,
+				element: this,
+				contents: 'ID: <b>' + d.x + '</b></br>' + 
+									'Gene: <b>' + d.y + '</b></br>' + 
+									'TPM: <b>' + d.value + '</b>',
 			});
-			console.log('Heatmap: ', d);
+		},
+		mouseout: function ()	{
+			tooltip('hide');
 		},	
 	}
 };
-
+/*
+	Division of expression configuration object.
+ */
 config.expression.division = {
 	margin: [0, 30, 25, 20],
 	marginScatter: [0, 30, 15, 20],
 	attr: {
 		x: function (d, i, m) {
-			return i > 0 ? m.isText ? m.scale(m.axis[m.axis.length - 1]) - draw.getTextWidth(d.text, m.font) - m.padding / 2 - m.m.left : m.scale(d.point) - m.m.left : m.isText ? m.scale(m.axis[0]) - m.m.left + m.padding * 2 : m.scale(m.axis[0]) - m.m.left;},
-			// return i > 0 ? m.isText ? m.w - draw.getTextWidth(d.text, m.font) - m.m.right : m.scale(d.point) : m.isText ? this.m.left + this.padding * 2 : this.m.left;},
-		y: function (d, i, m) {return m.isText ? m.h - m.m.bottom + m.textHeight - m.padding : m.h - m.m.bottom;},
-		width: function (d, i, m) {return i > 0 ? m.scale(m.axis[m.axis.length - 1]) - m.scale(d.point) : m.scale(d.point) - m.m.left;},
-		height: function (d, i, m) {return m.textHeight + m.padding * 2;},
-		rx: function (d, i, m) {return 3;},
-		ry: function (d, i, m) {return 3;},
+			return i > 0 ? m.isText ? 
+						 m.scale(m.axis[m.axis.length - 1]) - 
+						 draw.getTextWidth(d.text, m.font) - 
+						 m.padding * 1.5 - m.m.left : 
+						 m.scale(d.point) - m.m.left : 
+						 m.isText ? m.scale(m.axis[0]) - 
+						 m.m.left + m.padding * 2 : 
+						 m.scale(m.axis[0]) - m.m.left;
+		},
+		y: function (d, i, m) {
+			return m.isText ? 
+						 m.h - m.m.bottom + m.textHeight - m.padding : 
+						 m.h - m.m.bottom;
+		},
+		width: function (d, i, m) {
+			return i > 0 ? 
+						 m.scale(m.axis[m.axis.length - 1]) - 
+						 m.scale(d.point) : 
+						 m.scale(d.point) - m.m.left;
+		},
+		height: function (d, i, m) {
+			return m.textHeight + m.padding * 2;
+		},
+		rx: function (d, i, m) {
+			return 3;
+		},
+		ry: function (d, i, m) {
+			return 3;
+		},
 	},
 	style: {
-		fill: function (d, i, m) {return m.isText ? '#F1F1F1' : d.color;},
-		stroke: function (d, i, m)	{return m.isLine ? '#000000' : '#FFFFFF';},
-		dashed: function (d, i, m) {return '4, 2';},
+		fill: function (d, i, m) {
+			return m.isText ? '#232323' : d.color;
+		},
+		stroke: function (d, i, m)	{
+			return m.isLine ? '#000000' : '#FFFFFF';
+		},
+		dashed: function (d, i, m) {
+			return '4, 2';
+		},
+	},
+	on: {
+		mouseover: function (d, i, m)	{
+			tooltip({
+				element: this,
+				contents: '<b>' + (d.text.indexOf('Low') > -1 ? 
+									'Left to adjust' : 
+									'Right to adjust') + '</b>',
+				type: 'warning',
+			});
+		},
+		mouseout: function (d, i, m)	{
+			tooltip('hide');
+		},
+	},
+	lowPos: 0,
+	HighPos: 0,
+	drag: {
+		drag: function (d, i, m)	{
+			/*
+				Rect 를 반환해주는 함수.
+			 */
+			function returnRect (parent, type)	{
+				return d3.select(parent).selectAll('rect')
+								 .filter(function (d, i)	{
+									  if (d.text.indexOf(type) > -1)	{
+										  return this;
+									  }
+							 		});
+			};
+
+			var expd = config.expression.division,
+					what = this.id.indexOf('bar') > -1 ? 'Low' : 'High',
+					circle = d3.select(this),
+					line = d3.select(circle.node().parentNode)
+									 .select('path'),
+					rect = what === 'High' ? 
+								returnRect(
+									'.expression_bar_plot_chart.division-g-tag', 
+									'High') : 
+								returnRect(circle.node().parentNode, 'Low');
+
+			if (what === 'Low')	{
+				circle.attr('cx', function (d)	{
+					config.expression.division.lowPos += d3.event.dx;
+
+					var v = config.expression.division.lowPos = 
+									Math.max(0, 
+									Math.min(config.expression.division.HighPos, 
+													 config.expression.division.lowPos)),
+							l = line.attr('d'),
+							rw = rect.attr('width');
+
+					line.attr('d', m.line([
+						{ 
+							x: v, 
+							y: parseFloat(l.substring(l.indexOf(',') + 1, 
+														l.indexOf('L'))) 
+						}, 
+						{ 
+							x: v, 
+							y: parseFloat(l.substring(l.lastIndexOf(',') + 1)) 
+						}]));
+
+					rect.attr('width', v);
+
+					return v;
+				});
+
+			} else {
+				circle.attr('cx', function (d)	{
+					config.expression.division.HighPos += d3.event.dx;
+
+					var v = config.expression.division.HighPos = 
+									Math.max(config.expression.division.lowPos, 
+									Math.min(m.scale(m.axis[m.axis.length - 1]) - 
+													 m.m.left, 
+													 config.expression.division.HighPos)),
+							rx = rect.attr('x'); 
+
+					line.attr('d', m.line([
+						{ x: v, y: 0 }, 
+						{ x: v, y: m.h - m.m.bottom }]));
+
+					rect.attr('x', v);
+					rect.attr('width', ((
+						m.scale(m.axis[m.axis.length - 1]) - m.m.left) - 
+					 (m.scale(m.point) - m.m.left)) - 
+					 (v - (m.scale(m.point) - m.m.left)));
+
+					return v;
+				});
+			}	
+		},
 	},
 	line: {
-		x: function (m)	{return m.scale(m.point) - m.m.left;},
-		y: function (m) 	{return m.id.indexOf('bar') > 0 ? m.m.bottom / 2 : 0;},
+		x: function (m)	{
+			return m.scale(m.point) - m.m.left;
+		},
+		y: function (m) 	{
+			return m.id.indexOf('bar') > 0 ? m.m.bottom / 2 : 0;
+		},
 	},
-	text: function (d, i, m)	{return d.text;},
+	text: function (d, i, m)	{
+		return d.text;
+	},
 	figure: {
-		data: function (d, m)	{return m.id.indexOf('bar') > 0 ? [d[0]] : [d[1]];},
+		data: function (d, m)	{
+			return m.id.indexOf('bar') > 0 ? [d[0]] : [d[1]];
+		},
 		attr: {
-			id: function (d, i, m) {return m.id + '_div_marker';},
-			cx: function (d, i, m) {return m.scale(m.point) - m.m.left;},
-			cy: function (d, i, m) {return m.id.indexOf('scatter') > -1 ? m.h - m.m.bottom : m.m.bottom / 2;},
-			r: function (d, i, m) {return 3;},
+			id: function (d, i, m) {
+				return m.id + '_div_marker';
+			},
+			cx: function (d, i, m) {
+				config.expression.division.lowPos = 
+					m.scale(m.point) - m.m.left; 
+				config.expression.division.HighPos = 
+					m.scale(m.point) - m.m.left; 
+
+				return m.scale(m.point) - m.m.left;
+			},
+			cy: function (d, i, m) {
+				return m.id.indexOf('scatter') > -1 ? 
+							 m.h - m.m.bottom : m.m.bottom / 2;
+			},
+			r: function (d, i, m) {
+				return 3;
+			},
 		},
 		style: {
-			fill: function (d, i)	{ return d.color; },
+			fill: function (d, i)	{ 
+				return d.color; 
+			},
 		},
 	},
 };
-
+/*
+	Patient symbol of expression configuration object.
+ */
 config.expression.patient = {
 	margin: [10, 30, 50, 20],
 	attr: {
 		points: function (d, i, m)	{
 			var x = m.sx(d.x),
-					y = m.id.indexOf('bar') > 0 ? ((d.y - d.value) < 0 ? m.sy(d.value) : m.sy(d.y)) + 5 : m.h;
+					y = m.id.indexOf('bar') > 0 ? 
+						((d.y - d.value) < 0 ? 
+							m.sy(d.value) : 
+							m.sy(d.y)) + 5 : m.h;
 
-			return x + ', ' + y + ' ' + (x - 4) + ',' + (y - 7) + ' ' + (x + 4) + ',' + (y - 7) + ' ' + x + ',' + y;
+			return x + ', ' + y + ' ' + (x - 4) + ',' + 
+						(y - 7) + ' ' + (x + 4) + ',' + 
+						(y - 7) + ' ' + x + ',' + y;
 		},
 	},
 	style: {
-		fill: function (d, i)	{return '#000000';},
-		stroke: function (d, i)	{return '#B7B7B7';},
+		fill: function (d, i)	{
+			return '#000000';
+		},
+		stroke: function (d, i)	{
+			return '#B7B7B7';
+		},
 		'stroke-width': '1px',
 	},
 }
-
+/*
+	Sample of expression configuration object.
+ */
 config.expression.sample = {
 	attr: {
-		x: function (d, m)	{return m.data.patient.data === d.text ? draw.getTextWidth(d.text, '15px') + draw.getTextWidth(d.text, '15px') / 6 : -5;},
-		y: function (d, m)	{return m.data.patient.data === d.text ? draw.getTextHeight('15px').height / 1.3 : 0;},
+		x: function (d, m)	{
+			return m.data.patient.data === d.text ? 
+						 draw.getTextWidth(d.text, '15px') + 
+						 draw.getTextWidth(d.text, '15px') / 6 : -5;
+		},
+		y: function (d, m)	{
+			return m.data.patient.data === d.text ? 
+						 draw.getTextHeight('15px').height / 1.3 : 0;
+		},
 	},
 	style: {
-		fill: function (d, m)	{return m.data.patient.data === d.text ? d.color : '#FFFFFF';},
-		fontSize: function (d) {return '25px';},
+		fill: function (d, m)	{
+			return m.data.patient.data === d.text ? 
+						 d.color : '#FFFFFF';
+		},
+		fontSize: function (d) {
+			return '25px';
+		},
 	},
-	text: function (d, m)	{return m.data.patient.data === d.text ? ' **' : '';},
+	text: function (d, m)	{
+		return m.data.patient.data === d.text ? ' **' : '';
+	},
 }
-// ============================ Expression ==================================
+// ======================= Expression ========================
 var divisionLine = (function (divisionLine)	{
 	'use strict';
 
@@ -1196,7 +1793,8 @@ var divisionLine = (function (divisionLine)	{
 		model.id = model.e.attr('id');
 		model.w = o.width || model.e.attr('width');
 		model.h = o.height || model.e.attr('height');
-		model.g = render.addGroup(model.e, model.m.top, model.m.left);
+		model.g = render.addGroup(
+		model.e, model.m.top, model.m.left, 'division');
 		model.axis = (o.xaxis || o.yaxis || ['']);
 		model.scale = scale.get(model.axis, 
 			(o.xaxis ? [model.m.left, model.w - model.m.right] : 
@@ -1261,14 +1859,22 @@ var divisionLine = (function (divisionLine)	{
 									 o.style.stroke.call(this, d, i, model) : '#000';
 					},
 				},
-				on: {
-					mouseover: function (d, i)	{
-						if (!o.on)	{ return false; }
+				// TODO.
+				// Rectangle 부분의 마우스 이벤트는 일단 제외시켜놓는다.
+				// on: {
+				// 	mouseover: function (d, i)	{
+				// 		if (!o.on)	{ return false; }
 
-						return o.on.mouseover ? 
-									 o.on.mouseover.call(this, d, i, model) : false;
-					},
-				},
+				// 		return o.on.mouseover ? 
+				// 					 o.on.mouseover.call(this, d, i, model) : false;
+				// 	},
+				// 	mouseout: function (d, i)	{
+				// 		if (!o.on)	{ return false; }
+
+				// 		return o.on.mouseout ? 
+				// 					 o.on.mouseout.call(this, d, i, model) : false;
+				// 	}
+				// },
 			});
 		}
 
@@ -1293,6 +1899,7 @@ var divisionLine = (function (divisionLine)	{
 					},
 					'alignment-baseline': 'middle',
 					'font-size': model.font,
+					'font-weight': 'bold',
 				},
 				text: function (d, i) { 
 					return o.text ? o.text.call(this, d, i, model) : '' 
@@ -1358,6 +1965,7 @@ var divisionLine = (function (divisionLine)	{
 						return o.figure.style.stroke ? 
 									 o.figure.style.stroke.call(this, d, i, model) : 0;
 					},
+					cursor: 'pointer',
 				},
 				on: {
 					mouseover: function (d, i)	{
@@ -1365,6 +1973,32 @@ var divisionLine = (function (divisionLine)	{
 						
 						return o.on.mouseover ? 
 									 o.on.mouseover.call(this, d, i, model) : false;
+					},
+					mouseout: function (d, i)	{
+						if (!o.on)	{ return false; }
+
+						return o.on.mouseout ? 
+									 o.on.mouseout.call(this, d, i, model) : false;
+					}
+				},
+				call: {
+					start: function (d, i)	{
+						if (!o.drag) { return false; }
+
+						return o.drag.start ? 
+									 o.drag.start.call(this, d, i, model) : false;
+					},
+					drag: function (d, i)	{
+						if (!o.drag) { return false; }
+
+						return o.drag.drag ? 
+									 o.drag.drag.call(this, d, i, model) : false;
+					},
+					end: function (d, i)	{
+						if (!o.drag) { return false; }
+
+						return o.drag.end ? 
+									 o.drag.end.call(this, d, i, model) : false;
 					},
 				},
 			});
@@ -1898,7 +2532,8 @@ var exclusive = (function ()	{
 
 			obj.e = v;
 			obj.m = size.setMargin(cd.margin);
-			obj.g = render.addGroup(v, obj.m.top, obj.m.left);
+			obj.g = render.addGroup(
+							v, obj.m.top, obj.m.left, 'division-star');
 
 			render.text({
 				element: obj.g.selectAll('#' + v.attr('id') + '_sample'),
@@ -2192,9 +2827,6 @@ var expression = (function (expression)	{
 		function changeBarColor (d)	{
 			var state = d.info ? d.info[model.now.col] : 'NA';
 
-			console.log(state, config.expression.colorSet[
-						model.now.colorSet.indexOf(state)])
-
 			return state === 'NA' ? '#A4AAA7' : 
 						config.expression.colorSet[
 						model.now.colorSet.indexOf(state)];
@@ -2217,15 +2849,14 @@ var expression = (function (expression)	{
 				});
 
 				layout.removeG([
-					'expression_bar_legend', 'expression_scatter_plot'
-				]);
+					'expression_bar_legend']);
 
-				drawColorMappingLegend();
 				d3.selectAll('#expression_bar_plot_chart_rect')
 					.style('fill', changeBarColor)
 					.style('stroke', changeBarColor)
-				drawScatter(model.now.osdfs);
-				drawDivisionBar();
+				drawColorMappingLegend();
+				// drawScatter(model.now.osdfs);
+				// drawDivisionBar();
 			},
 		});
 	};
@@ -2274,6 +2905,13 @@ var expression = (function (expression)	{
 			lineX: config.expression.division.line.x,
 			lineY: config.expression.division.line.y,
 			marker: 'circle',
+			on: config.expression.division.on,
+			drag: {
+				drag: config.expression.division.drag.drag,
+				end: function (d, i)	{
+					console.log('end');
+				},
+			},
 		};
 
 		layout.getSVG(model.svg, ['bar_plot'], function (k, v)	{
@@ -2437,7 +3075,7 @@ var expression = (function (expression)	{
 			});
 			// Draw Linear Color Gradient Bar.
 			render.rect({
-				element: render.addGroup(v, 5, 3),
+				element: render.addGroup(v, 5, 3, 'gradient'),
 				attr: {
 					id: k + '_rect',
 					x: 0,
@@ -2471,11 +3109,13 @@ var expression = (function (expression)	{
 		Patient 를 표시해줄 함수.
 	 */
 	function drawPatient ()	{
-		layout.getSVG(model.svg, ['bar_plot', 'scatter_plot'], function (k, v)	{
+		layout.getSVG(model.svg, ['bar_plot', 'scatter_plot'], 
+		function (k, v)	{
 			var obj = {},
 					y = model.data.axis.bar.y;  
 
-			obj.g = render.addGroup(v, 0, 0);
+			obj.g = render.addGroup(v, 0, 0, k.indexOf('bar') > -1 ? 
+							'bar-patient' : 'scatter-patient');
 			obj.id = v.attr('id');
 			obj.m = size.setMargin(config.expression.patient.margin);
 			obj.w = v.attr('width');
@@ -2646,7 +3286,8 @@ var heatmap = (function (heatmap)	{
 							d3.select(o.element) : d3.select('#' + o.element);
 		model.s = draw.size(model.e);
 		model.m = size.setMargin(o.margin);
-		model.g = render.addGroup(model.e, model.m.top, model.m.left);
+		model.g = render.addGroup(
+		model.e, model.m.top, model.m.left, 'heatmap');
 		model.sx = scale.get(o.xaxis, 
 							[model.m.left, (o.width || model.s.w) - 
 							 model.m.right]);
@@ -2693,6 +3334,12 @@ var heatmap = (function (heatmap)	{
 					
 					return o.on.mouseover ? 
 								 o.on.mouseover.call(this, d, i, model) : false;
+				},
+				mouseout: function (d, i)	{
+					if (!o.on) { return false; }
+
+					return o.on.mouseout ? 
+								 o.on.mouseout.call(this, d, i, model) : false;
 				},
 			}
 		});
@@ -3641,8 +4288,10 @@ var legend = (function (legend)	{
 		model.p = o.padding || 5;
 		model.font = o.font || '10px';
 		model.sw = 
-		model.sg = render.addGroup(model.e, model.t, model.l);
-		model.tg = render.addGroup(model.e, model.t, model.l);		
+		model.sg = render.addGroup(
+		model.e, model.t, model.l, 'legend-shape');
+		model.tg = render.addGroup(
+		model.e, model.t, model.l, 'legend-text');		
 		model.mw = getMostWidthOfText(model.d, model.font);
 		model.mh = draw.getTextHeight(model.font).height;
 		model.dr = (model.w - model.m.left - model.m.right)
@@ -3862,9 +4511,10 @@ var needle = (function (needle)	{
 		model.m = size.setMargin(o.margin);
 		model.t = model.m.top || 0;
 		model.l = model.m.left || 0;
-		model.g = render.addGroup(model.e, model.m.top, model.m.left);
-		model.xag = render.addGroup(model.e, model.m.top, model.m.left);
-		model.xxg = render.addGroup(model.e, model.m.top, model.m.left);
+		model.g = render.addGroup(
+		model.e, model.m.top, model.m.left, 'needle');
+		// model.xag = render.addGroup(model.e, model.m.top, model.m.left);
+		// model.xxg = render.addGroup(model.e, model.m.top, model.m.left);
 		model.radius = o.radius || 5;
 		model.sx = scale.get(o.xaxis, [model.m.left, model.s.w - model.m.right]);
 		model.sy = scale.get(o.yaxis, [model.s.h - model.m.bottom, model.m.top]);
@@ -3951,7 +4601,8 @@ var needleGraph = (function (needleGraph)	{
 		model.m = size.setMargin(o.margin);
 		model.t = model.s.h - model.m.bottom;
 		model.l = model.m.left || 0;
-		model.g = render.addGroup(model.e, model.t, model.l);
+		model.g = render.addGroup(
+		model.e, model.t, model.l, 'needle-graph');
 		model.sx = scale.get(o.xaxis, [model.m.left, model.s.w - model.m.right]);
 		model.sy = scale.get(o.yaxis, [model.s.h - model.m.bottom, model.m.top]);
 		model.sh = Math.abs(model.sy(1) - model.sy(0)) / 2;
@@ -4076,7 +4727,8 @@ var needleNavi = (function (needleNavi)	{
 		model.m = size.setMargin(o.margin);
 		model.t = model.m.top || 0;
 		model.l = model.m.left || 0;
-		model.g = render.addGroup(model.e, model.m.top, model.m.left);
+		model.g = render.addGroup(
+		model.e, model.m.top, model.m.left, 'needle-navi');
 		model.sx = scale.get(o.xaxis, [model.m.left, model.s.w - model.m.right]);
 		model.sy = scale.get(o.yaxis, [model.s.h - model.m.bottom, model.m.top]);
 
@@ -4561,9 +5213,10 @@ var preprocessing = (function (preprocessing)	{
 	 			el.geneset.push(t);
  			}
  		});
-
  		// TODO. 
 		// 정렬방식 설정 코드를 짜야된다.
+		// 현재 테스트 데이터에는 이상이 있는지 안된다.
+		// 본서버 데이터는 잘 된다.
 		var temp = el.geneset[4];
 
 		el.geneset[4] = el.geneset[0];
@@ -5114,28 +5767,28 @@ var render = (function (render)	{
 		var id = id.indexOf('#') < 0 ? '#' + id : id,
 				dom = document.querySelector(id);
 
-		// if (!d3.select('#' + id.replace('#', '') + '_chart').empty())	{
-			// TODO.
-			// 많은 수정이 필요하다.
-			// d3.select('#' + id.replace('#', '') + '_chart').remove();
-			// return d3.select('#' + id.replace('#', '') + '_chart');
-		// } 
 		return d3.select(id)
 					.append('svg')
 					.attr('id', id.replace('#', '') + '_chart')
-					.attr('width', (width || parseFloat(dom.style.width)) + 1)
-					.attr('height', (height || parseFloat(dom.style.height)));
+					.attr('width', (
+						width || parseFloat(dom.style.width)) + 1)
+					.attr('height', (
+						height || parseFloat(dom.style.height)));
 	};
 	/*
 		SVG 태그에 그룹을 추가해주는 함수.
 	 */
-	render.addGroup = function (svg, top, left)	{
+	render.addGroup = function (svg, top, left, cls)	{
 		svg = util.d3v4() ? svg : svg[0][0];
 		svg = util.varType(svg) === 'Array' || 
 					util.varType(svg) === 'Object' ? svg : d3.select(svg);
+
+		var exist = d3.selectAll(
+			'.' + svg.attr('id') + '.' + cls + '-g-tag');
 		
-		return svg.append('g')
-					 .attr('class', svg.attr('id') + ' g-tag')
+		return exist.node() ? exist : 
+						svg.append('g')
+					 .attr('class', svg.attr('id') + ' ' + cls + '-g-tag')
 					 .attr('transform', 
 								 'translate(' + left + ', ' + top + ')');			
 	};
@@ -5143,6 +5796,8 @@ var render = (function (render)	{
 		Attribute 를 SVG 에 등록시켜주는 함수.
 	 */
 	function setAttributes (svgElement, attrs)	{
+		if (!attrs) { return false; }
+
 		for (var attr in attrs)	{
 			svgElement.attr(attr, attrs[attr]);
 		}
@@ -5151,6 +5806,8 @@ var render = (function (render)	{
 		Style 을 SVG 에 등록시켜주는 함수.
 	 */
 	function setStyles (svgElement, styles)	{
+		if (!styles) { return false; }
+
 		for (var style in styles)	{
 			svgElement.style(style, styles[style]);
 		}
@@ -5159,9 +5816,30 @@ var render = (function (render)	{
 		Event 를 SVG 에 등록시켜주는 함수.
 	 */
 	function setOnEvents (svgElement, events)	{
+		if (!events) { return false; }
+
 		for (var event in events)	{
 			svgElement.on(event, events[event]);
 		}
+	};
+	/*
+		Drag 를 SVG 에 등록시켜주는 함수.
+	 */
+	function setOnDrag (svgElement, drags)	{
+		if (!drags) { return false; }
+
+		var dg = util.d3v4() ? d3.drag() : d3.behavior.drag();
+
+		for (var drag in drags)	{
+			var nm = util.d3v4() ? drag : 
+					drag !== 'drag' ? 
+					drag.substring(0, 1).toUpperCase() + 
+					drag.substring(1) : drag;
+
+			dg.on(nm, drags[drag]);
+		}
+
+		svgElement.call(dg);
 	};
 	/*
 		Text 를 등록시켜주는 함수.
@@ -5178,14 +5856,17 @@ var render = (function (render)	{
 			throw new Error ('Not defined SVG Element');
 		}
 		
-		var t = !this.data ? this.element.append(target) : 
-						 this.element.data(this.data).enter().append(target);
+		var t = !this.data ? 
+						 this.element.append(target) : 
+						 this.element.data(this.data)
+						 		 .enter().append(target);
 
 		this.text ? setText(t, this.text) : false;
 
 		setAttributes(t, this.attr);
 		setStyles(t, this.style);
 		setOnEvents(t, this.on);
+		setOnDrag(t, this.call);
 	}
 	/*
 		Draw rectangle.
@@ -5361,7 +6042,8 @@ var scatter = (function (scatter)	{
 		model.m.left, model.w - model.m.right ]);
 		model.sy = scale.get(o.yaxis, [
 		model.m.top, model.h - model.m.bottom ]);
-		model.g = render.addGroup(model.e, model.t, model.l);
+		model.g = render.addGroup(
+		model.e, model.t, model.l, 'scatter');
 
 		var id = model.e.attr('id');
 
@@ -5397,9 +6079,17 @@ var scatter = (function (scatter)	{
 				},
 				on: {
 					mouseover: function (d, i)	{
+						if (!o.on)	{ return false; }
+						
 						return o.on.mouseover ? 
 									 o.on.mouseover.call(this, d, i, model) : false;
 					},
+					mouseout: function (d, i)	{
+						if (!o.on)	{ return false; }
+						
+						return o.on.mouseout ? 
+									 o.on.mouseout.call(this, d, i, model) : false;
+					}
 				},
 			})
 		} else if (o.attr.points)	{
@@ -5433,9 +6123,17 @@ var scatter = (function (scatter)	{
 				},
 				on: {
 					mouseover: function (d, i)	{
+						if (!o.on)	{ return false; }
+						
 						return o.on.mouseover ? 
 									 o.on.mouseover.call(this, d, i, model) : false;
 					},
+					mouseout: function (d, i)	{
+						if (!o.on)	{ return false; }
+						
+						return o.on.mouseout ? 
+									 o.on.mouseout.call(this, d, i, model) : false;
+					}
 				},
 			});
 		} else {
@@ -5471,9 +6169,17 @@ var scatter = (function (scatter)	{
 				},
 				on: {
 					mouseover: function (d, i)	{
+						if (!o.on)	{ return false; }
+						
 						return o.on.mouseover ? 
-									 o.on.mouseover.call(model, d, i) : false;
+									 o.on.mouseover.call(this, model, d, i) : false;
 					},
+					mouseout: function (d, i)	{
+						if (!o.on)	{ return false; }
+						
+						return o.on.mouseout ? 
+									 o.on.mouseout.call(this, d, i, model) : false;
+					}
 				},
 			});
 		}
@@ -5507,9 +6213,17 @@ var scatter = (function (scatter)	{
 				},
 				on: {
 					mouseover: function (d, i)	{
+						if (!o.on)	{ return false; }
+						
 						return o.on.mouseover ? 
-									 o.on.mouseover.call(model, d, i) : false;
+									 o.on.mouseover.call(this, model, d, i) : false;
 					},
+					mouseout: function (d, i)	{
+						if (!o.on)	{ return false; }
+						
+						return o.on.mouseout ? 
+									 o.on.mouseout.call(this, d, i, model) : false;
+					}
 				},
 				text: function (d, i)	{ 
 					return o.text ? o.text.call(model, d, i) : ('legend ' + i);
@@ -5917,69 +6631,70 @@ var tooltip = (function (tooltip)	{
 	/*
 		Tooltip 이 위치할 곳을 설정해주는 함수.
 	 */
-	function tooltipPosition (target, bx, by)	{
+	function tooltipPosition (target, dir)	{
 		if (!target)	{ 
 			throw new Error('None of any targeted element');
 		}
 
 		var bcr = target.getBoundingClientRect();
 
-		if (bx && by)	{
-			console.log('All');
-		} else if (bx)	{
-			console.log('only bx');
-		} else if (by) {
-			return bcr.top === by ? 
-						 { top: bcr.bottom, left: bcr.left } : 
-						 { top: bcr.top, left: bcr.left };
-		} else {
-			return { top: bcr.top, left: bcr.left };
-		}
-	};	
+		return dir === 'top' || dir === 'none' ? 
+					{ top: bcr.top, left: bcr.left } : 
+					{ top: bcr.bottom, left: bcr.left };
+	};
 	/*
 		Tooltip 을 띄워주는 함수.
 	 */
-	function show (div, pos, txt)	{
-		if (!model.tDiv)	{
+	function show (div, pos, dir)	{
+		if (!div)	{
 			throw new Error('Do not find a Tooltip element');
 		}
 
-		div.style.display = 'block';
-		div.style.top = pos.top + 'px';
-		div.style.left = pos.left + 'px';
-		div.style.padding = '10px';
-		div.style.width = 'auto';
-		div.style.height = 'auto';
-		div.style.background = 'rgba(255, 253, 239, 0.7)';
-		div.innerHTML = txt;
+		var bcr = div.getBoundingClientRect();
+
+		div.className = dir;
+		div.style.visibility = 'visible';
+		div.style.top = dir === 'top' || dir === 'none'? 
+									 (pos.top - bcr.height - 10) + 'px' : 
+									 (pos.top + 10) + 'px';
+		div.style.left = (pos.left - (bcr.width / 2)) + 'px';
 	};
 	/*
 		Tooltip 을 가려주는 함수.
 	 */
-	function hide ()	{
-		if (!model.tDiv)	{
+	function hide (div)	{
+		if (!div)	{
 			throw new Error('Do not find a Tooltip element');
 		}
 
-		model.tDiv.innerHTML = '';
-		model.tDiv.style.top = '0px';
-		model.tDiv.style.left = '0px';
-		model.tDiv.style.display = 'none';
+		div.innerHTML = '';
+		div.style.top = '0px';
+		div.style.left = '0px';
+		div.style.visibility = 'hidden';
+	};
+	/*
+		Tooltip 의 색을 설정해주는 함수.
+	 */
+	function setType (div, type)	{
+		div.className += ' ' + type;
 	};
 
 	return function (o)	{
 		if (util.varType(o) === 'String')	{
-			return hide(model.tDiv);
+			return hide(document.getElementById('biochart_tooltip'));
 		}
 
-		model.target = o.element || null;
-		model.tDiv = document.getElementById('biochart_tooltip');
-		model.bx = o.baseX || null;
-		model.by = o.baseY || null;
-		model.pos = tooltipPosition(model.target, model.bx, model.by);
-		model.text = o.text || '';
+		var target = o.element || null,
+				contents = o.contents || '',
+				direction = o.direction || 'none',
+				type = o.type || '',
+				tooltipDiv = document.getElementById('biochart_tooltip');
+				tooltipDiv.innerHTML = contents;
 
-		return show(model.tDiv, model.pos, model.text);
+		// setType(tooltipDiv, type);
+
+		return show(tooltipDiv, 
+			tooltipPosition(target, direction), direction);
 	};
 
 }(tooltip||{}));
@@ -6209,7 +6924,8 @@ var variants = (function (variants)	{
 
 			md.m = size.setMargin(cp.margin);
 			md.s = draw.size(v);
-			md.g = render.addGroup(v, md.s.h - md.m.bottom, md.m.left);
+			md.g = render.addGroup(
+				v, md.s.h - md.m.bottom, md.m.left, 'needle-patient');
 			md.s = scale.get(model.data.axis.needle.x, [
 				md.m.left, md.s.w - md.m.right]);
 			md.len = 5;
