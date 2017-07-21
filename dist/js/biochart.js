@@ -1125,7 +1125,7 @@ config.exclusivity.sample = {
 	Legend of variants configuraion object.
  */
 config.variants.legend = {
-	margin: [20, 20, 0, 0],
+	margin: [20, 10, 0, 0],
 	attr: {
 		x: function (d, i, m) { 
 			var x = m.dr === 'h' ? 
@@ -1134,9 +1134,8 @@ config.variants.legend = {
 			return m.isText ? (x + m.p * 2) : x;
 		},
 		y: function (d, i, m) { 
-			var h = m.height || 5;
-
-			return m.isText ? m.mh * i + 1 : m.mh * i;
+			return m.isText ? m.mh * i + 7 * i + 1 : 
+												m.mh * i + 7 * i;
 		},
 		r: function (d, i, m) {
 			return 5;
@@ -1147,24 +1146,27 @@ config.variants.legend = {
 			return '12px'
 		},
 		fill: function (d, i, m) {
-			return m.isText ? 
-						'#333333' : config.landscape.color(d);
+			return m.isText ? '#333333' : config.landscape.color(d);
+		},
+		stroke: function (d, i, m)	{
+			return '#333333';
 		},
 	},
 	text: function (d, i, m) {
-		return d;
+		return draw.textOverflow(d, 
+					 config.variants.legend.style.fontSize(), m.mw, 0);
 	},
-};
-/*
-	Needle plot 의 원의 크기를 정하는 함수.
-	값이 지름이 된다는 가정하에 크기를 구한다.
- */
-function needleRadius (c)	{
-	return (Math.sqrt(c) * 3) / 1.25;
 };
 
 config.variants.needle = {
-	margin: [20, 30, 100, 60],
+	margin: [20, 30, 80, 60],
+	/*
+		Needle plot 의 원의 크기를 정하는 함수.
+		값이 지름이 된다는 가정하에 크기를 구한다.
+	 */
+	radius: function (count) 	{
+		return Math.sqrt(count) * 3 / 1.25;
+	},
 	attr: {
 		x: function (d, i, m)	{
 			return m.sx(d.x);
@@ -1173,7 +1175,8 @@ config.variants.needle = {
 			return m.sy(d.y);
 		},
 		r: function (d, i, m)	{
-			return d.value ? needleRadius(d.value) : m.radius;
+			return d.value ? config.variants.needle.radius(d.value) : 
+											 m.radius;
 		},
 	},
 	style: {
@@ -1182,7 +1185,27 @@ config.variants.needle = {
 						 config.landscape.color(d.info[0].type) : false;
 		},
 		stroke: function (d, i, m)	{
-			return '#FFFFFF';
+			return '#333333';
+		},
+	},
+	on: {
+		mouseover: function (d, i, m)	{
+			draw.toFront(this);
+
+			tooltip({
+				element: this,
+				contents: 'Type: <b>' + d.info[0].type + '</b></br>' + 
+									'AAChange: <b>' + 
+									 d.info[0].aachange + '</b></br>' +
+									'Counts: <b>' + d.y + '</b></br>' + 
+									'Position: <b>' + d.x + '</b></br>',
+									
+			});
+		},
+		mouseout: function (d, i, m)	{
+			draw.toBack(this);
+
+			tooltip('hide');
 		},
 	},
 };
@@ -1190,16 +1213,19 @@ config.variants.needle = {
 	Graph on needleplot of variants configuration object.
  */
 config.variants.needleGraph = {
-	margin: [0, 30, 80, 60],
+	margin: [0, 30, 60, 60],
 	attr: {
 		x: function (d, i, m)	{
 			return m.isText ? m.sx(d.x) + 5 : m.sx(d.x);
 		},
 		y: function (d, i, m)	{
-			return m.isText ? m.sh / 2 : 0;
+			return m.isText ? 
+			draw.getTextHeight(
+			draw.getFitTextSize(
+				d.info.identifier, m.w, m.sh)).height / 2 + 1 : 0;
 		},
 		width: function (d, i, m)	{
-			return m.sx(d.width);
+			return m.sx(d.x + d.width) - m.sx(d.x);
 		},
 		height: function (d, i, m)	{
 			return m.sh;
@@ -1207,21 +1233,48 @@ config.variants.needleGraph = {
 	},
 	style: {
 		fill: function (d, i, m)	{
-			return d.color;
+			return m.isText ? '#FFFFFF' : d.color;
 		},
 		stroke: function (d, i, m)	{
 			return '#FFFFFF';
 		},
+		fontSize: function (d, i, m)	{
+			return parseFloat(
+							draw.getFitTextSize(
+								d.info.identifier, 
+								m.sx(d.x + d.width) - m.sx(d.x), 
+								m.sh / 1.5));
+		},
+	},
+	on: {
+		mouseover: function (d, i, m)	{
+			tooltip({
+				element: this,
+				contents: 
+					'<b>' + d.info.identifier + '</b></br>' + 
+					'Desc: <b>' + d.info.description + '</b></br>' + 
+					'Section: <b>' + d.x + 
+					' - ' + (d.x + d.width) + '</b>'
+
+			});
+		},
+		mouseout: function (d, i, m)	{
+			tooltip('hide');
+		},
 	},
 	text: function (d, i, m) {
-		return d.info.identifier;
+		var width = m.sx(d.x + d.width) - m.sx(d.x);
+
+		return draw.textOverflow(d.info.identifier, 
+					 draw.getFitTextSize(d.info.identifier, 
+					 	width, m.sh / 1.5), width, 5);
 	},
 };
 /*
 	Axises of variants configuration object.
  */
 config.variants.axis = {
-	left: { margin: [20, 60, 100, 0] },
+	left: { margin: [20, 60, 80, 0] },
 	top: { margin: [2, 30, 0, 60] },
 };
 /*
@@ -1229,17 +1282,46 @@ config.variants.axis = {
  */
 config.variants.navi = {
 	margin: [0, 30, 5, 60],
+	start: { init: 0, now: 0 },
+	end: { init: 0, now: 0 },
 	style: {
 		fill: function (d, i, m) {
 			var c = d.info ? 
-							d3.rgb(
-								config.landscape.color(d.info[0].type)) : 
-							false;
+							d3.rgb(config.landscape.color(
+											d.info[0].type)) : false;
 
-			m.g.selectAll('path')
+			m.lg.selectAll('path')
 				 .style('stroke', 'rgba(0, 0, 0, 0.1)');
 			
 			return c ? (c.opacity = 0.3, c) : false;
+		},
+	},
+	drag: {
+		drag: function (d, i, m)	{
+			var x = d3.select(this).attr('x'),
+					w = d3.select(this).attr('width');
+			/*
+				Start, end 값을 설정하고 반환하는 함수.
+			 */
+			function getDragValue (type)	{
+				var cv = config.variants.navi;
+
+				cv[type].now += d3.event.dx;
+
+				return cv[type].now = 
+				Math.max(cv.start[type === 'end' ? 'now' : 'init'],
+				Math.min(cv.end[type === 'end' ? 'init' : 'now'],
+			 	cv[type === 'end' ? 'end' : 'start'].now)), 
+			 	cv[type].now;
+			};
+
+			if (d === 'start')	{
+				d3.select(this).attr('x', getDragValue('start'));
+			} else if (d === 'end') {
+				d3.select(this).attr('x', getDragValue('end'));				
+			} else {
+				console.log(d)
+			}
 		},
 	},
 };
@@ -1248,7 +1330,7 @@ config.variants.navi = {
  */
 config.variants.patient = {
 	needle: {
-		margin: [0, 30, 48, 60],
+		margin: [0, 30, 35, 60],
 		attr: {
 			points: function (d, i, m)	{
 				var x = m.s(d.position);
@@ -1269,9 +1351,23 @@ config.variants.patient = {
 				return c.opacity = 0.3, c;
 			},
 		},
+		on: {
+			mouseover: function (d, i, m) {
+				tooltip({
+					element: this,
+					contents: '<b>' + d.id + '</b></br>' + 
+										'Type: <b>' + d.type + '</b></br>' + 
+										'AAChange: <b>' + d.aachange + '</b></br>' + 
+										'Position: <b>' + d.position + '</b>',
+				});
+			},
+			mouseout: function (d, i, m) {
+				tooltip('hide');
+			},
+		},
 	},
 	legend: {
-		margin: [0, 0, 0, 0],
+		margin: [5, 0, 0, 0],
 		attr: {
 			points: function (d, i, m)	{
 				// 기존에 그려진 type legend 의 위치를 알아낸 뒤,
@@ -1280,26 +1376,22 @@ config.variants.patient = {
 				var l = document.querySelector(
 								'#variants_legend_chart').firstChild,
 						bcr = l.getBoundingClientRect(),
-						x = bcr.right - bcr.left + bcr.width;
+						x = bcr.right - bcr.left + bcr.width - 10;
 
-				return x + ',' + (bcr.bottom - bcr.width) + 
-				 ' ' + (x - bcr.width / 2) + ',' + bcr.bottom + 
-				 ' ' + (x + bcr.width / 2) + ',' + bcr.bottom + 
-				 ' ' + x + ',' + (bcr.bottom - bcr.width);
+				return x + ',' + m.m.top + 
+				 ' ' + (x - bcr.width / 2) + ',' + (m.m.top * 2.5) +
+				 ' ' + (x + bcr.width / 2) + ',' + (m.m.top * 2.5) + 
+				 ' ' + x + ',' + m.m.top;
 			},
 			x: function (d, i, m)	{
 				var l = document.querySelector(
 									'#variants_legend_chart').firstChild,
 						bcr = l.getBoundingClientRect();
 
-				return bcr.right - bcr.left + (bcr.width * 2) + m.p;
+				return bcr.right - bcr.left + bcr.width + m.p;
 			},
 			y: function (d, i, m)	{
-				var l = document.querySelector(
-									'#variants_legend_chart').firstChild,
-						bcr = l.getBoundingClientRect();
-
-				return bcr.bottom - m.mh / 3;
+				return m.m.top / 2 + m.mh / 2;
 			},
 		},
 		style: {
@@ -1434,7 +1526,7 @@ config.expression.scatter = {
 					 	'#D86561': '#5D5DD8';
 		},
 		fillOpacity: function (d, i, m) {
-			return '0.6';
+			return 0.6;
 		},
 	},
 	on: {
@@ -1600,7 +1692,7 @@ config.expression.division = {
 		},
 	},
 	lowPos: 0,
-	HighPos: 0,
+	highPos: 0,
 	drag: {
 		drag: function (d, i, m)	{
 			/*
@@ -1632,7 +1724,7 @@ config.expression.division = {
 
 					var v = config.expression.division.lowPos = 
 									Math.max(0, 
-									Math.min(config.expression.division.HighPos, 
+									Math.min(config.expression.division.highPos, 
 													 config.expression.division.lowPos)),
 							l = line.attr('d'),
 							rw = rect.attr('width');
@@ -1655,13 +1747,13 @@ config.expression.division = {
 
 			} else {
 				circle.attr('cx', function (d)	{
-					config.expression.division.HighPos += d3.event.dx;
+					config.expression.division.highPos += d3.event.dx;
 
-					var v = config.expression.division.HighPos = 
+					var v = config.expression.division.highPos = 
 									Math.max(config.expression.division.lowPos, 
 									Math.min(m.scale(m.axis[m.axis.length - 1]) - 
 													 m.m.left, 
-													 config.expression.division.HighPos)),
+													 config.expression.division.highPos)),
 							rx = rect.attr('x'); 
 
 					line.attr('d', m.line([
@@ -1701,7 +1793,7 @@ config.expression.division = {
 			cx: function (d, i, m) {
 				config.expression.division.lowPos = 
 					m.scale(m.point) - m.m.left; 
-				config.expression.division.HighPos = 
+				config.expression.division.highPos = 
 					m.scale(m.point) - m.m.left; 
 
 				return m.scale(m.point) - m.m.left;
@@ -2185,6 +2277,99 @@ var draw = (function (draw)	{
 
 		return (fit === txt) ? txt : fit + '...';
 	};
+	/*
+		Width, Height 에 맞게 적절한 폰트 크기를 반환하는 함수.
+	 */
+	draw.getFitTextSize = function (txt, width, height)	{
+		var i = 1;
+
+		while (1)	{
+			var ti = i + 'px';
+
+			if (draw.getTextHeight(ti).height > height || 
+					draw.getTextWidth(txt, ti) > width)	{
+				break;
+			}
+
+			i += 1;
+		};
+
+		return i + 'px';
+	};
+	/*
+		텍스트가 특정 길이를 초과하였을 때, '...' 또는 자르기 처리를 해준다.
+	 */
+	draw.textOverflow = function (txt, font, len, padding)	{
+		var result = '',
+				padding = padding || 0;
+
+		if (draw.getTextWidth(txt, font) < len - padding)	{
+			return txt;
+		}
+
+		util.loop(txt.split(''), function (d)	{
+			var tw = draw.getTextWidth(result += d, font);
+
+			if (tw > len - padding)	{
+				result = result.substring(0, result.length - 2);
+				return;
+			}
+		});
+
+		return result;
+	};
+	/*
+		전달 된 노드의 어미 svg 를 찾아 반환한다.
+	 */
+	draw.getParentSvg = function (node)	{
+		if (node.parentElement.tagName === 'svg')	{
+			return node.parentElement;
+		}
+
+		return draw.getParentSvg(node.parentElement);
+	};
+	/*
+		현재 노드를 가장 앞으로 보내주는 함수.
+	 */
+	draw.toFront = function (node)	{
+		node.parentNode.appendChild(node);
+	};
+	/*
+		현재 노드를 가장 뒤로 보내주는 함수.
+	 */
+	draw.toBack = function (node)	{
+		var first = node.parentNode.firstChild;
+
+		if (first)	{
+			node.parentNode.insertBefore(node, first);
+		}
+	};
+
+	/*
+		Node 의 위치를 구해주는 함수.
+	 */
+	// draw.nodePosition = function (node)	{
+	// 	var el = node,
+	// 			elPos = el.getBoundingClientRect(),
+	// 			vpPos = getVpPos(el);
+
+	// 	function getVpPos (el)	{
+	// 		if (el.parentElement.tagName === 'svg')	{
+	// 			return el.parentElement.getBoundingClientRect();
+	// 		}
+
+	// 		return getVpPos(el.parentElement);
+	// 	};
+
+	// 	return {
+	// 		top: elPos.top - vpPos.top,
+	// 		left: elPos.left - vpPos.left,
+	// 		bottom: elPos.bottom - vpPos.bottom,
+	// 		right: elPos.right - vpPos.right,
+	// 		width: elPos.width,
+	// 		height: elPos.height,
+	// 	};
+	// };
 
 	return draw;
 }(draw || {}));
@@ -2673,6 +2858,9 @@ var expression = (function (expression)	{
 			col: null,
 			osdfs: 'os',
 		},
+		divide: {
+
+		},
 	};
 	/*
 		Survival 을 그리기 위해 Function 값의 
@@ -2694,8 +2882,14 @@ var expression = (function (expression)	{
 	 */
 	function callScatterBySurvival (type)	{
 		if (model.now.osdfs !== type) {
-			layout.removeG(['expression_scatter_plot']);
+			layout.removeG(['scatter-g-tag']);
 			drawScatter(model.now.osdfs = type, model.now.osdfs);			
+
+			if (model.divide.lowArr || model.divide.highArr)	{
+				noneSelectedToBlur(d3.selectAll(
+					'#expression_scatter_plot_chart_circle'), 
+					model.divide.lowArr, model.divide.highArr);
+			}	
 		}
 	};
 	/*
@@ -2753,16 +2947,20 @@ var expression = (function (expression)	{
 		};
 
 		var div = dividedData(
-				model.data.bar, model.data.axis.bar.y[1]);
-		var suv = survival({
+				model.data.bar, model.data.axis.bar.y[1]),
+				suv = survival({
 			element: '#expression_survival',
 			margin: [20, 20, 20, 20],
-			data: model.origin.patient_list,
-			divisionData: model.data.survival.divide,
+			data: (model.divide.patient_list || 
+						 model.origin.patient_list),
+			divisionData: (model.divide.divide || 
+										 model.data.survival.divide),
 		});
 
 		model.data.survival.data = suv.survivalData;
-		model.data.scatter = model.data.survival.data.all;
+		model.data.scatter = 
+		Object.keys(model.data.scatter).length < 1 ? 
+		model.data.survival.data.all : model.data.scatter;
 
 		expSurvivalTabChange();
 	};
@@ -2818,20 +3016,23 @@ var expression = (function (expression)	{
 		});
 	};
 	/*
+		Bar 의 색을 변경해주는함수.
+	 */
+	function changeBarColor (d)	{
+		if (!model.now.colorSet)	{
+			return '#62C2E0';
+		}
+
+		var state = d.info ? d.info[model.now.col] : 'NA';
+
+		return state === 'NA' ? '#A4AAA7' : 
+					config.expression.colorSet[
+					model.now.colorSet.indexOf(state)];
+	};
+	/*
 		Color Mapping 을 그려주는 함수.
 	 */
 	function drawColorMapping ()	{
-		/*
-			Bar 의 색을 변경해주는함수.
-		 */
-		function changeBarColor (d)	{
-			var state = d.info ? d.info[model.now.col] : 'NA';
-
-			return state === 'NA' ? '#A4AAA7' : 
-						config.expression.colorSet[
-						model.now.colorSet.indexOf(state)];
-		};
-
 		selectBox({
 			element: '#expression_color_mapping',
 			margin: [3, 3, 0, 0],
@@ -2848,15 +3049,12 @@ var expression = (function (expression)	{
 								 model.now.col === d.key;
 				});
 
-				layout.removeG([
-					'expression_bar_legend']);
+				layout.removeG(['expression_bar_legend_chart']);
 
 				d3.selectAll('#expression_bar_plot_chart_rect')
 					.style('fill', changeBarColor)
 					.style('stroke', changeBarColor)
 				drawColorMappingLegend();
-				// drawScatter(model.now.osdfs);
-				// drawDivisionBar();
 			},
 		});
 	};
@@ -2879,6 +3077,21 @@ var expression = (function (expression)	{
 		}
 	};
 	/*
+		Drag 에서 선택되지 않은 부분은 Blur 처리를 한다.
+	 */
+	function noneSelectedToBlur (sel, low, high)	{
+		sel.style('fill-opacity', function (d)	{
+				 return low.indexOf(d.x) < 0 && 
+			 				  high.indexOf(d.x) < 0 ? 0.08 : 
+			 				  sel.attr('id').indexOf('circle') > -1 ? 
+			 				  0.6 : 1;
+			 })
+			 .style('stroke-opacity', function (d)	{
+				 return low.indexOf(d.x) < 0 && 
+							  high.indexOf(d.x) < 0 ? 0.08 : 1;
+			 });
+	};
+	/*
 		Divided line 을 그려주는 함수.
 	 */
 	function drawDivisionBar ()	{
@@ -2886,6 +3099,47 @@ var expression = (function (expression)	{
 			1, 1, model.data.axisLeft);
 		config.expression.division.marginScatter.splice(
 			1, 1, model.data.axisLeft);
+		/*
+			Low, High 별 Loop 를 도는 함수.
+		 */
+		function loopDragEnd (list)	{
+			util.loop(list, function (d)	{
+				if (d !== model.data.patient.name)	{
+					// Survival (Months & Status) 데이터.
+					util.loop(model.origin.patient_list, function (p)	{
+						if (p.participant_id === d)	{
+							model.divide.patient_list.push(p);
+						}
+					});
+					// Survival (Unaltered & Altered) 데이터.
+					model.divide.divide[d] = 
+					model.data.survival.divide[d];
+				}
+			});
+		};
+		/*
+			Drag 가 끝나고 남겨진 데이터를 고쳐서 Survival 및
+			Scatter 로 전달하는 함수.
+		 */
+		function dragEnd (low, high)	{
+			model.divide.divide = {};
+			model.divide.patient_list = [];
+			model.divide.scatter = { os: [], dfs: [] };
+
+			loopDragEnd(low);
+			loopDragEnd(high);
+			
+			drawSurvival();
+			drawPatient();
+			// TODO.
+			// OS, DFS 탭 변경시에도 Blur 가 적용되어야 한다.
+			noneSelectedToBlur(
+				d3.selectAll('#expression_bar_plot_chart_rect'), 
+				low, high);
+			noneSelectedToBlur(
+				d3.selectAll('#expression_scatter_plot_chart_circle'), 
+				low, high);
+		};
 
 		var obj = {
 			padding: 3,
@@ -2908,8 +3162,21 @@ var expression = (function (expression)	{
 			on: config.expression.division.on,
 			drag: {
 				drag: config.expression.division.drag.drag,
-				end: function (d, i)	{
-					console.log('end');
+				end: function (d, i, m)	{
+					var a = new Array().concat(m.axis),
+							iv = scale.invert(m.scale);
+					// 멈춘 위치의 Low, High 각각의 Sample 이름.
+					model.divide.lowSam = iv(
+									config.expression.division.lowPos + m.m.left),
+					model.divide.highSam = iv(
+									config.expression.division.highPos + m.m.left);
+					// 멈춘 위치의 이름을 가지고 배열을 low, high 로 나눈다.
+					model.divide.highArr = a.splice(
+						m.axis.indexOf(model.divide.highSam), a.length - 1)
+					model.divide.lowArr = a.splice(
+						0, m.axis.indexOf(model.divide.lowSam));
+
+					dragEnd(model.divide.lowArr, model.divide.highArr);
 				},
 			},
 		};
@@ -2933,10 +3200,10 @@ var expression = (function (expression)	{
 	/*
 		Scatter 를 그리는 데 필요한 데이터를 재 가공한다.
 	 */
-	function makeExpScatterData (osdfs)	{
+	function makeExpScatterData (list)	{
 		var r = [];
 
-		util.loop(model.data.scatter[osdfs], function (d)	{
+		util.loop(list, function (d)	{
 			util.loop(d, function (k, v)	{
 				if (model.data.axis.scatter.x.indexOf(k) > -1)	{
 					r.push({x: k, y: v.months, value: v.status});
@@ -2962,7 +3229,7 @@ var expression = (function (expression)	{
 
 			scatter({
 				element: v,
-				data: makeExpScatterData(osdfs),
+				data: makeExpScatterData(model.data.scatter[osdfs]),
 				margin: config.expression.scatter.margin,
 				attr: config.expression.scatter.attr,
 				style: config.expression.scatter.style,
@@ -3393,6 +3660,10 @@ var landscape = (function (landscape)	{
 	function title ()	{
 		model.div.title = document.querySelector('#landscape_title');
 		model.div.title.innerHTML = model.origin.title;
+		model.div.title.style.fontSize = 
+			draw.getFitTextSize(model.origin.title,
+							 parseFloat(model.div.title.style.width), 
+							 parseFloat(model.div.title.style.height));
 	};
 	/*
 		Group 하나하나의 div 를 만들어주는 함수.
@@ -4210,12 +4481,13 @@ var layout = (function (layout)	{
 			specify : [specify];
 
 			util.loop(specify, function (d)	{
-				var id = d.indexOf('#') > -1 ? d : '#' + d;
+				// var id = d.indexOf('#') > -1 ? d : '#' + d;
 
-				d3.selectAll(id + ' svg .g-tag').remove();
+				d3.selectAll((d.indexOf('.') > -1 ? d : '.' + d))
+					.remove();
 			});
 		} else {
-			d3.selectAll('svg .g-tag').remove();
+			d3.selectAll('svg g').remove();
 		}
 	};	
 	/*
@@ -4281,8 +4553,8 @@ var legend = (function (legend)	{
 							d3.select(o.element) : d3.select('#' + o.element);
 		model.id = model.e.attr('id');
 		model.m = size.setMargin(o.margin);
-		model.w = model.e.attr('width');
-		model.h = model.e.attr('height');
+		model.w = o.width || model.e.attr('width');
+		model.h = o.height || model.e.attr('height');
 		model.t = model.m.top || 0;
 		model.l = model.m.left || 0;
 		model.p = o.padding || 5;
@@ -4326,6 +4598,8 @@ var legend = (function (legend)	{
 				},
 				on: {
 					mouseover: function (d, i)	{
+						if (!o.on) { return false; }
+
 						return o.on.mouseover ? 
 									 o.on.mouseover.call(this, d, i, model) : false;
 					},
@@ -4358,6 +4632,8 @@ var legend = (function (legend)	{
 				},
 				on: {
 					mouseover: function (d, i)	{
+						if (!o.on) { return false; }
+						
 						return o.on.mouseover ? 
 									 o.on.mouseover.call(this, d, i, model) : false;
 					},
@@ -4506,42 +4782,46 @@ var needle = (function (needle)	{
 													util.varType(o.element) === 'Array' ? 
 							o.element : (/\W/).test(o.element[0]) ? 
 							d3.select(o.element) : d3.select('#' + o.element);
-		model.s = draw.size(model.e);
+		model.w = o.width || model.e.attr('width');
+		model.h = o.height || model.e.attr('height');
 		model.id = model.e.attr('id');
 		model.m = size.setMargin(o.margin);
 		model.t = model.m.top || 0;
 		model.l = model.m.left || 0;
-		model.g = render.addGroup(
-		model.e, model.m.top, model.m.left, 'needle');
-		// model.xag = render.addGroup(model.e, model.m.top, model.m.left);
-		// model.xxg = render.addGroup(model.e, model.m.top, model.m.left);
+		model.lg = render.addGroup(
+		model.e, model.m.top, model.m.left, 'needle-line');
+		model.cg = render.addGroup(
+		model.e, model.m.top, model.m.left, 'needle-circle');
 		model.radius = o.radius || 5;
-		model.sx = scale.get(o.xaxis, [model.m.left, model.s.w - model.m.right]);
-		model.sy = scale.get(o.yaxis, [model.s.h - model.m.bottom, model.m.top]);
+		model.sx = scale.get(o.xaxis, 
+			[model.m.left, model.w - model.m.right]);
+		model.sy = scale.get(o.yaxis, 
+			[model.h - model.m.bottom, model.m.top]);
 		model.line = (util.d3v4() ? d3.line() : d3.svg.line())
-								 .x(function (d) { return model.sx(d.x); })
-								 .y(function (d) { return model.sy(d.y); });
+								 .x(function (d, i) { return model.sx(d.x); })
+								 .y(function (d, i) { return model.sy(d.y); });
 
 		util.loop(o.lineData, function (d, i)	{
 			render.line({
-				element: model.g,
+				element: model.lg,
 				attr: {
 					id: function (d) { return model.id + '_line'; },
 					d: model.line(d.value),
 				},
 				style: {
-					stroke: '#333333',
+					stroke: '#A8A8A8',
 				}
 			});
 		});
 
 		render.circle({
-			element: model.g.selectAll('#' + model.id + '_circle'),
+			element: model.cg.selectAll('#' + model.id + '_circle'),
 			data: o.circleData,
 			attr: {
 				id: function (d) { return model.id + '_circle'; },
 				cx: function (d, i)	{ 
-					return o.attr.x ? o.attr.x.call(this, d, i, model) : 0; 
+					return o.attr.x ? o.attr.x.call(
+									this, d, i, model) : 0; 
 				},
 				cy: function (d, i)	{ 
 					return o.attr.y ? 
@@ -4549,17 +4829,25 @@ var needle = (function (needle)	{
 				},
 				r: function (d, i)	{ 
 					return o.attr.r ? 
-								 o.attr.r.call(this, d, i, model) : model.radius; 
+								 o.attr.r.call(
+								 	this, d, i, model) : model.radius; 
 				},
 			},
 			style: {
 				fill: function (d, i) { 
 					return o.style.fill ? 
-								 o.style.fill.call(this, d, i, model) : '#000000';
+								 o.style.fill.call(
+								 	this, d, i, model) : '#000000';
 				},
 				stroke: function (d, i)	{
 					return o.style.stroke ? 
-								 o.style.stroke.call(this, d, i, model) : '#FFFFFF';
+								 o.style.stroke.call(
+								 	this, d, i, model) : '#FFFFFF';
+				},
+				cursor: function (d, i)	{
+					return o.style.cursor ? 
+								 o.style.cursor.call(
+								 	this, d, i, model) : 'none';
 				},
 			},
 			on: {
@@ -4569,6 +4857,12 @@ var needle = (function (needle)	{
 					return o.on.mouseover ? 
 								 o.on.mouseover.call(this, d, i, model) : false;
 				},
+				mouseout: function (d, i)	{
+					if (!o.on) { return false; }
+
+					return o.on.mouseout ? 
+								 o.on.mouseout.call(this, d, i, model) : false;
+				}
 			},
 		});
 	};
@@ -4577,19 +4871,6 @@ var needleGraph = (function (needleGraph)	{
 	'use strict';
 
 	var model = {};
-	/*
-		Graph 안에 들어갈 글자의 크기를 정해주는 함수.
-	 */
-	function setFontSize ()	{
-		var b = 1;
-
-		while (draw.getTextHeight(b + 'px').height < 
-					 model.sh / 2)	{
-			b += 1;
-		}
-
-		return b + 'px';
-	};
 
 	return function (o)	{
 		model = {};
@@ -4597,25 +4878,28 @@ var needleGraph = (function (needleGraph)	{
 													util.varType(o.element) === 'Array' ? 
 							o.element : (/\W/).test(o.element[0]) ? 
 							d3.select(o.element) : d3.select('#' + o.element);
-		model.s = draw.size(model.e);
+		model.id = model.e.attr('id');
 		model.m = size.setMargin(o.margin);
-		model.t = model.s.h - model.m.bottom;
+		model.w = o.width || model.e.attr('width');
+		model.h = o.height || model.e.attr('height');
+		model.t = model.h - model.m.bottom;
 		model.l = model.m.left || 0;
 		model.g = render.addGroup(
 		model.e, model.t, model.l, 'needle-graph');
-		model.sx = scale.get(o.xaxis, [model.m.left, model.s.w - model.m.right]);
-		model.sy = scale.get(o.yaxis, [model.s.h - model.m.bottom, model.m.top]);
+		model.sx = scale.get(o.xaxis, 
+			[model.m.left, model.w - model.m.right]);
+		model.sy = scale.get(o.yaxis, 
+			[model.h - model.m.bottom, model.m.top]);
 		model.sh = Math.abs(model.sy(1) - model.sy(0)) / 2;
-		model.mfh = setFontSize();
 
 		render.rect({
-			element: model.g.selectAll('#' + model.e.attr('id') + '_base'),
+			element: model.g.selectAll('#' + model.id + '_base'),
 			data: [''],
 			attr: {
-				id: model.e.attr('id') + '_base',
+				id: model.id + '_base',
 				x: model.sx(util.minmax(o.xaxis).min) + 5,
 				y: model.sh * 0.1,
-				width: model.s.w - model.m.right - model.m.left - 5,
+				width: model.w - model.m.right - model.m.left - 5,
 				height: model.sh * 0.8,
 				rx: 1,
 				ry: 1,
@@ -4628,53 +4912,91 @@ var needleGraph = (function (needleGraph)	{
 		});
 
 		render.rect({
-			element: model.g.selectAll('#' + model.e.attr('id') + '_rect'),
+			element: model.g.selectAll('#' + model.id + '_rect'),
 			data: o.data,
 			attr: {
-				id: function (d) { return model.e.attr('id') + '_rect'; },
+				id: function (d) { return model.id + '_rect'; },
 				x: function (d, i) { 
-					return o.attr.x ? o.attr.x.call(this, d, i, model) : 0;
+					return o.attr.x ? 
+								 o.attr.x.call(this, d, i, model) : 0;
 				},
 				y: function (d, i) { 
-					return o.attr.y ? o.attr.y.call(this, d, i, model) : 0;
+					return o.attr.y ? 
+								 o.attr.y.call(this, d, i, model) : 0;
 				},
 				width: function (d, i) { 
-					return o.attr.width ? o.attr.width.call(this, d, i, model) : 0;
+					return o.attr.width ? 
+								 o.attr.width.call(this, d, i, model) : 0;
 				},
 				height: function (d, i) { 
-					return o.attr.height ? o.attr.height.call(this, d, i, model) : 0;
+					return o.attr.height ? 
+								 o.attr.height.call(this, d, i, model) : 0;
 				},
 				rx: 3,
 				ry: 3,
 			},
 			style: {
 				fill: function (d, i)	{
-					return o.style.fill ? o.style.fill.call(this, d, i, model) : '#000000';
+					return o.style.fill ? 
+								 o.style.fill.call(
+								 	this, d, i, model) : '#000000';
 				},
 				stroke: function (d, i)	{
-					return o.style.stroke ? o.style.stroke.call(this, d, i, model) : '#FFFFFF';
+					return o.style.stroke ? 
+								 o.style.stroke.call(
+								 	this, d, i, model) : '#FFFFFF';
 				},
-			}
+			},
+			on: {
+				mouseover: function (d, i)	{
+					if (!o.on) { return false; }
+
+					return o.on.mouseover ? 
+								 o.on.mouseover.call(
+								 	this, d, i, model) : false;
+				},
+				mouseout: function (d, i)	{
+					if (!o.on) { return false; }
+
+					return o.on.mouseout ? 
+								 o.on.mouseout.call(
+								 	this, d, i, model) : false;
+				},
+			},
 		});
 
 		render.text({
-			element: model.g.selectAll('#' + model.e.attr('id') + '_text'),
+			element: model.g.selectAll('#' + model.id + '_text'),
 			data: o.data,
 			attr: {
 				id: function (d) {
-					return model.isText = true, model.e.attr('id') + '_text';
+					return model.isText = true, model.id + '_text';
 				},
 				x: function (d, i)	{
-					return o.attr.x ? o.attr.x.call(this, d, i, model) : 0;
+					return o.attr.x ? 	
+								 o.attr.x.call(this, d, i, model) : 0;
 				},
 				y: function (d, i) { 
-					return o.attr.y ? o.attr.y.call(this, d, i, model) : 0;
+					return o.attr.y ? 
+								 o.attr.y.call(this, d, i, model) : 0;
 				},
 			},
 			style: {
-				'fill': '#FFFFFF',
-				'font-size': model.mfh,
-				'alignment-baseline': 'middle',
+				fill: function (d, i)	{
+					return o.style.fill ? 
+								 o.style.fill.call(
+								 	this, d, i, model) : '#333333'; 
+				},
+				'alignment-baseline': function (d, i)	{
+					return o.style.alignmentBaseline ? 
+								 o.style.alignmentBaseline.call(
+								 	this, d, i, model) : 'middle'; 
+				},
+				'font-size': function (d, i)	{
+					return o.style.fontSize ? 
+								 o.style.fontSize.call(
+								 	this, d, i, model) : '10px'; 
+				},
 			},
 			text: function (d, i) {
 				return o.text ? o.text.call(this, d, i, model) : 0;
@@ -4693,17 +5015,19 @@ var needleNavi = (function (needleNavi)	{
 		Navigator 를 조절할 양쪽의 조절 버튼을 만드는
 		함수.
 	 */
-	function makeControlRect (r)	{
+	function makeControlRect (o, r)	{
 		util.loop(r, function (d, i)	{
 			render.rect({
-				element: model.g.selectAll('#' + model.e.attr('id') + '_' + d),
+				element: model.g.selectAll('#' + model.id + '_' + d),
 				data: [d],
 				attr: {
-					id: function (d) { return model.e.attr('id') + '_' + d },
-					x: d === 'end' ? model.end + model.m.left - 5 : model.start - 5,
-					y: model.s.h * 0.25,
-					width: 10,
-					height: model.s.h * 0.4,
+					id: function (d) { return model.id + '_' + d },
+					x: d === 'end' ? model.end + model.m.left - 
+													 model.rect.width : 
+													 model.start - model.rect.width,
+					y: model.h * 0.25,
+					width: model.rect.width * 2,
+					height: model.rect.height,
 					rx: 5,
 					rx: 5,
 				},
@@ -4712,7 +5036,27 @@ var needleNavi = (function (needleNavi)	{
 					stroke: '#EAECED',
 					'stroke-width': '2px',
 					cursor: 'move',
-				}
+				},
+				call: {
+					start: function (d, i)	{
+						if (!o.drag) { return false; }
+
+						return o.drag.start ? 
+									 o.drag.start.call(this, d, i, model) : false;
+					},
+					drag: function (d, i)	{
+						if (!o.drag) { return false; }
+
+						return o.drag.drag ? 
+									 o.drag.drag.call(this, d, i, model) : false;
+					},
+					end: function (d, i)	{
+						if (!o.drag) { return false; }
+
+						return o.drag.end ? 
+									 o.drag.end.call(this, d, i, model) : false;
+					},
+				},
 			});
 		});
 	};
@@ -4723,17 +5067,32 @@ var needleNavi = (function (needleNavi)	{
 													util.varType(o.element) === 'Array' ? 
 							o.element : (/\W/).test(o.element[0]) ? 
 							d3.select(o.element) : d3.select('#' + o.element);
-		model.s = draw.size(model.e);
+		model.id = model.e.attr('id');
+		model.w = o.width || model.e.attr('width');
+		model.h = o.height || model.e.attr('height');
 		model.m = size.setMargin(o.margin);
 		model.t = model.m.top || 0;
 		model.l = model.m.left || 0;
 		model.g = render.addGroup(
 		model.e, model.m.top, model.m.left, 'needle-navi');
-		model.sx = scale.get(o.xaxis, [model.m.left, model.s.w - model.m.right]);
-		model.sy = scale.get(o.yaxis, [model.s.h - model.m.bottom, model.m.top]);
-
+		model.sx = scale.get(o.xaxis, 
+			[model.m.left, model.w - model.m.right]);
+		model.sy = scale.get(o.yaxis, 
+			[model.h - model.m.bottom, model.m.top]);
+		// 양끝에 그려지는 버튼의 가로 세로 길이 설정.
+		model.rect = { width: 5, height: model.h * 0.4 };
+		// 양끝의 버튼의 시작 위치 설정.
 		model.start = model.sx(util.minmax(o.xaxis).min);
-		model.end = model.s.w - model.m.right - model.m.left;
+		model.end = model.w - model.m.right - model.m.left;
+		// Drag 이벤트를 위해서 시작위치와 끝위치를 정해준다.
+		config.variants.navi.start.init = 
+		 model.start - model.rect.width;
+		config.variants.navi.end.init = 
+		 model.end - model.rect.width + model.m.left;
+		config.variants.navi.start.now = 
+		 model.start - model.rect.width;
+		config.variants.navi.end.now = 
+		 model.end - model.rect.width + model.m.left;
 
 		needle({
 			element: model.e,
@@ -4747,14 +5106,14 @@ var needleNavi = (function (needleNavi)	{
 		});
 
 		render.rect({
-			element: model.g.selectAll('#' + model.e.attr('id') + '_navi'),
-			data: [''],
+			element: model.g.selectAll('#' + model.id + '_navi'),
+			data: ['navi'],
 			attr: {
-				id: function (d)	{ return model.e.attr('id') + 'navi'; },
+				id: function (d)	{ return model.id + '_navi'; },
 				x: model.start,
 				y: 0,
 				width: model.end,
-				height: model.s.h - model.m.bottom,
+				height: model.h - model.m.bottom,
 				rx: 3,
 				ry: 3,
 			},
@@ -4762,9 +5121,29 @@ var needleNavi = (function (needleNavi)	{
 				fill: 'rgba(255, 225, 50, 0.1)',
 				stroke: '#FFDF6D',
 			},
+			call: {
+				start: function (d, i)	{
+					if (!o.drag) { return false; }
+
+					return o.drag.start ? 
+								 o.drag.start.call(this, d, i, model) : false;
+				},
+				drag: function (d, i)	{
+					if (!o.drag) { return false; }
+
+					return o.drag.drag ? 
+								 o.drag.drag.call(this, d, i, model) : false;
+				},
+				end: function (d, i)	{
+					if (!o.drag) { return false; }
+
+					return o.drag.end ? 
+								 o.drag.end.call(this, d, i, model) : false;
+				},
+			},
 		});
 
-		makeControlRect(['start', 'end']);
+		makeControlRect(o, ['start', 'end']);
 	};
 }(needleNavi||{}));
 var network = (function ()	{	
@@ -6016,6 +6395,17 @@ var scale = (function (scale)	{
 	scale.get = function (d, r)	{
 		return scale[analScale(d)](d, r);
 	};
+	/*
+		기존 Scale 에서 거꾸로된 Scale 을 반환하는 함수.
+	 */
+	scale.invert = function (scale)	{
+		var domain = scale.domain(),
+				range = scale.range(),
+				quan = util.d3v4() ? d3.scaleQuantize() : 
+														 d3.scale.quantize();
+														 
+		return quan.domain(range).range(domain);
+	};
 
 	return scale;
 }(scale||{}));
@@ -6474,7 +6864,8 @@ var size = (function (size)	{
 		var ids = {
 			variants_title: {w: w * 0.95, h: h * 0.05},
 			variants_needle: {w: w * 0.85, h: h * 0.85},
-			variants_legend: {w: w * 0.15, h: h * 0.85},
+			variants_legend: {w: w * 0.15, h: h * 0.32},
+			variants_patient_legend: {w: w * 0.15, h: h * 0.2},
 			variants_navi: {w: w * 0.85, h: h * 0.1},
 		};
 
@@ -6629,35 +7020,71 @@ var tooltip = (function (tooltip)	{
 
 	var model = {};
 	/*
-		Tooltip 이 위치할 곳을 설정해주는 함수.
+		Tooltip 의 방향을 설정해주는 함수.
 	 */
-	function tooltipPosition (target, dir)	{
-		if (!target)	{ 
-			throw new Error('None of any targeted element');
+	function setDirection (tbcr, pbcr, bcr)	{
+		if (tbcr.left - bcr.width / 2 < pbcr.left)	{
+			return 'right';
+		} else if (tbcr.top - bcr.height < pbcr.top)	{
+			return 'bottom';
+		} else if (tbcr.right + bcr.width > pbcr.right)	{
+			return 'left';
+		} else if (tbcr.bottom + bcr.height > pbcr.bottom)	{
+			return 'top';
+		} else {
+			return 'top';
 		}
-
-		var bcr = target.getBoundingClientRect();
-
-		return dir === 'top' || dir === 'none' ? 
-					{ top: bcr.top, left: bcr.left } : 
-					{ top: bcr.bottom, left: bcr.left };
-	};
+	};	
 	/*
 		Tooltip 을 띄워주는 함수.
 	 */
-	function show (div, pos, dir)	{
+	function show (div, target, parent)	{
 		if (!div)	{
 			throw new Error('Do not find a Tooltip element');
 		}
 
-		var bcr = div.getBoundingClientRect();
+		var bcr = div.getBoundingClientRect(),
+				tbcr = target.getBoundingClientRect(),
+				pbcr = parent.getBoundingClientRect(),
+				dir = setDirection(tbcr, pbcr, bcr);
+		/*
+			Tooltip 의 위쪽 Position 값 설정.
+		 */
+		function setTop (dir, pos, height)	{
+			if (dir !== 'left' && dir !=='top' && 
+					dir !== 'bottom' && dir !== 'right')	{
+				throw new Error('Wrong direction');
+			}
+
+			return {
+				top: pos.top - height - 10 + window.scrollY + 'px',
+				left: pos.top - height / 2 + window.scrollY + 'px',
+				bottom: pos.bottom + 10 + window.scrollY + 'px',
+				right: pos.top - height / 2 + window.scrollY + 'px',
+			}[dir];
+		};
+		/*
+			Tooltip 의 왼쪽 Position 값 설정.
+		 */
+		function setLeft (dir, pos, width)	{
+			if (dir !== 'left' && dir !=='top' && 
+					dir !== 'bottom' && dir !== 'right')	{
+				throw new Error('Wrong direction');
+			}
+
+			return {
+				top: pos.left - width / 2 + window.scrollX + 'px',
+				left: pos.left - width - 10 + 'px',
+				bottom: pos.left - width / 2 + window.scrollX + 'px',
+				right: pos.right + 10 + 'px',
+			}[dir];
+		};
 
 		div.className = dir;
 		div.style.visibility = 'visible';
-		div.style.top = dir === 'top' || dir === 'none'? 
-									 (pos.top - bcr.height - 10) + 'px' : 
-									 (pos.top + 10) + 'px';
-		div.style.left = (pos.left - (bcr.width / 2)) + 'px';
+		// Set top & Left(Scroll 변화가 있을 경우도 고려.)
+		div.style.top = setTop(dir, tbcr, bcr.height);
+		div.style.left = setLeft(dir, tbcr, bcr.width);
 	};
 	/*
 		Tooltip 을 가려주는 함수.
@@ -6672,29 +7099,23 @@ var tooltip = (function (tooltip)	{
 		div.style.left = '0px';
 		div.style.visibility = 'hidden';
 	};
-	/*
-		Tooltip 의 색을 설정해주는 함수.
-	 */
-	function setType (div, type)	{
-		div.className += ' ' + type;
-	};
 
 	return function (o)	{
 		if (util.varType(o) === 'String')	{
+			if (!document.getElementById('biochart_tooltip'))	{
+				throw new Error('Not found "#biochart_tooltip"');
+			}
+			
 			return hide(document.getElementById('biochart_tooltip'));
 		}
 
 		var target = o.element || null,
+				parent = draw.getParentSvg(target),
 				contents = o.contents || '',
-				direction = o.direction || 'none',
-				type = o.type || '',
 				tooltipDiv = document.getElementById('biochart_tooltip');
 				tooltipDiv.innerHTML = contents;
 
-		// setType(tooltipDiv, type);
-
-		return show(tooltipDiv, 
-			tooltipPosition(target, direction), direction);
+		return show(tooltipDiv, target, parent);
 	};
 
 }(tooltip||{}));
@@ -6834,6 +7255,10 @@ var variants = (function (variants)	{
 	function title ()	{
 		model.div.title = document.querySelector('#variants_title');
 		model.div.title.innerHTML = model.origin.variants.title;
+		model.div.title.style.fontSize = 
+			draw.getFitTextSize(model.origin.variants.title,
+							 parseFloat(model.div.title.style.width), 
+							 parseFloat(model.div.title.style.height));
 	};
 	/*
 		x,y 축의 위치를 설정하는 함수.
@@ -6874,11 +7299,13 @@ var variants = (function (variants)	{
 				element: v,
 				lineData: model.data.needle,
 				circleData: model.data.fullNeedle,
+				line: config.variants.needle.line,
 				attr: config.variants.needle.attr,
 				style: config.variants.needle.style,
 				margin: config.variants.needle.margin,
 				xaxis: model.data.axis.needle.x,
 				yaxis: model.data.axis.needle.y,
+				on: config.variants.needle.on,
 			});
 		});
 	};
@@ -6896,6 +7323,7 @@ var variants = (function (variants)	{
 				text: config.variants.needleGraph.text,
 				xaxis: model.data.axis.needle.x,
 				yaxis: model.data.axis.needle.y,
+				on: config.variants.needleGraph.on,
 			});
 		});
 	};
@@ -6911,6 +7339,12 @@ var variants = (function (variants)	{
 				style: config.variants.navi.style,
 				xaxis: model.data.axis.needle.x,
 				yaxis: model.data.axis.needle.y,
+				drag: {
+					drag: config.variants.navi.drag.drag,
+					end: function (d, i, m)	{
+						console.log('end: ', d, m);
+					},
+				},
 			});
 		});
 	};
@@ -6951,6 +7385,16 @@ var variants = (function (variants)	{
 					},
 					'stroke-width': '3px',
 				},
+				on: {
+					mouseover: function (d, i)	{
+						return cp.on.mouseover ? 
+									 cp.on.mouseover.call(this, d, i, md) : false;
+					},
+					mouseout: function (d, i)	{
+						return cp.on.mouseout ? 
+									 cp.on.mouseout.call(this, d, i, md) : false;
+					},
+				}
 			});
 		});
 	};
@@ -6958,11 +7402,7 @@ var variants = (function (variants)	{
 		Legend 에 patient 를 남기는 함수.
 	 */
 	function legendPatient (d)	{
-		layout.getSVG(model.svg, ['legend'], function (k, v)	{
-			var cp = config.variants.patient.legend,
-					m = size.setMargin(cp.margin),
-					g = render.addGroup(v, m.top, m.left);
-
+		layout.getSVG(model.svg, ['nt_legend'], function (k, v)	{
 			legend({
 				element: v,
 				data: d,
@@ -6984,10 +7424,17 @@ var variants = (function (variants)	{
 		Legend 를 그려주는 함수.
 	 */
 	function drawLegend ()	{
-		layout.getSVG(model.svg, ['legend'], function (k, v)	{
+		var th = draw.getTextHeight(
+						 	config.variants.legend.style.fontSize).height;
+
+		document.querySelector('#variants_legend').style.height = 
+					 ((th + 6) * model.data.type.length) + 'px';
+
+		layout.getSVG(model.svg, ['ts_legend'], function (k, v)	{
 			legend({
 				element: v,
 				data: model.data.type,
+				font: config.variants.legend.style.fontSize(),
 				priority: config.landscape.priority,
 				text: config.variants.legend.text,
 				attr: config.variants.legend.attr,
@@ -7007,18 +7454,14 @@ var variants = (function (variants)	{
 		drawNeedleGraph();
 		drawPatient();
 	};
-	/*
-		처음 배경색을 설정해주는 함수.
-	 */
-	function setBaseEleBackground (e)	{
-		e.style.background = '#F7F7F7';
-	};
 
 	return function (o)	{
 		console.log('Given Variants data: ', o);
 		var e = document.querySelector(o.element || null),
 				w = parseFloat(o.width || e.style.width || 1400),
 				h = parseFloat(o.height || e.style.height || 700);
+		// Set the color of whole background.
+		e.style.background = '#F7F7F7';
 		// Origin data from server.
 		model.origin = o.data;
 		// preprocess data for landscape and call drawLandScape.
@@ -7028,7 +7471,6 @@ var variants = (function (variants)	{
 		// Make svg to parent div and object data.
 		model.svg = layout.variants(model.ids, model);
 
-		setBaseEleBackground(e);
 		title();
 		drawVariants();
 	};

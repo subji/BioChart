@@ -161,6 +161,8 @@
     color: #fff;
 }
 body {
+	width: 100%;
+	height: 100%;
   /*padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;*/
 }
@@ -169,7 +171,7 @@ a {
   color: #00B7FF;
 }
 #biochart_tooltip 	{
-	display: hidden;
+  visibility: hidden;
 	position: absolute;
 	font-size: 12px;
 	background: rgba(239, 239, 239, 0.8);
@@ -181,13 +183,7 @@ a {
 	border-width: 4px;
 }
 
-#biochart_tooltip.warning {
-  background: rgba(226, 118, 118, 0.8);
-  border: rgba(255, 61, 61, 1) solid;
-}
-
-#biochart_tooltip.top::before,
-#biochart_tooltip.none::before {
+#biochart_tooltip.top::before {
 	content: " ";
   position: absolute;
   top: 100%; 
@@ -198,11 +194,10 @@ a {
   border-color: rgba(158, 158, 158, 1) transparent transparent transparent;
 }
 
-#biochart_tooltip.top::after,
-#biochart_tooltip.none::after {
+#biochart_tooltip.top::after {
 	content: " ";
   position: absolute;
-  top: 100%; /* At the bottom of the tooltip */
+  top: 100%; /* At the top of the tooltip */
   left: 50%;
   margin-left: -5px;
   border-width: 5px;
@@ -232,8 +227,52 @@ a {
   border-color: transparent transparent rgba(158, 158, 158, 1) transparent;
 }
 
+#biochart_tooltip.right::before {
+  content: " ";
+  position: absolute;
+  top: 50%; 
+  right: 100%;
+  margin-top: -10px;
+  border-width: 10px;
+  border-style: solid;
+  border-color: transparent rgba(158, 158, 158, 1) transparent transparent;
+}
 
-#variants_title { float: left; background: #EFEFEF; padding-left: 5%; padding-top: 0.3%; font-size: 30px; font-weight: bold; font-family: initial; text-shadow: 2px 1px #D6D6D6; }
+#biochart_tooltip.right::after {
+  content: " ";
+  position: absolute;
+  top: 50%; /* At the right of the tooltip */
+  right: 100%;
+  margin-top: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent rgba(158, 158, 158, 1) transparent transparent;
+}
+
+#biochart_tooltip.left::before {
+  content: " ";
+  position: absolute;
+  top: 50%; 
+  left: 100%;
+  margin-top: -10px;
+  border-width: 10px;
+  border-style: solid;
+  border-color: transparent transparent transparent rgba(158, 158, 158, 1);
+}
+
+#biochart_tooltip.left::after {
+  content: " ";
+  position: absolute;
+  top: 50%; /* At the left of the tooltip */
+  left: 100%;
+  margin-top: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent transparent transparent rgba(158, 158, 158, 1);
+}
+
+
+#variants_title { float: left; background: #EFEFEF; padding-left: 5%; padding-top: 0.3%; /*font-size: 30px;*/ font-weight: bold; font-family: initial; text-shadow: 2px 1px #D6D6D6; }
 
 #variants_needle {
 	float: left;
@@ -241,6 +280,11 @@ a {
 }
 
 #variants_legend {
+	float: left;
+	background: #F7F7F7;
+}
+
+#variants_patient_legend {
 	float: left;
 	background: #F7F7F7;
 }
