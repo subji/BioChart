@@ -5375,7 +5375,6 @@ var legend = (function (legend)	{
 	'use strict';
 	
 	window.bio = {
-		reqParams: reqParams,
 		draw: draw,
 		config: config,
 		render: render,
@@ -6970,15 +6969,6 @@ var render = (function (render)	{
 
 	return render;
 }(render || {}));
-var reqParams = (function (reqParams)	{
-	'use strict';
-
-	var model = {};
-
-	return function (url, params)	{
-		console.log(url, params);
-	};
-}(reqParams||{}));
 // 일단, D3 에 있는 scale 함수를 사용하여 그리고
 // 후에 scale 알고리즘을 파악하고 공부하여 새로 만드는것으로 하자.
 var scale = (function (scale)	{
