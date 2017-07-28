@@ -1946,7 +1946,6 @@ config.expression.division = {
 	marginScatter: [0, 30, 15, 20],
 	attr: {
 		x: function (d, i, m) {
-			console.log(m.font)
 			return i > 0 ? m.isText ? 
 						 (m.scale(m.axis[m.axis.length - 1]) - 
 						 	m.m.left) - draw.getTextWidth(d.text, m.font): 
@@ -2489,7 +2488,7 @@ var draw = (function (draw)	{
 
 		document.body.appendChild(canv);
 
-		text = text.replace(' ', 'A');
+		text = text.replace(' ', 'A').toUpperCase();
 
 		width = ctx.measureText(text).width;
 
