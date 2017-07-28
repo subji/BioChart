@@ -2180,6 +2180,8 @@ config.expression.sample = {
 			var bcr = d3.select('.legend text').node()
 									.getBoundingClientRect();
 
+			console.log(bcr);
+
 			return d.text.indexOf('Low') > -1 ? 
 						 bcr.height / 2 + (bcr.height / 4) : 
 						 bcr.top + bcr.height / 4;
