@@ -6903,35 +6903,16 @@ var render = (function (render)	{
 		var dg = util.d3v4() ? 
 				d3.drag() : d3.behavior.drag().origin(Object);
 
-		console.log(drags);
+		for (var drag in drags)	{
+			var nm = util.d3v4() ? drag : 
+					drag !== 'drag' ? 
+					drag.substring(0, 1) + drag.substring(1) : 
+					drag;
 
-		if (util.d3v4())	{
-			svgElement.call(
-			d3.drag()
-				.on('start', drags['start'])
-				.on('drag', drags['drag'])
-				.on('end', drags['end']));
-		} else {
-			console.log(d3.behavior.drag().on)
-			svgElement.call(
-				d3.behavior.drag().origin(Object)
-					.on('dragstart', drags['start'])
-					.on('drag', drags['drag'])
-					.on('dragend', drags['end']));
-		}	
+			dg.on(nm, drags[drag]);
+		}
 
-		// for (var drag in drags)	{
-		// 	var nm = util.d3v4() ? drag : 
-		// 			drag !== 'drag' ? 
-		// 			drag.substring(0, 1).toUpperCase() + 
-		// 			drag.substring(1) : drag;
-
-		// 	console.log(nm)
-
-		// 	// dg.on(nm, drags[drag]);
-		// }
-
-		// svgElement.call(dg);
+		svgElement.call(dg);
 	};
 	/*
 		Text 를 등록시켜주는 함수.
