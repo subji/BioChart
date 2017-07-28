@@ -2171,12 +2171,11 @@ config.expression.sample = {
 	attr: {
 		x: function (d, m)	{
 			return m.data.patient.data === d.text ? 
-						 draw.getTextWidth(d.text, '15px') + 
-						 draw.getTextWidth(d.text, '15px') / 6 : -5;
+						 draw.getTextWidth(d.text, '25px') + 45 : -5;
 		},
 		y: function (d, m)	{
 			return m.data.patient.data === d.text ? 
-						 draw.getTextHeight('15px').height / 1.3 : 0;
+						 draw.getTextHeight('25px').height / 2 : 0;
 		},
 	},
 	style: {
