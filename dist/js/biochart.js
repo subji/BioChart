@@ -23,7 +23,7 @@ var axis = (function (axis)	{
 		이에 맞는 적절한 함수를 호출해주는 함수이다.
 	 */
 	axis.byVersion = function (s, l)	{
-		return d3.axisTop ? v4Axis(s, l) : v3Axis(s, l);
+		return util.d3v4() ? v4Axis(s, l) : v3Axis(s, l);
 	};
 	/*
 		v3 axis function.
@@ -1751,13 +1751,15 @@ config.expression.legend = {
 				return m.isText ? m.m.left + m.p * 2 : m.p;
 			},
 			y: function (d, i, m) {
-				return m.isText ? m.mh * i + m.mh / 3 / 2 : m.mh * i;
+				return m.isText ? 
+				(m.mh * i + (m.mh / 4 + 0.5)) + (i * 3) : 
+				(m.mh * i) + (i * 3);
 			},
 			width: function (d, i, m) {
-				return m.mh / 3;}
+				return m.mh / 2;}
 				, 
 			height: function (d, i, m) {
-				return m.mh / 3;
+				return m.mh / 2;
 			},
 		},
 		style: {
@@ -1770,8 +1772,11 @@ config.expression.legend = {
 			stroke: function (d, i, m) {
 				return '#FFFFFF';
 			},
+			alignmentBaseline: function (d, i, m)	{
+				return 'middle';
+			},
 			fontSize: function (d, i, m) {
-				return '10px';
+				return '14px';
 			}
 		},
 	},
