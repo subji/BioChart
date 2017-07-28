@@ -6909,6 +6909,8 @@ var render = (function (render)	{
 					drag.substring(0, 1) + drag.substring(1) : 
 					drag;
 
+			console.log(nm)
+
 			dg.on(nm, drags[drag]);
 		}
 
