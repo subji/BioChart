@@ -1948,7 +1948,7 @@ config.expression.division = {
 		x: function (d, i, m) {
 			return i > 0 ? m.isText ? 
 						 (m.scale(m.axis[m.axis.length - 1]) - 
-						 	m.m.left) - draw.getTextWidth(d.text, m.font): 
+						 	m.m.right) - draw.getTextWidth(d.text, m.font): 
 						 m.scale(d.point) - m.m.left : 
 						 m.isText ? m.scale(m.axis[0]) - 
 						 m.m.left + m.padding * 2 : 
