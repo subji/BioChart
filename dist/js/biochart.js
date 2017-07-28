@@ -2182,7 +2182,7 @@ config.expression.sample = {
 
 			return d.text.indexOf('Low') > -1 ? 
 						 bcr.height / 2 + (bcr.height / 4) : 
-						 bcr.height / 4;
+						 bcr.top + bcr.height / 4;
 			return m.data.patient.data === d.text ? 
 						 bcr.height / 2  : 0;
 			return m.data.patient.data === d.text ? 
