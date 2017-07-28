@@ -2183,8 +2183,7 @@ config.expression.sample = {
 			console.log(bcr);
 
 			return d.text.indexOf('Low') > -1 ? 
-						 bcr.height / 2 + (bcr.height / 4) : 
-						 draw.getTextHeight('25px').height;
+						 bcr.height / 2 + (bcr.height / 4) : 50;
 			return m.data.patient.data === d.text ? 
 						 bcr.height / 2  : 0;
 			return m.data.patient.data === d.text ? 
