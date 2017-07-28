@@ -6901,25 +6901,36 @@ var render = (function (render)	{
 		if (!drags) { return false; }
 
 		var dg = util.d3v4() ? 
-				d3.drag() : d3.behavior.drag();
+				d3.drag() : d3.behavior.drag().origin(Object);
 
-		for (var drag in drags)	{
-			var nm = util.d3v4() ? drag : 
-					drag !== 'drag' ? 
-					drag.substring(0, 1).toUpperCase() + 
-					drag.substring(1) : drag;
+		console.log(drags);
 
-			if (util.d3v4())	{
-				dg = d3.drag().on(nm, drags[drag]);
-			} else {
-				console.log('v3');
-				dg = svgElement.call(
-					d3.behavior.drag().origin(Object).on(nm, drags[drag]));
-			}
-			// dg.on(nm, drags[drag]);
-		}
+		if (util.d3v4())	{
+			svgElement.call(
+			d3.drag()
+				.on('start', drags['start'])
+				.on('drag', drags['drag'])
+				.on('end', drags['end']));
+		} else {
+			svgElement.call(
+				d3.behavior.drag().origin(Object)
+					.on('dragStart', drags['start'])
+					.on('drag', drags['drag'])
+					.on('dragEnd', drags['end']));
+		}	
 
-		svgElement.call(dg);
+		// for (var drag in drags)	{
+		// 	var nm = util.d3v4() ? drag : 
+		// 			drag !== 'drag' ? 
+		// 			drag.substring(0, 1).toUpperCase() + 
+		// 			drag.substring(1) : drag;
+
+		// 	console.log(nm)
+
+		// 	// dg.on(nm, drags[drag]);
+		// }
+
+		// svgElement.call(dg);
 	};
 	/*
 		Text 를 등록시켜주는 함수.
