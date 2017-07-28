@@ -6913,11 +6913,11 @@ var render = (function (render)	{
 				.on('end', drags['end']));
 		} else {
 			console.log(d3.behavior.drag().on)
-			// svgElement.call(
-			// 	d3.behavior.drag().origin(Object)
-			// 		.on('dragStart', drags['start'])
-			// 		.on('drag', drags['drag'])
-			// 		.on('dragEnd', drags['end']));
+			svgElement.call(
+				d3.behavior.drag().origin(Object)
+					.on('dragstart', drags['start'])
+					.on('drag', drags['drag'])
+					.on('dragend', drags['end']));
 		}	
 
 		// for (var drag in drags)	{
