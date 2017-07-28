@@ -6728,7 +6728,7 @@ var preprocessing = (function (preprocessing)	{
 			exp.func.avg.push(avg);
 		});
 
-		exp.func.avg.sort = exp.func.avg.sort(function (a, b)	{
+		exp.func.avg.sorted = exp.func.avg.sort(function (a, b)	{
 			return a > b ? 1 : -1;
 		});
 		// Min, Median, Max 값도 구해준다.
