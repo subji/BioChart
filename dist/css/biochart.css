@@ -169,6 +169,30 @@ body {
 a {
   color: #00B7FF;
 }
+
+.top-axis-g-tag {
+	fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.left-axis-g-tag {
+	fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;	
+}
+
+.bottom-axis-g-tag {
+	fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.right-axis-g-tag {
+	fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
 #biochart_tooltip 	{
   visibility: hidden;
 	position: absolute;

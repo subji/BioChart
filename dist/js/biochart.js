@@ -82,20 +82,6 @@ var axis = (function (axis)	{
 		},
 	};
 
-	function adjustAxisV3 (dire)	{
-		var path = d3.selectAll('.' + dire + '-axis-g-tag path'),
-				line = d3.selectAll('.' + dire + '-axis-g-tag line'),
-				text = d3.selectAll('.' + dire + '-axis-g-tag text');
-
-		text.style('font-size', '12px');
-		path.style('fill', 'none')
-				.style('stroke', '#000')
-				.style('shape-rendering', 'crispEdges');
-		line.style('fill', 'none')
-				.style('stroke', '#000')
-				.style('shape-rendering', 'crispEdges');
-	};
-
 	axis.top = function (d)	{
 		var m = size.setMargin(d.margin),
 				s = draw.size(model.current),
@@ -104,10 +90,6 @@ var axis = (function (axis)	{
 				g = render.addGroup(
 						model.current, p[0], p[1], 'top-axis'),
 				o = d.opt ? d.opt : {};
-
-		if (util.d3v4())	{
-			adjustAxisV3('top')
-		}
 
 		return g.call(options(
 				axis.byVersion(c, 'top'), d.opt, d.data)), 
@@ -125,10 +107,6 @@ var axis = (function (axis)	{
 						model.current, p[0], p[1], 'left-axis'),
 				o = d.opt ? d.opt : {};
 
-		if (util.d3v4())	{
-			adjustAxisV3('left')
-		}
-
 		return g.call(options(
 			 	axis.byVersion(c, 'left'), d.opt, d.data)), 
 					 	 isRemove(g, o.remove), g;
@@ -143,10 +121,6 @@ var axis = (function (axis)	{
 						model.current, p[0], p[1], 'bottom-axis'),
 				o = d.opt ? d.opt : {};
 
-		if (util.d3v4())	{
-			adjustAxisV3('bottom')
-		}
-
 		return g.call(options(
 				axis.byVersion(c, 'bottom'), d.opt, d.data)), 
 					 	 isRemove(g, o.remove), g;
@@ -160,10 +134,6 @@ var axis = (function (axis)	{
 				g = render.addGroup(
 						model.current, p[0], p[1], 'right-axis'),
 				o = d.opt ? d.opt : {};
-
-		if (util.d3v4())	{
-			adjustAxisV3('right')
-		}
 
 		return g.call(options(
 				axis.byVersion(c, 'right'), d.opt, d.data)), 
