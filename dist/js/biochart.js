@@ -2170,11 +2170,21 @@ config.expression.patient = {
 config.expression.sample = {
 	attr: {
 		x: function (d, m)	{
+			var bcr = d3.select('.legend').node()
+									.getBoundingClientRect();
+
+			return m.data.patient.data === d.text ? 
+						 bcr.right - bcr.left : -5;
 			return m.data.patient.data === d.text ? 
 						 draw.getTextWidth(d.text, '25px') + 
 						 draw.getTextWidth(d.text, '25px') * 0.5 : -5;
 		},
 		y: function (d, m)	{
+			var bcr = d3.select('.legend').node()
+									.getBoundingClientRect();
+
+			return m.data.patient.data === d.text ? 
+						 bcr.height / 1.3 : 0;
 			return m.data.patient.data === d.text ? 
 						 draw.getTextHeight('25px').height / 2 : 0;
 		},
