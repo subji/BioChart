@@ -3689,7 +3689,27 @@ var expression = (function (expression)	{
 			}),
 			click: function (v)	{
 				model.now.sig = v;
-				console.log('Signature set is: ', model.now.sig);
+				model.req.signature = model.now.sig;
+
+				$.ajax({
+					type: 'GET',
+					url: model.url,
+					data: model.req,
+					success: function (d)	{
+						bio.expression({
+							element: model.element,
+							width: model.w,
+							height: model.h,
+							url: model.url,
+							req: model.req,
+							data: d.data,
+						});
+					},
+					error: function (d)	{
+						console.log(d);
+					}
+				})
+				// console.log('Signature set is: ', model.now.sig);
 			},
 		});
 	};
@@ -3860,16 +3880,17 @@ var expression = (function (expression)	{
 	};
 
 	return function (o)	{
-		var e = document.querySelector(o.element || null),
-				w = parseFloat(o.width || e.style.width || 1400),
-				h = parseFloat(o.height || e.style.height || 700);
-
-		e.style.background = '#F7F7F7';
+		model.e = document.querySelector(o.element || null);
+		model.w = parseFloat(o.width || e.style.width || 1400);
+		model.h = parseFloat(o.height || e.style.height || 700);
+		model.e.style.background = '#F7F7F7';
 
 		model.origin = o.data;
+		model.element = o.element;
 		model.req = o.req;
+		model.url = o.url || '/rest/expressions';
 		model.data = preprocessing.expression(o.data);
-		model.ids = size.chart.expression(e, w, h);
+		model.ids = size.chart.expression(model.e, model.w, model.h);
 		model.svg = layout.expression(model.ids, model);
 		// Set Initialize signature gene set.
 		model.init.sig = model.origin.signature_list[0].signature;
