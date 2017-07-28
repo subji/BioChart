@@ -6909,8 +6909,6 @@ var render = (function (render)	{
 					drag.substring(0, 1).toUpperCase() + 
 					drag.substring(1) : drag;
 
-			console.log(dg, nm, d3.behavior.drag().on())
-
 			dg.on(nm, drags[drag]);
 		}
 
