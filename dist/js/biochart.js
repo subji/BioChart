@@ -6901,7 +6901,8 @@ var render = (function (render)	{
 		if (!drags) { return false; }
 
 		var dg = util.d3v4() ? 
-				d3.drag() : d3.behavior.drag().origin(Object);
+				d3.drag() : d3.drag()
+				// d3.behavior.drag().origin(Object);
 
 		for (var drag in drags)	{
 			var nm = util.d3v4() ? drag : 
@@ -6909,7 +6910,7 @@ var render = (function (render)	{
 					drag.substring(0, 1).toUpperCase() + 
 					drag.substring(1) : drag;
 
-			console.log(dg, drag)
+			console.log(dg, nm)
 
 			dg.on(nm, drags[drag]);
 		}
