@@ -6900,7 +6900,8 @@ var render = (function (render)	{
 	function setOnDrag (svgElement, drags)	{
 		if (!drags) { return false; }
 
-		var dg = util.d3v4() ? d3.drag() : d3.behavior.drag();
+		var dg = util.d3v4() ? 
+				d3.drag() : d3.behavior.drag().origin(Object);
 
 		for (var drag in drags)	{
 			var nm = util.d3v4() ? drag : 
