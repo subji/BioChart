@@ -105,10 +105,9 @@
 .drop-menu .select {
     cursor: pointer;
     display: block;
-    /*padding: 10px*/
 }
 .drop-menu .select i {
-    font-size: 13px;
+    font-size: 12px;
     color: #888;
     cursor: pointer;
     transition: all .5s ease;
@@ -139,12 +138,12 @@
     border-radius: 0 1px 5px 5px;
     overflow: hidden;
     display: none;
-    max-height: 144px;
+    max-height: 140px;
     overflow-y: auto;
     z-index: 9;
 }
 .drop-menu .dropeddown li {
-    padding: 10px;
+    padding: 12px;
     transition: all .2s ease;
     cursor: pointer;
 } 

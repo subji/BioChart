@@ -1946,10 +1946,10 @@ config.expression.division = {
 	marginScatter: [0, 30, 15, 20],
 	attr: {
 		x: function (d, i, m) {
+			console.log(m.font)
 			return i > 0 ? m.isText ? 
-						 m.scale(m.axis[m.axis.length - 1]) - 
-						 draw.getTextWidth(d.text, m.font) - 
-						 m.padding * 1.5 - m.m.left : 
+						 (m.scale(m.axis[m.axis.length - 1]) - 
+						 	m.m.left) - draw.getTextWidth(d.text, m.font): 
 						 m.scale(d.point) - m.m.left : 
 						 m.isText ? m.scale(m.axis[0]) - 
 						 m.m.left + m.padding * 2 : 
@@ -2248,10 +2248,12 @@ var divisionLine = (function (divisionLine)	{
 				attr: {
 					id: function (d) { return model.id + '_div_rect'; },
 					x: function (d, i)	{
-						return o.attr.x ? o.attr.x.call(this, d, i, model) : 0;
+						return o.attr.x ? 
+									 o.attr.x.call(this, d, i, model) : 0;
 					},
 					y: function (d, i)	{
-						return o.attr.y ? o.attr.y.call(this, d, i, model) : 0;
+						return o.attr.y ? 
+									 o.attr.y.call(this, d, i, model) : 0;
 					},
 					width: function (d, i)	{
 						return o.attr.width ? 
@@ -2262,38 +2264,28 @@ var divisionLine = (function (divisionLine)	{
 									 o.attr.height.call(this, d, i, model) : 0;
 					},
 					rx: function (d, i)	{
-						return o.attr.rx ? o.attr.rx.call(this, d, i, model) : 0;
+						return o.attr.rx ? 
+									 o.attr.rx.call(this, d, i, model) : 0;
 					},
 					ry: function (d, i)	{
-						return o.attr.ry ? o.attr.ry.call(this, d, i, model) : 0;
+						return o.attr.ry ? 
+									 o.attr.ry.call(this, d, i, model) : 0;
 					},
 				},
 				style: {
 					fill: function (d, i)	{
 						return o.style.fill ? 
-									 o.style.fill.call(this, d, i, model) : '#000';
+									 o.style.fill.call(
+									 	this, d, i, model) : '#000';
 					},
 					stroke: function (d, i)	{
 						return o.style.stroke ? 
-									 o.style.stroke.call(this, d, i, model) : '#000';
+									 o.style.stroke.call(
+									 	this, d, i, model) : '#000';
 					},
 				},
 				// TODO.
 				// Rectangle 부분의 마우스 이벤트는 일단 제외시켜놓는다.
-				// on: {
-				// 	mouseover: function (d, i)	{
-				// 		if (!o.on)	{ return false; }
-
-				// 		return o.on.mouseover ? 
-				// 					 o.on.mouseover.call(this, d, i, model) : false;
-				// 	},
-				// 	mouseout: function (d, i)	{
-				// 		if (!o.on)	{ return false; }
-
-				// 		return o.on.mouseout ? 
-				// 					 o.on.mouseout.call(this, d, i, model) : false;
-				// 	}
-				// },
 			});
 		}
 
@@ -2305,23 +2297,39 @@ var divisionLine = (function (divisionLine)	{
 					id: function (d) { 
 						return model.isText = true, model.id + '_div_text'; },
 					x: function (d, i)	{
-						return o.attr.x ? o.attr.x.call(this, d, i, model) : 0;
+						return o.attr.x ? 
+									 o.attr.x.call(this, d, i, model) : 0;
 					},
 					y: function (d, i)	{
-						return o.attr.y ? o.attr.y.call(this, d, i, model) : 0;
+						return o.attr.y ? 
+									 o.attr.y.call(this, d, i, model) : 0;
 					},
 				},
 				style: {
 					fill: function (d, i)	{
 						return o.style.fill ? 
-									 o.style.fill.call(this, d, i, model) : '#000';
+									 o.style.fill.call(
+									 	this, d, i, model) : '#000';
 					},
-					'alignment-baseline': 'middle',
-					'font-size': model.font,
-					'font-weight': 'bold',
+					'alignment-baseline': function (d, i)	{
+						return o.style.alignmentBaseline ? 
+									 o.style.alignmentBaseline.call(
+									 	this, d, i, model) : 'middle';
+					},
+					'font-size': function (d, i)	{
+						return o.style.fontSize ? 
+									 o.style.fontSize.call(
+									 	this, d, i, model) : model.font;
+					},
+					'font-weight': function (d, i) {
+						return o.style.fontWeight ? 
+									 o.style.fontWeight.call(
+									 	this, d, i, model) : 'bold';
+					},
 				},
 				text: function (d, i) { 
-					return o.text ? o.text.call(this, d, i, model) : '' 
+					return o.text ? 
+								 o.text.call(this, d, i, model) : '' 
 				},
 			});
 		}
@@ -2334,7 +2342,8 @@ var divisionLine = (function (divisionLine)	{
 				element: model.g,
 				attr: {
 					id: function (d) { 
-						return model.isLine = true, model.id + '_div_line'; },
+						return model.isLine = true, model.id + '_div_line'; 
+					},
 					d: model.line([
 						{	x: x, y: y }, 
 						{	x: x, y: model.h - model.m.bottom }]),
@@ -2342,11 +2351,13 @@ var divisionLine = (function (divisionLine)	{
 				style: {
 					stroke: function (d, i) {
 						return o.style.stroke ? 
-									 o.style.stroke.call(this, d, i, model) : '#000';
+									 o.style.stroke.call(
+									 	this, d, i, model) : '#000';
 					},
 					'stroke-dasharray': function (d, i)	{
 						return o.style.dashed ? 
-									 o.style.dashed.call(this, d, i, model) : '5, 10';
+									 o.style.dashed.call(
+									 	this, d, i, model) : '5, 10';
 					},
 				}
 			});
@@ -2354,35 +2365,42 @@ var divisionLine = (function (divisionLine)	{
 
 		if (model.marker && model.marker === 'circle')	{
 			render.circle({
-				element: model.g.selectAll('#' + model.id + '_div_marker'),
+				element: model.g.selectAll(
+					'#' + model.id + '_div_marker'),
 				data: o.figure.data ? 
 							o.figure.data(model.data, model) : model.data,
 				attr: {
 					id: function (d, i) { 
 						return o.figure.attr.id ? 
-									 o.figure.attr.id.call(this, d, i, model) : ''; 
+									 o.figure.attr.id.call(
+									 	this, d, i, model) : ''; 
 					},
 					cx: function (d, i) {
 						return o.figure.attr.cx ? 
-									 o.figure.attr.cx.call(this, d, i, model) : 0;
+									 o.figure.attr.cx.call(
+									 	this, d, i, model) : 0;
 					},
 					cy: function (d, i)	{
 						return o.figure.attr.cy ? 
-									 o.figure.attr.cy.call(this, d, i, model) : 0;
+									 o.figure.attr.cy.call(
+									 	this, d, i, model) : 0;
 					},
 					r: function (d, i)	{
 						return o.figure.attr.r ? 
-									 o.figure.attr.r.call(this, d, i, model) : 0;
+									 o.figure.attr.r.call(
+									 	this, d, i, model) : 0;
 					}
 				},
 				style: {
 					fill: function (d, i)	{
 						return o.figure.style.fill ? 
-									 o.figure.style.fill.call(this, d, i, model) : 0;
+									 o.figure.style.fill.call(
+									 	this, d, i, model) : 0;
 					},
 					stroke: function (d, i)	{
 						return o.figure.style.stroke ? 
-									 o.figure.style.stroke.call(this, d, i, model) : 0;
+									 o.figure.style.stroke.call(
+									 	this, d, i, model) : 0;
 					},
 					cursor: 'pointer',
 				},
@@ -2391,13 +2409,15 @@ var divisionLine = (function (divisionLine)	{
 						if (!o.on)	{ return false; }
 						
 						return o.on.mouseover ? 
-									 o.on.mouseover.call(this, d, i, model) : false;
+									 o.on.mouseover.call(
+									 	this, d, i, model) : false;
 					},
 					mouseout: function (d, i)	{
 						if (!o.on)	{ return false; }
 
 						return o.on.mouseout ? 
-									 o.on.mouseout.call(this, d, i, model) : false;
+									 o.on.mouseout.call(
+									 	this, d, i, model) : false;
 					}
 				},
 				call: {
@@ -2405,19 +2425,22 @@ var divisionLine = (function (divisionLine)	{
 						if (!o.drag) { return false; }
 
 						return o.drag.start ? 
-									 o.drag.start.call(this, d, i, model) : false;
+									 o.drag.start.call(
+									 	this, d, i, model) : false;
 					},
 					drag: function (d, i)	{
 						if (!o.drag) { return false; }
 
 						return o.drag.drag ? 
-									 o.drag.drag.call(this, d, i, model) : false;
+									 o.drag.drag.call(
+									 	this, d, i, model) : false;
 					},
 					end: function (d, i)	{
 						if (!o.drag) { return false; }
 
 						return o.drag.end ? 
-									 o.drag.end.call(this, d, i, model) : false;
+									 o.drag.end.call(
+									 	this, d, i, model) : false;
 					},
 				},
 			});
@@ -2465,6 +2488,8 @@ var draw = (function (draw)	{
 		ctx.font = (font ? font + ' arial' : '10px arial');
 
 		document.body.appendChild(canv);
+
+		text = text.replace(' ', 'A');
 
 		width = ctx.measureText(text).width;
 
