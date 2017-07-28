@@ -2182,7 +2182,7 @@ config.expression.sample = {
 
 			return d.text.indexOf('Low') > -1 ? 
 						 bcr.height / 2 + (bcr.height / 4) : 
-						 draw.getTextHeight('25x').height / 2;
+						 draw.getTextHeight('14px').height;
 		},
 	},
 	style: {
