@@ -22,7 +22,7 @@ var axis = (function (axis)	{
 		d3 의 버전 (3, 4)에 따라서 호출되는 함수명이 다르므로
 		이에 맞는 적절한 함수를 호출해주는 함수이다.
 	 */
-	function byVersion (s, l)	{
+	axis.byVersion = function (s, l)	{
 		return d3.axisTop ? v4Axis(s, l) : v3Axis(s, l);
 	};
 	/*
@@ -91,8 +91,9 @@ var axis = (function (axis)	{
 						model.current, p[0], p[1], 'top-axis'),
 				o = d.opt ? d.opt : {};
 
-		return g.call(options(byVersion(c, 'top'), d.opt, d.data)), 
-					 isRemove(g, o.remove), g;
+		return g.call(options(
+				axis.byVersion(c, 'top'), d.opt, d.data)), 
+					 	 isRemove(g, o.remove), g;
 	};
 	/*
 		축이 종 방향이고 축의 값이 왼쪽에 표기될때 호출되는 함수.
@@ -106,8 +107,9 @@ var axis = (function (axis)	{
 						model.current, p[0], p[1], 'left-axis'),
 				o = d.opt ? d.opt : {};
 
-		return g.call(options(byVersion(c, 'left'), d.opt, d.data)), 
-					 isRemove(g, o.remove), g;
+		return g.call(options(
+			 	axis.byVersion(c, 'left'), d.opt, d.data)), 
+					 	 isRemove(g, o.remove), g;
 	};
 
 	axis.bottom = function (d)	{
@@ -119,8 +121,9 @@ var axis = (function (axis)	{
 						model.current, p[0], p[1], 'bottom-axis'),
 				o = d.opt ? d.opt : {};
 
-		return g.call(options(byVersion(c, 'bottom'), d.opt, d.data)), 
-					 isRemove(g, o.remove), g;
+		return g.call(options(
+				axis.byVersion(c, 'bottom'), d.opt, d.data)), 
+					 	 isRemove(g, o.remove), g;
 	};
 
 	axis.right = function (d)	{
@@ -132,8 +135,9 @@ var axis = (function (axis)	{
 						model.current, p[0], p[1], 'right-axis'),
 				o = d.opt ? d.opt : {};
 
-		return g.call(options(byVersion(c, 'right'), d.opt, d.data)), 
-					 isRemove(g, o.remove), g;
+		return g.call(options(
+				axis.byVersion(c, 'right'), d.opt, d.data)), 
+					 	 isRemove(g, o.remove), g;
 	};
 
 	return axis;
@@ -345,6 +349,141 @@ config.landscape.priority = function (value)	{
 	}[value];
 };
 
+config.landscape.orderedName = [
+	// Mutation.
+		'Amplification',
+		'Homozygous_deletion',
+		'Nonsense_mutation',
+		'Splice_site',
+		'Translation_start_site',
+		'Missense_mutation',
+		'Start_codon_snp',
+		'Nonstop_mutation',
+		'Frame_shift_indel',
+		'Stop_codon_indel',
+		'In_frame_indel',
+		'Silent',
+		'Rna',
+		'Intron',
+		'5\'utr',
+		'3\'utr',
+		'Igr',
+		// Group.
+		// Vital Status of Group.
+		'alive',
+		'dead',
+		// Gender of Group.
+		'female',
+		'male',
+		// Race of Group.
+		'american indian or alaska native',
+		'asian',
+		'black or african american',
+		'white',
+		// Ethnicity of Group.
+		'hispanic or latino',
+		'not hispanic or latino',
+		// Histological Type of Group.
+		'lung acinar adenocarcinoma',
+		'lung adenocarcinoma mixed subtype',
+		'lung adenocarcinoma- not otherwise specified (nos)',
+		'lung bronchioloalveolar carcinoma mucinous',
+		'lung bronchioloalveolar carcinoma nonmucinous',
+		'lung clear cell adenocarcinoma',
+		'lung micropapillary adenocarcinoma',
+		'lung mucinous adenocarcinoma',
+		'lung papillary adenocarcinoma',
+		'lung signet ring adenocarcinoma',
+		'lung solid pattern predominant adenocarcinoma',
+		'mucinous (colloid) carcinoma',
+		// Anatomic Neoplasm Subdivision of Group.
+		'bronchial',
+		'l-lower',
+		'l-upper',
+		'other (please specify)',
+		'r-lower',
+		'r-middle',
+		'r-upper',
+		// Other Dx of Group.
+		'no',
+		'yes',
+		'yes, history of prior malignancy',
+		'yes, history of synchronous/bilateral malignancy',
+		// History of Neoadjuvant Treatment of Group.
+		'no',
+		'yes',
+		// Radiation Therapy of Group.
+		'no',
+		'yes',
+		// Pathologic T of Group.
+		't1',
+		't1a',
+		't1b',
+		't2',
+		't2a',
+		't2b',
+		't3',
+		't4',
+		'tx',
+		// Pathologic N of Group.
+		'n0',
+		'n1',
+		'n2',
+		'n3',
+		'nx',
+		// Pathologic M of Group.
+		'm0',
+		'm1',
+		'm1a',
+		'm1b',
+		'mx',
+		// Pathologic Stage of Group.
+		'stage i',
+		'stage ia',
+		'stage ib',
+		'stage ii',
+		'stage iia',
+		'stage iib',
+		'stage iiia',
+		'stage iiib',
+		'stage iv',
+		// Residual Tumor of Group.
+		'r0',
+		'r1',
+		'r2',
+		'rx',
+		// EGFR Mutation Result.
+		'exon 19 deletion',
+		'l858r',
+		'l861q',
+		'other',
+		't790m',
+		// KRAS Mutation Result.
+		'g12a',
+		'g12c',
+		'g12d',
+		'g12s',
+		'g12v',
+		'other',
+		// Primary Therapy Outcome Success.
+		'complete remission/response',
+		'partial remission/response',
+		'progressive disease',
+		'stable disease',
+		// Followup Treatment Success.
+		'complete remission/response',
+		'partial remission/response',
+		'progressive disease',
+		'stable disease',
+		// Tobacco Smoking History.
+		'Lifelong Non-Smoker',
+		'Current Smoker',
+		'Current Reformed Smoker for > 15 yrs',
+		'Current Reformed Smoker for < or = 15 yrs',
+		'Current Reformed Smoker, Duration Not Specified',
+		'NA',
+];
+
 config.landscape.color = function (value)	{
 	return {
 		// Mutation.
@@ -367,16 +506,16 @@ config.landscape.color = function (value)	{
 		'Igr': '#A9A9A9',
 		// Group.
 		// Vital Status of Group.
-		'dead': '#C50E36',
 		'alive': '#04CDA4',
+		'dead': '#C50E36',
 		// Gender of Group.
-		'male': '#0F67B6',
 		'female': 'E0A4E5',
+		'male': '#0F67B6',
 		// Race of Group.
-		'white': '#9CB1CE',
-		'black or african american': '#302F24',
-		'asian': '#CB771F',
 		'american indian or alaska native': '#38120B',
+		'asian': '#CB771F',
+		'black or african american': '#302F24',
+		'white': '#9CB1CE',
 		// Ethnicity of Group.
 		'hispanic or latino': '#B8642F',
 		'not hispanic or latino': '#55C53E',
@@ -513,6 +652,28 @@ config.landscape.sample = {
 			return '#FFFFFF'; 
 		},
 	},
+	on: {
+		mouseover: function (d, i, m)	{
+			tooltip({
+				element: this,
+				contents: '<b>' + d.x + '</b></br>' + 
+									'Type: <b>' + d.info + '</b></br>' + 
+									'Count: <b>' + d.value + '</b>',
+									
+			});
+
+			d3.select(this)
+				.transition().duration(50)
+				.style('stroke', '#333333');
+		},
+		mouseout: function (d, i, m)	{
+			tooltip('hide');
+
+			d3.select(this)
+				.transition().duration(50)
+				.style('stroke', '#FFFFFF');
+		},
+	},
 };
 /*
 	Gene 이 그려지는 차트의 속성과 모양 정의 객체.
@@ -541,6 +702,28 @@ config.landscape.gene = {
 			return '#FFFFFF'; 
 		},	
 	},
+	on: {
+		mouseover: function (d, i, m)	{
+			tooltip({
+				element: this,
+				contents: '<b>' + d.y + '</b></br>' + 
+									'Type: <b>' + d.info + '</b></br>' + 
+									'Count: <b>' + d.value + '</b>',
+									
+			});
+
+			d3.select(this)
+				.transition().duration(50)
+				.style('stroke', '#333333');
+		},
+		mouseout: function (d, i, m)	{
+			tooltip('hide');
+
+			d3.select(this)
+				.transition().duration(50)
+				.style('stroke', '#FFFFFF');
+		},
+	},
 };
 /*
 	pq 가 그려지는 차트의 속성과 모양 정의 객체.
@@ -566,6 +749,27 @@ config.landscape.pq = {
 		},
 		stroke: function (d, i, m) { 
 			return '#FFFFFF'; 
+		},
+	},
+	on: {
+		mouseover: function (d, i, m)	{
+			tooltip({
+				element: this,
+				contents: '<b>' + d.y + '</b></br>' + 
+									'Value: <b>' + d.value + '</b>',
+									
+			});
+
+			d3.select(this)
+				.transition().duration(50)
+				.style('stroke', '#333333');
+		},
+		mouseout: function (d, i, m)	{
+			tooltip('hide');
+
+			d3.select(this)
+				.transition().duration(50)
+				.style('stroke', '#FFFFFF');
 		},
 	},
 };
@@ -599,6 +803,29 @@ config.landscape.heatmap = {
 			return '#FFFFFF';
 		}
 	},
+	on: {
+		mouseover: function (d, i, m)	{
+			tooltip({
+				element: this,
+				contents: '<b>Gene mutations</b></br>' + 
+									'X: <b>' + d.x + '</b></br>' + 
+									'Y: <b>' + d.y + '</b></br>' + 
+									'Type: <b>' + d.value + '</b>',
+									
+			});
+
+			d3.select(this)
+				.transition().duration(50)
+				.style('stroke', '#333333');
+		},
+		mouseout: function (d, i, m)	{
+			tooltip('hide');
+
+			d3.select(this)
+				.transition().duration(50)
+				.style('stroke', '#FFFFFF');
+		},
+	},
 };
 /*
 	Group 이 그려지는 차트의 속성과 모양의 객체.
@@ -625,7 +852,29 @@ config.landscape.group = {
 		stroke: function (d, i, m) { 
 			return '#FFFFFF'; 
 		},
-	}
+	},
+	on: {
+		mouseover: function (d, i, m)	{
+			tooltip({
+				element: this,
+				contents: '<b>' + d.y + '</b></br>' + 
+									'Sample: <b>' + d.x + '</b></br>' + 
+									'Value: <b>' + d.value + '</b></br>',
+									
+			});
+
+			d3.select(this)
+				.transition().duration(50)
+				.style('stroke', '#333333');
+		},
+		mouseout: function (d, i, m)	{
+			tooltip('hide');
+
+			d3.select(this)
+				.transition().duration(50)
+				.style('stroke', '#FFFFFF');
+		},
+	},
 };
 /*
 	Landscape 의 범례 설정 객체.
@@ -694,7 +943,7 @@ config.landscape.axis = {
 	},
 	group: {
 		direction: 'right', 
-		margin: [0, 0, 0, 0], 
+		margin: [0, 15, 0, 0], 
 		opt: { remove: 'line, path' }
 	},
 	gene: [{
@@ -727,7 +976,8 @@ config.landscape.bar = {
 			return this.pq.y;
 		}, 
 		attr: config.landscape.pq.attr, 
-		style: config.landscape.pq.style
+		style: config.landscape.pq.style,
+		on: config.landscape.pq.on,
 	},
 };
 /*
@@ -744,7 +994,8 @@ config.landscape.stack = {
 			return this.sample.y
 		}, 
 		attr: config.landscape.sample.attr, 
-		style: config.landscape.sample.style
+		style: config.landscape.sample.style,
+		on: config.landscape.sample.on,
 	},
 	sample: {
 		direction: 'top', 
@@ -756,7 +1007,8 @@ config.landscape.stack = {
 			return this.sample.y;
 		}, 
 		attr: config.landscape.sample.attr, 
-		style: config.landscape.sample.style
+		style: config.landscape.sample.style,
+		on: config.landscape.sample.on,
 	},
 	gene: {
 		direction: 'left', 
@@ -768,7 +1020,8 @@ config.landscape.stack = {
 			return this.gene.y;
 		}, 
 		attr: config.landscape.gene.attr, 
-		style: config.landscape.gene.style
+		style: config.landscape.gene.style,
+		on: config.landscape.gene.on,
 	},
 };
 /*
@@ -786,7 +1039,8 @@ config.landscape.heatmap = {
 			return this.gene.y;
 		}, 
 		attr: config.landscape.heatmap.attr, 
-		style: config.landscape.heatmap.style
+		style: config.landscape.heatmap.style,
+		on: config.landscape.heatmap.on,
 	},
 	patient: {
 		direction: 'left', 
@@ -799,7 +1053,8 @@ config.landscape.heatmap = {
 			return this.gene.y;
 		}, 
 		attr: config.landscape.heatmap.attr, 
-		style: config.landscape.heatmap.style
+		style: config.landscape.heatmap.style,
+		on: config.landscape.heatmap.on,
 	},
 };
 /*
@@ -814,7 +1069,8 @@ config.landscape.group = {
 			return this.sample.x;
 		}, 
 		attr: config.landscape.group.attr, 
-		style: config.landscape.group.style
+		style: config.landscape.group.style,
+		on: config.landscape.group.on,
 	},
 	patient: {
 		direction: 'left', 
@@ -824,7 +1080,8 @@ config.landscape.group = {
 			return this.patient.x;
 		}, 
 		attr: config.landscape.group.attr, 
-		style: config.landscape.group.style
+		style: config.landscape.group.style,
+		on: config.landscape.group.on,
 	},
 };
 // ===================== Mutatinonal Landscape ==================
@@ -1169,6 +1426,12 @@ config.variants.needle = {
 	},
 	attr: {
 		x: function (d, i, m)	{
+			if (m.sx(d.x) < m.m.left)	{
+				return -m.m.left;
+			} else if (m.sx(d.x) > m.w - m.m.right)	{
+				return m.w;
+			}
+
 			return m.sx(d.x);
 		},
 		y: function (d, i, m)	{
@@ -1214,9 +1477,13 @@ config.variants.needle = {
  */
 config.variants.needleGraph = {
 	margin: [0, 30, 60, 60],
+	now: { width: {} },
 	attr: {
 		x: function (d, i, m)	{
-			return m.isText ? m.sx(d.x) + 5 : m.sx(d.x);
+			var start = m.sx(d.x) > m.m.left ? 
+									m.sx(d.x) : m.m.left;
+
+			return m.isText ? start + 5 : start;
 		},
 		y: function (d, i, m)	{
 			return m.isText ? 
@@ -1225,7 +1492,21 @@ config.variants.needleGraph = {
 				d.info.identifier, m.w, m.sh)).height / 2 + 1 : 0;
 		},
 		width: function (d, i, m)	{
-			return m.sx(d.x + d.width) - m.sx(d.x);
+			var r = 0,
+					s = m.sx(d.x),
+					w = m.sx(d.x + d.width),
+					cv = config.variants.needleGraph;
+
+			if (s < m.m.left)	{
+				r = w - m.m.left < 0 ? 0 : w - m.m.left;
+			} else if (w > (m.w - m.m.right))	{
+				r = s > (m.w - m.m.right) ? 0 : 
+					 		 	(m.w - m.m.right) - s + 2;
+			} else {
+				r = w - s;				
+			}
+
+			return cv.now.width[d.info.identifier] = r;
 		},
 		height: function (d, i, m)	{
 			return m.sh;
@@ -1239,11 +1520,10 @@ config.variants.needleGraph = {
 			return '#FFFFFF';
 		},
 		fontSize: function (d, i, m)	{
-			return parseFloat(
-							draw.getFitTextSize(
-								d.info.identifier, 
-								m.sx(d.x + d.width) - m.sx(d.x), 
-								m.sh / 1.5));
+			return parseFloat(draw.getFitTextSize(
+							d.info.identifier, 
+							m.sx(d.x + d.width) - m.sx(d.x), 
+							m.sh / 1.5));
 		},
 	},
 	on: {
@@ -1263,11 +1543,13 @@ config.variants.needleGraph = {
 		},
 	},
 	text: function (d, i, m) {
-		var width = m.sx(d.x + d.width) - m.sx(d.x);
+		var nw = config.variants.needleGraph
+									 .now.width[d.info.identifier],
+				width = m.sx(d.x + d.width) - m.sx(d.x);
 
 		return draw.textOverflow(d.info.identifier, 
 					 draw.getFitTextSize(d.info.identifier, 
-					 	width, m.sh / 1.5), width, 5);
+					 	width, m.sh / 1.5), nw, 5);
 	},
 };
 /*
@@ -1284,6 +1566,7 @@ config.variants.navi = {
 	margin: [0, 30, 5, 60],
 	start: { init: 0, now: 0 },
 	end: { init: 0, now: 0 },
+	navi: { init: 0, now: 0, width: 0, nowWidth: 0 },
 	style: {
 		fill: function (d, i, m) {
 			var c = d.info ? 
@@ -1298,14 +1581,12 @@ config.variants.navi = {
 	},
 	drag: {
 		drag: function (d, i, m)	{
-			var x = d3.select(this).attr('x'),
-					w = d3.select(this).attr('width');
+ 			var cv = config.variants.navi,
+ 					r = d3.select('#variants_navi_chart_navi');
 			/*
 				Start, end 값을 설정하고 반환하는 함수.
 			 */
-			function getDragValue (type)	{
-				var cv = config.variants.navi;
-
+			function getDragValue (cv, type)	{
 				cv[type].now += d3.event.dx;
 
 				return cv[type].now = 
@@ -1316,11 +1597,41 @@ config.variants.navi = {
 			};
 
 			if (d === 'start')	{
-				d3.select(this).attr('x', getDragValue('start'));
+				d3.select(this).attr('x', getDragValue(cv, 'start'));
+				// Start 버튼을 이동할 때, Navi 박스의 크기를 조절한다.
+				// Start 버튼이 이동하면 Navi 의 위치도 바뀌어야 한다.
+				cv.navi.now = cv.navi.init + (
+				cv.start.now - cv.start.init)
+				cv.navi.nowWidth = cv.navi.width - (
+				cv.end.init - cv.end.now) - (
+				cv.start.now - cv.start.init);
+
+				r.attr('x', cv.navi.now);
+				r.attr('width', cv.navi.nowWidth);
 			} else if (d === 'end') {
-				d3.select(this).attr('x', getDragValue('end'));				
+				d3.select(this).attr('x', getDragValue(cv, 'end'));				
+				// End 버튼을 이동할 때, Navi 박스의 크기를 조절한다.
+				cv.navi.nowWidth = cv.navi.width - (
+				cv.start.now - cv.start.init) - (
+				cv.end.init - cv.end.now);
+
+				r.attr('width', cv.navi.nowWidth);
 			} else {
-				console.log(d)
+				cv.navi.now += d3.event.dx;
+
+				var v = cv.navi.now = 
+				Math.max(cv.navi.init, 
+				Math.min((cv.navi.width + m.m.left) - 
+									cv.navi.nowWidth, cv.navi.now));
+
+				cv.start.now = v - m.rect.width;
+				cv.end.now = (v + cv.navi.nowWidth) - m.rect.width;
+
+				r.attr('x', v);
+				d3.select('#variants_navi_chart_start')
+					.attr('x', cv.start.now);
+				d3.select('#variants_navi_chart_end')
+					.attr('x', cv.end.now);
 			}
 		},
 	},
@@ -1334,6 +1645,12 @@ config.variants.patient = {
 		attr: {
 			points: function (d, i, m)	{
 				var x = m.s(d.position);
+
+				if (x < m.m.left)	{
+					x = -m.m.left;
+				} else if (x > (m.w - m.m.right))	{
+					x = m.w + m.m.right;
+				}
 				
 				return x + ',' + m.len / 2.5 + 
 				' ' + (x - m.len) + ',' + m.len * 2 + 
@@ -1346,9 +1663,7 @@ config.variants.patient = {
 				return config.landscape.color(d.type);
 			},
 			stroke: function (d, i, m)	{
-				var c = d3.rgb(config.landscape.color(d.type));
-				
-				return c.opacity = 0.3, c;
+				return '#333333';	
 			},
 		},
 		on: {
@@ -1400,15 +1715,10 @@ config.variants.patient = {
 							'#333333' : config.landscape.color(d.type);
 			},
 			stroke: function (d, i, m)	{
-				var c = d3.rgb(config.landscape.color(d.type));
-				
-				return c.opacity = 0.3, c;
+				return '#333333';
 			},
 			fontSize: function (d, i, m) {
 				return '12px';
-			},
-			strokeWidth: function (d, i, m) {
-				return '3px';
 			},
 		},
 		text: function (d, i, m) { 
@@ -1839,8 +2149,21 @@ config.expression.patient = {
 			return '#B7B7B7';
 		},
 		'stroke-width': '1px',
+		'cursor': 'pointer',
 	},
-}
+	on: {
+		mouseover: function (d, i)	{
+			tooltip({
+				element: this,
+				contents: '<b>' + d.x + '</b></br>' + 
+									'Value: <b>' + d.value + '</b>',
+			});
+		},
+		mouseout: function (d, i)	{
+			tooltip('hide');
+		},
+	},
+};
 /*
 	Sample of expression configuration object.
  */
@@ -1868,7 +2191,11 @@ config.expression.sample = {
 	text: function (d, m)	{
 		return m.data.patient.data === d.text ? ' **' : '';
 	},
-}
+};
+
+config.expression.sampleLegend = {
+
+};
 // ======================= Expression ========================
 var divisionLine = (function (divisionLine)	{
 	'use strict';
@@ -2988,7 +3315,9 @@ var expression = (function (expression)	{
 
 			axis.element(v)
 					.left({
-						margin: [10, 0, 50, v.attr('width') - model.data.axisLeft],
+						margin: [
+							10, 0, 50, v.attr('width') - model.data.axisLeft
+						],
 						data: [y[2], y[0]],
 						opt: {
 							tickValues: y,
@@ -3167,9 +3496,9 @@ var expression = (function (expression)	{
 							iv = scale.invert(m.scale);
 					// 멈춘 위치의 Low, High 각각의 Sample 이름.
 					model.divide.lowSam = iv(
-									config.expression.division.lowPos + m.m.left),
+								config.expression.division.lowPos + m.m.left),
 					model.divide.highSam = iv(
-									config.expression.division.highPos + m.m.left);
+								config.expression.division.highPos + m.m.left);
 					// 멈춘 위치의 이름을 가지고 배열을 low, high 로 나눈다.
 					model.divide.highArr = a.splice(
 						m.axis.indexOf(model.divide.highSam), a.length - 1)
@@ -3181,13 +3510,15 @@ var expression = (function (expression)	{
 			},
 		};
 
-		layout.getSVG(model.svg, ['bar_plot'], function (k, v)	{
+		layout.getSVG(model.svg, ['bar_plot'], 
+		function (k, v)	{
 			obj.element = v;
 
 			divisionLine(obj);
 		});
 
-		layout.getSVG(model.svg, ['scatter_plot'], function (k, v)	{
+		layout.getSVG(model.svg, ['scatter_plot'], 
+		function (k, v)	{
 			obj.element  = v;
 			obj.yAdjust = 0;
 			obj.showRect = false;
@@ -3240,7 +3571,9 @@ var expression = (function (expression)	{
 
 			axis.element(v)
 					.left({
-						margin: [10, 0, 35, v.attr('width') - model.data.axisLeft],
+						margin: [
+							10, 0, 35, v.attr('width') - model.data.axisLeft
+						],
 						data: y,
 						opt: {},
 					})
@@ -3407,12 +3740,29 @@ var expression = (function (expression)	{
 					},	
 				},
 				style: config.expression.patient.style,
+				on: config.expression.patient.on,
 			});
 		});
 
+		drawSampleLegend();
 		drawSampleSurvival();
 	};
-
+	/*
+		TODO.
+		Sample 범례를 그려준다.
+	 */
+	function drawSampleLegend ()	{
+		// layout.getSVG(model.svg, ['nt_legend'], function (k, v)	{
+		// 	legend({
+		// 		element: v,
+		// 		data: d,
+		// 		attr: config.variants.patient.legend.attr,
+		// 		style: config.variants.patient.legend.style,
+		// 		text: config.variants.patient.legend.text,
+		// 		margin: config.variants.patient.legend.margin,
+		// 	});
+		// });
+	};
 	/*
 		Survival Plot 의 테이블 이름에도 심볼을 넣어주는함수.
 	 */
@@ -3456,8 +3806,10 @@ var expression = (function (expression)	{
 		var suv = {},
 				chkDone = setInterval(function () {
 
-			suv.ostb = document.querySelectorAll('#dfs_stat_table td b');
-			suv.dfstb = document.querySelectorAll('#os_stat_table td b');
+			suv.ostb = document
+								.querySelectorAll('#dfs_stat_table td b');
+			suv.dfstb = document
+									.querySelectorAll('#os_stat_table td b');
 			suv.legends = d3.selectAll('.legend');
 
 			if (suv.ostb.length > 0 && 
@@ -3502,6 +3854,7 @@ var expression = (function (expression)	{
 		drawColorGradient();
 		drawPatient();
 
+		console.log('Given Expression data: ', o);
 		console.log('Expression Model data: ', model);
 	};
 }(expression||{}));
@@ -3551,15 +3904,16 @@ var heatmap = (function (heatmap)	{
 													util.varType(o.element) === 'Array' ? 
 							o.element : (/\W/).test(o.element[0]) ? 
 							d3.select(o.element) : d3.select('#' + o.element);
-		model.s = draw.size(model.e);
+		model.w = model.e.attr('width');
+		model.h = model.e.attr('height');
 		model.m = size.setMargin(o.margin);
 		model.g = render.addGroup(
 		model.e, model.m.top, model.m.left, 'heatmap');
 		model.sx = scale.get(o.xaxis, 
-							[model.m.left, (o.width || model.s.w) - 
+							[model.m.left, (o.width || model.w) - 
 							 model.m.right]);
 		model.sy = scale.get(o.yaxis, 
-							[model.m.top, (o.height || model.s.h) - 
+							[model.m.top, (o.height || model.h) - 
 							 model.m.bottom]);
 
 		var id = model.e.attr('id');
@@ -3571,10 +3925,12 @@ var heatmap = (function (heatmap)	{
 			attr: {
 				id: function (d, i) { return id + '_rect'; },
 				x: function (d, i) { 
-					return o.attr.x ? o.attr.x.call(this, d, i, model) : 0; 
+					return o.attr.x ? 
+								 o.attr.x.call(this, d, i, model) : 0; 
 				},
 				y: function (d, i) { 
-					return o.attr.y ? o.attr.y.call(this, d, i, model) : 0; 
+					return o.attr.y ? 
+								 o.attr.y.call(this, d, i, model) : 0; 
 				},
 				width: function (d, i) { 
 					return o.attr.width ? 
@@ -3588,11 +3944,13 @@ var heatmap = (function (heatmap)	{
 			style: {
 				fill: function (d, i) { 
 					return o.style.fill ? 
-								 o.style.fill.call(this, d, i, model) : '#000000'; 
+								 o.style.fill.call(
+								 	this, d, i, model) : '#000000'; 
 				},
 				stroke: function (d, i) { 
 					return o.style.stroke ? 
-								 o.style.stroke.call(this, d, i, model) : false; 
+								 o.style.stroke.call(
+								 	this, d, i, model) : false; 
 				},
 			},
 			on: {
@@ -3600,13 +3958,15 @@ var heatmap = (function (heatmap)	{
 					if (!o.on) { return false; }
 					
 					return o.on.mouseover ? 
-								 o.on.mouseover.call(this, d, i, model) : false;
+								 o.on.mouseover.call(
+								 	this, d, i, model) : false;
 				},
 				mouseout: function (d, i)	{
 					if (!o.on) { return false; }
 
 					return o.on.mouseout ? 
-								 o.on.mouseout.call(this, d, i, model) : false;
+								 o.on.mouseout.call(
+								 	this, d, i, model) : false;
 				},
 			}
 		});
@@ -3620,17 +3980,18 @@ var landscape = (function (landscape)	{
 	var model = {
 		div: {},
 		init: {
-			axis: {x: [], y: []},
+			axis: { x: [], y: [] },
 			width: 0,
 			height: 0,
 		},
 		now: {
 			sort: {
-				mutation: null,
+				gene: null,
 				sample: null,
-				value: null,	
+				pq: null,	
 			},
-			axis: {x: [], y: []},
+			group: [],
+			axis: { x: [], y: [] },
 			width: 0,
 			height: 0,
 		},
@@ -3794,6 +4155,83 @@ var landscape = (function (landscape)	{
 		return r;
 	};
 	/*
+		Group lIST 를 합치는 함수.
+	 */
+	function mergeGroup (glist)	{
+		var result = [];
+
+		util.loop(glist, function (d)	{
+			result = result.concat(d);
+		});
+
+		return result;
+	};
+	/*
+		Group, Gene 의 Sort 을 위해 각각의 Axis 에 
+		붙인 Click 이벤트 함수이다.
+	 */
+	function axisForSort (d, i, k)	{
+		if (k.indexOf('group') > -1)	{
+			util.loop(model.data.axis.group.y, function (dd, i)	{
+				if (dd[0] === d)	{
+					var data = new Array().concat(
+							model.data.group.group[i]);
+
+					model.now.group = 
+					landscapeSort.byGroup.call(model, data, 
+						d3.event.altKey ? true : false);
+				}
+			});
+
+			var axis = { 
+						axis: 'x', 
+						data: mergeGroup(model.now.group.axis.data),
+					};
+
+			layout.removeG();
+			changeAxisScale(axis);
+			drawLandScape(model.data, model.now.width);
+		} else {
+			var data = [];
+
+			util.loop(model.data.heatmap, function (dd, i)	{
+				if (dd.y === d)	{
+					data.push(dd);
+				}
+			});
+
+			layout.removeG();
+			changeAxisScale(landscapeSort.byGene(
+					model.data.axis.heatmap.x, data));
+			drawLandScape(model.data, model.now.width);
+		}
+	};
+	/*
+		Group, Gene Axis text 의 이벤트를 처리하는 함수.
+	 */
+	function axisEvent (key, el)	{
+		el.style('cursor', 'pointer')
+			.on('click', function (d, i)	{
+				return axisForSort.call(this, d, i, key);
+			})
+			.on('mouseover', function (d)	{
+				d3.select(this).style('font-size', '12px');
+				
+				tooltip({
+					element: this,
+					contents: key.indexOf('group') > -1 ? 
+					'<b>' + d + '</b></br>' + 
+					'Click to Sort</br>Alt + Click add to key' : 
+					'Sort by <b>' + d + '</b>',
+				});
+			})
+			.on('mouseout', function ()	{
+				d3.select(this).style('font-size', '10px');
+
+				tooltip('hide');
+			});
+	};
+	/*
 		x, y 축을 그려주는 함수.
 	 */
 	function drawAxis ()	{
@@ -3804,13 +4242,20 @@ var landscape = (function (landscape)	{
 				c = util.varType(c) !== 'Array' ? [c] : c;
 
 				util.loop(c, function (dd, i)	{
-					axis.element(v)[dd.direction]({
+					var ag = axis.element(v)[dd.direction]({
 						margin: dd.margin,
 						data: axisForGroup(v.attr('id'), 
 									dd.direction === 'top' || 
 									dd.direction === 'bottom' ? d.x : d.y),
 						opt: dd.opt,
 					});
+
+					if (k.indexOf('group') > -1 || 
+						 (k.indexOf('gene') > -1 && 
+						 	dd.direction === 'right'))	{
+						axisEvent(k, 
+							d3.select(ag.node()).selectAll('g text'));
+					}
 				});
 			});
 		});
@@ -3826,6 +4271,7 @@ var landscape = (function (landscape)	{
 			element: v,
 			attr: c.attr,
 			style: c.style,
+			on: c.on,
 			margin: c.margin,
 			direction: c.direction,
 			width: k.indexOf('patient') < 0 && 
@@ -3871,6 +4317,7 @@ var landscape = (function (landscape)	{
 					element: v,
 					attr: c.attr,
 					style: c.style,
+					on: c.on,
 					margin: c.margin,
 					xaxis: c.xaxis.call(model.data.axis),
 					yaxis: c.yaxis.call(model.data.axis),
@@ -3892,12 +4339,14 @@ var landscape = (function (landscape)	{
 					opt: c.opt,
 					attr: c.attr,
 					style: c.style,
+					on: c.on,
 					margin: c.margin,
 					data: dataForGroup(k, d),
 					width: k.indexOf('patient') < 0 ? 
 					(model.now.width || model.init.width) : null,
 					xaxis: c.xaxis.call(model.data.axis),
-					yaxis: model.data.axis.group.y.filter(function (dd, ii)	{
+					yaxis: model.data.axis.group.y
+											.filter(function (dd, ii)	{
 						if (k.indexOf(dd[0].replace(/\s/ig, '')) > -1)	{
 							return dd;
 						}
@@ -3914,6 +4363,7 @@ var landscape = (function (landscape)	{
 			legend({
 				element: v,
 				data: model.data.type,
+				margin: config.landscape.legend.margin,
 				priority: config.landscape.priority,
 				text: config.landscape.legend.text,
 				attr: config.landscape.legend.attr,
@@ -3949,8 +4399,7 @@ var landscape = (function (landscape)	{
 			input: {id: 'viewscale', className: 'viewscale'},
 			change: function (btn, now)	{
 				layout.removeG();
-				// Initialize 버튼을 클릭하였을 때.
-				// 초기화면으로 되돌려 준다.
+				// Initialize 버튼을 클릭하였을 때, 초기화면으로 되돌려 준다.
 				if (btn === 'initialize')	{
 					changeAxisScale({ 
 						axis: 'x', data: model.init.axis.x });
@@ -3982,24 +4431,89 @@ var landscape = (function (landscape)	{
 		정렬버튼과 현재 정렬의 상태를 보여주는 UI 를 그려주는 함수.
 	 */
 	function drawSort ()	{
-		selectBox({
-			element: '#landscape_option',
-			margin: [0, 8, 0, 0],
-			height: '30px',
-			className: 'landscape-sort',
-			initText: 'Select by sort..',
-			viewName: 'sort',
-			items: ['Mutation', 'Value', 'Sample'],
-			click: function (v)	{
-				!model.now.sort[v] ? model.now.sort[v] = 'asc' : 
-				 model.now.sort[v] === 'asc' ? 
-				 model.now.sort[v] = 'desc' : model.now.sort[v] = 'asc';
-				 
-				layout.removeG();
-				changeAxisScale(
-					landscapeSort[model.now.sort[v]](v, model.data));
-				drawLandScape(model.data, model.now.width);
-			},
+		var tag = ['axis_sample', 'gene', 'pq'],
+				txt = ['#Mutations', '#Mutations', '-log10(p-value)'],
+				i = 0;
+
+		layout.getSVG(model.svg, tag, function (k, v)	{
+			var md = {};
+
+			md.id = v.attr('id');
+			md.w = v.attr('width');
+			md.h = v.attr('height');
+			md.m = size.setMargin(config.landscape.stack.gene.margin);
+			md.g = render.addGroup(v, md.m.top, md.m.left);
+
+			if (md.id.indexOf('sample') > -1)	{
+				md.g.attr('transform', 
+									'translate(' + md.m.top + ',' + md.m.left 
+															 + ') rotate(270)');
+			}
+
+			render.text({
+				element: md.g.selectAll('#' + md.id + '_sort_text'),
+				data: [txt[i++]],
+				id: function (d)	{ return md.id + 'sort_text'; },
+				attr: {
+					x: function (d, i)	{
+						if (md.id.indexOf('sample') > -1)	{
+							return -md.m.bottom * 2 + md.m.top;
+						} else if (md.id.indexOf('gene') > -1)	{
+							return md.w - md.m.right * 2 + md.m.left;
+						} else if (md.id.indexOf('pq') > -1)	{
+							return md.m.left;
+						}
+					},
+					y: function (d, i)	{
+						return md.id.indexOf('sample') > -1 ? 
+									 md.w - md.m.bottom : 
+									 md.h - md.m.top * 2;
+					},
+				},
+				style: {
+					'alignment-baseline': 'middle',
+					'font-weight': 'bold',
+					'font-size': '12px',
+					'cursor': 'pointer',
+					'fill': '#333333',
+				},
+				on: {
+					click: function (d, i)	{
+						var prop = '';
+
+						if (md.id.indexOf('sample') > -1)	{
+							prop = 'sample';
+						} else if (md.id.indexOf('gene') > -1)	{
+							prop = 'gene';
+						} else if (md.id.indexOf('pq') > -1)	{
+							prop = 'pq';
+						}
+
+						!model.now.sort[prop] ? 
+						 model.now.sort[prop] = 'asc' : 
+						 model.now.sort[prop] === 'asc' ? 
+						 model.now.sort[prop] = 'desc' : 
+						 model.now.sort[prop] = 'asc';
+
+						layout.removeG();
+						changeAxisScale(
+							landscapeSort[model.now.sort[prop]]
+							(prop, model.data));
+						drawLandScape(model.data, model.now.width);
+					},
+					mouseover: function ()	{
+						tooltip({
+							element: this,
+							contents: 'Sort by <b>' + 
+												d3.select(this).text() + '</b>',
+						});
+					},
+					mouseout: function ()	{
+						tooltip('hide');
+					},
+				},
+				text: function (d, i)	{ return d; },
+			});
 		});
 	};
 	/*
@@ -4031,10 +4545,11 @@ var landscape = (function (landscape)	{
 		drawGroup();
 		// Draw Legend.
 		drawLegend();
+		// Draw Sorting label.
+		drawSort();
 	};
 
 	return function (o)	{
-		console.log('Given Landscape data: ', o);
 		var e = document.querySelector(o.element || null),
 				w = parseFloat(o.width || e.style.width || 1400),
 				h = parseFloat(o.height || e.style.height || 700);
@@ -4042,12 +4557,6 @@ var landscape = (function (landscape)	{
 		model.origin = o.data;
 		// preprocess data for landscape and call drawLandScape.
 		model.data = preprocessing.landscape(o.data);
-		// 초기 x, y 축 값을 저장해 놓는다. 이는 나중에 초기화 버튼을
-		// 눌렀을때 초기화면으로 돌아가기 위함이다.
-		model.init.axis.x = 
-		new Array().concat(model.data.axis.heatmap.x);
-		model.init.axis.y = 
-		new Array().concat(model.data.axis.gene.y);
 		// Make Landscape layout and return div ids.
 		model.ids = size.chart.landscape(e, w, h);
 		// 처음에 가로 길이를 정해준다.
@@ -4056,8 +4565,6 @@ var landscape = (function (landscape)	{
 		title();
 		// Draw Scale.
 		drawScale();
-		// Draw Sorting label.
-		drawSort();
 		// 그룹 개수에 따라 div 를 만들어 준다 (높이는 일정한 간격).
 		groupFrame(model.data.axis.group.y);
 		// Make svg to parent div and object data.
@@ -4065,12 +4572,16 @@ var landscape = (function (landscape)	{
 		// to exclusive.
 		model.exclusive.init = landscapeSort.exclusive(
 			model.data.heatmap, model.data.gene);
+		// 초기 x, y 축 값을 저장해 놓는다. 이는 나중에 초기화 버튼을
+		// 눌렀을때 초기화면으로 돌아가기 위함이다.
+		model.init.axis.x = 
+		new Array().concat(model.exclusive.init.data);
+		model.init.axis.y = 
+		new Array().concat(model.data.axis.gene.y);
 		// Set init exclusive.
 		changeAxisScale(model.exclusive.init);
 		// Mutational Landscape 를 그려주는 함수.
 		drawLandScape(model.data, model.init.width);
-
-		console.log('Landscape Model data: ', model);
 		// Scroll event for moving execution.
 		eventHandler.onScroll('#landscape_heatmap', function (e)	{
 			var s = document.querySelector('#landscape_sample'),
@@ -4083,6 +4594,9 @@ var landscape = (function (landscape)	{
 				d.scrollLeft = this.scrollLeft;
 			});
 		});
+
+		console.log('Given Landscape data: ', o);
+		console.log('Landscape Model data: ', model);
 	};
 }(landscape||{}));
 var landscapeScaleOption = (function (landscapeScaleOption)	{
@@ -4116,22 +4630,28 @@ var landscapeScaleOption = (function (landscapeScaleOption)	{
 		var sign = this.id === 'upscale' ? 1 : -1,
 				chNum = parseInt(model.defaultValue * 0.1);
 
-		model.status = model.status < model.default ? model.default : 
-									 model.status > 200 ? 200 : model.status;
-
-		input.value = model.status + ' %';
-
 		model.nowValue = this.id === 'initialize' ? 
 		model.defaultValue : this.id === 'upscale' ? 
 		model.nowValue + (sign * chNum) : 
 		model.nowValue + (sign * chNum); 
-		// 현재 값이 기본값보다 작으면 기본값으로,
-		// 현재 값이 기본값의 한계치인 2배 값보다 높으면 기본값의 한계치로 대치한다.
-		model.nowValue = model.defaultValue > model.nowValue ? 
-		model.defaultValue : model.defaultValue * 2 < model.nowValue ? 
+		// 보이는 최대 가로 길이에 맞을 때 까지 비율을 줄어들게 하였다.
+		model.status = 
+		model.defaultValue / 2 > model.nowValue ? 
+	 (model.status += model.interval, model.status) : 
+		model.status > 200 ? 200 : model.status;
+
+		input.value = model.status + ' %';
+		// 현재 값이 기본값의 절반보다 작으면 기본값의 절반으로,
+		// 현재 값이 기본값의 한계치인 2배 값보다 높으면 
+		// 기본값의 한계치로 대치한다.
+		model.nowValue = 
+		model.defaultValue / 2 > model.nowValue ? 
+		model.defaultValue / 2 : 
+		model.defaultValue * 2 < model.nowValue ? 
 		model.defaultValue * 2 : model.nowValue;
 
-		model.change ? model.change(this.id, model.nowValue) : false;
+		model.change ? 
+		model.change(this.id, model.nowValue) : false;
 	};
 	/*
 	 Scalable button 들을 만들어주는 함수.
@@ -4162,7 +4682,8 @@ var landscapeScaleOption = (function (landscapeScaleOption)	{
 			ip.id = d.id;
 			ip.readOnly = true;
 			ip.tabIndex = -1;
-			ip.value = (model.value || model.default) + ' ' + model.unit;
+			ip.value = (model.value || model.default) + 
+						' ' + model.unit;
 
 			p.appendChild(ip);
 		});
@@ -4194,15 +4715,18 @@ var landscapeScaleOption = (function (landscapeScaleOption)	{
 			model = opts;
 			model.status = opts.default;
 			model.e = document.querySelector(opts.element);
-			model.width = parseFloat(opts.width || model.e.style.width || 140);
-			model.height = parseFloat(opts.height || model.e.style.height || 105);
+			model.width = parseFloat(
+			opts.width || model.e.style.width || 140);
+			model.height = parseFloat(
+			opts.height || model.e.style.height || 105);
 			model.change = opts.change || null;
 			model.defaultValue = opts.defaultValue;
 			model.nowValue = model.defaultValue;
 			model.e.appendChild(div);
 
 			opts.btn = opts.btn.length ? opts.btn : [opts.btn];
-			opts.input = opts.input.length ? opts.input : [opts.input];
+			opts.input = opts.input.length ? 
+									 opts.input : [opts.input];
 				
 			input(div, opts);
 			button(div, opts);
@@ -4231,9 +4755,9 @@ var landscapeSort = (function (landscapeSort)	{
 	 */
 	function findData (type, data)	{
 		switch (type)	{
-			case 'mutation': return data.stack.gene; break;
+			case 'gene': return data.stack.gene; break;
 			case 'sample': return data.stack.sample; break;
-			case 'value': return data.pq; break;
+			case 'pq': return data.pq; break;
 			case 'init': return data.init; break;
 			default: 
 			throw new Error('No matching any data'); break;
@@ -4315,9 +4839,9 @@ var landscapeSort = (function (landscapeSort)	{
 	 */
 	function callMatchingFunction (type, sort, data)	{
 		switch (type)	{
-			case 'mutation': return alignByMutation(sort, data); break;
+			case 'gene': return alignByMutation(sort, data); break;
 			case 'sample': return alignBySample(sort, data); break;
-			case 'value': return alignByPQvalue(sort, data); break;
+			case 'pq': return alignByPQvalue(sort, data); break;
 			default: throw new Error('Not matching any function'); break;
 		};
 	};
@@ -4395,14 +4919,128 @@ var landscapeSort = (function (landscapeSort)	{
 	/*
 		개별 Gene 에 대한 Sort 를 한다.
 	 */
-	landscapeSort.byGene = function ()	{
+	landscapeSort.byGene = function (std, data)	{
+		var exc = landscapeSort.exclusive(data, data[0].y);
 
+		util.loop(std, function (d)	{
+			if (exc.data.indexOf(d) < 0)	{
+				exc.data.push(d);
+			}
+		});
+
+		return exc;
+	};
+	/*
+		Group 명 별로 키값을 만들어 데이터를 분류하는 함수.
+	 */
+	function byGroupMakeObj (data)	{
+		var obj = {};
+
+		util.loop(data, function (d, i)	{
+			!obj[d.value] ? obj[d.value] = [d] : 
+											obj[d.value].push(d);
+		});
+
+		return obj;		
+	};
+	/*
+		Obj 의 키값을 순서대로 정렬하고 각각의 데이터를 배열화 하는 함수.
+	 */
+	function byGroupResult (obj)	{
+		var result = [];
+
+		util.loop(Object.keys(obj).sort(function (a, b)	{
+			return config.landscape.orderedName.indexOf(a) > 
+						 config.landscape.orderedName.indexOf(b) ? 
+						 1 : -1;
+		}), function (d, i)	{
+			result.push(obj[d]);
+		});
+
+		return result;		
+	};
+
+	function byGroupExclusive (group)	{
+		var that = this,
+				heat = [];
+
+		util.loop(group, function (d, i)	{
+			var tempHeat = [];
+
+			util.loop(d, function (dd, ii)	{
+				tempHeat = tempHeat.concat(dd.info);
+			});
+
+			 heat.push(
+			 	landscapeSort.exclusive(tempHeat, that.data.gene));
+		});
+
+		return heat;
+	};
+	/*
+		Group 별로 정렬하는 데이터를 만들어주는 함수.
+	 */
+	function byGroupProc (data)	{
+		var obj = byGroupMakeObj(data),
+				gr = byGroupResult(obj),
+				ht = byGroupExclusive.call(this, gr),
+				result = {};
+
+		util.loop(ht, function (d, i)	{
+			result.axis = d.axis;
+			result.data ? result.data.push(d.data) : 
+										result.data = [d.data];
+		});
+
+		return { group: gr, axis: result };				
+	};
+	/*
+		이전에 선택된 그룹과 새로 전달된 그룹데이터에서
+		맞는 데이터를 뽑는다.
+	 */
+	function byGroupMatching (data, group)	{
+		var result = [];
+
+		util.loop(data, function (d, i)	{
+			util.loop(group, function (g, j)	{
+				if (d.x === g.x)	{
+					result.push(d);
+				}
+			});
+		});
+
+		return result;
 	};
 	/*
 		Group 의 속성 priority 순서로 정렬하는 함수.
 	 */
-	landscapeSort.byGroup = function ()	{
+	landscapeSort.byGroup = function (data, isAlt)	{
+		if (isAlt)	{
+			if (this.now.group.length < 1)	{
+				throw new Error ('There are empty now group data');
+			}	
 
+			var that = this,
+					temp = [],
+					result = { group: [], axis: { 
+						axis: 'x', data: [],
+					} };
+
+			util.loop(this.now.group.group, function (d, i)	{
+				temp.push(
+					byGroupProc.call(that, byGroupMatching(data, d)));
+			});
+
+			util.loop(temp, function (d, i)	{
+				result.group = result.group.concat(d.group);
+				result.axis.data = 
+				result.axis.data.concat(d.axis.data);
+			});
+
+			return result;
+		}
+
+		return byGroupProc.call(this, data);
 	};
 
 	return landscapeSort;
@@ -4798,7 +5436,16 @@ var needle = (function (needle)	{
 		model.sy = scale.get(o.yaxis, 
 			[model.h - model.m.bottom, model.m.top]);
 		model.line = (util.d3v4() ? d3.line() : d3.svg.line())
-								 .x(function (d, i) { return model.sx(d.x); })
+								 .x(function (d, i) { 
+								 		if (model.sx(d.x) < model.m.left)	{
+								 			return -100;
+								 		} else if (model.sx(d.x) > 
+								 							 model.w - model.m.right)	{
+								 			return model.w + 100;
+								 		}
+
+								 		return model.sx(d.x); }
+								 	)
 								 .y(function (d, i) { return model.sy(d.y); });
 
 		util.loop(o.lineData, function (d, i)	{
@@ -5007,10 +5654,7 @@ var needleGraph = (function (needleGraph)	{
 var needleNavi = (function (needleNavi)	{
 	'use strict';
 
-	var model = {
-		start: 0,
-		end: 0,
-	};
+	var model = { start: 0, end: 0 };
 	/*
 		Navigator 를 조절할 양쪽의 조절 버튼을 만드는
 		함수.
@@ -5032,10 +5676,10 @@ var needleNavi = (function (needleNavi)	{
 					rx: 5,
 				},
 				style: {
-					fill: '#A8A8A8',
-					stroke: '#EAECED',
+					'fill': '#A8A8A8',
+					'stroke': '#EAECED',
 					'stroke-width': '2px',
-					cursor: 'move',
+					'cursor': 'ew-resize',
 				},
 				call: {
 					start: function (d, i)	{
@@ -5093,6 +5737,11 @@ var needleNavi = (function (needleNavi)	{
 		 model.start - model.rect.width;
 		config.variants.navi.end.now = 
 		 model.end - model.rect.width + model.m.left;
+		config.variants.navi.navi.init = model.start;
+		config.variants.navi.navi.now = model.start;
+		config.variants.navi.navi.width = model.end;
+		config.variants.navi.navi.nowWidth = 
+		 model.end - model.start;
 
 		needle({
 			element: model.e,
@@ -5100,7 +5749,7 @@ var needleNavi = (function (needleNavi)	{
 			circleData: o.data.fullNeedle,
 			attr: config.variants.needle.attr,
 			style: o.style,
-			margin: [5, 30, 10, 60],
+			margin: [5, 30, 15, 60],
 			xaxis: o.xaxis,
 			yaxis: o.yaxis,
 		});
@@ -5120,6 +5769,7 @@ var needleNavi = (function (needleNavi)	{
 			style: {
 				fill: 'rgba(255, 225, 50, 0.1)',
 				stroke: '#FFDF6D',
+				cursor: 'move',
 			},
 			call: {
 				start: function (d, i)	{
@@ -5144,6 +5794,11 @@ var needleNavi = (function (needleNavi)	{
 		});
 
 		makeControlRect(o, ['start', 'end']);
+		// Navigator 가 Needle Plot 에 가려져 있던 것을
+		// 앞으로 내와서 안가려지게 하였다.
+		model.e.node().removeChild(
+		model.e.node().firstChild);
+		model.e.node().appendChild(model.g.node());
 	};
 }(needleNavi||{}));
 var network = (function ()	{	
@@ -5847,7 +6502,20 @@ var preprocessing = (function (preprocessing)	{
 			var t = [];
 
 			util.loop(d.data, function (dd, ii)	{
-				t.push({x: dd[ml.keys.p], y: d.name, value: dd.value});
+				var heat = [];
+
+				util.loop(ml.heatmap, function (ddd, iii)	{
+					if (dd[ml.keys.p] === ddd.x)	{
+						heat.push(ddd);
+					}
+				});
+
+				t.push({
+					x: dd[ml.keys.p], 
+					y: d.name, 
+					value: dd.value,
+					info: heat,
+				});
 			});
 			ml.group.group.push(t);
 			// Group 은 한 행의 heatmap 으로 되어 있기 때문에
@@ -6298,6 +6966,15 @@ var render = (function (render)	{
 
 	return render;
 }(render || {}));
+var reqParams = (function (reqParams)	{
+	'use strict';
+
+	var model = {};
+
+	return function (url, params)	{
+		console.log(url, params);
+	};
+}(reqParams||{}));
 // 일단, D3 에 있는 scale 함수를 사용하여 그리고
 // 후에 scale 알고리즘을 파악하고 공부하여 새로 만드는것으로 하자.
 var scale = (function (scale)	{
@@ -6400,11 +7077,13 @@ var scale = (function (scale)	{
 	 */
 	scale.invert = function (scale)	{
 		var domain = scale.domain(),
-				range = scale.range(),
-				quan = util.d3v4() ? d3.scaleQuantize() : 
-														 d3.scale.quantize();
+				range = scale.range();
+
+		var s = analScale(domain) === 'linear' ? 
+				util.d3v4() ? d3.scaleLinear() : d3.scale.linear() : 
+				util.d3v4() ? d3.scaleQuantize() : d3.scale.quantize();
 														 
-		return quan.domain(range).range(domain);
+		return s.domain(range).range(domain);
 	};
 
 	return scale;
@@ -6864,9 +7543,9 @@ var size = (function (size)	{
 		var ids = {
 			variants_title: {w: w * 0.95, h: h * 0.05},
 			variants_needle: {w: w * 0.85, h: h * 0.85},
-			variants_legend: {w: w * 0.15, h: h * 0.32},
-			variants_patient_legend: {w: w * 0.15, h: h * 0.2},
-			variants_navi: {w: w * 0.85, h: h * 0.1},
+			variants_legend: {w: w * 0.15, h: h * 0.5},
+			variants_patient_legend: {w: w * 0.15, h: h * 0.5},
+			variants_navi: {w: w * 0.85, h: h * 0.09},
 		};
 
 		return makeFrames.call(size.setSize(e, w, h), ids), model.ids;
@@ -7272,13 +7951,12 @@ var variants = (function (variants)	{
 		X,Y 축을 그려주는 함수.
 	 */
 	function drawAxis ()	{
-		var dr = ['left', 'top'],
-				// Y 축의 데이터는 아래에서 위로 향하는 데이터이기 때문에
+		var // Y 축의 데이터는 아래에서 위로 향하는 데이터이기 때문에
 				// 원본데이터를 복사하여 순서를 뒤집어 주었다.
 				yd = new Array().concat(model.data.axis.needle.y);
 
 		layout.getSVG(model.svg, ['needle'], function (k, v)	{
-			util.loop(dr, function (d, i)	{
+			util.loop(['left', 'top'], function (d, i)	{
 				axis.element(v)[d]({
 					margin: config.variants.axis[d].margin,
 					position: getAxisPosition(d, v, 
@@ -7293,7 +7971,7 @@ var variants = (function (variants)	{
 	/*
 		Needle Plot 을 그려주는 함수.
 	 */
-	function drawNeedle ()	{
+	function drawNeedle (xaxis)	{
 		layout.getSVG(model.svg, ['needle'], function (k, v)	{
 			needle({
 				element: v,
@@ -7303,7 +7981,7 @@ var variants = (function (variants)	{
 				attr: config.variants.needle.attr,
 				style: config.variants.needle.style,
 				margin: config.variants.needle.margin,
-				xaxis: model.data.axis.needle.x,
+				xaxis: (xaxis || model.data.axis.needle.x),
 				yaxis: model.data.axis.needle.y,
 				on: config.variants.needle.on,
 			});
@@ -7312,7 +7990,7 @@ var variants = (function (variants)	{
 	/*
 		Needle Plot 아래 Graph 를 그려주는 함수.
 	 */
-	function drawNeedleGraph ()	{
+	function drawNeedleGraph (xaxis)	{
 		layout.getSVG(model.svg, ['needle'], function (k, v)	{
 			needleGraph({
 				element: v,
@@ -7321,7 +7999,7 @@ var variants = (function (variants)	{
 				style: config.variants.needleGraph.style,
 				margin: config.variants.needleGraph.margin,
 				text: config.variants.needleGraph.text,
-				xaxis: model.data.axis.needle.x,
+				xaxis: (xaxis || model.data.axis.needle.x),
 				yaxis: model.data.axis.needle.y,
 				on: config.variants.needleGraph.on,
 			});
@@ -7342,7 +8020,24 @@ var variants = (function (variants)	{
 				drag: {
 					drag: config.variants.navi.drag.drag,
 					end: function (d, i, m)	{
-						console.log('end: ', d, m);
+						var cv = config.variants.navi,
+								iv = scale.invert(m.sx),
+								dm = [iv(cv.start.now + m.rect.width),
+											iv(cv.end.now + m.rect.width)],
+								rg = [m.m.left, m.w - m.m.right];
+
+						d3.selectAll('.top-axis-g-tag')
+							.call(axis.byVersion(scale.get(dm, rg), 'top'));
+
+						layout.removeG([
+							'.variants_needle_chart.needle-line-g-tag', 
+							'.variants_needle_chart.needle-circle-g-tag',
+							'.variants_needle_chart.needle-graph-g-tag', 
+							'.variants_needle_chart.needle-patient-g-tag']);
+
+						drawNeedle(dm);
+						drawNeedleGraph(dm);
+						drawPatient(dm);
 					},
 				},
 			});
@@ -7351,48 +8046,54 @@ var variants = (function (variants)	{
 	/*
 		Needle 에 Patient 를 추가하는 함수.
 	 */
-	function needlePatient (d)	{
+	function needlePatient (d, xaxis)	{
 		layout.getSVG(model.svg, ['needle'], function (k, v)	{
 			var md = {},
 			  	cp = config.variants.patient.needle;
 
 			md.m = size.setMargin(cp.margin);
-			md.s = draw.size(v);
+			md.id = v.attr('id');
+			md.w = v.attr('width');
+			md.h = v.attr('height');
 			md.g = render.addGroup(
-				v, md.s.h - md.m.bottom, md.m.left, 'needle-patient');
-			md.s = scale.get(model.data.axis.needle.x, [
-				md.m.left, md.s.w - md.m.right]);
+				v, md.h - md.m.bottom, md.m.left, 'needle-patient');
+			md.s = scale.get((xaxis || model.data.axis.needle.x), 
+											 [md.m.left, md.w - md.m.right]);
 			md.len = 5;
 
 			render.triangle({
-				element: md.g.selectAll('#' + v.attr('id') + '_tri'),
+				element: md.g.selectAll('#' + md.id + '_tri'),
 				data: d,
 				attr: {
-					id: function (d, i) { return v.attr('id') + '_tri'; },
+					id: function (d, i) { return md.id + '_tri'; },
 					points: function (d, i) { 
 						return cp.attr.points ? 
-									 cp.attr.points.call(this, d, i, md) : [0, 0];
+									 cp.attr.points.call(
+									 	this, d, i, md) : [0, 0];
 					},
 				},
 				style: {
 					fill: function (d, i) { 
 						return cp.style.fill ? 
-									 cp.style.fill.call(this, d, i, md) : '#000000';
+									 cp.style.fill.call(
+									 	this, d, i, md) : '#000000';
 					},
 					stroke: function (d, i)	{
 						return cp.style.stroke ? 
-									 cp.style.stroke.call(this, d, i, md) : '#FFFFFF';
+									 cp.style.stroke.call(
+									 	this, d, i, md) : '#FFFFFF';
 					},
-					'stroke-width': '3px',
 				},
 				on: {
 					mouseover: function (d, i)	{
 						return cp.on.mouseover ? 
-									 cp.on.mouseover.call(this, d, i, md) : false;
+									 cp.on.mouseover.call(
+									 	this, d, i, md) : false;
 					},
 					mouseout: function (d, i)	{
 						return cp.on.mouseout ? 
-									 cp.on.mouseout.call(this, d, i, md) : false;
+									 cp.on.mouseout.call(
+									 	this, d, i, md) : false;
 					},
 				}
 			});
@@ -7416,7 +8117,11 @@ var variants = (function (variants)	{
 	/*
 		Patient 를 그려주는 함수.
 	 */
-	function drawPatient ()	{
+	function drawPatient (xaxis)	{
+		if (xaxis)	{
+			return needlePatient(model.data.patient, xaxis);
+		}
+
 		needlePatient(model.data.patient);
 		legendPatient(model.data.patient);
 	};
