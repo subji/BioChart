@@ -5374,7 +5374,7 @@ var legend = (function (legend)	{
 	'use strict';
 	
 	window.bio = {
-		request: reqParams,
+		reqParams: reqParams,
 		draw: draw,
 		config: config,
 		render: render,
