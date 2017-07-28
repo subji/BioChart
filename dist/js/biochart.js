@@ -3691,6 +3691,8 @@ var expression = (function (expression)	{
 				model.now.sig = v;
 				model.req.signature = model.now.sig;
 
+				document.querySelector(model.element).innerHTML = '';
+
 				$.ajax({
 					type: 'GET',
 					url: model.url,
