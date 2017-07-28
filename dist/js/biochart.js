@@ -2171,7 +2171,8 @@ config.expression.sample = {
 	attr: {
 		x: function (d, m)	{
 			return m.data.patient.data === d.text ? 
-						 draw.getTextWidth(d.text, '25px') + 45 : -5;
+						 draw.getTextWidth(d.text, '25px') + 
+						 draw.getTextWidth(d.text, '25px') * 0.5 : -5;
 		},
 		y: function (d, m)	{
 			return m.data.patient.data === d.text ? 
@@ -2522,7 +2523,7 @@ var draw = (function (draw)	{
 
 		div.id = 'get_text_height';
 		text.style.fontSize = (size || '10px');
-		text.style.fontStyle = (font || 'Arial');
+		// text.style.fontStyle = (font || 'Arial');
 		text.innerHTML = 'Hg';
 		block.style.display = 'inline-block';
 		block.style.width = '1px';
@@ -6906,8 +6907,6 @@ var render = (function (render)	{
 		for (var drag in drags)	{
 			var nm = util.d3v4() ? drag : 
 					drag !== 'drag' ? 'drag' + drag : drag;
-
-			console.log(nm)
 
 			dg.on(nm, drags[drag]);
 		}
