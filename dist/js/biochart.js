@@ -2175,16 +2175,16 @@ config.expression.sample = {
 
 			return m.data.patient.data === d.text ? 
 						 bcr.right - bcr.left : -5;
-			return m.data.patient.data === d.text ? 
-						 draw.getTextWidth(d.text, '25px') + 
-						 draw.getTextWidth(d.text, '25px') * 0.5 : -5;
 		},
 		y: function (d, m)	{
-			var bcr = d3.select('.legend').node()
+			var bcr = d3.select('.legend text').node()
 									.getBoundingClientRect();
 
+			return d.text.indexOf('Low') > -1 ? 
+						 bcr.height / 2 + (bcr.height / 4) : 
+						 bcr.height / 2 - (bcr.height / 4);
 			return m.data.patient.data === d.text ? 
-						 bcr.height / 1.3 : 0;
+						 bcr.height / 2  : 0;
 			return m.data.patient.data === d.text ? 
 						 draw.getTextHeight('25px').height / 2 : 0;
 		},
