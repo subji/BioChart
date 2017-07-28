@@ -6905,9 +6905,7 @@ var render = (function (render)	{
 
 		for (var drag in drags)	{
 			var nm = util.d3v4() ? drag : 
-					drag !== 'drag' ? 
-					drag.substring(0, 1) + drag.substring(1) : 
-					drag;
+					drag !== 'drag' ? 'drag' + drag : drag;
 
 			console.log(nm)
 
