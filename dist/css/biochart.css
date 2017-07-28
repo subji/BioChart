@@ -138,7 +138,7 @@
     border-radius: 0 1px 5px 5px;
     overflow: hidden;
     display: none;
-    max-height: 140px;
+    max-height: 120px;
     overflow-y: auto;
     z-index: 9;
 }
