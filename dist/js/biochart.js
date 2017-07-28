@@ -1948,7 +1948,8 @@ config.expression.division = {
 		x: function (d, i, m) {
 			return i > 0 ? m.isText ? 
 						 (m.scale(m.axis[m.axis.length - 1]) - 
-						 	m.m.right) - draw.getTextWidth(d.text, m.font): 
+						 	m.m.left) - draw.getTextWidth(d.text, m.font) -
+						 m.padding * 2: 
 						 m.scale(d.point) - m.m.left : 
 						 m.isText ? m.scale(m.axis[0]) - 
 						 m.m.left + m.padding * 2 : 
@@ -2484,7 +2485,7 @@ var draw = (function (draw)	{
 				width = 0;
 
 		canv.id = 'get-text-width'
-		ctx.font = (font ? font + ' arial' : '10px arial');
+		ctx.font = (font ? font : '10px');
 
 		document.body.appendChild(canv);
 
