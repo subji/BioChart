@@ -170,25 +170,36 @@ a {
   color: #00B7FF;
 }
 
-.top-axis-g-tag {
+.top-axis-g-tag text,
+.left-axis-g-tag text,
+.bottom-axis-g-tag text,
+.right-axis-g-tag text {
+	font-size: 12px;
+}
+
+.top-axis-g-tag path,
+.top-axis-g-tag line {
 	fill: none;
   stroke: #000;
   shape-rendering: crispEdges;
 }
 
-.left-axis-g-tag {
+.left-axis-g-tag path,
+.left-axis-g-tag line  {
 	fill: none;
   stroke: #000;
   shape-rendering: crispEdges;	
 }
 
-.bottom-axis-g-tag {
+.bottom-axis-g-tag path,
+.bottom-axis-g-tag line  {
 	fill: none;
   stroke: #000;
   shape-rendering: crispEdges;
 }
 
-.right-axis-g-tag {
+.right-axis-g-tag path,
+.right-axis-g-tag line  {
 	fill: none;
   stroke: #000;
   shape-rendering: crispEdges;
