@@ -3831,6 +3831,7 @@ var expression = (function (expression)	{
 		e.style.background = '#F7F7F7';
 
 		model.origin = o.data;
+		model.req = o.req;
 		model.data = preprocessing.expression(o.data);
 		model.ids = size.chart.expression(e, w, h);
 		model.svg = layout.expression(model.ids, model);
