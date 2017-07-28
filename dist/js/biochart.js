@@ -2184,7 +2184,7 @@ config.expression.sample = {
 
 			return d.text.indexOf('Low') > -1 ? 
 						 bcr.height / 2 + (bcr.height / 4) : 
-						 draw.getTextHeight('15px').height;
+						 draw.getTextHeight('25px').height;
 			return m.data.patient.data === d.text ? 
 						 bcr.height / 2  : 0;
 			return m.data.patient.data === d.text ? 
