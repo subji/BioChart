@@ -2180,15 +2180,9 @@ config.expression.sample = {
 			var bcr = d3.select('.legend text').node()
 									.getBoundingClientRect();
 
-			console.log(bcr);
-
 			return d.text.indexOf('Low') > -1 ? 
 						 bcr.height / 2 + (bcr.height / 4) : 
-						 draw.getTextHeight('14px').height / 2;
-			return m.data.patient.data === d.text ? 
-						 bcr.height / 2  : 0;
-			return m.data.patient.data === d.text ? 
-						 draw.getTextHeight('25px').height / 2 : 0;
+						 draw.getTextHeight('16px').height / 2;
 		},
 	},
 	style: {
