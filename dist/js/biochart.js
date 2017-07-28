@@ -6913,7 +6913,8 @@ var render = (function (render)	{
 				dg = d3.drag().on(nm, drags[drag]);
 			} else {
 				console.log('v3');
-				dg = d3.behavior.drag().on(nm, drags[drag]);
+				dg = svgElement.call(
+					d3.behavior.drag().origin(Object).on(nm, drags[drag]));
 			}
 			// dg.on(nm, drags[drag]);
 		}
