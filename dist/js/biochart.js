@@ -6901,7 +6901,7 @@ var render = (function (render)	{
 		if (!drags) { return false; }
 
 		var dg = util.d3v4() ? 
-				d3.drag() : d3.behavior.drag().origin(Object);
+				d3.drag() : d3.behavior.drag();
 
 		for (var drag in drags)	{
 			var nm = util.d3v4() ? drag : 
@@ -6909,7 +6909,13 @@ var render = (function (render)	{
 					drag.substring(0, 1).toUpperCase() + 
 					drag.substring(1) : drag;
 
-			dg.on(nm, drags[drag]);
+			if (util.d3v4())	{
+				dg = d3.drag().on(nm, drags[drag]);
+			} else {
+				console.log('v3');
+				dg = d3.behavior.drag().on(nm, drags[drag]);
+			}
+			// dg.on(nm, drags[drag]);
 		}
 
 		svgElement.call(dg);
