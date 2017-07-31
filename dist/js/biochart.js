@@ -1427,9 +1427,9 @@ config.variants.needle = {
 	attr: {
 		x: function (d, i, m)	{
 			if (m.sx(d.x) < m.m.left)	{
-				return -m.m.left;
+				return -m.m.left * 2;
 			} else if (m.sx(d.x) > m.w - m.m.right)	{
-				return m.w;
+				return m.w + m.m.left * 2;
 			}
 
 			return m.sx(d.x);
