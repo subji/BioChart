@@ -3796,7 +3796,6 @@ var expression = (function (expression)	{
 			});
 		});
 
-		drawSampleLegend();
 		drawSampleSurvival();
 	};
 	/*
