@@ -1711,8 +1711,7 @@ config.variants.patient = {
 		},
 		style: {
 			fill: function (d, i, m)	{
-				return m.isText ? 
-							'#333333' : config.landscape.color(d.type);
+				return m.isText ? '#333333' : '#FFFFFF';
 			},
 			stroke: function (d, i, m)	{
 				return '#333333';
@@ -1722,7 +1721,7 @@ config.variants.patient = {
 			},
 		},
 		text: function (d, i, m) { 
-			return 'Patients'; 
+			return d.replace(/\d/g, '');
 		},
 	},
 };
@@ -8172,7 +8171,7 @@ var variants = (function (variants)	{
 		layout.getSVG(model.svg, ['nt_legend'], function (k, v)	{
 			legend({
 				element: v,
-				data: d,
+				data: [d[0].id],
 				attr: config.variants.patient.legend.attr,
 				style: config.variants.patient.legend.style,
 				text: config.variants.patient.legend.text,
