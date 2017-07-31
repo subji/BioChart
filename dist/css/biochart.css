@@ -306,7 +306,7 @@ a {
 }
 
 
-#variants_title { float: left; background: #EFEFEF; padding-left: 5%; /*font-size: 30px;*/ font-weight: bold; font-family: initial; text-shadow: 2px 1px #D6D6D6; }
+#variants_title { float: left; background: #EFEFEF; padding-top: 2px; padding-left: 5%; font-weight: bold; font-family: initial; text-shadow: 2px 1px #D6D6D6; }
 
 #variants_needle {
 	float: left;
@@ -319,7 +319,7 @@ a {
 }
 
 #variants_patient_legend {
-	float: left;
+	float: right;
 	background: #F7F7F7;
 }
 

@@ -1385,22 +1385,39 @@ config.variants.legend = {
 	margin: [20, 10, 0, 0],
 	attr: {
 		x: function (d, i, m) { 
-			var x = m.dr === 'h' ? 
-						 (m.p * 10 + m.mw) * i : m.isText ? m.p : 0;
+			if (m.isText)	{
+				return m.x[i] + m.padding * 2;
+			} else {
+				var nw = m.shape + (m.padding * 3) + m.mw,
+						res = 0, nx = 0;
 
-			return m.isText ? (x + m.p * 2) : x;
+				m.x[i - 1] ? 
+				m.x[i - 1] + nw > m.w ? 
+				(nx = m.padding, res = nx) : 
+				(nx = m.x[i - 1] + nw, res = nx - nw) :
+				(nx = m.padding, res = nx);
+
+				return m.x.push(res), res;
+			}
 		},
 		y: function (d, i, m) { 
-			return m.isText ? m.mh * i + 7 * i + 1 : 
-												m.mh * i + 7 * i;
+			if (m.isText)	{
+				return m.y[i] + 1;
+			} else {
+				return m.x[i - 1] ? m.x[i - 1] !== m.x[i] ? 
+							(m.y.push(m.padding), m.padding) : 
+							(m.y.push(i * m.mh + m.padding), 
+												i * m.mh + m.padding) : 
+							(m.y.push(m.padding), m.padding);
+			}
 		},
 		r: function (d, i, m) {
-			return 5;
+			return m.shape;
 		},
 	},
 	style: {
 		fontSize: function (d, i, m) {
-			return '12px'
+			return m.font;
 		},
 		fill: function (d, i, m) {
 			return m.isText ? '#333333' : config.landscape.color(d);
@@ -1410,8 +1427,7 @@ config.variants.legend = {
 		},
 	},
 	text: function (d, i, m) {
-		return draw.textOverflow(d, 
-					 config.variants.legend.style.fontSize(), m.mw, 0);
+		return draw.textOverflow(d, m.font, m.mw, 0);
 	},
 };
 
@@ -1520,10 +1536,10 @@ config.variants.needleGraph = {
 			return '#FFFFFF';
 		},
 		fontSize: function (d, i, m)	{
-			return parseFloat(draw.getFitTextSize(
-							d.info.identifier, 
-							m.sx(d.x + d.width) - m.sx(d.x), 
-							m.sh / 1.5));
+			return m.font = draw.getFitTextSize(
+				d.info.identifier, 
+				config.variants.needleGraph.now.width[d.info.identifier],
+				m.sh / 2), m.font;
 		},
 	},
 	on: {
@@ -1543,13 +1559,9 @@ config.variants.needleGraph = {
 		},
 	},
 	text: function (d, i, m) {
-		var nw = config.variants.needleGraph
-									 .now.width[d.info.identifier],
-				width = m.sx(d.x + d.width) - m.sx(d.x);
-
-		return draw.textOverflow(d.info.identifier, 
-					 draw.getFitTextSize(d.info.identifier, 
-					 	width, m.sh / 1.5), nw, 5);
+		return draw.textOverflow(d.info.identifier, m.font, 
+					 config.variants.needleGraph
+					 			 .now.width[d.info.identifier], 5);
 	},
 };
 /*
@@ -1682,28 +1694,21 @@ config.variants.patient = {
 		},
 	},
 	legend: {
-		margin: [5, 0, 0, 0],
+		margin: [5, 10, 0, 0],
 		attr: {
 			points: function (d, i, m)	{
 				// 기존에 그려진 type legend 의 위치를 알아낸 뒤,
 				// 그 아래에 위치하기 위해서 getBoundingClientRect 함수
 				// 를 사용하였다.
-				var l = document.querySelector(
-								'#variants_legend_chart').firstChild,
-						bcr = l.getBoundingClientRect(),
-						x = bcr.right - bcr.left + bcr.width - 10;
-
-				return x + ',' + m.m.top + 
-				 ' ' + (x - bcr.width / 2) + ',' + (m.m.top * 2.5) +
-				 ' ' + (x + bcr.width / 2) + ',' + (m.m.top * 2.5) + 
-				 ' ' + x + ',' + m.m.top;
+				return m.padding + ',' + m.m.top + 
+				 ' ' + (m.padding - m.shape / 2) + 
+				 ',' + (m.m.top * 2.5) +
+				 ' ' + (m.padding + m.shape / 2) + 
+				 ',' + (m.m.top * 2.5) + 
+				 ' ' + m.padding + ',' + m.m.top;
 			},
 			x: function (d, i, m)	{
-				var l = document.querySelector(
-									'#variants_legend_chart').firstChild,
-						bcr = l.getBoundingClientRect();
-
-				return bcr.right - bcr.left + bcr.width + m.p;
+				return m.shape / 2 + m.padding * 2;
 			},
 			y: function (d, i, m)	{
 				return m.m.top / 2 + m.mh / 2;
@@ -1717,7 +1722,7 @@ config.variants.patient = {
 				return '#333333';
 			},
 			fontSize: function (d, i, m) {
-				return '12px';
+				return m.font;
 			},
 		},
 		text: function (d, i, m) { 
@@ -2536,7 +2541,7 @@ var draw = (function (draw)	{
 		// text.style.fontStyle = (font || 'Arial');
 		text.innerHTML = 'Hg';
 		block.style.display = 'inline-block';
-		block.style.width = '1px';
+		block.style.width = '0px';
 		block.style.height = '0px';
 
 	  div.appendChild(text);
@@ -2643,7 +2648,7 @@ var draw = (function (draw)	{
 		Width, Height 에 맞게 적절한 폰트 크기를 반환하는 함수.
 	 */
 	draw.getFitTextSize = function (txt, width, height)	{
-		var i = 1;
+		var i = 10;
 
 		while (1)	{
 			var ti = i + 'px';
@@ -5223,6 +5228,14 @@ var legend = (function (legend)	{
 
 		return result;
 	};
+	/*
+		가장 길이가 긴 문자열을 반환한다.
+	 */
+	function getMostText (texts)	{
+		return texts.sort(function (a, b)	{
+			return a.length < b.length ? 1 : -1;
+		})[0];
+	};
 
 	return function (o)	{
 		model = {};
@@ -5240,18 +5253,26 @@ var legend = (function (legend)	{
 		model.h = o.height || model.e.attr('height');
 		model.t = model.m.top || 0;
 		model.l = model.m.left || 0;
-		model.p = o.padding || 5;
+		model.padding = o.padding || 5;
 		model.font = o.font || '10px';
-		model.sw = 
 		model.sg = render.addGroup(
 		model.e, model.t, model.l, 'legend-shape');
 		model.tg = render.addGroup(
 		model.e, model.t, model.l, 'legend-text');		
+		model.mt = getMostText(model.d);
 		model.mw = getMostWidthOfText(model.d, model.font);
 		model.mh = draw.getTextHeight(model.font).height;
-		model.dr = (model.w - model.m.left - model.m.right)
-						 > (model.h - model.m.top - model.m.bottom) ? 
-						 	 'h' : 'v';
+		// x, y 위치 지정을 위한 배열 변수.
+		model.x = [];
+		model.y = [];
+		// 도형의 크기 계산. 단, 원은 반지름이므로 2배를 하였다.
+		model.shape = (o.attr && o.attr.r) ? 
+		model.mh / 3 : model.mh / 1.5;
+
+		model.ew = model.w - model.shape - model.padding * 2;
+
+		model.font = 
+		draw.getFitTextSize(model.mt, model.ew, model.shape);
 
 		if (o.attr && o.attr.r)	{
 			render.circle({
@@ -5260,23 +5281,28 @@ var legend = (function (legend)	{
 				attr: {
 					id: function (d) { return model.id + '_circle'; },
 					cx: function (d, i)	{
-						return o.attr.x ? o.attr.x.call(this, d, i, model) : 0;
+						return o.attr.x ? o.attr.x.call(
+							this, d, i, model) : 0;
 					},
 					cy: function (d, i)	{
-						return o.attr.y ? o.attr.y.call(this, d, i, model) : 0;
+						return o.attr.y ? o.attr.y.call(
+							this, d, i, model) : 0;
 					},
 					r: function (d, i)	{
-						return o.attr.r ? o.attr.r.call(this, d, i, model) : 0;
+						return o.attr.r ? o.attr.r.call(
+							this, d, i, model) : 0;
 					},
 				}, 
 				style: {
 					fill: function (d, i)	{
 						return o.style.fill ? 
-									 o.style.fill.call(this, d, i, model) : '#000000';
+									 o.style.fill.call(
+									 	this, d, i, model) : '#000000';
 					},
 					stroke: function (d, i)	{
 						return o.style.stroke ? 
-									 o.style.stroke.call(this, d, i, model) : false;
+									 o.style.stroke.call(
+									 	this, d, i, model) : false;
 					},
 				},
 				on: {
@@ -5284,7 +5310,8 @@ var legend = (function (legend)	{
 						if (!o.on) { return false; }
 
 						return o.on.mouseover ? 
-									 o.on.mouseover.call(this, d, i, model) : false;
+									 o.on.mouseover.call(
+									 	this, d, i, model) : false;
 					},
 				},
 			})
@@ -5296,21 +5323,25 @@ var legend = (function (legend)	{
 					id: function (d) { return model.id + '_triangle'; },
 					points: function (d, i) { 
 						return o.attr.points ? 
-									 o.attr.points.call(this, d, i, model) : [0, 0];
+									 o.attr.points.call(
+									 	this, d, i, model) : [0, 0];
 					},
 				},
 				style: {
 					fill: function (d, i)	{
 						return o.style.fill ? 
-									 o.style.fill.call(this, d, i, model) : '#000000';
+									 o.style.fill.call(
+									 	this, d, i, model) : '#000000';
 					},
 					stroke: function (d, i)	{
 						return o.style.stroke ? 
-									 o.style.stroke.call(this, d, i, model) : false;
+									 o.style.stroke.call(
+									 	this, d, i, model) : false;
 					},
 					'stroke-width': function (d, i)	{
 						return o.style.strokeWidth ? 
-									 o.style.strokeWidth.call(this, d, i, model) : '1px';
+									 o.style.strokeWidth.call(
+									 	this, d, i, model) : '1px';
 					},
 				},
 				on: {
@@ -5318,7 +5349,8 @@ var legend = (function (legend)	{
 						if (!o.on) { return false; }
 						
 						return o.on.mouseover ? 
-									 o.on.mouseover.call(this, d, i, model) : false;
+									 o.on.mouseover.call(
+									 	this, d, i, model) : false;
 					},
 				},
 			});
@@ -5329,28 +5361,34 @@ var legend = (function (legend)	{
 				attr: {
 					id: function (d) { return model.id + '_rect'; },
 					x: function (d, i) { 
-						return o.attr.x ? o.attr.x.call(this, d, i, model) : 0;
+						return o.attr.x ? o.attr.x.call(
+							this, d, i, model) : 0;
 					},
 					y: function (d, i) { 
-						return o.attr.y ? o.attr.y.call(this, d, i, model) : 0;
+						return o.attr.y ? o.attr.y.call(
+							this, d, i, model) : 0;
 					},
 					width: function (d, i) { 
 						return o.attr.width ? 
-									 o.attr.width.call(this, d, i, model) : 5; 
+									 o.attr.width.call(
+									 	this, d, i, model) : 5; 
 					},
 					height: function (d, i) { 
 						return o.attr.height ? 
-									 o.attr.height.call(this, d, i, model) : 5; 
+									 o.attr.height.call(
+									 	this, d, i, model) : 5; 
 					},
 				},
 				style: {
 					fill: function (d, i) { 
 						return o.style.fill ? 
-									 o.style.fill.call(this, d, i, model) : '#000000'; 
+									 o.style.fill.call(
+									 	this, d, i, model) : '#000000'; 
 					},
 					stroke: function (d, i) { 
 						return o.style.stroke ? 
-									 o.style.stroke.call(this, d, i, model) : false; 
+									 o.style.stroke.call(
+									 	this, d, i, model) : false; 
 					},
 				},
 				on: {
@@ -5358,7 +5396,8 @@ var legend = (function (legend)	{
 						if (!o.on) { return false; }
 
 						return o.on.mouseover ? 
-									 o.on.mouseover.call(this, d, i, model) : false;
+									 o.on.mouseover.call(
+									 	this, d, i, model) : false;
 					},
 				},
 			});
@@ -5372,32 +5411,39 @@ var legend = (function (legend)	{
 					return (model.isText = true, model.id + '_text'); 
 				},
 				x: function (d, i) { 
-					return o.attr.x ? o.attr.x.call(this, d, i, model) : 0; 
+					return o.attr.x ? o.attr.x.call(
+						this, d, i, model) : 0; 
 				},
 				y: function (d, i) { 
-					return o.attr.y ? o.attr.y.call(this, d, i, model) : 0; 
+					return o.attr.y ? o.attr.y.call(
+						this, d, i, model) : 0; 
 				},
 			},
 			style: {
 				'font-size': function (d, i)	{
 					return o.style.fontSize ? 
-								 o.style.fontSize.call(this, d, i, model) : model.font;
+								 o.style.fontSize.call(
+								 	this, d, i, model) : model.font;
 				},
 				'font-family': function (d, i) { 
 					return o.style.fontFamily ? 
-								 o.style.fontFamily.call(this, d, i, model) : 'Arial'; 
+								 o.style.fontFamily.call(
+								 	this, d, i, model) : 'Arial'; 
 				},
 				'font-weight': function (d, i) {
 					return o.style.fontWeight ? 
-								 o.style.fontWeight.call(this, d, i, model) : '1';
+								 o.style.fontWeight.call(
+								 	this, d, i, model) : '1';
 				},
 				'alignment-baseline': function (d, i)	{
 					return o.style.alignmentBaseline ? 
-								 o.style.alignmentBaseline.call(this, d, i, model) : 'middle';
+								 o.style.alignmentBaseline.call(
+								 	this, d, i, model) : 'middle';
 				},
 				fill: function (d, i)	{
 					return o.style.fill ?
-								 o.style.fill.call(this, d, i, model) : '#333333';
+								 o.style.fill.call(
+								 	this, d, i, model) : '#333333';
 				},
 			},
 			on: {
@@ -5405,12 +5451,14 @@ var legend = (function (legend)	{
 					if (!o.on) { return false; }
 
 					return o.on.mouseover ? 
-								 o.on.mouseover.call(this, d, i, model) : false;
+								 o.on.mouseover.call(
+								 	this, d, i, model) : false;
 				},
 			},
 			text: function (d, i)	{ 
 				return o.text ? 
-							 o.text.call(this, d, i, model) : ('legend ' + i);
+							 o.text.call(
+							 	this, d, i, model) : ('legend ' + i);
 			},
 		});
 	};
@@ -5578,11 +5626,13 @@ var needleGraph = (function (needleGraph)	{
 		model.l = model.m.left || 0;
 		model.g = render.addGroup(
 		model.e, model.t, model.l, 'needle-graph');
+		model.font = o.font || '10px';
 		model.sx = scale.get(o.xaxis, 
 			[model.m.left, model.w - model.m.right]);
 		model.sy = scale.get(o.yaxis, 
 			[model.h - model.m.bottom, model.m.top]);
-		model.sh = Math.abs(model.sy(1) - model.sy(0)) / 2;
+		model.sh = Math.abs(model.sy(1) - model.sy(0)) / 2 > 25 ? 
+							 Math.abs(model.sy(1) - model.sy(0)) / 2 : 25;
 
 		render.rect({
 			element: model.g.selectAll('#' + model.id + '_base'),
@@ -5687,11 +5737,12 @@ var needleGraph = (function (needleGraph)	{
 				'font-size': function (d, i)	{
 					return o.style.fontSize ? 
 								 o.style.fontSize.call(
-								 	this, d, i, model) : '10px'; 
+								 	this, d, i, model) : model.font; 
 				},
 			},
 			text: function (d, i) {
-				return o.text ? o.text.call(this, d, i, model) : 0;
+				return o.text ? 
+							 o.text.call(this, d, i, model) : 0;
 			},
 		})
 	};
@@ -7536,6 +7587,17 @@ var size = (function (size)	{
 		makeTooltip();
 	};
 	/*
+		각 chart 별 최소, 최대 사이즈를 선정해야 한다.
+	 */
+	size.rightSize = function (chart, width, height)	{
+		var w = 0, h = 0;
+
+		if (chart === 'variants')	{
+			w = width < 900 ? 900 : width > 1100 ? 1100 : width;
+			h = height < 300 ? 300 : height > 500 ? 500 : height;
+		}
+	};
+	/*
 		About parameters then produces margin set.
 	 */
 	size.setMargin = function (margin)	{
@@ -7609,9 +7671,9 @@ var size = (function (size)	{
 			variants_title: {w: w, h: h * 0.05},
 			variants_needle: {w: w * 0.85, h: h * 0.85},
 			variants_legend: {w: w * 0.15, h: h * 0.5},
-			variants_patient_legend: {w: w * 0.15, h: h * 0.5},
-			variants_navi: {w: w * 0.85, h: h * 0.09},
-			variants_empty: {w: w * 0.15, h: h * 0.09},
+			variants_patient_legend: {w: w * 0.15, h: h * 0.45},
+			variants_navi: {w: w * 0.85, h: h * 0.1},
+			// variants_empty: {w: w * 0.15, h: h * 0.1},
 		};
 
 		return makeFrames.call(size.setSize(e, w, h), ids), model.ids;
@@ -8205,7 +8267,6 @@ var variants = (function (variants)	{
 			legend({
 				element: v,
 				data: model.data.type,
-				font: config.variants.legend.style.fontSize(),
 				priority: config.landscape.priority,
 				text: config.variants.legend.text,
 				attr: config.variants.legend.attr,
