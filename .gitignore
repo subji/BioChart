@@ -13,3 +13,6 @@ views/
 .babelrc
 app.js
 addgit.sh
+.idea
+.vscode
+gulpfile.babel.json
