@@ -7606,12 +7606,12 @@ var size = (function (size)	{
 	 */
 	size.chart.variants = function (e, w, h)	{
 		var ids = {
-			variants_title: {w: w * 0.95, h: h * 0.05},
+			variants_title: {w: w, h: h * 0.05},
 			variants_needle: {w: w * 0.85, h: h * 0.85},
 			variants_legend: {w: w * 0.15, h: h * 0.5},
 			variants_patient_legend: {w: w * 0.15, h: h * 0.5},
 			variants_navi: {w: w * 0.85, h: h * 0.09},
-			variants_empty: {w: w * 0.15, h: h * 0.009},
+			variants_empty: {w: w * 0.15, h: h * 0.09},
 		};
 
 		return makeFrames.call(size.setSize(e, w, h), ids), model.ids;
