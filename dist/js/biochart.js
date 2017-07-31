@@ -1402,7 +1402,7 @@ config.variants.legend = {
 		},
 		y: function (d, i, m) { 
 			if (m.isText)	{
-				return m.y[i] + 1;
+				return m.y[i];
 			} else {
 				return m.x[i - 1] ? 
 							 parseInt(m.x[i - 1]) !== 
@@ -2663,7 +2663,7 @@ var draw = (function (draw)	{
 			i += 1;
 		};
 
-		return i + 'px';
+		return (i - 1) + 'px';
 	};
 	/*
 		텍스트가 특정 길이를 초과하였을 때, '...' 또는 자르기 처리를 해준다.
@@ -8066,8 +8066,17 @@ var variants = (function (variants)	{
 		model.div.title.innerHTML = model.origin.variants.title;
 		model.div.title.style.fontSize = 
 			draw.getFitTextSize(model.origin.variants.title,
-							 parseFloat(model.div.title.style.width), 
-							 parseFloat(model.div.title.style.height));
+		  parseFloat(model.div.title.style.width), 
+		  parseFloat(model.div.title.style.height));
+		var pad = parseFloat(model.div.title.style.height) - 
+			draw.getTextHeight(model.div.title.style.fontSize).height;
+
+		model.div.title.style.paddingTop = Math.abs(pad) * 3 + 'px';
+		// model.div.title.style.paddingBottom = Math.abs(pad) + 'px';
+
+		console.log(Math.abs(pad),
+			parseFloat(model.div.title.style.height),
+			draw.getTextHeight(model.div.title.style.fontSize))
 	};
 	/*
 		x,y 축의 위치를 설정하는 함수.
