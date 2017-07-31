@@ -8065,18 +8065,16 @@ var variants = (function (variants)	{
 		model.div.title = document.querySelector('#variants_title');
 		model.div.title.innerHTML = model.origin.variants.title;
 		model.div.title.style.fontSize = 
-			draw.getFitTextSize(model.origin.variants.title,
-		  parseFloat(model.div.title.style.width), 
-		  parseFloat(model.div.title.style.height));
-		var pad = parseFloat(model.div.title.style.height) - 
-			draw.getTextHeight(model.div.title.style.fontSize).height;
+				draw.getFitTextSize(model.origin.variants.title,
+				  parseFloat(model.div.title.style.width), 
+				  parseFloat(model.div.title.style.height));
 
-		model.div.title.style.paddingTop = Math.abs(pad) * 3 + 'px';
-		// model.div.title.style.paddingBottom = Math.abs(pad) + 'px';
-
-		console.log(Math.abs(pad),
-			parseFloat(model.div.title.style.height),
-			draw.getTextHeight(model.div.title.style.fontSize))
+		model.div.title.style.lineHeight = 
+			parseFloat(model.div.title.style.height) + (
+				parseFloat(model.div.title.style.height) - 
+				parseInt(draw.getFitTextSize(model.origin.variants.title,
+				  parseFloat(model.div.title.style.width), 
+				  parseFloat(model.div.title.style.height)))) + 'px';
 	};
 	/*
 		x,y 축의 위치를 설정하는 함수.
