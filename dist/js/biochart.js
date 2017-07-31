@@ -1382,7 +1382,7 @@ config.exclusivity.sample = {
 	Legend of variants configuraion object.
  */
 config.variants.legend = {
-	margin: [20, 10, 0, 0],
+	margin: [10, 10, 0, 0],
 	attr: {
 		x: function (d, i, m) { 
 			if (m.isText)	{
@@ -1432,7 +1432,7 @@ config.variants.legend = {
 };
 
 config.variants.needle = {
-	margin: [20, 30, 80, 60],
+	margin: [10, 30, 70, 60],
 	/*
 		Needle plot 의 원의 크기를 정하는 함수.
 		값이 지름이 된다는 가정하에 크기를 구한다.
@@ -1568,8 +1568,8 @@ config.variants.needleGraph = {
 	Axises of variants configuration object.
  */
 config.variants.axis = {
-	left: { margin: [20, 60, 80, 0] },
-	top: { margin: [2, 30, 0, 60] },
+	left: { margin: [10, 60, 70, 0] },
+	top: { margin: [5, 30, 0, 60] },
 };
 /*
 	Navigation of variants configuration object.
@@ -7668,10 +7668,10 @@ var size = (function (size)	{
 	 */
 	size.chart.variants = function (e, w, h)	{
 		var ids = {
-			variants_title: {w: w, h: h * 0.05},
-			variants_needle: {w: w * 0.85, h: h * 0.85},
+			variants_title: {w: w, h: h * 0.075},
+			variants_needle: {w: w * 0.85, h: h * 0.825},
 			variants_legend: {w: w * 0.15, h: h * 0.5},
-			variants_patient_legend: {w: w * 0.15, h: h * 0.45},
+			variants_patient_legend: {w: w * 0.15, h: h * 0.425},
 			variants_navi: {w: w * 0.85, h: h * 0.1},
 			// variants_empty: {w: w * 0.15, h: h * 0.1},
 		};
