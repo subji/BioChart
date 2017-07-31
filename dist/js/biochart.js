@@ -1404,12 +1404,9 @@ config.variants.legend = {
 			if (m.isText)	{
 				return m.y[i] + 1;
 			} else {
-				console.log(m.x[i - 1] ? m.x[i - 1] !== m.x[i] ? 
-							(m.y.push(m.padding), m.padding) : 
-							(m.y.push(i * m.mh + m.padding), 
-												i * m.mh + m.padding) : 
-							(m.y.push(m.padding), m.padding))
-				return m.x[i - 1] ? m.x[i - 1] !== m.x[i] ? 
+				return m.x[i - 1] ? 
+							 parseInt(m.x[i - 1]) !== 
+							 parseInt(m.x[i]) ? 
 							(m.y.push(m.padding), m.padding) : 
 							(m.y.push(i * m.mh + m.padding), 
 												i * m.mh + m.padding) : 
