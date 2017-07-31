@@ -3688,32 +3688,24 @@ var expression = (function (expression)	{
 				return d.signature;
 			}),
 			click: function (v)	{
+				if (model.init.sig.toLowerCase() === v || 
+						model.now.sig === v)	{
+					return;
+				}
+
 				model.now.sig = v;
 				model.req.signature = model.now.sig;
-
-				// document.querySelector(model.element).innerHTML = '';
 
 				$.ajax({
 					type: 'GET',
 					url: model.url,
 					data: model.req,
 					success: function (d)	{
+						layout.removeG();
 
-						console.log(d);
-						// bio.expression({
-						// 	element: model.element,
-						// 	width: model.w,
-						// 	height: model.h,
-						// 	url: model.url,
-						// 	req: model.req,
-						// 	data: d.data,
-						// });
+						drawAll(d.data);
 					},
-					error: function (d)	{
-						console.log(d);
-					}
-				})
-				// console.log('Signature set is: ', model.now.sig);
+				});
 			},
 		});
 	};
@@ -3808,22 +3800,6 @@ var expression = (function (expression)	{
 		drawSampleSurvival();
 	};
 	/*
-		TODO.
-		Sample 범례를 그려준다.
-	 */
-	function drawSampleLegend ()	{
-		// layout.getSVG(model.svg, ['nt_legend'], function (k, v)	{
-		// 	legend({
-		// 		element: v,
-		// 		data: d,
-		// 		attr: config.variants.patient.legend.attr,
-		// 		style: config.variants.patient.legend.style,
-		// 		text: config.variants.patient.legend.text,
-		// 		margin: config.variants.patient.legend.margin,
-		// 	});
-		// });
-	};
-	/*
 		Survival Plot 의 테이블 이름에도 심볼을 넣어주는함수.
 	 */
 	function drawSampleSurvivalTable (ostb, dfstb)	{
@@ -3882,23 +3858,13 @@ var expression = (function (expression)	{
 			}
 		}, 10);
 	};
-
-	return function (o)	{
-		model.e = document.querySelector(o.element || null);
-		model.w = parseFloat(o.width || e.style.width || 1400);
-		model.h = parseFloat(o.height || e.style.height || 700);
-		model.e.style.background = '#F7F7F7';
-
-		model.origin = o.data;
-		model.element = o.element;
-		model.req = o.req;
-		model.url = o.url || '/rest/expressions';
-		model.data = preprocessing.expression(o.data);
-		model.ids = size.chart.expression(model.e, model.w, model.h);
-		model.svg = layout.expression(model.ids, model);
-		// Set Initialize signature gene set.
-		model.init.sig = model.origin.signature_list[0].signature;
-		model.now.sig = model.init.sig;
+	/*
+		처음 또는 새로운 데이터를 받아와 초기 시작을 할때
+		실행 되는 함수이다.
+	 */
+	function drawAll (data)	{
+		// Data 처리도 이 함수에서 실행된다.
+		model.data = preprocessing.expression(data);
 		var most = draw.getMostTextWidth(
 		model.data.axis.heatmap.y, '12px');
 		model.data.axisLeft = Math.ceil(most / 10) * 10;
@@ -3915,6 +3881,25 @@ var expression = (function (expression)	{
 		drawSignatureList();
 		drawColorGradient();
 		drawPatient();
+	};
+
+	return function (o)	{
+		model.e = document.querySelector(o.element || null);
+		model.w = parseFloat(o.width || e.style.width || 1400);
+		model.h = parseFloat(o.height || e.style.height || 700);
+		model.e.style.background = '#F7F7F7';
+
+		model.origin = o.data;
+		model.element = o.element;
+		model.req = o.req;
+		model.url = o.url || '/rest/expressions';
+		model.ids = size.chart.expression(model.e, model.w, model.h);
+		model.svg = layout.expression(model.ids, model);
+		// Set Initialize signature gene set.
+		model.init.sig = model.origin.signature_list[0].signature;
+		model.now.sig = model.init.sig;	
+
+		drawAll(o.data);
 
 		console.log('Given Expression data: ', o);
 		console.log('Expression Model data: ', model);
@@ -6839,8 +6824,38 @@ var preprocessing = (function (preprocessing)	{
 
 		return m >= p ? 'Low score group' : 'High score group';
 	};
+	/*
+		Expression 의 Model 객체를 초기화 해준다.
+	 */
+	function initExpressionModel ()	{
+		model.expression = {
+			func: {
+				default: 'average',
+				now: null,
+				avg: [],
+			},
+			tpms: [],
+			heatmap: [],
+			scatter: {},
+			subtype: [],
+			survival: {
+
+			},
+			bar: [],
+			axis: {
+				gradient: {x: {}, y: {}},
+				heatmap: {x: {}, y: {}},
+				scatter: {x: {}, y: {}},
+				bar: {x: {}, y: {}},
+			},
+		};
+		
+		exp = model.expression;
+	};
 
 	preprocessing.expression = function (d)	{
+		initExpressionModel();
+
 		exp.allRna = new Array().concat(
 			d.cohort_rna_list.concat(d.sample_rna_list));
 		exp.genes = d.gene_list.map(function (d)	{
