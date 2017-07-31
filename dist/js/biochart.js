@@ -3688,8 +3688,8 @@ var expression = (function (expression)	{
 				return d.signature;
 			}),
 			click: function (v)	{
-				if (model.init.sig.toLowerCase() === v || 
-						model.now.sig === v)	{
+				if (!model.now.sig || 
+						 model.now.sig === v)	{
 					return;
 				}
 
