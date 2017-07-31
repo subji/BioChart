@@ -5423,11 +5423,11 @@ var legend = (function (legend)	{
 		draw: draw,
 		config: config,
 		render: render,
-		variants: variants,
 		pathways: '',
 		expression: expression,
 		landscape: landscape,
 		exclusive: exclusive,
+		variants: variants,
 		chart: {
 			bar: bar,
 			legend: legend,
@@ -8227,7 +8227,6 @@ var variants = (function (variants)	{
 	};
 
 	return function (o)	{
-		console.log('Given Variants data: ', o);
 		var e = document.querySelector(o.element || null),
 				w = parseFloat(o.width || e.style.width || 1400),
 				h = parseFloat(o.height || e.style.height || 700);
@@ -8244,5 +8243,7 @@ var variants = (function (variants)	{
 
 		title();
 		drawVariants();
+
+		console.log('Given Variants data: ', o);
 	};
 }(variants||{}));
