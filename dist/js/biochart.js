@@ -8070,11 +8070,7 @@ var variants = (function (variants)	{
 				  parseFloat(model.div.title.style.height));
 
 		model.div.title.style.lineHeight = 
-			parseFloat(model.div.title.style.height) + (
-				parseFloat(model.div.title.style.height) - 
-				parseInt(draw.getFitTextSize(model.origin.variants.title,
-				  parseFloat(model.div.title.style.width), 
-				  parseFloat(model.div.title.style.height)))) + 'px';
+			parseFloat(model.div.title.style.height) + 'px';
 	};
 	/*
 		x,y 축의 위치를 설정하는 함수.
