@@ -7611,6 +7611,7 @@ var size = (function (size)	{
 			variants_legend: {w: w * 0.15, h: h * 0.5},
 			variants_patient_legend: {w: w * 0.15, h: h * 0.5},
 			variants_navi: {w: w * 0.85, h: h * 0.09},
+			variants_empty: {w: w * 0.15, h: h * 0.009},
 		};
 
 		return makeFrames.call(size.setSize(e, w, h), ids), model.ids;
