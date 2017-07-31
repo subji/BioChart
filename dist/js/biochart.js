@@ -3691,26 +3691,26 @@ var expression = (function (expression)	{
 				model.now.sig = v;
 				model.req.signature = model.now.sig;
 
-				document.querySelector(model.element).innerHTML = '';
+				// document.querySelector(model.element).innerHTML = '';
 
-				$.ajax({
-					type: 'GET',
-					url: model.url,
-					data: model.req,
-					success: function (d)	{
-						bio.expression({
-							element: model.element,
-							width: model.w,
-							height: model.h,
-							url: model.url,
-							req: model.req,
-							data: d.data,
-						});
-					},
-					error: function (d)	{
-						console.log(d);
-					}
-				})
+				// $.ajax({
+				// 	type: 'GET',
+				// 	url: model.url,
+				// 	data: model.req,
+				// 	success: function (d)	{
+				// 		bio.expression({
+				// 			element: model.element,
+				// 			width: model.w,
+				// 			height: model.h,
+				// 			url: model.url,
+				// 			req: model.req,
+				// 			data: d.data,
+				// 		});
+				// 	},
+				// 	error: function (d)	{
+				// 		console.log(d);
+				// 	}
+				// })
 				// console.log('Signature set is: ', model.now.sig);
 			},
 		});
