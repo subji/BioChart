@@ -1309,7 +1309,7 @@ config.exclusivity.sample = {
 			x: function (d, i, m)	{
 				return m.data.sample.isAltered.indexOf(d.text) > -1 ? 
 							 draw.getTextWidth(d.text, '15px') + 
-							 draw.getTextWidth(d.text, '15px') / 4 : 0;
+							 draw.getTextWidth(d.text, '15px') / 4 : -5;
 			},
 			y: function (d, i, m)	{
 				return m.data.sample.isAltered.indexOf(d.text) > -1 ? 
@@ -1360,7 +1360,7 @@ config.exclusivity.sample = {
 					if (i === 0)	{
 						return 0;	
 					} else if (i === 1)	{
-						return draw.getTextWidth(m.d[0], '25px') + 5;	
+						return draw.getTextWidth(m.d[0], '25px') * 3;	
 					} else {
 						return draw.getTextWidth(
 												m.d[0].toUpperCase(), m.font) + 
@@ -1372,7 +1372,7 @@ config.exclusivity.sample = {
 			},
 			y: function (d, i, m)	{
 				if (i > 0)	{
-					return -draw.getTextHeight('25px').height / 5;
+					return -draw.getTextHeight('25px').height / 4.5;
 				} 
 
 				return 0;
@@ -3028,7 +3028,7 @@ var exclusive = (function ()	{
 	function drawExclusivity ()	{
 		getDataOfPatient(model.origin.sample);
 		drawSurvival();
-		drawNetwork();
+		// drawNetwork();
 		drawAxis();
 		drawHeatmap();
 		drawDivisionBar();
@@ -3093,7 +3093,6 @@ var exclusive = (function ()	{
 			legend({
 				element: v,
 				data: model.data.sample.isAltered,
-				font: '14px',
 				attr: config.exclusivity.sample.legend.attr,
 				style: config.exclusivity.sample.legend.style,
 				text: config.exclusivity.sample.legend.text,
