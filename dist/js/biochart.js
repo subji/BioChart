@@ -1500,7 +1500,7 @@ config.variants.needleGraph = {
 		x: function (d, i, m)	{
 			var start = m.sx(d.x) > m.m.left ? 
 									m.sx(d.x) : m.m.left;
-									
+
 			return m.isText ? start + 5 : start;
 		},
 		y: function (d, i, m)	{
@@ -5655,9 +5655,18 @@ var needleGraph = (function (needleGraph)	{
 			},
 		});
 
-		var rect = render.rect({
-			element: model.g.selectAll('#' + model.id + '_rect'),
-			data: o.data,
+		var mg = model.g.selectAll('#' + model.id + '_graph')
+										.data(o.data).enter()
+										.append('g')
+										.attr('id', model.id + '_graph')
+										.attr('transform', 'translate(0, 0)');
+		// 그냥 일반적으로 Append 만을 하고 싶을때는,
+		// data property 를 제외하고 Targeted element 만
+		// 설정해주면 된다.
+		render.rect({
+			element: mg,
+			// element: model.g.selectAll('#' + model.id + '_rect'),
+			// data: o.data,
 			attr: {
 				id: function (d) { return model.id + '_rect'; },
 				x: function (d, i) { 
@@ -5710,8 +5719,9 @@ var needleGraph = (function (needleGraph)	{
 		});
 
 		render.text({
-			element: rect.select('#' + model.id + '_text'),
-			data: o.data,
+			element: mg,
+			// element: model.g.selectAll('#' + model.id + '_rect'),
+			// data: o.data,
 			attr: {
 				id: function (d) {
 					return model.isText = true, model.id + '_text';
