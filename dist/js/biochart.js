@@ -5251,7 +5251,6 @@ var legend = (function (legend)	{
 		o.data.sort(function (a, b)	{
 			return o.priority(a) > o.priority(b) ? 1 : -1;
 		});
-		console.log(model.d)
 		model.e = o.element = util.varType(o.element) === 'Object' || 
 													util.varType(o.element) === 'Array' ? 
 							o.element : (/\W/).test(o.element[0]) ? 
