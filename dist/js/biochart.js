@@ -882,13 +882,13 @@ config.landscape.group = {
 config.landscape.legend = {
 	attr: {
 		x: function (d, i, m) {
-			var x = m.dr === 'h' ? (m.p * 2 + m.mw) * i : 0;
+			var x = m.dr === 'h' ? (m.padding * 2 + m.mw) * i : 0;
 
-			return m.isText ? (x + m.p * 2) : x;
+			return m.isText ? (x + m.padding * 2) : x;
 		},
 		y: function (d, i, m) { 
 			var h = m.height || 15,
-					y = m.dr === 'h' ? 0 : ((m.p + m.mh) * i);
+					y = m.dr === 'h' ? 0 : ((m.padding + m.mh) * i);
 
 			if (m.isText)	{
 				return y + m.mh - m.mh / 2.5;
@@ -1159,13 +1159,13 @@ config.exclusivity.legend = {
 	margin: [20, 80, 0, 0],
 	attr: {
 		x: function (d, i, m) {
-			var x = m.dr === 'h' ? (m.p * 10 + m.mw) * i : 0;
+			var x = m.dr === 'h' ? (m.padding * 10 + m.mw) * i : 0;
 
-			return m.isText ? (x + m.p * 2) : x;
+			return m.isText ? (x + m.padding * 2) : x;
 		},
 		y: function (d, i, m) { 
 			var h = m.height || 15,
-					y = m.dr === 'h' ? 0 : ((m.p + m.mh) * i);
+					y = m.dr === 'h' ? 0 : ((m.padding + m.mh) * i);
 
 			return m.isText ? y + m.mh - m.mh / 2 : 
 						 d === 'Mutation' ? y + h / 3 : y;
@@ -1500,7 +1500,7 @@ config.variants.needleGraph = {
 		x: function (d, i, m)	{
 			var start = m.sx(d.x) > m.m.left ? 
 									m.sx(d.x) : m.m.left;
-
+									
 			return m.isText ? start + 5 : start;
 		},
 		y: function (d, i, m)	{
@@ -1754,7 +1754,7 @@ config.expression.legend = {
 		},
 		attr: {
 			x: function (d, i, m) {
-				return m.isText ? m.m.left + m.p * 2 : m.p;
+				return m.isText ? m.m.left + m.padding * 2 : m.p;
 			},
 			y: function (d, i, m) {
 				return m.isText ? 
@@ -1793,13 +1793,13 @@ config.expression.legend = {
 		},
 		attr: {
 			x: function (d, i, m) {
-				return m.isText ? m.m.left + m.m.right : m.p;
+				return m.isText ? m.m.left + m.padding : m.p;
 			},
 			y: function (d, i, m) {
 				return m.isText ? (m.mh * i) + 1: (m.mh * i);
 			},
 			r: function (d, i, m)	{
-				return m.p;
+				return m.shape;
 			},
 		},
 		style: {
@@ -5655,7 +5655,7 @@ var needleGraph = (function (needleGraph)	{
 			},
 		});
 
-		render.rect({
+		var rect = render.rect({
 			element: model.g.selectAll('#' + model.id + '_rect'),
 			data: o.data,
 			attr: {
@@ -5710,7 +5710,7 @@ var needleGraph = (function (needleGraph)	{
 		});
 
 		render.text({
-			element: model.g.selectAll('#' + model.id + '_text'),
+			element: rect.select('#' + model.id + '_text'),
 			data: o.data,
 			attr: {
 				id: function (d) {
@@ -7041,24 +7041,26 @@ var render = (function (render)	{
 		setStyles(t, this.style);
 		setOnEvents(t, this.on);
 		setOnDrag(t, this.call);
+
+		return t;
 	}
 	/*
 		Draw rectangle.
 	 */
 	render.rect = function (defs)	{
-		defsShape.call(defs, 'rect');
+		return defsShape.call(defs, 'rect');
 	};
 	/*
 		Draw Circle.
 	 */
 	render.circle = function (defs)	{
-		defsShape.call(defs, 'circle');
+		return defsShape.call(defs, 'circle');
 	};
 	/*
 		Draw Text.
 	 */
 	render.text = function (defs)	{
-		defsShape.call(defs, 'text');
+		return defsShape.call(defs, 'text');
 	};
 	/*
 		Draw Line.
@@ -7070,12 +7072,14 @@ var render = (function (render)	{
 		
 		setAttributes(t, defs.attr);
 		setStyles(t, defs.style);
+
+		return t;
 	};
 	/*
 		Draw Triangle.
 	 */
 	render.triangle = function (defs)	{
-		defsShape.call(defs, 'polygon');
+		return defsShape.call(defs, 'polygon');
 	};
 	/*
 		Draw Star.
@@ -7089,6 +7093,8 @@ var render = (function (render)	{
 
 		setStyles(t, defs.style);
 		setOnEvents(t, defs.on);
+
+		return t;
 	};
 
 	return render;
