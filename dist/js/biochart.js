@@ -1179,25 +1179,44 @@ config.exclusivity.color = function (value)	{
 config.exclusivity.legend = {
 	margin: [20, 80, 0, 0],
 	attr: {
-		x: function (d, i, m) {
-			var x = m.dr === 'h' ? (m.padding * 10 + m.mw) * i : 0;
+		x: function (d, i, m) { 
+			if (m.isText)	{
+				return m.x[i] + m.padding * 2;
+			} else {
+				var nw = m.shape + (m.padding * 3) + m.mw,
+						res = 0, nx = 0;
 
-			return m.isText ? (x + m.padding * 2) : x;
+				m.x[i - 1] ? 
+				m.x[i - 1] + nw > m.w ? 
+				(nx = m.padding, res = nx) : 
+				(nx = m.x[i - 1] + nw, res = nx) :
+				(nx = m.padding, res = nx);
+
+				return m.x.push(res), res;
+			}
 		},
 		y: function (d, i, m) { 
-			var h = m.height || 15,
-					y = m.dr === 'h' ? 0 : ((m.padding + m.mh) * i);
+			if (m.isText)	{
+				var add = d === 'Mutation' ? m.shape / 3 : 0;
 
-			return m.isText ? y + m.mh - m.mh / 2 : 
-						 d === 'Mutation' ? y + h / 3 : y;
+				return m.y[i] + m.shape / 2 + 1 - add;
+			} else {
+				var add = d === 'Mutation' ? m.shape / 3 : 0;
+
+				return m.x[i - 1] ? 
+							 parseInt(m.x[i - 1]) !== 
+							 parseInt(m.x[i]) ? 
+							(m.y.push(add), add) : 
+							(m.y.push(i * m.shape + add), 
+												i * m.shape + add) : 
+							(m.y.push(add), add);
+			}
 		},
 		width: function (d, i, m) {
-			return m.width || 5;
+			return m.shape / 2;
 		},
 		height: function (d, i, m) { 
-			var h = m.height || 15;
-
-			return d === 'Mutation' ? h / 3 : h;
+			return d === 'Mutation' ? m.shape / 3 : m.shape;
 		},
 	},
 	style: {
@@ -1360,13 +1379,15 @@ config.exclusivity.sample = {
 					if (i === 0)	{
 						return 0;	
 					} else if (i === 1)	{
-						return draw.getTextWidth(m.d[0], '25px') * 3;	
+						var bcr = this.previousSibling.getBoundingClientRect();
+						
+						return bcr.width + m.padding * 2;
 					} else {
-						return draw.getTextWidth(
-												m.d[0].toUpperCase(), m.font) + 
-									 draw.getTextWidth(
-									 			m.d[1].toUpperCase(), m.font) - 
-									 draw.getTextWidth('a', m.font);	
+						var b1 = this.previousSibling.getBoundingClientRect(),
+								b2 = this.previousSibling
+												 .previousSibling.getBoundingClientRect();
+
+						return b2.width + b1.width - m.padding;
 					}
 				}
 			},
