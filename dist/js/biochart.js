@@ -881,26 +881,6 @@ config.landscape.group = {
  */
 config.landscape.legend = {
 	attr: {
-		// x: function (d, i, m) {
-		// 	var x = m.dr === 'h' ? (m.padding * 2 + m.mw) * i : 0;
-
-		// 	return m.isText ? (x + m.padding * 2) : x;
-		// },
-		// y: function (d, i, m) { 
-		// 	var h = m.height || 15,
-		// 			y = m.dr === 'h' ? 0 : ((m.padding + m.mh) * i);
-
-		// 	if (m.isText)	{
-		// 		return y + m.mh - m.mh / 2.5;
-		// 	} else {
-		// 		if (config.landscape.case(d))	{
-		// 			return config.landscape.case(d) === 'var' ? 
-		// 						 y + h / 3 : y;
-		// 		}
-		// 	}	
-
-		// 	return y;
-		// },
 		x: function (d, i, m) { 
 			if (m.isText)	{
 				return m.x[i] + m.padding * 2;
