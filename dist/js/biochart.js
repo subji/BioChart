@@ -1387,7 +1387,7 @@ config.exclusivity.sample = {
 								b2 = this.previousSibling
 												 .previousSibling.getBoundingClientRect();
 
-						return b2.width + b1.width - m.padding;
+						return b2.width + b1.width + m.padding;
 					}
 				}
 			},
