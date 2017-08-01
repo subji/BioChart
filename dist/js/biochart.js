@@ -1547,7 +1547,7 @@ config.variants.needleGraph = {
 	},
 	on: {
 		mouseover: function (d, i, m)	{
-			draw.toFront(this.parentNode);
+			draw.toFront(this.parentNode, 2);
 
 			tooltip({
 				element: this,
@@ -1560,7 +1560,7 @@ config.variants.needleGraph = {
 			});
 		},
 		mouseout: function (d, i, m)	{
-			// draw.toBack(this);
+			// draw.toBack(this.parentNode, 2);
 
 			tooltip('hide');
 		},
@@ -2703,15 +2703,26 @@ var draw = (function (draw)	{
 		return draw.getParentSvg(node.parentElement);
 	};
 	/*
+		현재 노드의 자식 노드중에서 사용자가 전달한 인덱스의
+		자식 노드를 반환한다.
+	 */
+	function getChildByIndex (node, idx)	{
+		console.log(node.parentNode.children)
+	};
+	/*
 		현재 노드를 가장 앞으로 보내주는 함수.
 	 */
-	draw.toFront = function (node)	{
-		node.parentNode.appendChild(node);
+	draw.toFront = function (node, idx)	{
+		if (idx)	{
+			var child = getChildByIndex(node, idx);
+		}
+
+		// node.parentNode.appendChild(node);
 	};
 	/*
 		현재 노드를 가장 뒤로 보내주는 함수.
 	 */
-	draw.toBack = function (node)	{
+	draw.toBack = function (node, idx)	{
 		var first = node.parentNode.firstChild;
 
 		if (first)	{
@@ -5773,6 +5784,8 @@ var needleNavi = (function (needleNavi)	{
 		함수.
 	 */
 	function makeControlRect (o, r)	{
+		model = { start: 0, end: 0 };
+		 
 		util.loop(r, function (d, i)	{
 			render.rect({
 				element: model.g.selectAll('#' + model.id + '_' + d),
@@ -6956,6 +6969,10 @@ var render = (function (render)	{
 	render.createSVG = function (id, width, height)	{
 		var id = id.indexOf('#') < 0 ? '#' + id : id,
 				dom = document.querySelector(id);
+
+		if (d3.select(id))	{
+			return d3.select(id);
+		};
 
 		return d3.select(id)
 					.append('svg')
