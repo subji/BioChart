@@ -1547,7 +1547,7 @@ config.variants.needleGraph = {
 	},
 	on: {
 		mouseover: function (d, i, m)	{
-			draw.toFront(this.parentNode, 2);
+			draw.toFront(this.parentNode);
 
 			tooltip({
 				element: this,
@@ -1560,7 +1560,8 @@ config.variants.needleGraph = {
 			});
 		},
 		mouseout: function (d, i, m)	{
-			// draw.toBack(this.parentNode, 2);
+			draw.toBack(this.parentNode, 
+				'variants_needle_chart_base');
 
 			tooltip('hide');
 		},
@@ -2703,30 +2704,29 @@ var draw = (function (draw)	{
 		return draw.getParentSvg(node.parentElement);
 	};
 	/*
+		현재 노드를 가장 앞으로 보내주는 함수.
+	 */
+	draw.toFront = function (node)	{
+		node.parentNode.appendChild(node);
+	};
+	/*
 		현재 노드의 자식 노드중에서 사용자가 전달한 인덱스의
 		자식 노드를 반환한다.
 	 */
-	function getChildByIndex (node, idx)	{
-		console.log(node.parentNode.children)
-	};
-	/*
-		현재 노드를 가장 앞으로 보내주는 함수.
-	 */
-	draw.toFront = function (node, idx)	{
-		if (idx)	{
-			var child = getChildByIndex(node, idx);
-		}
-
-		// node.parentNode.appendChild(node);
+	function getChildByIndex (node, id)	{
+		return node.parentNode.querySelector('#' + id)
+							 .nextSibling;
 	};
 	/*
 		현재 노드를 가장 뒤로 보내주는 함수.
 	 */
-	draw.toBack = function (node, idx)	{
-		var first = node.parentNode.firstChild;
-
-		if (first)	{
-			node.parentNode.insertBefore(node, first);
+	draw.toBack = function (node, id)	{
+		if (id)	{
+			node.parentNode.insertBefore(
+			node, getChildByIndex(node, id));	
+		} else	{
+			node.parentNode.insertBefore(node, 
+			node.parentNode.firstChild);
 		}
 	};
 
@@ -5124,6 +5124,12 @@ var layout = (function (layout)	{
 		variants: {},
 	};
 	/*
+		ID가 있는 기존의 svg 를 지워준다.
+	 */
+	function removeSvg (id)	{
+
+	};
+	/*
 		파라미터 ids 를 조회하며 e(except) 항목들을 제외한
 		id 들을 t(chart case) 에 svg 를 만들어 넣어준다.
 	 */
@@ -5784,8 +5790,6 @@ var needleNavi = (function (needleNavi)	{
 		함수.
 	 */
 	function makeControlRect (o, r)	{
-		model = { start: 0, end: 0 };
-		 
 		util.loop(r, function (d, i)	{
 			render.rect({
 				element: model.g.selectAll('#' + model.id + '_' + d),
@@ -6969,10 +6973,6 @@ var render = (function (render)	{
 	render.createSVG = function (id, width, height)	{
 		var id = id.indexOf('#') < 0 ? '#' + id : id,
 				dom = document.querySelector(id);
-
-		if (d3.select(id))	{
-			return d3.select(id);
-		};
 
 		return d3.select(id)
 					.append('svg')
