@@ -6942,6 +6942,10 @@ var render = (function (render)	{
 		var id = id.indexOf('#') < 0 ? '#' + id : id,
 				dom = document.querySelector(id);
 
+		if (d3.select(id))	{
+			console.log(d3.select(id))
+		}
+
 		return d3.select(id)
 					.append('svg')
 					.attr('id', id.replace('#', '') + '_chart')
