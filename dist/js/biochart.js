@@ -881,31 +881,67 @@ config.landscape.group = {
  */
 config.landscape.legend = {
 	attr: {
-		x: function (d, i, m) {
-			var x = m.dr === 'h' ? (m.padding * 2 + m.mw) * i : 0;
+		// x: function (d, i, m) {
+		// 	var x = m.dr === 'h' ? (m.padding * 2 + m.mw) * i : 0;
 
-			return m.isText ? (x + m.padding * 2) : x;
+		// 	return m.isText ? (x + m.padding * 2) : x;
+		// },
+		// y: function (d, i, m) { 
+		// 	var h = m.height || 15,
+		// 			y = m.dr === 'h' ? 0 : ((m.padding + m.mh) * i);
+
+		// 	if (m.isText)	{
+		// 		return y + m.mh - m.mh / 2.5;
+		// 	} else {
+		// 		if (config.landscape.case(d))	{
+		// 			return config.landscape.case(d) === 'var' ? 
+		// 						 y + h / 3 : y;
+		// 		}
+		// 	}	
+
+		// 	return y;
+		// },
+		x: function (d, i, m) { 
+			if (m.isText)	{
+				return m.x[i] + m.padding * 2;
+			} else {
+				var nw = m.shape + (m.padding * 3) + m.mw,
+						res = 0, nx = 0;
+
+				m.x[i - 1] ? 
+				m.x[i - 1] + nw > m.w ? 
+				(nx = m.padding, res = nx) : 
+				(nx = m.x[i - 1] + nw, res = nx - nw) :
+				(nx = m.padding, res = nx);
+
+				return m.x.push(res), res;
+			}
 		},
 		y: function (d, i, m) { 
-			var h = m.height || 15,
-					y = m.dr === 'h' ? 0 : ((m.padding + m.mh) * i);
-
 			if (m.isText)	{
-				return y + m.mh - m.mh / 2.5;
-			} else {
-				if (config.landscape.case(d))	{
-					return config.landscape.case(d) === 'var' ? 
-								 y + h / 3 : y;
-				}
-			}	
+				var y = config.landscape.case(d) === 'var' ? 
+								(m.shape * 2) / 3 : 0;
 
-			return y;
+				return m.y[i] + m.shape - y;
+			} else {
+				var h = m.shape * 2,	
+						y = config.landscape.case(d) === 'var' ? 
+								h / 3 : 0;
+
+				return m.x[i - 1] ? 
+							 parseInt(m.x[i - 1]) !== 
+							 parseInt(m.x[i]) ? 
+							(m.y.push(0), 0) : 
+							(m.y.push(i * h + m.padding + y), 
+												i * h + m.padding + y) : 
+							(m.y.push(0), 0);
+			}
 		},
 		width: function (d, i, m) {
-			return m.width || 5;
+			return m.shape / 1.5;
 		},
 		height: function (d, i, m) { 
-			var h = m.height || 15;
+			var h = m.shape * 2;
 
 			return config.landscape.case(d) ? 
 						 config.landscape.case(d) === 'var' ? 
@@ -5224,7 +5260,7 @@ var legend = (function (legend)	{
 		가장 길이가 긴 문자열을 반환한다.
 	 */
 	function getMostText (texts)	{
-		return texts.sort(function (a, b)	{
+		return new Array().concat(texts).sort(function (a, b)	{
 			return a.length < b.length ? 1 : -1;
 		})[0];
 	};
@@ -5235,6 +5271,7 @@ var legend = (function (legend)	{
 		o.data.sort(function (a, b)	{
 			return o.priority(a) > o.priority(b) ? 1 : -1;
 		});
+		console.log(model.d)
 		model.e = o.element = util.varType(o.element) === 'Object' || 
 													util.varType(o.element) === 'Array' ? 
 							o.element : (/\W/).test(o.element[0]) ? 
