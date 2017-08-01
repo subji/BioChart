@@ -2730,32 +2730,6 @@ var draw = (function (draw)	{
 		}
 	};
 
-	/*
-		Node 의 위치를 구해주는 함수.
-	 */
-	// draw.nodePosition = function (node)	{
-	// 	var el = node,
-	// 			elPos = el.getBoundingClientRect(),
-	// 			vpPos = getVpPos(el);
-
-	// 	function getVpPos (el)	{
-	// 		if (el.parentElement.tagName === 'svg')	{
-	// 			return el.parentElement.getBoundingClientRect();
-	// 		}
-
-	// 		return getVpPos(el.parentElement);
-	// 	};
-
-	// 	return {
-	// 		top: elPos.top - vpPos.top,
-	// 		left: elPos.left - vpPos.left,
-	// 		bottom: elPos.bottom - vpPos.bottom,
-	// 		right: elPos.right - vpPos.right,
-	// 		width: elPos.width,
-	// 		height: elPos.height,
-	// 	};
-	// };
-
 	return draw;
 }(draw || {}));
 var eventHandler = (function (eventHandler)	{
@@ -8338,6 +8312,7 @@ var variants = (function (variants)	{
 				h = parseFloat(o.height || e.style.height || 700);
 		// Set the color of whole background.
 		e.style.background = '#F7F7F7';
+		model = { div: {} };
 		// Origin data from server.
 		model.origin = o.data;
 		// preprocess data for landscape and call drawLandScape.
