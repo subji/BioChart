@@ -5098,12 +5098,6 @@ var layout = (function (layout)	{
 		variants: {},
 	};
 	/*
-		ID가 있는 기존의 svg 를 지워준다.
-	 */
-	function removeSvg (id)	{
-
-	};
-	/*
 		파라미터 ids 를 조회하며 e(except) 항목들을 제외한
 		id 들을 t(chart case) 에 svg 를 만들어 넣어준다.
 	 */
