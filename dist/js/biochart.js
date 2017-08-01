@@ -8328,5 +8328,6 @@ var variants = (function (variants)	{
 		drawVariants();
 
 		console.log('Given Variants data: ', o);
+		console.log('Variants model data: ', model);
 	};
 }(variants||{}));
