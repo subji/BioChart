@@ -5098,10 +5098,18 @@ var layout = (function (layout)	{
 		variants: {},
 	};
 	/*
+		ID가 있는 기존의 svg 를 지워준다.
+	 */
+	function removeSvg (id)	{
+		d3.selectAll('svg').remove();
+	};
+	/*
 		파라미터 ids 를 조회하며 e(except) 항목들을 제외한
 		id 들을 t(chart case) 에 svg 를 만들어 넣어준다.
 	 */
 	function create (e, t, ids)	{
+		removeSvg();
+
 		util.loop(ids, function (d, i)	{
 			var is = true;
 
@@ -6941,10 +6949,6 @@ var render = (function (render)	{
 	render.createSVG = function (id, width, height)	{
 		var id = id.indexOf('#') < 0 ? '#' + id : id,
 				dom = document.querySelector(id);
-
-		if (d3.select('svg ' + id))	{
-			console.log(d3.select('svg ' + id))
-		}
 
 		return d3.select(id)
 					.append('svg')
