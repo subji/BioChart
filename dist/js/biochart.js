@@ -1309,7 +1309,7 @@ config.exclusivity.sample = {
 			x: function (d, i, m)	{
 				return m.data.sample.isAltered.indexOf(d.text) > -1 ? 
 							 draw.getTextWidth(d.text, '15px') + 
-							 draw.getTextWidth(d.text, '15px') / 4 : -5;
+							 draw.getTextWidth(d.text, '15px') / 4 : 0;
 			},
 			y: function (d, i, m)	{
 				return m.data.sample.isAltered.indexOf(d.text) > -1 ? 
