@@ -3028,7 +3028,7 @@ var exclusive = (function ()	{
 	function drawExclusivity ()	{
 		getDataOfPatient(model.origin.sample);
 		drawSurvival();
-		// drawNetwork();
+		drawNetwork();
 		drawAxis();
 		drawHeatmap();
 		drawDivisionBar();
