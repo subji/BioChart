@@ -5108,7 +5108,7 @@ var layout = (function (layout)	{
 		id 들을 t(chart case) 에 svg 를 만들어 넣어준다.
 	 */
 	function create (e, t, ids)	{
-		removeSvg();
+		// removeSvg();
 
 		util.loop(ids, function (d, i)	{
 			var is = true;
@@ -7635,6 +7635,8 @@ var size = (function (size)	{
 		Targeted element set width and height.
 	 */
 	size.setSize = function (e, w, h)	{
+		model = { ids: [] };
+
 		e.style.width = w + 'px';
 		e.style.height = h + 'px';
 
@@ -8309,12 +8311,13 @@ var variants = (function (variants)	{
 	};
 
 	return function (o)	{
+		model = { div: {} };
+		
 		var e = document.querySelector(o.element || null),
 				w = parseFloat(o.width || e.style.width || 1400),
 				h = parseFloat(o.height || e.style.height || 700);
 		// Set the color of whole background.
 		e.style.background = '#F7F7F7';
-		model = { div: {} };
 		// Origin data from server.
 		model.origin = o.data;
 		// preprocess data for landscape and call drawLandScape.
