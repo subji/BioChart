@@ -8300,6 +8300,8 @@ var variants = (function (variants)	{
 		Variants 를 그려주는 함수.
 	 */
 	function drawVariants ()	{
+		layout.removeG();
+
 		drawAxis();
 		drawLegend();
 		drawNeedle();
