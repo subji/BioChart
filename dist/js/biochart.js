@@ -2546,20 +2546,6 @@ var draw = (function (draw)	{
 	/*
 		Text 배열에서 가장 긴 Text 의 길이를 반환하는 함수.
 	 */
-	// draw.getMostTextWidth = function (txtArr, font)	{
-	// 	var result = 0;
-
-	// 	util.loop(txtArr, function (d)	{
-	// 		var w = draw.getTextWidth(d, font);
-
-	// 		result = result > w ? result : w;
-	// 	});
-
-	// 	return result;
-	// };
-	/*
-		Text 배열에서 가장 긴 Text 의 길이를 반환하는 함수.
-	 */
 	draw.getMostWidthOfText = function (texts, font)	{
 		var result = 0;
 
@@ -3093,6 +3079,7 @@ var exclusive = (function ()	{
 			legend({
 				element: v,
 				data: model.data.sample.isAltered,
+				font: '14px',
 				attr: config.exclusivity.sample.legend.attr,
 				style: config.exclusivity.sample.legend.style,
 				text: config.exclusivity.sample.legend.text,
@@ -5309,7 +5296,7 @@ var legend = (function (legend)	{
 		model.ew = model.w - model.shape - model.padding * 2;
 
 		model.font = 
-		draw.getFitTextSize(model.mt, model.ew, model.shape);
+		o.font || draw.getFitTextSize(model.mt, model.ew, model.shape);
 
 		if (o.attr && o.attr.r)	{
 			render.circle({
