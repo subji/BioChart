@@ -53,7 +53,7 @@
 #expression_signature { float: left; }
 
 #expression_color_gradient { float: left; }
-#landscape_title { background: #EFEFEF; padding-left: 15%; padding-top: 0.3%; font-size: 30px; font-weight: bold; font-family: initial; text-shadow: 2px 1px #D6D6D6; }
+#landscape_title { background: #EFEFEF; font-weight: bold; font-family: initial; text-shadow: 2px 1px #D6D6D6; }
 
 #landscape_sample { float: left; overflow-x: hidden; overflow-y: hidden; }
 #landscape_axis_sample { float: left; }

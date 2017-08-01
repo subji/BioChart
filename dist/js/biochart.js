@@ -936,18 +936,14 @@ config.landscape.legend = {
 		stroke: function (d, i, m) { 
 			return '#FFFFFF'; 
 		},	
-		fontFamily: function (d, i, m) { 
-			return 'Times Roman'; 
-		},
 		fontSize: function (d, i, m) { 
-			return '12px'; 
+			return '11px'; 
 		},
 	},
 	text: function (d, i, m)	{ 
 		return d; 
 	},
 }
-
 /*
 	Mutational Landscape 의 Axis 설정 객체.
  */
@@ -969,7 +965,7 @@ config.landscape.axis = {
 	},
 	{
 		direction: 'bottom', 
-		margin: [0, 10, 35, 71], 
+		margin: [0, 10, 35, 90], 
 		opt: { tickValues: 3 }
 	}],
 	pq: {
@@ -1028,7 +1024,7 @@ config.landscape.stack = {
 	},
 	gene: {
 		direction: 'left', 
-		margin: [5, 10, 41, 70], 
+		margin: [5, 10, 41, 90], 
 		xaxis: function () {
 			return this.gene.x;
 		}, 
@@ -2540,13 +2536,26 @@ var draw = (function (draw)	{
 	/*
 		Text 배열에서 가장 긴 Text 의 길이를 반환하는 함수.
 	 */
-	draw.getMostTextWidth = function (txtArr, font)	{
+	// draw.getMostTextWidth = function (txtArr, font)	{
+	// 	var result = 0;
+
+	// 	util.loop(txtArr, function (d)	{
+	// 		var w = draw.getTextWidth(d, font);
+
+	// 		result = result > w ? result : w;
+	// 	});
+
+	// 	return result;
+	// };
+	/*
+		Text 배열에서 가장 긴 Text 의 길이를 반환하는 함수.
+	 */
+	draw.getMostWidthOfText = function (texts, font)	{
 		var result = 0;
 
-		util.loop(txtArr, function (d)	{
-			var w = draw.getTextWidth(d, font);
-
-			result = result > w ? result : w;
+		util.loop(texts, function (d, i)	{
+			result = result > draw.getTextWidth(d, font) ? 
+							 result : draw.getTextWidth(d, font);
 		});
 
 		return result;
@@ -4083,6 +4092,8 @@ var landscape = (function (landscape)	{
 			draw.getFitTextSize(model.origin.title,
 							 parseFloat(model.div.title.style.width), 
 							 parseFloat(model.div.title.style.height));
+		model.div.title.style.lineHeight = 
+			parseFloat(model.div.title.style.height) + 'px';
 	};
 	/*
 		Group 하나하나의 div 를 만들어주는 함수.
@@ -4300,6 +4311,19 @@ var landscape = (function (landscape)	{
 				c = util.varType(c) !== 'Array' ? [c] : c;
 
 				util.loop(c, function (dd, i)	{
+					// Gene axis 의 가로 세로 margin 값을 조정한다.
+					if (k.indexOf('gene') > -1 && 
+							dd.direction === 'right')	{
+						dd.margin[1] = 
+						config.landscape.stack.gene.margin[3] + 10 + 
+						draw.getMostWidthOfText(
+								 axisForGroup(v.attr('id'), d.y, '10px'));
+					} else if (k.indexOf('gene') > -1 && 
+										 dd.direction === 'bottom')	{
+						dd.margin[3] = 
+						config.landscape.stack.gene.margin[3];
+					}
+
 					var ag = axis.element(v)[dd.direction]({
 						margin: dd.margin,
 						data: axisForGroup(v.attr('id'), 
@@ -4525,7 +4549,7 @@ var landscape = (function (landscape)	{
 					y: function (d, i)	{
 						return md.id.indexOf('sample') > -1 ? 
 									 md.w - md.m.bottom : 
-									 md.h - md.m.top * 2;
+									 md.h - md.m.top * 2.8;
 					},
 				},
 				style: {
@@ -4611,6 +4635,8 @@ var landscape = (function (landscape)	{
 		var e = document.querySelector(o.element || null),
 				w = parseFloat(o.width || e.style.width || 1400),
 				h = parseFloat(o.height || e.style.height || 700);
+
+		e.style.background = '#F7F7F7';
 		// Origin data from server.
 		model.origin = o.data;
 		// preprocess data for landscape and call drawLandScape.
@@ -5225,17 +5251,6 @@ var legend = (function (legend)	{
 	'use strict';
 
 	var model = {};
-
-	function getMostWidthOfText (texts, font)	{
-		var result = 0;
-
-		util.loop(texts, function (d, i)	{
-			result = result > draw.getTextWidth(d, font) ? 
-							 result : draw.getTextWidth(d, font);
-		});
-
-		return result;
-	};
 	/*
 		가장 길이가 긴 문자열을 반환한다.
 	 */
@@ -5268,7 +5283,7 @@ var legend = (function (legend)	{
 		model.tg = render.addGroup(
 		model.e, model.t, model.l, 'legend-text');		
 		model.mt = getMostText(model.d);
-		model.mw = getMostWidthOfText(model.d, model.font);
+		model.mw = draw.getMostWidthOfText(model.d, model.font);
 		model.mh = draw.getTextHeight(model.font).height;
 		// x, y 위치 지정을 위한 배열 변수.
 		model.x = [];
@@ -7619,6 +7634,9 @@ var size = (function (size)	{
 		if (chart === 'variants')	{
 			w = width < 900 ? 900 : width > 1100 ? 1100 : width;
 			h = height < 300 ? 300 : height > 500 ? 500 : height;
+		} else if (chart === 'landscape')	{
+			w = width < 1100 ? 1100 : width > 1620 ? 1620 : width;
+			h = height < 500 ? 500 : height > 750 ? 750 : height;
 		}
 	};
 	/*
@@ -7672,19 +7690,19 @@ var size = (function (size)	{
 	size.chart.landscape = function (e, w, h)	{
 		var ids = {
 			landscape_title: {w: w, h: h * 0.05},
-			landscape_legend: {w: w * 0.15, h: h},
-			landscape_axis_sample: {w: w * 0.15, h: h * 0.15},
+			landscape_legend: {w: w * 0.1, h: h * 0.95},
+			landscape_axis_sample: {w: w * 0.14, h: h * 0.15},
 			landscape_patient_sample: {w: w * 0.01, h: h * 0.15},
-			landscape_sample: {w: w * 0.59, h: h * 0.15},
+			landscape_sample: {w: w * 0.65, h: h * 0.15},
 			landscape_scale_option: {w: w * 0.1, h: h * 0.15},
-			landscape_axis_group: {w: w * 0.15, h: h * 0.2},
+			landscape_axis_group: {w: w * 0.14, h: h * 0.2},
 			landscape_patient_group: {w: w * 0.01, h: h * 0.2},
-			landscape_group: {w: w * 0.59, h: h * 0.2},
+			landscape_group: {w: w * 0.65, h: h * 0.2},
 			landscape_option: {w: w * 0.1, h: h * 0.2},
-			landscape_gene: {w: w * 0.15, h: h * 0.65},
-			landscape_patient_heatmap: {w: w * 0.01, h: h * 0.65},
-			landscape_heatmap: {w: w * 0.59, h: h * 0.65},
-			landscape_pq: {w: w * 0.1, h: h * 0.65},
+			landscape_gene: {w: w * 0.14, h: h * 0.6},
+			landscape_patient_heatmap: {w: w * 0.01, h: h * 0.6},
+			landscape_heatmap: {w: w * 0.65, h: h * 0.6},
+			landscape_pq: {w: w * 0.1, h: h * 0.6},
 		};
 
 		return makeFrames.call(size.setSize(e, w, h), ids), model.ids;
