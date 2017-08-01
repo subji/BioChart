@@ -3040,8 +3040,8 @@ var exclusive = (function ()	{
 		Unaltered 인지 결정해주는 함수.
 	 */
 	function isAltered (s, h)	{
-		var sample = 'SMCLUAD1690060028',
-		// var sample = document.getElementById('sample_id').value,
+		// var sample = 'SMCLUAD1690060028',
+		var sample = document.getElementById('sample_id').value,
 				genesetArr = model.now.geneset.split(' '),
 				result = '.';
 
