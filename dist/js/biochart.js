@@ -3903,7 +3903,7 @@ var expression = (function (expression)	{
 	function drawAll (data)	{
 		// Data 처리도 이 함수에서 실행된다.
 		model.data = preprocessing.expression(data);
-		var most = draw.getMostTextWidth(
+		var most = draw.getMostWidthOfText(
 		model.data.axis.heatmap.y, '12px');
 		model.data.axisLeft = Math.ceil(most / 10) * 10;
 		// When the site had loaded complete, draw the chart below.
