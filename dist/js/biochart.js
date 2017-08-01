@@ -805,12 +805,21 @@ config.landscape.heatmap = {
 	},
 	on: {
 		mouseover: function (d, i, m)	{
+			var typeStr = '';
+
+			if (d.info.length > 0)	{
+				util.loop(d.info, function (t)	{
+					typeStr += '</br><b>' + t + '</b>';
+				});
+			}
+
 			tooltip({
 				element: this,
 				contents: '<b>Gene mutations</b></br>' + 
 									'X: <b>' + d.x + '</b></br>' + 
 									'Y: <b>' + d.y + '</b></br>' + 
-									'Type: <b>' + d.value + '</b>',
+									'Type: </br><b>' + d.value + '</b>' + 
+									typeStr,
 									
 			});
 
@@ -3936,7 +3945,12 @@ var heatmap = (function (heatmap)	{
 		util.loop(d, function (k, v)	{
 			util.loop(model.mt, function (d, i)	{
 				if (v[d][0])	{
-					model.d.push({x: v.x, y: v.y, value: v[d][0]});
+					model.d.push({
+						x: v.x, 
+						y: v.y, 
+						value: v[d][0], 
+						info: v[d].splice(1),
+					});
 				}
 			});
 		})
