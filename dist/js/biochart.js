@@ -1472,6 +1472,7 @@ config.variants.needle = {
 	on: {
 		mouseover: function (d, i, m)	{
 			draw.toFront(this);
+			console.log(this);
 
 			tooltip({
 				element: this,
@@ -1546,6 +1547,8 @@ config.variants.needleGraph = {
 	},
 	on: {
 		mouseover: function (d, i, m)	{
+			draw.toFront(this.parentNode);
+
 			tooltip({
 				element: this,
 				contents: 
@@ -1557,6 +1560,8 @@ config.variants.needleGraph = {
 			});
 		},
 		mouseout: function (d, i, m)	{
+			// draw.toBack(this);
+
 			tooltip('hide');
 		},
 	},
@@ -8300,7 +8305,7 @@ var variants = (function (variants)	{
 		Variants 를 그려주는 함수.
 	 */
 	function drawVariants ()	{
-		layout.removeG();
+		layout.removeG(); 
 
 		drawAxis();
 		drawLegend();
