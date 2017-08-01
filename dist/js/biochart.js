@@ -1253,7 +1253,7 @@ config.exclusivity.division = {
 			return i > 0 ? m.isText ? 
 						 m.scale(m.axis[m.axis.length - 1]) - 
 						 draw.getTextWidth(d.text, m.font) - 
-						 m.m.left / 2 : 
+						 m.m.left / 2 - m.padding : 
 						 m.scale(d.point) : m.isText ? 
 						 m.m.left + m.padding : m.m.left;
 		},
