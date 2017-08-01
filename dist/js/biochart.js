@@ -6942,8 +6942,8 @@ var render = (function (render)	{
 		var id = id.indexOf('#') < 0 ? '#' + id : id,
 				dom = document.querySelector(id);
 
-		if (d3.select(id))	{
-			d3.select(id).remove();
+		if (d3.select('svg ' + id))	{
+			console.log(d3.select('svg ' + id))
 		}
 
 		return d3.select(id)
