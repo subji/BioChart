@@ -6943,7 +6943,7 @@ var render = (function (render)	{
 				dom = document.querySelector(id);
 
 		if (d3.select(id))	{
-			console.log(d3.select(id))
+			d3.select(id).remove();
 		}
 
 		return d3.select(id)
