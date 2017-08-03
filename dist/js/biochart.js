@@ -4144,8 +4144,8 @@ var landscape = (function (landscape)	{
 		};
 		// t 만큼 돌면서 각 그룹을 돈다.
 		util.loop(t, function (k, v)	{
-			util.loop(g, function (d, i)	{
-				makeGroupDiv(v, util.removeWhiteSpace(d[0]) + k, {
+			util.loop(g.map(function (d) { return d.name; }) , function (d, i)	{
+				makeGroupDiv(v, util.removeWhiteSpace(d) + k, {
 					width: draw.width(v) + 'px',
 					height: draw.height(v) / g.length + 'px',
 					// 아래 옵션은 원래는 chart 에만 적용되야 되지만,
@@ -4654,18 +4654,23 @@ var landscape = (function (landscape)	{
 		drawSort();
 	};
 
-	return function (o)	{
-		var e = document.querySelector(o.element || null),
-				w = parseFloat(o.width || e.style.width || 1400),
-				h = parseFloat(o.height || e.style.height || 700);
+	return function (opts)	{
+		// model.origin = opts.data;
+		// model.setting = bio.setting('landscape', o);
+		var e = document.querySelector(opts.element || null),
+				s = size.rightToSize('landscape', 
+						opts.width || e.style.width,
+						opts.height || e.style.height);
+
+		bio.setting('landscape', opts);
 
 		e.style.background = '#F7F7F7';
 		// Origin data from server.
-		model.origin = o.data;
+		model.origin = opts.data;
 		// preprocess data for landscape and call drawLandScape.
-		model.data = preprocessing.landscape(o.data);
+		model.data = preprocessing.landscape(opts.data.data);
 		// Make Landscape layout and return div ids.
-		model.ids = size.chart.landscape(e, w, h);
+		model.ids = size.chart.landscape(e, s.width, s.height);
 		// 처음에 가로 길이를 정해준다.
 		initSize();
 		// Write Title.
@@ -4673,7 +4678,7 @@ var landscape = (function (landscape)	{
 		// Draw Scale.
 		drawScale();
 		// 그룹 개수에 따라 div 를 만들어 준다 (높이는 일정한 간격).
-		groupFrame(model.data.axis.group.y);
+		groupFrame(model.origin.data.group_list);
 		// Make svg to parent div and object data.
 		model.svg = layout.landscape(model.ids, model);
 		// to exclusive.
@@ -4702,7 +4707,7 @@ var landscape = (function (landscape)	{
 			});
 		});
 
-		console.log('Given Landscape data: ', o);
+		console.log('Given Landscape data: ', opts);
 		console.log('Landscape Model data: ', model);
 	};
 }(landscape||{}));
@@ -5509,9 +5514,14 @@ var legend = (function (legend)	{
 		});
 	};
 }(legend||{}));
+/*
+	BioChart 를 window 객체에 넣어주는 객체.
+ */
+// 초기 실행 시 window 객체를 넘겨받는다. window 객체가
+// 존재하지 않을경우 빈 객체를 받는다.
 (function (window)	{
 	'use strict';
-	
+	// Window 객체에 bio 라는 이름의 객체를 포함 시킨다.
 	window.bio = {
 		draw: draw,
 		config: config,
@@ -5521,7 +5531,7 @@ var legend = (function (legend)	{
 		landscape: landscape,
 		exclusive: exclusive,
 		variants: variants,
-		chart: {
+		chart: { 	// Chart 관련 객체.
 			bar: bar,
 			legend: legend,
 			needle: needle,
@@ -5530,7 +5540,7 @@ var legend = (function (legend)	{
 			scatter: scatter,
 			survival: survival,
 		},
-		tools: {
+		tools: { 	// Chart 관련 도구들에 관한 객체.
 			tooltip: tooltip,
 			selectBox: selectBox,
 			needleNavi: needleNavi,
@@ -5540,6 +5550,29 @@ var legend = (function (legend)	{
 			landscapeSort: landscapeSort,
 			landscapeScaleOption: landscapeScaleOption,
 		},
+		// // >>> Model.
+		// initialize: initialize(),
+		// // >>> Common.
+		// boilerPlate: boilerPlate(),
+		// sizing: sizing(),
+		// layout2: layout2(),
+		// setting: setting(),
+		// // >>> Configuration.
+		// landscapeConfig: landscapeConfig(),
+		// // >>> Preprocess.
+		// preprocess: preprocess(),
+		// preprocLandscape: preprocLandscape(),
+		// // >>> Tools.
+		// loading: loading(),
+		// // >>> Utilities.
+		// math: math(),
+		// // strings 객체는 String 의 프로토 타입을 
+		// // 확장한 객체로 여기서 실행만 시켜놓고 따로 객체를 호출하거나
+		// // 인스턴스를 생성하지 않는다.
+		// strings: strings(), 
+		// objects: objects(),
+		// iteration: iteration(),
+		// dependencies: dependencies(),
 		util: util,
 		size: size,
 		scale: scale,
@@ -6724,16 +6757,19 @@ var preprocessing = (function (preprocessing)	{
 	 */
 	preprocessing.landscape = function (d)	{
 		// Move gene in data to model.landscape object.
-		ml.gene = d.gene;
+		// ml.gene = d.gene;
+		ml.gene = d.gene_list.map(function (d)	{
+			return d.gene;
+		});
 		// Set key properties and looping each data.
 		ml.keys = mutualProps(
-		ml.gene, d.mutation.concat(d.patient)[0]);
-		loopingMutation(d.mutation);
-		loopingPatient(d.patient);
-		loopingGroup(d.group);
+		ml.gene, d.mutation_list.concat(d.patient_list)[0]);
+		loopingMutation(d.mutation_list);
+		loopingPatient(d.patient_list);
+		loopingGroup(d.group_list);
 		// set properties of model.landscape.
 		ml.type = util.keyToArr(ml.type);	
-		ml.pq = loopingPq(d.pq, d.pqValue || 'p');
+		ml.pq = loopingPq(d.gene_list, d.pq || 'p');
 		ml.stack.gene = mutStack('gene', ml.stack.gene);
 		ml.stack.sample = mutStack('sample', ml.stack.sample);
 		ml.stack.patient = mutStack('patient', ml.stack.patient);
@@ -7651,8 +7687,12 @@ var size = (function (size)	{
 	/*
 		각 chart 별 최소, 최대 사이즈를 선정해야 한다.
 	 */
-	size.rightSize = function (chart, width, height)	{
-		var w = 0, h = 0;
+	size.rightToSize = function (chart, width, height)	{
+		var w = 0, 
+				h = 0;
+
+		width = parseFloat(width);
+		height = parseFloat(height);
 
 		if (chart === 'variants')	{
 			w = width < 900 ? 900 : width > 1100 ? 1100 : width;
@@ -7661,6 +7701,8 @@ var size = (function (size)	{
 			w = width < 1100 ? 1100 : width > 1620 ? 1620 : width;
 			h = height < 500 ? 500 : height > 750 ? 750 : height;
 		}
+
+		return { width: w, height: h };
 	};
 	/*
 		About parameters then produces margin set.
