@@ -1572,6 +1572,7 @@ config.variants.needleGraph = {
 			return cv.now.width[d.info.identifier] = r;
 		},
 		height: function (d, i, m)	{
+			console.log(m.sh)
 			return m.sh;
 		},
 	},
