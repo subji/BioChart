@@ -144,10 +144,11 @@
 	float: right; 
 }
 #landscape_title { 
-	font-weight: bold; 
+	font-size: 16px;
+	width: 190px;
+	/*font-weight: bold; */
 	background: #EFEFEF;
-	font-family: initial; 
-	text-shadow: 2px 1px #D6D6D6; 
+	/*text-shadow: 2px 1px #D6D6D6; */
 }
 
 #landscape_pq,

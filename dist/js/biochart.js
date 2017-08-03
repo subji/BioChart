@@ -4656,14 +4656,10 @@ var landscape = (function (landscape)	{
 	};
 
 	return function (opts)	{
-		// model.origin = opts.data;
-		// model.setting = bio.setting('landscape', o);
 		var e = document.querySelector(opts.element || null),
 				s = size.rightToSize('landscape', 
 						opts.width || e.style.width,
 						opts.height || e.style.height);
-
-		bio.setting('landscape', opts);
 
 		e.style.background = '#F7F7F7';
 		// Origin data from server.
@@ -5554,10 +5550,10 @@ var legend = (function (legend)	{
 		// // >>> Model.
 		// initialize: initialize(),
 		// // >>> Common.
-		// boilerPlate: boilerPlate(),
 		// sizing: sizing(),
 		// layout2: layout2(),
 		// setting: setting(),
+		// boilerPlate: boilerPlate(),
 		// // >>> Configuration.
 		// landscapeConfig: landscapeConfig(),
 		// // >>> Preprocess.
@@ -5565,7 +5561,11 @@ var legend = (function (legend)	{
 		// preprocLandscape: preprocLandscape(),
 		// // >>> Tools.
 		// loading: loading(),
+		// // >>> Drawing.
+		// drawing: drawing(),
+		// rendering: rendering(),
 		// // >>> Utilities.
+		// dom: dom(),
 		// math: math(),
 		// // strings 객체는 String 의 프로토 타입을 
 		// // 확장한 객체로 여기서 실행만 시켜놓고 따로 객체를 호출하거나
@@ -5574,6 +5574,9 @@ var legend = (function (legend)	{
 		// objects: objects(),
 		// iteration: iteration(),
 		// dependencies: dependencies(),
+		// // >>> Landscape.
+		// scaleSet: scaleSet(),
+		// landscape2: landscape2(),
 		util: util,
 		size: size,
 		scale: scale,
