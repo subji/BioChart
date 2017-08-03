@@ -1778,7 +1778,7 @@ config.variants.patient = {
 			},
 		},
 		text: function (d, i, m) { 
-			return d.replace(/\d/g, '');
+			return d;
 		},
 	},
 };
