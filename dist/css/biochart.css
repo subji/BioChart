@@ -1,3 +1,97 @@
+#exclusivity_title { 
+	border: none;
+	color: #494949;
+	font-weight: bold; 
+	position: relative;
+	text-align: center;
+	background: #D3D3D3;
+	box-sizing: border-box; 
+	-moz-box-sizing: border-box; 
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
+	-webkit-box-sizing: border-box;
+	box-shadow: 1px 1px 1px -1px #CECECE;	
+}
+
+#exclusivity_contents {
+	position: relative;
+	border: 1px solid '#BCBCBC';
+	border-bottom-left-radius: 5px;
+	border-bottom-right-radius: 5px;
+	box-shadow: 0px 3px 6px #CECECE;	
+	-moz-box-shadow: 0px 3px 6px #CECECE;
+	-webkit-box-shadow: 0px 3px 6px #CECECE;
+}
+
+#os,
+#dfs,
+#exclusivity_survival input { 
+	clear: both; 
+	margin: 10px; 
+	display: none; 
+}
+
+#exclusivity_survival label { 
+	float: left; 
+	display: block; 
+	font-size: 14px; 
+	font-weight: bold;
+	padding: 10px 30px;
+	border-bottom: 1px solid #DDD;
+	border-top: 2px solid transparent;
+	border-left: 1px solid transparent;
+	border-right: 1px solid transparent;
+	text-shadow: 1px 1px rgba(0, 0, 0, 0.2); 
+}
+
+#exclusivity_survival label:hover { 
+	cursor: pointer; 
+}
+
+#os_survival:checked ~ #os,
+#dfs_survival:checked ~ #dfs { 
+	display: block; 
+}
+
+#exclusivity_survival input:checked + label { 
+	border-left-color: #DDD; 
+	border-right-color: #DDD;
+	border-top-color: #A5A4A4; 
+	border-bottom-color: transparent; 
+}
+
+#os_stat_table td,
+#dfs_stat_table td { 
+	font-size: 16px; 
+}
+
+#exclusivity_survival { 
+	float: right; 
+	margin-top: 5px;
+}
+
+#exclusivity_legend,
+#exclusivity_heatmap,
+#exclusivity_network,
+#exclusivity_sample_legend,
+#exclusivity_select_geneset { 
+	float: left; 
+}
+
+#exclusivity_select_geneset {
+	margin-top: 5px;
+	margin-left: 5px;
+}
+
+#exclusivity_network { 
+	pointer-events: none; 
+}
+
+#exclusivity_heatmap_axis { 
+	font-size: 12px; 
+	font-weight: bold; 
+	text-shadow: 2px 1px rgba(0, 0, 0, .2); 
+}
 #expression_title { 
 	border: none;
 	color: #494949;
@@ -105,100 +199,6 @@
 	margin-top: 5px;
 	margin-left: 2px;
 	box-shadow: 0px 1px 3px #CECECE;	
-}
-#exclusivity_title { 
-	border: none;
-	color: #494949;
-	font-weight: bold; 
-	position: relative;
-	text-align: center;
-	background: #D3D3D3;
-	box-sizing: border-box; 
-	-moz-box-sizing: border-box; 
-	border-top-left-radius: 5px;
-	border-top-right-radius: 5px;
-	-webkit-box-sizing: border-box;
-	box-shadow: 1px 1px 1px -1px #CECECE;	
-}
-
-#exclusivity_contents {
-	position: relative;
-	border: 1px solid '#BCBCBC';
-	border-bottom-left-radius: 5px;
-	border-bottom-right-radius: 5px;
-	box-shadow: 0px 3px 6px #CECECE;	
-	-moz-box-shadow: 0px 3px 6px #CECECE;
-	-webkit-box-shadow: 0px 3px 6px #CECECE;
-}
-
-#os,
-#dfs,
-#exclusivity_survival input { 
-	clear: both; 
-	margin: 10px; 
-	display: none; 
-}
-
-#exclusivity_survival label { 
-	float: left; 
-	display: block; 
-	font-size: 14px; 
-	font-weight: bold;
-	padding: 10px 30px;
-	border-bottom: 1px solid #DDD;
-	border-top: 2px solid transparent;
-	border-left: 1px solid transparent;
-	border-right: 1px solid transparent;
-	text-shadow: 1px 1px rgba(0, 0, 0, 0.2); 
-}
-
-#exclusivity_survival label:hover { 
-	cursor: pointer; 
-}
-
-#os_survival:checked ~ #os,
-#dfs_survival:checked ~ #dfs { 
-	display: block; 
-}
-
-#exclusivity_survival input:checked + label { 
-	border-left-color: #DDD; 
-	border-right-color: #DDD;
-	border-top-color: #A5A4A4; 
-	border-bottom-color: transparent; 
-}
-
-#os_stat_table td,
-#dfs_stat_table td { 
-	font-size: 16px; 
-}
-
-#exclusivity_survival { 
-	float: right; 
-	margin-top: 5px;
-}
-
-#exclusivity_legend,
-#exclusivity_heatmap,
-#exclusivity_network,
-#exclusivity_sample_legend,
-#exclusivity_select_geneset { 
-	float: left; 
-}
-
-#exclusivity_select_geneset {
-	margin-top: 5px;
-	margin-left: 5px;
-}
-
-#exclusivity_network { 
-	pointer-events: none; 
-}
-
-#exclusivity_heatmap_axis { 
-	font-size: 12px; 
-	font-weight: bold; 
-	text-shadow: 2px 1px rgba(0, 0, 0, .2); 
 }
 #landscape_title { 
 	border: none;
@@ -340,11 +340,11 @@
   top: 15%;
   left: 50%;
   width: 85%;
-  height: 40px;
+  height: 100%;
   min-width: 85%;
   max-width: 85%;
-  min-height: 40px;
-  max-height: 40px;
+  min-height: 35%;
+  max-height: 35%;
   position: relative;
   border-radius: 5px;
   transition: all 0.3s ease;
@@ -356,8 +356,8 @@
 #scale_set_input {
   top: 10px;
   left: 15px;
-  width: 195px;
-  height: 20px;
+  width: 80%;
+  height: 50%;
   border: none;
   outline: none;
   color: #5A6674;
@@ -387,7 +387,7 @@
   outline: 0;
   height: 100%;
   border: none;
-  margin-top: 50%;
+  margin-top: 40%;
   line-height: 0px;
   cursor: pointer;
   background: rgba(0, 0, 0, 0);
@@ -490,6 +490,47 @@ g {
 
 .drug-link {
 	margin-left: 10px;
+}
+#variants_title { 
+	border: none;
+	color: #494949;
+	font-weight: bold; 
+	position: relative;
+	text-align: center;
+	background: #D3D3D3;
+	box-sizing: border-box; 
+	-moz-box-sizing: border-box; 
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
+	-webkit-box-sizing: border-box;
+	box-shadow: 1px 1px 1px -1px #CECECE;	
+}
+
+#variants_contents {
+	position: relative;
+	border: 1px solid '#BCBCBC';
+	border-bottom-left-radius: 5px;
+	border-bottom-right-radius: 5px;
+	box-shadow: 0px 3px 6px #CECECE;	
+	-moz-box-shadow: 0px 3px 6px #CECECE;
+	-webkit-box-shadow: 0px 3px 6px #CECECE;
+}
+#variants_navi,
+#variants_empty,
+#variants_needle,
+#variants_legend	{
+	float: left;
+}
+
+#variants_patient_legend {
+	float: right;
+}
+
+#variants_legend,
+#variants_patient_legend {
+	margin-top: 5px;
+	margin-right: 5px;
+	box-shadow: 0px 1px 3px #CECECE;
 }
 .loading {
   opacity: 1;
@@ -809,45 +850,3 @@ g {
   border-color: transparent transparent transparent rgba(158, 158, 158, 1);
 }
 
-
-#variants_title { 
-	border: none;
-	color: #494949;
-	font-weight: bold; 
-	position: relative;
-	text-align: center;
-	background: #D3D3D3;
-	box-sizing: border-box; 
-	-moz-box-sizing: border-box; 
-	border-top-left-radius: 5px;
-	border-top-right-radius: 5px;
-	-webkit-box-sizing: border-box;
-	box-shadow: 1px 1px 1px -1px #CECECE;	
-}
-
-#variants_contents {
-	position: relative;
-	border: 1px solid '#BCBCBC';
-	border-bottom-left-radius: 5px;
-	border-bottom-right-radius: 5px;
-	box-shadow: 0px 3px 6px #CECECE;	
-	-moz-box-shadow: 0px 3px 6px #CECECE;
-	-webkit-box-shadow: 0px 3px 6px #CECECE;
-}
-#variants_navi,
-#variants_empty,
-#variants_needle,
-#variants_legend	{
-	float: left;
-}
-
-#variants_patient_legend {
-	float: right;
-}
-
-#variants_legend,
-#variants_patient_legend {
-	margin-top: 5px;
-	margin-right: 5px;
-	box-shadow: 0px 1px 3px #CECECE;
-}
