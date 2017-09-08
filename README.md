@@ -1,1 +1,1 @@
-BioChart (Testing...)
+BioChart 0.0.1
