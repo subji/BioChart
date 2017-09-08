@@ -13,8 +13,8 @@ const DIR = {
 };
 
 const SRC = {
-	JS: DIR.SRC + '/javascripts/*.js',
-	CSS: DIR.SRC + '/stylesheets/*.css',
+	JS: DIR.SRC + '/javascripts/*/*.js',
+	CSS: DIR.SRC + '/stylesheets/*/*.css',
 };
 
 const DEST = {
