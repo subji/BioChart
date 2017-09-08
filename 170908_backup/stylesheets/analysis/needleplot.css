@@ -1,0 +1,119 @@
+/*.container {
+  width 		: 1100px;
+  max-width : none !important;
+}
+
+.chart_container {
+	margin 		: 0px;
+	width 		: 1100px;
+	visibility: hidden;
+}
+
+div[class*='col-md-'] {
+	padding : 0px;
+	height 	: 20px;
+}
+
+.table-area {
+	height : 287px;
+}
+
+#needleplot {
+	padding : 0px;
+	margin 	: 0px;
+	width: 1100px;
+	max-width: 1100px;
+	height 	: 420px;
+	background-color: #F8F8F8;
+	border-radius: 5px;
+	border: 1px #eee solid;
+}
+
+#navi {
+	width: 1100px;
+	max-width: 1100px;
+	padding 					: 0px;
+	height 						: 60px;
+	background-color 	: #FCFCFC;
+}
+
+#legend {
+	left 		 : 83%;
+	padding  : 0px;
+	margin   : 0px;
+	width  	 : 200px;
+	height 	 : 250px;
+	position : absolute;
+}
+
+#needleplot_view  {
+	margin 	 : 0px;
+	padding  : 0px;
+	float 	 : left;
+	width 	 : 840px;
+	height 	 : 400px;
+	overflow : hidden;
+}
+
+#needleplot_legend	{
+	margin 	 : 0px;
+	padding  : 0px;
+	float 	 : left;
+	width 	 : 130px;
+	height 	 : 200px;
+	overflow : hidden;
+}
+
+#needleplot_navigation	{
+	padding 				 : 0px;
+	height 					 : 70px;
+	width 					 : 840px;
+	background-color : #FCFCFC;
+}
+
+.preserve_events	{
+	pointer-events : none;
+}
+
+.modal.modal-wide .modal-dialog {
+	width : 60%;
+}
+
+.igvTitle	{
+	color : gray;
+}
+
+.igvValue	{
+	font-size : 18px;
+	color 		: #666565;
+}
+
+.pagination {
+	margin : 0px;
+}
+
+.breadcrumb {
+	margin 					 : 0px;
+	padding-top 		 : 5px;
+	background-color : #FFFFFF;
+}
+
+#dataBtn {
+	margin-bottom : 10px;
+}
+
+#dataList {
+	overflow 	 : auto;
+	width 		 : 300px;
+	max-height : 230px;
+}
+
+#igvView2	{
+	height: 1000px;
+}
+*/
+
+.chart_container {
+	margin: 0px;
+	padding: 0px;
+}

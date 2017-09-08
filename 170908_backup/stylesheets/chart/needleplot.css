@@ -1,0 +1,41 @@
+/* Needle plot
+---------------------------------------------- */
+#needleplot_view  {
+	overflow: scroll;
+}
+.needleplot_navigation_rightarea, .needleplot_navigation_leftarea {
+	fill : #96281B;
+	stroke : #96281B;
+}
+#needleLegend   {
+	margin-left: 150px;
+	width: 700px;
+	padding: 0px;
+	height: 5%;
+}
+#needleplot {
+	border: 1px solid #ECECEC;
+	padding: 0px;
+	height: 85%;
+}
+#needlefullpath {
+	padding: 0px;
+	height: 10%;
+}
+.needleplot_graph_intext {
+	font-size: 50%;
+}
+.needleplot_graph_intext {
+	fill : #fff;
+	font-size: 11px;
+}
+.select_area_rect   {
+	fill : #000;
+	opacity: 0.05;
+}
+.needleplot_navigation_viewarea  {
+	fill : #E4F1FE;
+}
+.needleplot_gene_fullpath_group    {
+	fill : #DADFE1;
+}

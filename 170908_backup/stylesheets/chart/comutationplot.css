@@ -1,0 +1,127 @@
+/* Comutation plot
+---------------------------------------------- */
+.chart_container {
+	width : 1600px;
+}
+.comutationplot_gene_xaxis text, .comutationplot_pq_xaxis text 	{
+	font-size: 8px;
+	font-weight: normal;
+}
+.comutationplot_gene_yaxis text  {
+	fill : #626262;
+	font-size: 12px;
+	font-weight: normal;
+}
+.comutationplot_sample_yaxis text	{
+	fill : #626262;
+	font-size: 8px;
+}
+.comutationplot_gene_yaxis path, .comutationplot_gene_yaxis line {
+	stroke : #fff;
+	stroke-width : 1;
+	shape-rendering : crispEdges;
+}
+.comutationplot_gene_xaxis path, .comutationplot_pq_xaxis path, .comutationplot_sample_yaxis path {
+	fill : none;
+	stroke : #BFBFBF;
+	stroke-width : 1;
+	shape-rendering : crispEdges;
+}
+.comutationplot_gene_xaxis line, .comutationplot_pq_xaxis line, .comutationplot_sample_yaxis line  {
+	fill : none;
+	stroke : #BFBFBF;
+	stroke-width : 1;
+	shape-rendering : crispEdges;
+}
+.comutationplot_gene_bars	{
+	stroke : #BFBFBF;
+	stroke-width : 0.5;
+}
+.comutationplot_pq_bars {
+	fill : #BFBFBF;
+	stroke : #BFBFBF;
+	stroke-width : 1;
+}
+
+.comutationplot_heatmap_yaxis path  {
+	fill : none;
+	stroke : #fff;
+	stroke-width : 1;
+	shape-rendering : crispEdges;
+}
+#comutationplot_scale_div {
+	display: flex;
+	width : 100px;
+	margin-top: 60px;
+	margin-bottom: 0px;
+	margin-left: 10px;
+	margin-right: 70px;
+}
+#comutationplot_vertical_div 	{
+	width : 30px;
+}
+#comutationplot_heatmap	{
+	overflow: hidden;
+}
+.comutationplot_gene_sort_label text, 
+.comutationplot_pq_sort_label text,
+.comutationplot_sample_sort_label text 	{
+	font-size: 12px;
+	font-style: italic;
+}
+/* Comutation Plot navigation custom spinner css style code that used to bootstrap */
+.spinner {
+	width: 70px;
+	margin-top: 10px;
+	margin-left: 20px;
+	float : left;
+}
+.spinner input {
+	text-align: right;
+}
+.input-btn {
+	float : left;
+	width : 10px;
+	margin-top: 10px;
+	margin-left: 5px;
+}
+.input-group-btn-vertical {
+	position: relative;
+	white-space: nowrap;
+	width: 1%;
+	vertical-align: middle;
+	display: table-cell;
+}
+.input-group-btn-vertical > .btn {
+	display: block;
+	float: none;
+	width: 100%;
+	max-width: 100%;
+	padding-top: 8px;
+	padding-left: 10px;
+	padding-right: 5px;
+	padding-bottom: 8px;
+	margin-left: -1px;
+	position: relative;
+	border-radius: 0;
+}
+.input-group-btn-vertical > .btn:first-child {
+	border-top-right-radius: 4px;
+}
+.input-group-btn-vertical > .btn:last-child {
+	margin-top: -2px;
+	border-bottom-right-radius: 4px;
+}
+.input-group-btn-vertical i{
+	position: absolute;
+    	top: -1px;
+	left: 4px;
+}
+.input-group-xs>.form-control,
+.input-group-xs>.input-group-addon,
+.input-group-xs>.input-group-btn>.btn {
+    height: 22px;
+    padding: 1px 5px;
+    font-size: 12px;
+    line-height: 1.5;
+}

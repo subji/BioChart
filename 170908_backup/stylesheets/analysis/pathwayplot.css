@@ -1,0 +1,95 @@
+.chart_container {
+	visibility: hidden;
+	width: 1200px;
+	margin: auto;
+	/*margin-top: 50px;
+	margin-left: auto;
+	margin-right: auto;*/
+}
+
+.no-mouse-event {
+	pointer-events: none;
+}
+
+/* Custom tooltip style css attribute */
+.tooltip_chart {
+	font-size: 15px;
+	line-height: 25px;
+	padding: 10px;
+	color : #FFF;
+	border-radius: 5px;
+	border: 1px solid #FFF;
+	display: block;
+	z-index: 1000;
+}
+/* Custom animation for svg shape border that is Ant type css style attribute */
+@-webkit-keyframes marching_ants {
+	to {
+		stroke-dashoffset: 100%;
+	}
+}
+.pathwayplot_gene_rect_target {
+	stroke: #FFF400;
+	stroke-dasharray: 2,2;
+	stroke-width: 2.5px;
+	-webkit-animation: marching_ants 10s linear infinite;
+}
+
+#pathway_modal_drug_icon	{
+	float : left;
+	/*margin-top : 7px;
+	margin-right: 0px;
+	margin-left: 0px;*/
+}
+
+.modal-dialog	{
+	width: 800px;
+}
+
+.fixed-table-header {
+	background-color: #e7e7e7;
+}
+
+.fixed-table-body {
+	height: auto;
+	max-height: 600px;
+	min-height: 100px;
+}
+
+.drug_gene_name {
+	color : #0000b2;
+	font-weight: bold;
+}
+
+.label-default	{
+	background-color: #b2b2b2;
+}
+
+#pathwayplot_table 	{
+	table-layout: fixed;
+}
+
+.drug_modal_agent {
+	font-size: 13px;
+}
+
+.drug_modal_drug_class	{
+	font-size: 13px;
+	width: 132px;
+}
+
+.underline{
+	border-bottom: 1px dotted;
+}
+
+.preserve_events	{
+	pointer-events : none;
+}
+
+/*td 	{
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	width: 200px;
+	padding: 10px;
+	overflow-x: hidden;
+}*/

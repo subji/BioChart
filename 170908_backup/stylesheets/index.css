@@ -1,0 +1,99 @@
+h1, h2, h3, h4, h5, h6 {
+    font-style: normal;
+    margin: 0px 0px 20px;
+    /*color: #222;*/
+    color: #656565;
+}
+
+section.featured {
+    padding: 100px 0px 60px;
+    background: #286090 none repeat scroll 0% 0%;
+    color: #FDFDFD;
+    margin-top: 20px;
+    border-radius: 10px;
+}
+.row {
+    z-index: 9999;
+}
+.align-center {
+    text-align: center;
+}
+.mar-bot20 {
+    margin-bottom: 20px;
+}
+.mar-bot40 {
+    margin-bottom: 40px;
+}
+section.featured h2.slogan {
+    color: #FFF;
+    font-size: 48px;
+    font-weight: 900;
+    font-style: normal;
+    margin: 0px 0px 50px;
+}
+section.section {
+    margin: 0px;
+    padding: 80px 0px 60px;
+}
+.bg-white {
+    background-color: #FFF;
+}
+.text-bold {
+    font-weight: 900;
+    font-size: 18px;
+}
+
+#testimonials {
+    /*background-image: url("http://bootstraptaste.com/theme/amoeba/img/parallax/img3.jpg");*/
+    background-image: url("/images/img3.jpg");
+}
+.pad-bot40 {
+    padding-bottom: 40px;
+}
+.pad-top40 {
+    padding-top: 40px;
+}
+.testimonial h5 {
+    color: #FFF;
+    font-size: 18px;
+    font-family: Georgia,sans-serif;
+    line-height: 1.5em;
+}
+.testimonial span.author {
+    color: #FFF;
+    font-weight: 700;
+}
+
+section.section {
+    margin: 0px;
+    padding: 80px 0px 60px;
+}
+.section-header {
+    text-align: center;
+}
+.section-header h2.section-heading {
+    text-transform: uppercase;
+    font-weight: 700;
+}
+.animated {
+    animation-duration: 0.5s;
+    animation-timing-function: ease;
+    animation-fill-mode: both;
+}
+
+figure {
+    display: block;
+}
+.member-photo {
+    box-sizing: border-box;
+    border-radius: 50%;
+    margin: 0px 0px 20px;
+}
+.member-photo img {
+    width:200px;
+    height:200px;
+    border-radius: 50%;
+}
+.team-detail h4 {
+    font-weight: 700;
+}

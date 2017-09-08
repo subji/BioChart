@@ -1,0 +1,70 @@
+/* Old chart base container style css attribute */
+.chart_base_container	{
+	width : 1600px;
+}
+
+/* Loading screen css attribute */
+/* To be delete */
+#loading_area	{
+	position: absolute;
+	opacity: 0.5;
+	background-color: #000;
+	display: none;
+	z-index: 10000;
+}
+.loading {
+	width: 40px;
+	height: 40px;
+	position: absolute;
+	z-index: 10001;
+	margin: auto;
+}
+#loading_text	{
+	position: absolute;
+	top : 0;
+	left : 0;
+	font-size: 20px;
+	font-weight: bold;
+}
+.double-bounce1, .double-bounce2 {
+	width: 100%;
+	height: 100%;
+	border-radius: 50%;
+	background-color: #BFBFBF;
+	opacity: 0.6;
+	position: absolute;
+	top: 0;
+	left: 0;
+
+	-webkit-animation: sk-bounce 2.0s infinite ease-in-out;
+	animation: sk-bounce 2.0s infinite ease-in-out;
+}
+.double-bounce2 {
+	-webkit-animation-delay: -1.0s;
+	animation-delay: -1.0s;
+}
+@-webkit-keyframes sk-bounce {
+	0%, 100% { -webkit-transform: scale(0.0) }
+	50% { -webkit-transform: scale(1.0) }
+}
+@keyframes sk-bounce {
+	0%, 100% {
+		transform: scale(0.0);
+		-webkit-transform: scale(0.0);
+		} 50% {
+			transform: scale(1.0);
+			-webkit-transform: scale(1.0);
+		}
+	}
+	
+/* Custom tooltip style css attribute */
+.tooltip_chart {
+	font-size			: 15px;
+	line-height		: 25px;
+	padding				: 10px;
+	color 				: #FFF;
+	border-radius : 5px;
+	border 				: 1px solid #FFF;
+	display 			: block;
+	z-index 			: 1000;
+}

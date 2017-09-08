@@ -1,0 +1,31 @@
+/* DEG Plot 
+--------------------------------------- */
+.chart_container {
+	width : 1600px;
+}
+.degplot_axis_color_range path,
+.degplot_axis_color_range line 	{
+	fill : none;
+	stroke : #BFBFBF;
+	stroke-width : 1;
+	shape-rendering : crispEdges;
+}
+.degplot_axis_color_range text	{
+	font-size: 10px;
+}
+.table {
+	font-size: 12px;
+}
+.table tbody tr td, .table thead tr th {
+	padding : 2px;
+}
+.degplot_lever_rect	{
+	fill : #F2F1EF;
+	stroke : #BFBFBF;
+}
+.panel-title	{
+	font-size: 12px;
+}
+#degplot_color	{
+	width : 200px;
+}

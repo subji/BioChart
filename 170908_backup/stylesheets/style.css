@@ -1,0 +1,152 @@
+/* Sticky footer styles
+-------------------------------------------------- */
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  /* Margin bottom by footer height */
+  /*margin-bottom: 60px;*/
+  /*color: #777;*/
+}
+
+.footer {
+  /*position: absolute;*/
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  /* Set the fixed height of the footer here */
+  height: 60px;
+  background-color: #f5f5f5;
+}
+
+
+/* Custom page CSS
+-------------------------------------------------- */
+
+body>.container {
+  padding: 50px 15px 0;
+  /*width: 970px !important;*/
+}
+
+.container .text-muted {
+  margin: 20px 0;
+}
+
+.footer>.container {
+  padding-right: 15px;
+  padding-left: 15px;
+}
+
+body>.modal-dialog {
+  margin: 100px auto;
+}
+
+code {
+  font-size: 80%;
+}
+
+
+/* Header
+-------------------------------------------------- */
+
+.navbar-container {
+  padding-left: 30px;
+  /*padding-right: 30px;*/
+  padding-right: 60px;
+}
+
+.menu_icon {
+  /*color: #286090;*/
+}
+
+.menu_span {
+  padding-left: 5px;
+}
+
+.sub_menu_span {
+  padding-left: 10px;
+}
+
+.dropdown-menu>li>a {
+  color: #777;
+}
+
+.agent-red {
+  color: #FD0000;
+}
+.agent-pink {
+  color: #FF9014;
+}
+
+.badge-agent-red {
+  margin: 0px 2px;
+  background-color: #FD0000;
+}
+.badge-agent-pink {
+  margin: 0px 2px;
+  background-color: #FF9014;
+}
+
+.agent-blue {
+  /*color : #007cbc;*/
+  color: #0000FF;
+}
+
+.agent-black {
+  /*color : #333333;*/
+  color: #333333;
+}
+
+.one-line {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.one-line:hover {
+  white-space: normal;
+}
+
+.mw100 {
+  max-width: 100px;
+}
+.mw150 {
+  max-width: 150px;
+}
+.mw200 {
+  max-width: 200px;
+}
+
+
+/* Bootstrap popover */
+
+.popover {
+  max-width: 100%;
+  /* Max Width of the popover (depending on the container!) */
+}
+
+
+/* If page has 'Do-not print' elements, add .no-print class */
+
+@media print {
+  .no-print, .no-print * {
+    display: none !important;
+  }
+}
+
+
+/* bootstrap table */
+
+.bootstrap-table .table, .bootstrap-table .table>tbody>tr>th, .bootstrap-table .table>tfoot>tr>th, .bootstrap-table .table>thead>tr>td, .bootstrap-table .table>tbody>tr>td, .bootstrap-table .table>tfoot>tr>td {
+  white-space: nowrap;
+}
+
+
+/* bootstrap radio checkbox position bug */
+
+.checkbox input[type="checkbox"], .checkbox-inline input[type="checkbox"], .radio input[type="radio"], .radio-inline input[type="radio"] {
+  margin-top: 1px;
+}
