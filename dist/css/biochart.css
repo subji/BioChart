@@ -396,6 +396,44 @@
 #scale_options div button:hover > i { 
   color: #1A7CAD; 
 }
+g {
+  pointer-events: all;
+}
+
+.top-axis-g-tag text,
+.left-axis-g-tag text,
+.bottom-axis-g-tag text,
+.right-axis-g-tag text {
+	font-size: 10px;
+}
+
+.top-axis-g-tag path,
+.top-axis-g-tag line {
+	fill: none;
+  stroke: #333;
+  shape-rendering: crispEdges;
+}
+
+.left-axis-g-tag path,
+.left-axis-g-tag line  {
+	fill: none;
+  stroke: #333;
+  shape-rendering: crispEdges;	
+}
+
+.bottom-axis-g-tag path,
+.bottom-axis-g-tag line  {
+	fill: none;
+  stroke: #333;
+  shape-rendering: crispEdges;
+}
+
+.right-axis-g-tag path,
+.right-axis-g-tag line  {
+	fill: none;
+  stroke: #333;
+  shape-rendering: crispEdges;
+}
 #pathway_title { 
 	border: none;
 	color: #494949;
@@ -451,6 +489,47 @@
 
 .drug-link {
 	margin-left: 10px;
+}
+#variants_title { 
+	border: none;
+	color: #494949;
+	font-weight: bold; 
+	position: relative;
+	text-align: center;
+	background: #D3D3D3;
+	box-sizing: border-box; 
+	-moz-box-sizing: border-box; 
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
+	-webkit-box-sizing: border-box;
+	box-shadow: 1px 1px 1px -1px #CECECE;	
+}
+
+#variants_contents {
+	position: relative;
+	border: 1px solid '#BCBCBC';
+	border-bottom-left-radius: 5px;
+	border-bottom-right-radius: 5px;
+	box-shadow: 0px 3px 6px #CECECE;	
+	-moz-box-shadow: 0px 3px 6px #CECECE;
+	-webkit-box-shadow: 0px 3px 6px #CECECE;
+}
+#variants_navi,
+#variants_empty,
+#variants_needle,
+#variants_legend	{
+	float: left;
+}
+
+#variants_patient_legend {
+	float: right;
+}
+
+#variants_legend,
+#variants_patient_legend {
+	margin-top: 5px;
+	margin-right: 5px;
+	box-shadow: 0px 1px 3px #CECECE;
 }
 .loading {
   opacity: 1;
@@ -768,45 +847,3 @@
   border-color: transparent transparent transparent rgba(158, 158, 158, 1);
 }
 
-
-#variants_title { 
-	border: none;
-	color: #494949;
-	font-weight: bold; 
-	position: relative;
-	text-align: center;
-	background: #D3D3D3;
-	box-sizing: border-box; 
-	-moz-box-sizing: border-box; 
-	border-top-left-radius: 5px;
-	border-top-right-radius: 5px;
-	-webkit-box-sizing: border-box;
-	box-shadow: 1px 1px 1px -1px #CECECE;	
-}
-
-#variants_contents {
-	position: relative;
-	border: 1px solid '#BCBCBC';
-	border-bottom-left-radius: 5px;
-	border-bottom-right-radius: 5px;
-	box-shadow: 0px 3px 6px #CECECE;	
-	-moz-box-shadow: 0px 3px 6px #CECECE;
-	-webkit-box-shadow: 0px 3px 6px #CECECE;
-}
-#variants_navi,
-#variants_empty,
-#variants_needle,
-#variants_legend	{
-	float: left;
-}
-
-#variants_patient_legend {
-	float: right;
-}
-
-#variants_legend,
-#variants_patient_legend {
-	margin-top: 5px;
-	margin-right: 5px;
-	box-shadow: 0px 1px 3px #CECECE;
-}
