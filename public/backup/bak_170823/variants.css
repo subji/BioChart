@@ -1,0 +1,19 @@
+#variants_title { 
+	float: left;
+	padding-left: 5%;
+	font-weight: bold;
+	background: #EFEFEF;
+	font-family: initial;
+	text-shadow: 2px 1px #D6D6D6;
+}
+
+#variants_navi,
+#variants_empty,
+#variants_needle,
+#variants_legend {
+	float: left;
+}
+
+#variants_patient_legend {
+	float: right;
+}

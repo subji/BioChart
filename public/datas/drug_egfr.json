@@ -1,0 +1,704 @@
+[
+  {
+    "agent": "afatinib",
+    "cancer": "Lung Neoplasms",
+    "dailymed_id": "fd638e5e-8032-e7ca-0179-95e96ab5d387",
+    "drug_class": "FDA approved",
+    "drug_type": "type1",
+    "nci_id": "afatinibdimaleate",
+    "source": "VarDrugPub (2017.5)"
+  },
+  {
+    "agent": "afatinib",
+    "cancer": "Lung Neoplasms",
+    "dailymed_id": "fd638e5e-8032-e7ca-0179-95e96ab5d387",
+    "drug_class": "FDA approved",
+    "drug_type": "type1",
+    "nci_id": "afatinibdimaleate",
+    "source": "Handbook of Targeted Cancer Therapy (2015)"
+  },
+  {
+    "agent": "afatinib",
+    "cancer": "Lung Neoplasms",
+    "dailymed_id": "fd638e5e-8032-e7ca-0179-95e96ab5d387",
+    "drug_class": "FDA approved",
+    "drug_type": "type1",
+    "nci_id": "afatinibdimaleate",
+    "source": "IntOGen (2015)"
+  },
+  {
+    "agent": "afatinib",
+    "cancer": "Lung Neoplasms",
+    "dailymed_id": "fd638e5e-8032-e7ca-0179-95e96ab5d387",
+    "drug_class": "FDA approved",
+    "drug_type": "type1",
+    "nci_id": "afatinibdimaleate",
+    "source": "My Cancer Genome (2015)"
+  },
+  {
+    "agent": "brigatinib",
+    "cancer": "Lung Neoplasms",
+    "dailymed_id": null,
+    "drug_class": "FDA approved",
+    "drug_type": "type1",
+    "nci_id": null,
+    "source": "VarDrugPub (2017.5)"
+  },
+  {
+    "agent": "brigatinib",
+    "cancer": "Lung Neoplasms",
+    "dailymed_id": null,
+    "drug_class": "FDA approved",
+    "drug_type": "type1",
+    "nci_id": null,
+    "source": "My Cancer Genome (2015)"
+  },
+  {
+    "agent": "carboplatin + pemetrexed",
+    "cancer": "Lung Neoplasms",
+    "dailymed_id": null,
+    "drug_class": "FDA approved",
+    "drug_type": "type1",
+    "nci_id": null,
+    "source": "VarDrugPub (2017.5)"
+  },
+  {
+    "agent": "carboplatin + taxol",
+    "cancer": "Lung Neoplasms",
+    "dailymed_id": "",
+    "drug_class": "FDA approved",
+    "drug_type": "type1",
+    "nci_id": "CARBOPLATIN-TAXOL",
+    "source": "My Cancer Genome (2015)"
+  },
+  {
+    "agent": "docetaxel + carboplatin",
+    "cancer": "Lung Neoplasms",
+    "dailymed_id": null,
+    "drug_class": "FDA approved",
+    "drug_type": "type1",
+    "nci_id": null,
+    "source": "My Cancer Genome (2015)"
+  },
+  {
+    "agent": "docetaxel + cisplatin",
+    "cancer": "Lung Neoplasms",
+    "dailymed_id": null,
+    "drug_class": "FDA approved",
+    "drug_type": "type1",
+    "nci_id": null,
+    "source": "My Cancer Genome (2015)"
+  },
+  {
+    "agent": "erlotinib",
+    "cancer": "Lung Neoplasms",
+    "dailymed_id": "57bccb29-1c47-4c64-ab6a-77960a91cc20",
+    "drug_class": "FDA approved",
+    "drug_type": "type1",
+    "nci_id": "erlotinibhydrochloride",
+    "source": "Handbook of Targeted Cancer Therapy (2015)"
+  },
+  {
+    "agent": "erlotinib",
+    "cancer": "Lung Neoplasms",
+    "dailymed_id": "57bccb29-1c47-4c64-ab6a-77960a91cc20",
+    "drug_class": "FDA approved",
+    "drug_type": "type1",
+    "nci_id": "erlotinibhydrochloride",
+    "source": "My Cancer Genome (2015)"
+  },
+  {
+    "agent": "erlotinib",
+    "cancer": "Lung Neoplasms",
+    "dailymed_id": "57bccb29-1c47-4c64-ab6a-77960a91cc20",
+    "drug_class": "FDA approved",
+    "drug_type": "type1",
+    "nci_id": "erlotinibhydrochloride",
+    "source": "IntOGen (2015)"
+  },
+  {
+    "agent": "erlotinib",
+    "cancer": "Lung Neoplasms",
+    "dailymed_id": "57bccb29-1c47-4c64-ab6a-77960a91cc20",
+    "drug_class": "FDA approved",
+    "drug_type": "type1",
+    "nci_id": "erlotinibhydrochloride",
+    "source": "Manual curation (2016)"
+  },
+  {
+    "agent": "erlotinib",
+    "cancer": "Lung Neoplasms",
+    "dailymed_id": "57bccb29-1c47-4c64-ab6a-77960a91cc20",
+    "drug_class": "FDA approved",
+    "drug_type": "type1",
+    "nci_id": "erlotinibhydrochloride",
+    "source": "VarDrugPub (2017.3)"
+  },
+  {
+    "agent": "erlotinib",
+    "cancer": "Lung Neoplasms",
+    "dailymed_id": "57bccb29-1c47-4c64-ab6a-77960a91cc20",
+    "drug_class": "FDA approved",
+    "drug_type": "type1",
+    "nci_id": "erlotinibhydrochloride",
+    "source": "VarDrugPub (2017.5)"
+  },
+  {
+    "agent": "erlotinib + gemcitabine + cisplatin",
+    "cancer": "Lung Neoplasms",
+    "dailymed_id": null,
+    "drug_class": "FDA approved",
+    "drug_type": "type1",
+    "nci_id": null,
+    "source": "VarDrugPub (2017.3)"
+  },
+  {
+    "agent": "gefitinib",
+    "cancer": "Lung Neoplasms",
+    "dailymed_id": "827d60e8-7e07-41b7-c28b-49ef1c4a5a41",
+    "drug_class": "FDA approved",
+    "drug_type": "type1",
+    "nci_id": "gefitinib",
+    "source": "IntOGen (2015)"
+  },
+  {
+    "agent": "gefitinib",
+    "cancer": "Lung Neoplasms",
+    "dailymed_id": "827d60e8-7e07-41b7-c28b-49ef1c4a5a41",
+    "drug_class": "FDA approved",
+    "drug_type": "type1",
+    "nci_id": "gefitinib",
+    "source": "Manual curation (2016)"
+  },
+  {
+    "agent": "gefitinib",
+    "cancer": "Lung Neoplasms",
+    "dailymed_id": "827d60e8-7e07-41b7-c28b-49ef1c4a5a41",
+    "drug_class": "FDA approved",
+    "drug_type": "type1",
+    "nci_id": "gefitinib",
+    "source": "VarDrugPub (2017.5)"
+  },
+  {
+    "agent": "gefitinib",
+    "cancer": "Lung Neoplasms",
+    "dailymed_id": "827d60e8-7e07-41b7-c28b-49ef1c4a5a41",
+    "drug_class": "FDA approved",
+    "drug_type": "type1",
+    "nci_id": "gefitinib",
+    "source": "VarDrugPub (2017.3)"
+  },
+  {
+    "agent": "gefitinib",
+    "cancer": "Lung Neoplasms",
+    "dailymed_id": "827d60e8-7e07-41b7-c28b-49ef1c4a5a41",
+    "drug_class": "FDA approved",
+    "drug_type": "type1",
+    "nci_id": "gefitinib",
+    "source": "Handbook of Targeted Cancer Therapy (2015)"
+  },
+  {
+    "agent": "gefitinib",
+    "cancer": "Lung Neoplasms",
+    "dailymed_id": "827d60e8-7e07-41b7-c28b-49ef1c4a5a41",
+    "drug_class": "FDA approved",
+    "drug_type": "type1",
+    "nci_id": "gefitinib",
+    "source": "My Cancer Genome (2015)"
+  },
+  {
+    "agent": "gefitinib + docetaxel",
+    "cancer": "Lung Neoplasms",
+    "dailymed_id": null,
+    "drug_class": "FDA approved",
+    "drug_type": "type1",
+    "nci_id": null,
+    "source": "VarDrugPub (2017.3)"
+  },
+  {
+    "agent": "gemcitabine + carboplatin",
+    "cancer": "Lung Neoplasms",
+    "dailymed_id": null,
+    "drug_class": "FDA approved",
+    "drug_type": "type1",
+    "nci_id": null,
+    "source": "My Cancer Genome (2015)"
+  },
+  {
+    "agent": "gemcitabine + cisplatin",
+    "cancer": "Lung Neoplasms",
+    "dailymed_id": "",
+    "drug_class": "FDA approved",
+    "drug_type": "type1",
+    "nci_id": "GEMCITABINE-CISPLATIN",
+    "source": "My Cancer Genome (2015)"
+  },
+  {
+    "agent": "osimertinib",
+    "cancer": "Lung Neoplasms",
+    "dailymed_id": null,
+    "drug_class": "FDA approved",
+    "drug_type": "type1",
+    "nci_id": null,
+    "source": "Manual curation (2016)"
+  },
+  {
+    "agent": "osimertinib",
+    "cancer": "Lung Neoplasms",
+    "dailymed_id": null,
+    "drug_class": "FDA approved",
+    "drug_type": "type1",
+    "nci_id": null,
+    "source": "VarDrugPub (2017.5)"
+  },
+  {
+    "agent": "pemetrexed",
+    "cancer": "Lung Neoplasms",
+    "dailymed_id": "f5a860f3-37ec-429c-ae04-9c88d7c55c08",
+    "drug_class": "FDA approved",
+    "drug_type": "type1",
+    "nci_id": "pemetrexeddisodium",
+    "source": "VarDrugPub (2017.5)"
+  },
+  {
+    "agent": "pemetrexed + cisplatin",
+    "cancer": "Lung Neoplasms",
+    "dailymed_id": null,
+    "drug_class": "FDA approved",
+    "drug_type": "type1",
+    "nci_id": null,
+    "source": "VarDrugPub (2017.5)"
+  },
+  {
+    "agent": "pemetrexed + cisplatin",
+    "cancer": "Lung Neoplasms",
+    "dailymed_id": null,
+    "drug_class": "FDA approved",
+    "drug_type": "type1",
+    "nci_id": null,
+    "source": "My Cancer Genome (2015)"
+  },
+  {
+    "agent": "afatinib",
+    "cancer": "Lung Neoplasms",
+    "dailymed_id": "fd638e5e-8032-e7ca-0179-95e96ab5d387",
+    "drug_class": "Clinical Trials",
+    "drug_type": "type1",
+    "nci_id": "afatinibdimaleate",
+    "source": "VarDrugPub (2017.5)"
+  },
+  {
+    "agent": "afatinib",
+    "cancer": "Lung Neoplasms",
+    "dailymed_id": "fd638e5e-8032-e7ca-0179-95e96ab5d387",
+    "drug_class": "Clinical Trials",
+    "drug_type": "type1",
+    "nci_id": "afatinibdimaleate",
+    "source": "VarDrugPub (2017.3)"
+  },
+  {
+    "agent": "afatinib + cetuximab",
+    "cancer": "Lung Neoplasms",
+    "dailymed_id": null,
+    "drug_class": "Clinical Trials",
+    "drug_type": "type1",
+    "nci_id": null,
+    "source": "My Cancer Genome (2015)"
+  },
+  {
+    "agent": "afatinib + cetuximab",
+    "cancer": "Lung Neoplasms",
+    "dailymed_id": null,
+    "drug_class": "Clinical Trials",
+    "drug_type": "type1",
+    "nci_id": null,
+    "source": "VarDrugPub (2017.5)"
+  },
+  {
+    "agent": "afatinib + cetuximab",
+    "cancer": "Lung Neoplasms",
+    "dailymed_id": null,
+    "drug_class": "Clinical Trials",
+    "drug_type": "type1",
+    "nci_id": null,
+    "source": "VarDrugPub (2017.3)"
+  },
+  {
+    "agent": "amlexanox + selumetinib",
+    "cancer": "Lung Neoplasms",
+    "dailymed_id": null,
+    "drug_class": "Clinical Trials",
+    "drug_type": "type1",
+    "nci_id": null,
+    "source": "VarDrugPub (2017.5)"
+  },
+  {
+    "agent": "azd-9291",
+    "cancer": "Lung Neoplasms",
+    "dailymed_id": null,
+    "drug_class": "Clinical Trials",
+    "drug_type": "type1",
+    "nci_id": null,
+    "source": "VarDrugPub (2017.5)"
+  },
+  {
+    "agent": "azd-9291",
+    "cancer": "Lung Neoplasms",
+    "dailymed_id": null,
+    "drug_class": "Clinical Trials",
+    "drug_type": "type1",
+    "nci_id": null,
+    "source": "My Cancer Genome (2015)"
+  },
+  {
+    "agent": "carboplatin + pemetrexed + bevacizumab",
+    "cancer": "Lung Neoplasms",
+    "dailymed_id": null,
+    "drug_class": "Clinical Trials",
+    "drug_type": "type1",
+    "nci_id": null,
+    "source": "VarDrugPub (2017.3)"
+  },
+  {
+    "agent": "cetuximab",
+    "cancer": "Lung Neoplasms",
+    "dailymed_id": "8bc6397e-4bd8-4d37-a007-a327e4da34d9",
+    "drug_class": "Clinical Trials",
+    "drug_type": "type1",
+    "nci_id": "cetuximab",
+    "source": "Handbook of Targeted Cancer Therapy (2015)"
+  },
+  {
+    "agent": "dacomitinib",
+    "cancer": "Lung Neoplasms",
+    "dailymed_id": null,
+    "drug_class": "Clinical Trials",
+    "drug_type": "type1",
+    "nci_id": null,
+    "source": "VarDrugPub (2017.5)"
+  },
+  {
+    "agent": "dacomitinib",
+    "cancer": "Lung Neoplasms",
+    "dailymed_id": null,
+    "drug_class": "Clinical Trials",
+    "drug_type": "type1",
+    "nci_id": null,
+    "source": "Handbook of Targeted Cancer Therapy (2015)"
+  },
+  {
+    "agent": "dacomitinib",
+    "cancer": "Lung Neoplasms",
+    "dailymed_id": null,
+    "drug_class": "Clinical Trials",
+    "drug_type": "type1",
+    "nci_id": null,
+    "source": "My Cancer Genome (2015)"
+  },
+  {
+    "agent": "hm61713",
+    "cancer": "Lung Neoplasms",
+    "dailymed_id": null,
+    "drug_class": "Clinical Trials",
+    "drug_type": "type1",
+    "nci_id": null,
+    "source": "My Cancer Genome (2015)"
+  },
+  {
+    "agent": "icotinib",
+    "cancer": "Lung Neoplasms",
+    "dailymed_id": null,
+    "drug_class": "Clinical Trials",
+    "drug_type": "type1",
+    "nci_id": null,
+    "source": "My Cancer Genome (2015)"
+  },
+  {
+    "agent": "icotinib",
+    "cancer": "Lung Neoplasms",
+    "dailymed_id": null,
+    "drug_class": "Clinical Trials",
+    "drug_type": "type1",
+    "nci_id": null,
+    "source": "VarDrugPub (2017.5)"
+  },
+  {
+    "agent": "neratinib",
+    "cancer": "Lung Neoplasms",
+    "dailymed_id": null,
+    "drug_class": "Clinical Trials",
+    "drug_type": "type1",
+    "nci_id": null,
+    "source": "VarDrugPub (2017.5)"
+  },
+  {
+    "agent": "neratinib",
+    "cancer": "Lung Neoplasms",
+    "dailymed_id": null,
+    "drug_class": "Clinical Trials",
+    "drug_type": "type1",
+    "nci_id": null,
+    "source": "My Cancer Genome (2015)"
+  },
+  {
+    "agent": "neratinib",
+    "cancer": "Lung Neoplasms",
+    "dailymed_id": null,
+    "drug_class": "Clinical Trials",
+    "drug_type": "type1",
+    "nci_id": null,
+    "source": "VarDrugPub (2017.3)"
+  },
+  {
+    "agent": "rociletinib",
+    "cancer": "Lung Neoplasms",
+    "dailymed_id": null,
+    "drug_class": "Clinical Trials",
+    "drug_type": "type1",
+    "nci_id": null,
+    "source": "Manual curation (2016)"
+  },
+  {
+    "agent": "rociletinib",
+    "cancer": "Lung Neoplasms",
+    "dailymed_id": null,
+    "drug_class": "Clinical Trials",
+    "drug_type": "type1",
+    "nci_id": null,
+    "source": "VarDrugPub (2017.5)"
+  },
+  {
+    "agent": "rociletinib",
+    "cancer": "Lung Neoplasms",
+    "dailymed_id": null,
+    "drug_class": "Clinical Trials",
+    "drug_type": "type1",
+    "nci_id": null,
+    "source": "My Cancer Genome (2015)"
+  },
+  {
+    "agent": "wz4002 + trametinib",
+    "cancer": "Lung Neoplasms",
+    "dailymed_id": null,
+    "drug_class": "Clinical Trials",
+    "drug_type": "type1",
+    "nci_id": null,
+    "source": "VarDrugPub (2017.5)"
+  },
+  {
+    "agent": "cetuximab",
+    "cancer": "Colorectal Neoplasms",
+    "dailymed_id": "8bc6397e-4bd8-4d37-a007-a327e4da34d9",
+    "drug_class": "FDA approved",
+    "drug_type": "type2",
+    "nci_id": "cetuximab",
+    "source": "IntOGen (2015)"
+  },
+  {
+    "agent": "dasatinib",
+    "cancer": "Leukemia",
+    "dailymed_id": "4764f37b-c9e6-4ede-bcc2-8a03b7c521df",
+    "drug_class": "FDA approved",
+    "drug_type": "type2",
+    "nci_id": "dasatinib",
+    "source": "IntOGen (2015)"
+  },
+  {
+    "agent": "ibrutinib",
+    "cancer": "Leukemia",
+    "dailymed_id": "0dfd0279-ff17-4ea9-89be-9803c71bab44",
+    "drug_class": "FDA approved",
+    "drug_type": "type2",
+    "nci_id": "ibrutinib",
+    "source": "IntOGen (2015)"
+  },
+  {
+    "agent": "ibrutinib",
+    "cancer": "Lymphoma",
+    "dailymed_id": "0dfd0279-ff17-4ea9-89be-9803c71bab44",
+    "drug_class": "FDA approved",
+    "drug_type": "type2",
+    "nci_id": "ibrutinib",
+    "source": "IntOGen (2015)"
+  },
+  {
+    "agent": "lapatinib",
+    "cancer": "Brain Neoplasms",
+    "dailymed_id": "63319b01-cad6-4d0a-c39b-938fa951a808",
+    "drug_class": "FDA approved",
+    "drug_type": "type2",
+    "nci_id": "lapatinibditosylate",
+    "source": "Handbook of Targeted Cancer Therapy (2015)"
+  },
+  {
+    "agent": "lapatinib",
+    "cancer": "Breast Neoplasms",
+    "dailymed_id": "63319b01-cad6-4d0a-c39b-938fa951a808",
+    "drug_class": "FDA approved",
+    "drug_type": "type2",
+    "nci_id": "lapatinibditosylate",
+    "source": "IntOGen (2015)"
+  },
+  {
+    "agent": "panitumumab",
+    "cancer": "Colorectal Neoplasms",
+    "dailymed_id": "e0fa4bca-f245-4d92-ae29-b0c630a315c2",
+    "drug_class": "FDA approved",
+    "drug_type": "type2",
+    "nci_id": "panitumumab",
+    "source": "IntOGen (2015)"
+  },
+  {
+    "agent": "panitumumab",
+    "cancer": "Colorectal Neoplasms",
+    "dailymed_id": "e0fa4bca-f245-4d92-ae29-b0c630a315c2",
+    "drug_class": "FDA approved",
+    "drug_type": "type2",
+    "nci_id": "panitumumab",
+    "source": "VarDrugPub (2017.3)"
+  },
+  {
+    "agent": "vandetanib",
+    "cancer": "Thyroid Neoplasms",
+    "dailymed_id": "d2a87691-c9ad-4753-97a1-311fccfe6515",
+    "drug_class": "FDA approved",
+    "drug_type": "type2",
+    "nci_id": "vandetanib",
+    "source": "IntOGen (2015)"
+  },
+  {
+    "agent": "afatinib",
+    "cancer": "Central Nervous System Neoplasms",
+    "dailymed_id": "fd638e5e-8032-e7ca-0179-95e96ab5d387",
+    "drug_class": "Clinical Trials",
+    "drug_type": "type2",
+    "nci_id": "afatinibdimaleate",
+    "source": "VarDrugPub (2017.5)"
+  },
+  {
+    "agent": "alisertib",
+    "cancer": "Lymphoma",
+    "dailymed_id": null,
+    "drug_class": "Clinical Trials",
+    "drug_type": "type2",
+    "nci_id": null,
+    "source": "IntOGen (2015)"
+  },
+  {
+    "agent": "cediranib",
+    "cancer": "Sarcoma",
+    "dailymed_id": null,
+    "drug_class": "Clinical Trials",
+    "drug_type": "type2",
+    "nci_id": null,
+    "source": "IntOGen (2015)"
+  },
+  {
+    "agent": "cediranib",
+    "cancer": "Muscle Tissue Neoplasms",
+    "dailymed_id": null,
+    "drug_class": "Clinical Trials",
+    "drug_type": "type2",
+    "nci_id": null,
+    "source": "IntOGen (2015)"
+  },
+  {
+    "agent": "cetuximab",
+    "cancer": "Head and Neck Neoplasms",
+    "dailymed_id": "8bc6397e-4bd8-4d37-a007-a327e4da34d9",
+    "drug_class": "Clinical Trials",
+    "drug_type": "type2",
+    "nci_id": "cetuximab",
+    "source": "IntOGen (2015)"
+  },
+  {
+    "agent": "dacomitinib",
+    "cancer": "Penile Neoplasms",
+    "dailymed_id": null,
+    "drug_class": "Clinical Trials",
+    "drug_type": "type2",
+    "nci_id": null,
+    "source": "IntOGen (2015)"
+  },
+  {
+    "agent": "erlotinib",
+    "cancer": "Thyroid Neoplasms",
+    "dailymed_id": "57bccb29-1c47-4c64-ab6a-77960a91cc20",
+    "drug_class": "Clinical Trials",
+    "drug_type": "type2",
+    "nci_id": "erlotinibhydrochloride",
+    "source": "VarDrugPub (2017.3)"
+  },
+  {
+    "agent": "erlotinib",
+    "cancer": "Brain Neoplasms",
+    "dailymed_id": "57bccb29-1c47-4c64-ab6a-77960a91cc20",
+    "drug_class": "Clinical Trials",
+    "drug_type": "type2",
+    "nci_id": "erlotinibhydrochloride",
+    "source": "Handbook of Targeted Cancer Therapy (2015)"
+  },
+  {
+    "agent": "erlotinib",
+    "cancer": "Pancreatic Neoplasms",
+    "dailymed_id": "57bccb29-1c47-4c64-ab6a-77960a91cc20",
+    "drug_class": "Clinical Trials",
+    "drug_type": "type2",
+    "nci_id": "erlotinibhydrochloride",
+    "source": "IntOGen (2015)"
+  },
+  {
+    "agent": "gefitinib",
+    "cancer": "Brain Neoplasms",
+    "dailymed_id": "827d60e8-7e07-41b7-c28b-49ef1c4a5a41",
+    "drug_class": "Clinical Trials",
+    "drug_type": "type2",
+    "nci_id": "gefitinib",
+    "source": "Handbook of Targeted Cancer Therapy (2015)"
+  },
+  {
+    "agent": "gefitinib",
+    "cancer": "Central Nervous System Neoplasms",
+    "dailymed_id": "827d60e8-7e07-41b7-c28b-49ef1c4a5a41",
+    "drug_class": "Clinical Trials",
+    "drug_type": "type2",
+    "nci_id": "gefitinib",
+    "source": "VarDrugPub (2017.3)"
+  },
+  {
+    "agent": "lapatinib",
+    "cancer": "Endometrial Neoplasms",
+    "dailymed_id": "63319b01-cad6-4d0a-c39b-938fa951a808",
+    "drug_class": "Clinical Trials",
+    "drug_type": "type2",
+    "nci_id": "lapatinibditosylate",
+    "source": "VarDrugPub (2017.3)"
+  },
+  {
+    "agent": "staurosporine",
+    "cancer": "Connective Tissue Neoplasms",
+    "dailymed_id": null,
+    "drug_class": "Clinical Trials",
+    "drug_type": "type2",
+    "nci_id": null,
+    "source": "IntOGen (2015)"
+  },
+  {
+    "agent": "staurosporine",
+    "cancer": "Leukemia",
+    "dailymed_id": null,
+    "drug_class": "Clinical Trials",
+    "drug_type": "type2",
+    "nci_id": null,
+    "source": "IntOGen (2015)"
+  },
+  {
+    "agent": "vandetanib",
+    "cancer": "Brain Neoplasms",
+    "dailymed_id": "d2a87691-c9ad-4753-97a1-311fccfe6515",
+    "drug_class": "Clinical Trials",
+    "drug_type": "type2",
+    "nci_id": "vandetanib",
+    "source": "Handbook of Targeted Cancer Therapy (2015)"
+  }
+]

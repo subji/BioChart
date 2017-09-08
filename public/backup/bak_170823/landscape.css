@@ -1,0 +1,136 @@
+#landscape_title { 
+	border: none;
+	color: #494949;
+	font-weight: bold; 
+	position: relative;
+	text-align: center;
+	background: #D3D3D3;
+	box-sizing: border-box; 
+	-moz-box-sizing: border-box; 
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
+	-webkit-box-sizing: border-box;
+	box-shadow: 1px 1px 1px -1px #CECECE;	
+}
+
+#landscape_contents {
+	position: relative;
+	border: 1px solid '#BCBCBC';
+	border-bottom-left-radius: 5px;
+	border-bottom-right-radius: 5px;
+	box-shadow: 0px 3px 6px #CECECE;	
+	-moz-box-shadow: 0px 3px 6px #CECECE;
+	-webkit-box-shadow: 0px 3px 6px #CECECE;
+}
+
+#landscape_pq,
+#landscape_gene,
+#landscape_group,
+#landscape_sample,
+#landscape_legend,
+#landscape_option,
+#landscape_heatmap,
+#landscape_temp_group,
+#landscape_axis_group,
+#landscape_temp_sample,
+#landscape_axis_sample,
+#landscape_scale_option,
+#landscape_patient_group,
+#landscape_patient_sample,
+#landscape_patient_heatmap {
+	float: left;
+}
+
+#landscape_patient_group,
+#landscape_patient_sample,
+#landscape_patient_heatmap {
+	box-shadow: 1px 2px 3px #CECECE;
+}
+
+#landscape_group,
+#landscape_sample {
+	overflow-x: hidden;
+	overflow-y: hidden; 
+}
+
+#landscape_heatmap { 
+	overflow-x: auto; 
+	overflow-y: hidden; 
+}
+
+#landscape_patient_group,
+#landscape_patient_sample,
+#landscape_patient_heatmap { 
+	background: #C4BEBA; 
+}
+
+#landscape_legend {
+	margin-left: 5px;
+	box-shadow: 0px 1px 3px #CECECE;
+}
+
+.sort-title-g-tag rect,
+.sort-title-g-tag text,
+#landscape_axis_group text,
+#landscape_gene_svg .right-axis-g-tag text {
+	cursor: pointer;
+}
+/* The code below will be delete. */
+.scale-option-frame { 
+	top: 0%; 
+	left: 6%;
+	position: relative; 
+}
+
+#upscale, 
+#downscale, 
+#initialize { 
+	outline: 0; 
+	float: left; 
+	width: 20px; 
+	height: 24px;
+	min-width: 20px; 
+	cursor: pointer; 
+	margin: 0px 0px; 
+	min-height: 24px;
+	background: #fff; 
+	border-left: none; 
+	border-radius: 0px;	
+	-moz-border-radius: 0px; 
+	-webkit-border-radius: 0px; 
+	border-top: 1px solid #333; 
+	border-right: 1px solid #333; 
+	border-bottom: 1px solid #333;
+}
+
+#initialize { 
+	width: 25px;
+	min-width: 25px; 
+}
+
+#upscale:hover, 
+#downscale:hover, 
+#initialize:hover { 
+	background: #333; 
+}
+
+#upscale:hover > i, 
+#downscale:hover > i, 
+#initialize:hover > i { 
+	color: #FFFFFF; 
+}
+
+#viewscale { 
+	outline: 0;
+	float: left; 
+	width: 55px; 
+	height: 20px;
+	font-size: 13px;
+	min-width: 55px; 
+	min-height: 20px; 
+	text-align: center; 
+	border-top: 1px solid #333; 
+	border-left: 1px solid #333;
+	border-right: 1px solid #333; 
+	border-bottom: 1px solid #333; 
+}
