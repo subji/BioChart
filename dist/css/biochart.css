@@ -200,44 +200,6 @@
 	margin-left: 2px;
 	box-shadow: 0px 1px 3px #CECECE;	
 }
-g {
-  pointer-events: all;
-}
-
-.top-axis-g-tag text,
-.left-axis-g-tag text,
-.bottom-axis-g-tag text,
-.right-axis-g-tag text {
-	font-size: 10px;
-}
-
-.top-axis-g-tag path,
-.top-axis-g-tag line {
-	fill: none;
-  stroke: #333;
-  shape-rendering: crispEdges;
-}
-
-.left-axis-g-tag path,
-.left-axis-g-tag line  {
-	fill: none;
-  stroke: #333;
-  shape-rendering: crispEdges;	
-}
-
-.bottom-axis-g-tag path,
-.bottom-axis-g-tag line  {
-	fill: none;
-  stroke: #333;
-  shape-rendering: crispEdges;
-}
-
-.right-axis-g-tag path,
-.right-axis-g-tag line  {
-	fill: none;
-  stroke: #333;
-  shape-rendering: crispEdges;
-}
 #landscape_title { 
 	border: none;
 	color: #494949;
@@ -381,7 +343,7 @@ g {
   height: 100%;
   min-width: 85%;
   max-width: 85%;
-  min-height: 35%;
+  min-height: 30%;
   max-height: 35%;
   position: relative;
   border-radius: 5px;
@@ -425,7 +387,7 @@ g {
   outline: 0;
   height: 100%;
   border: none;
-  margin-top: 30%;
+  margin-top: 55%;
   line-height: 0px;
   cursor: pointer;
   background: rgba(0, 0, 0, 0);
@@ -433,6 +395,44 @@ g {
 
 #scale_options div button:hover > i { 
   color: #1A7CAD; 
+}
+g {
+  pointer-events: all;
+}
+
+.top-axis-g-tag text,
+.left-axis-g-tag text,
+.bottom-axis-g-tag text,
+.right-axis-g-tag text {
+	font-size: 10px;
+}
+
+.top-axis-g-tag path,
+.top-axis-g-tag line {
+	fill: none;
+  stroke: #333;
+  shape-rendering: crispEdges;
+}
+
+.left-axis-g-tag path,
+.left-axis-g-tag line  {
+	fill: none;
+  stroke: #333;
+  shape-rendering: crispEdges;	
+}
+
+.bottom-axis-g-tag path,
+.bottom-axis-g-tag line  {
+	fill: none;
+  stroke: #333;
+  shape-rendering: crispEdges;
+}
+
+.right-axis-g-tag path,
+.right-axis-g-tag line  {
+	fill: none;
+  stroke: #333;
+  shape-rendering: crispEdges;
 }
 #pathway_title { 
 	border: none;
