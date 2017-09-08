@@ -16,3 +16,4 @@ addgit.sh
 .idea
 .vscode
 gulpfile.babel.json
+*.bak
