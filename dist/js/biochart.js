@@ -6542,11 +6542,7 @@ function sortTitle ()	{
 
 	whole.bio = bio;
 }(window||{}));
-/*
-	각 객체의 Model 값의 초기값을 찾아
-	반환해주는 함수.
- */
-var initialize = function ()	{
+function initialize ()	{
 	'use strict';
 	// >>> Common.
 	var SIZING = { ids: [], chart: {} };
@@ -7685,6 +7681,620 @@ function preprocess ()	{
 			expression: bio.preprocExpression,
 			exclusivity: bio.preprocExclusivity,
 		}[chart];
+	};
+};
+function loading ()	{
+	'use strict';
+
+	var model = {};
+
+	function makeCircles (classes)	{
+		var result = [];
+
+		bio.iteration.loop(classes, function (cls)	{
+			var circle = document.createElement('div');	
+
+			circle.className = 'loading-circle-' + cls;
+
+			result.push(circle);
+		});
+
+		return result;
+	};
+
+	function makeLoading (parent, width, height)	{
+		var div = document.createElement('div'),
+				inner = document.createElement('div'),
+				circles = makeCircles([1, 2, 3, 4]),
+				text = document.createElement('span');
+
+		div.className = 'loading';
+		div.style.width = width + 'px';
+		div.style.height = height + 'px';
+
+		text.className = 'loading-text';
+		text.innerHTML = 'Loading';
+
+		for (var i = 0, l = circles.length; i < l; i++)	{
+			inner.appendChild(circles[i]);
+		}
+
+		div.appendChild(inner);
+		div.appendChild(text);
+
+		parent.appendChild(div);
+
+		return div;
+	};
+
+	function start (parent, width, height)	{
+		if (!width || !height)	{
+			throw new Error('Please define the width and height');
+		}	
+
+		model.loadingElement = document.querySelector('.loading') ? 
+														document.querySelector('.loading') : 
+														makeLoading(parent, width, height);
+
+		if (model.loadingElement.style.display === 'none')	{
+			model.loadingElement.style.display = 'block';
+		}
+	};
+
+	function end (num, sec)	{
+		$(model.loadingElement).fadeOut('slow')
+	};
+	
+	return function (parent, num, sec)	{
+		return { start: start, end: end };
+	}
+};
+function modal ()	{
+	'use strict';
+
+	var model = {};
+	// TODO.. 
+	function okButton ()	{
+
+	};
+	// Make close button.
+	function closeButton ()	{
+		var btn = document.createElement('button');
+		
+		btn.id = 'modal_close';
+		// Bootstrap style button.
+		btn.className = 'btn btn-default';
+		btn.innerHTML = 'Close';
+
+		btn.setAttribute('type', 'button');
+		// This attribute is close the modal.
+		btn.setAttribute('data-dismiss', 'modal');
+
+		return btn;
+	};
+
+	function makeModal (id)	{
+		model.modal = document.createElement('div');
+		model.modal.setAttribute('tabindex', '-1');
+		model.modal.setAttribute('role', 'dialog');
+		model.modal.setAttribute('aria-labelledby', id);
+		model.dialog = document.createElement('div');
+		model.dialog.setAttribute('role', 'document');
+		model.content = document.createElement('div');
+		model.header = document.createElement('div');
+		model.footer = document.createElement('div');
+		model.title = document.createElement('div');
+		model.body = document.createElement('div');
+
+		model.modal.id = id;
+		model.body.className = 'modal-body';
+		model.modal.className = 'modal fade';
+		model.title.className = 'modal-title';
+		model.dialog.className = 'modal-dialog';
+		model.footer.className = 'modal-footer';
+		model.header.className = 'modal-header';
+		model.content.className = 'modal-content';
+
+		model.modal.style.display = 'none';
+
+		model.header.appendChild(model.title);
+		model.content.appendChild(model.header);
+		model.content.appendChild(model.body);
+		model.footer.appendChild(closeButton());
+		model.content.appendChild(model.footer);
+		model.dialog.appendChild(model.content);
+		model.modal.appendChild(model.dialog);
+	};
+
+	return function (opts)	{
+		makeModal(opts.id || 'modal');
+		
+		model.element = opts.element;
+		model.element.appendChild(model.modal);
+	};
+};
+function selectBox ()	{
+	'use strict';
+
+	var model = {};
+	/*
+		select box frame 구현 함수.
+	 */
+	function makeSelectBoxFrame (className)	{
+		var div = document.createElement('div'),
+				width = (model.width - model.margin.left * 2),
+				height = (model.height - model.margin.top * 2) < 40 ? 
+								 (model.height - model.margin.top * 2) : 40;
+
+		div.className = className + ' drop-menu';
+		div.style.width = width + 'px';
+		div.style.height = height + 'px';
+		div.style.marginLeft = model.margin.left + 'px';
+		div.style.marginTop = model.margin.top + 'px';
+		div.style.fontSize = model.fontSize;
+
+		return div;
+	};
+	/*
+		처음 select box 에 표시될 문자열을 설정.
+	 */
+	function defaultText (className, defText)	{
+		var div = document.createElement('div'),
+				span = document.createElement('span'),
+				itag = document.createElement('i');
+
+		div.className = className + ' select';
+		div.style.paddingTop = 10 - model.margin.top + 1 + 'px';
+		div.style.paddingBottom = 10 - model.margin.top + 1 + 'px';
+		div.style.paddingLeft = 10 - model.margin.left + 1 + 'px';
+		div.style.paddingRight = 10 - model.margin.left + 1 + 'px';
+
+		span.title = defText;
+		span.innerHTML = defText;
+
+		itag.className = 'fa fa-chevron-down';
+
+		return div.appendChild(span), div.appendChild(itag), div;
+	};
+	/*
+		선택한 값이 표시 될 input 태그를 만드는 함수.
+	 */
+	function inputViewer (viewName)	{
+		var input = document.createElement('input');
+
+		return input.type = 'hidden', input.name = viewName, input;
+	};
+	/*
+		Item 들을 list 형식으로 만드는 함수.
+	 */
+	function addItems (items)	{
+		var ul = document.createElement('ul');
+
+		ul.className = 'dropeddown';
+
+		bio.iteration.loop(items, function (item)	{
+			var li = document.createElement('li');
+
+			li.id = item;
+			li.title = item;
+			li.innerHTML = bio.drawing().textOverflow(
+				item, model.fontSize, model.width * 0.40);
+
+			ul.appendChild(li);
+		});
+
+		return ul;
+	};
+	/*
+		Animation 및 Click 이벤트 처리 함수.
+	 */
+	function selectEvent (className, callback)	{
+		// var tag = document.querySelector('.drop-menu');
+
+		// tag.addEventListener('click', function (e)	{
+		// 	e.stopPropagation();
+		// 	e.preventDefault();
+
+		// 	var ul = bio.drawing().findDom(this, '.dropeddown');
+		// 	this.setAttribute('tabindex', 1);
+		// 	this.focus();
+		// 	this.className += ' active';
+		// 	// Target 의 display 를 처음에 설정해주지 않으면,
+		// 	// max-height 값이 적용되어진다. 그러므로 처음에 실행하도록하자.
+		// 	ul.style.display = 'block';
+		// 	bio.drawing().slideDown(ul);
+		// }, true);
+
+		// tag.addEventListener('blur', function (e)	{
+		// 	e.stopPropagation();
+		// 	e.preventDefault();
+
+		// 	var ul = bio.drawing().findDom(this, '.dropeddown');
+			
+		// 	this.classList.remove('active');
+		// 	bio.drawing().slideUp(ul);
+		// }, true);
+
+		// var items = Array.prototype.slice.call(
+		// 						document.querySelectorAll('.dropeddown li'));
+
+		// bio.iteration.loop(items, function (item)	{
+		// 	item.addEventListener('click', function (e)	{
+		// 		// Event bubbling 을 방지하기 위함.
+		// 		e.stopPropagation();
+		// 		e.preventDefault();
+
+		// 		var sele = document.querySelector('.select'),
+		// 				drmn = document.querySelector('.drop-menu'),
+		// 				span = bio.drawing().findDom(sele, 'span'),
+		// 				input = bio.drawing().findDom(drmn, 'input'),
+		// 				ul = bio.drawing().findDom(tag, '.dropeddown');
+
+		// 		span.textContent = this.id;
+		// 		span.title = this.id;
+		// 		input.value = this.id;
+
+		// 		tag.classList.remove('active');
+		// 		bio.drawing().slideUp(ul);
+
+		// 		return !callback ? false : 
+		// 						callback(this.id.toLowerCase());
+		// 	}, true);
+		// });
+		className = '.' + className;
+
+		// Click Event 중복 발생 금지 방법.
+		$(className).click(function (e) {
+      $(this).attr('tabindex', 1).focus();
+      $(this).toggleClass('active');
+      $(this).find('.dropeddown').slideToggle(300);
+    });
+    $(className).focusout(function () {
+      $(this).removeClass('active');
+      $(this).find('.dropeddown').slideUp(300);
+    });
+    $(className + ' .dropeddown li').click(function (e) {
+      $(this).parents('.drop-menu')
+      			 .find('span').text($(this).text());
+      $(this).parents('.drop-menu')
+      			 .find('span').attr('title', $(this).attr('id'));
+      $(this).parents('.drop-menu')
+      			 .find('input').attr('value', $(this).attr('id'));
+
+      return !callback ? false : 
+      				callback($(this).attr('id').toLowerCase());
+    });
+	};
+
+	return function (opts)	{
+		model = {};
+		model.element = document.querySelector(opts.id);
+		model.className = opts.className || '';
+		model.margin = bio.sizing.setMargin(
+			opts.margin || [0, 0, 0, 0]);
+		model.width = 
+		opts.width || parseFloat(model.element.style.width);
+		model.height = 
+		opts.height || parseFloat(model.element.style.height);
+		model.defaultText = opts.defaultText || 'Select';
+		model.viewName = opts.viewName || 'viewName';
+		model.fontSize = opts.fontSize || '10px';
+		model.items = opts.items || [''];
+		model.clickItem = opts.clickItem || null;
+		model.frame = makeSelectBoxFrame(model.className);
+		model.defaultText = defaultText(
+			model.className, model.defaultText);
+		model.viewer = inputViewer(model.viewName);
+		model.addItems = addItems(model.items);
+
+		if (model.element.children.length < 1)	{
+			model.frame.appendChild(model.defaultText);
+			model.frame.appendChild(model.viewer);
+			model.frame.appendChild(model.addItems);
+
+			model.element.appendChild(model.frame);
+
+			selectEvent(model.className, model.clickItem);
+
+			document.querySelector('.drop-menu .select')
+							.style.lineHeight = model.fontSize;
+		}
+	};
+};
+function table ()	{
+	'use strict';
+
+	var model = { cellData: [], cellWidth: [] };
+
+	function makeTable (width, height)	{
+		var tb = document.createElement('div');
+
+		tb.className = 'table-frame';
+		tb.style.width = width + 'px';
+		tb.style.height = height + 'px';
+
+		return tb;
+	};
+
+	function caption (text)	{
+		var capt = document.createElement('div');
+
+		capt.innerHTML = text || '';
+		capt.className = 'table-caption';
+		capt.style.display = 'table-caption';
+
+		return capt;
+	};
+
+	function rows (id)	{
+		var row = document.createElement('div');
+
+		row.id = id || '';
+		row.className = 'table-row';
+		row.style.display = 'table-row';
+
+		return row;
+	};
+
+	function cells (text, width, height)	{
+		var cell = document.createElement('div');
+
+		cell.className = 'table-cell ' + text.removeWhiteSpace();
+		cell.style.padding = '5px';
+		cell.style.width = width + 'px';
+		cell.style.height = (height || 35) + 'px';
+		cell.style.lineHeight = (height || 25) + 'px';
+		cell.style.display = 'table-cell';
+		cell.innerHTML = text;
+
+		return cell;
+	};
+
+	function getWidth (text)	{
+		var div = document.createElement('div'),
+				txt = text.indexOf('<') > -1 ? 
+					 		text.substring(0, text.indexOf('<')) : text,
+				width = 0;
+
+		div.id = 'temp_width';
+		div.style.fontSize = '16px';
+		div.style.fontWeight = 'bold';
+		div.style.overflow = 'hidden';
+		div.style.border = '1px solid';
+		div.style.whiteSpace = 'nowrap';
+		div.style.display = 'table-cell';
+		div.style.textOverflow = 'ellipse';
+
+		div.innerHTML = txt;
+
+		document.body.appendChild(div);
+
+		width = div.getBoundingClientRect().width;
+
+		document.body.removeChild(
+			document.querySelector('#temp_width'));
+
+		return width + 12;
+	};
+	/*
+		각 컬럼의 최대 크기를 구한다.
+	 */
+	function getColumnSize (heads, datas, callback)	{
+		model.cellWidth.fill(heads.length, 0);
+
+		bio.iteration.loop(heads, function (head, col)	{
+			model.cellWidth[col] = getWidth(head);
+		});
+
+		bio.iteration.loop(datas, function (data, row)	{
+			var temp = [];
+
+			bio.iteration.loop(heads, function (head, col)	{
+				var cols = callback(col, row, head, data);
+
+				model.cellWidth[col] = 
+				model.cellWidth[col] > getWidth(cols) ? 
+				model.cellWidth[col] : getWidth(cols);
+
+				temp.push(cols);
+			});
+
+			model.cellData.push(temp);
+		});
+		// 최상위 div 가 table 이 아니므로 크기를 설정해준다.
+		var width = 0;
+
+		bio.iteration.loop(model.cellWidth, function (cell)	{
+			width += cell;
+		});
+
+		model.frame.style.width = (width + 20) + 'px';
+	};
+
+	function makeHeads (frame, list)	{
+		var div = document.createElement('div'),
+				header = rows();
+
+		div.className = 'table-header';
+
+		bio.iteration.loop(list, function (l, i)	{
+			header.appendChild(cells(l, model.cellWidth[i]));
+		});
+
+		div.appendChild(header);
+		frame.appendChild(div);
+
+		return header;
+	}
+
+	function makeContents (frame, cellDatas, opts)	{
+		var div = document.createElement('div');
+
+		div.className = 'table-contents';
+		div.style.height = opts.height + 'px';
+
+		bio.iteration.loop(cellDatas, function (cell)	{
+			var row = rows();
+
+			bio.iteration.loop(cell, function (c, i)	{
+				row.appendChild(cells(c, model.cellWidth[i]));
+			});
+			
+			div.appendChild(row);
+		});
+
+		frame.appendChild(div);
+	};
+
+	return function (opts)	{
+		if (document.querySelector('.table-frame'))	{
+			opts.element.removeChild(
+				document.querySelector('.table-frame'));
+		}
+
+		if (!opts.columns)	throw new Error('Not found Columns');
+
+		model.element = opts.element;
+		model.width = opts.width || 0;
+		model.height = opts.height || 0;
+
+		model.frame = makeTable(model.width, model.height);
+
+		getColumnSize(opts.heads, opts.data, opts.columns);
+
+		model.frame.appendChild(caption(opts.title));
+		makeHeads(model.frame, opts.heads);
+		makeContents(model.frame, model.cellData, opts);
+
+		model.element.appendChild(model.frame);
+	};
+};
+function title ()	{
+	'use strict';
+
+	var model = {};
+	/*
+		각 차트의 제목을 생성해주는 함수.
+	 */
+	return function (element, text)	{
+		var target = bio.dom().get(element),
+				width = parseFloat(target.style.width),
+				height = parseFloat(target.style.height);
+
+		// Set title text.
+		target.innerHTML = text;
+		// >>> Setting style for title.
+		target.style.fontSize = bio.drawing().fitText(
+														text, width, height, 'bold');
+		target.style.lineHeight = target.style.height;
+	};
+};
+function tooltip ()	{
+	'use strict';
+
+	var model = {};
+	/*
+		Tooltip 의 방향을 설정해주는 함수.
+	 */
+	function setDirection (tbcr, pbcr, bcr)	{
+		if (tbcr.left - bcr.width / 2 < pbcr.left)	{
+			return 'right';
+		} else if (tbcr.top - bcr.height < pbcr.top)	{
+			return 'bottom';
+		} else if (tbcr.right + bcr.width > pbcr.right)	{
+			return 'left';
+		} else if (tbcr.bottom + bcr.height > pbcr.bottom)	{
+			return 'top';
+		} else {
+			return 'top';
+		}
+	};	
+	/*
+		Tooltip 을 띄워주는 함수.
+	 */
+	function show (div, target, parent)	{
+		if (!div)	{
+			throw new Error('Do not find a Tooltip element');
+		}
+
+		var bcr = div.getBoundingClientRect(),
+				tbcr = target.getBoundingClientRect(),
+				pbcr = parent.getBoundingClientRect(),
+				dir = setDirection(tbcr, pbcr, bcr);
+		/*
+			Tooltip 의 위쪽 Position 값 설정.
+		 */
+		function setTop (dir, pos, height)	{
+			if (dir !== 'left' && dir !=='top' && 
+					dir !== 'bottom' && dir !== 'right')	{
+				throw new Error('Wrong direction');
+			}
+
+			return {
+				top: pos.top - height - 10 + window.scrollY + 'px',
+				left: pos.top - height / 2 + window.scrollY + 'px',
+				bottom: pos.bottom + 10 + window.scrollY + 'px',
+				right: pos.top - height / 2 + window.scrollY + 'px',
+			}[dir];
+		};
+		/*
+			Tooltip 의 왼쪽 Position 값 설정.
+		 */
+		function setLeft (dir, pos, width)	{
+			if (dir !== 'left' && dir !=='top' && 
+					dir !== 'bottom' && dir !== 'right')	{
+				throw new Error('Wrong direction');
+			}
+
+			return {
+				top: pos.left - width / 2 + window.scrollX + 'px',
+				left: pos.left - width - 10 + 'px',
+				bottom: pos.left - width / 2 + window.scrollX + 'px',
+				right: pos.right + 10 + 'px',
+			}[dir];
+		};
+
+		div.className = dir;
+		div.style.visibility = 'visible';
+		// Set top & Left(Scroll 변화가 있을 경우도 고려.)
+		div.style.top = setTop(dir, tbcr, bcr.height);
+		div.style.left = setLeft(dir, tbcr, bcr.width);
+	};
+	/*
+		Tooltip 을 가려주는 함수.
+	 */
+	function hide (div)	{
+		if (!div)	{
+			throw new Error('Do not find a Tooltip element');
+		}
+
+		div.innerHTML = '';
+		div.style.top = '0px';
+		div.style.left = '0px';
+		div.style.visibility = 'hidden';
+	};
+	/*
+		TODO.
+			- Scroll 위치 변경 적용.
+			- SVG 밖을 안벗어나게끔 적용.
+	 */
+	return function (opts)	{
+		if (bio.objects.getType(opts) === 'String')	{
+			if (!document.getElementById('biochart_tooltip'))	{
+				throw new Error('Not found "#biochart_tooltip"');
+			}
+			
+			return hide(document.getElementById('biochart_tooltip'));
+		}
+
+		var target = opts.element || null,
+				contents = opts.contents || '',
+				parent = bio.drawing().getParentSVG(target);
+
+		var tooltipDiv = document.getElementById('biochart_tooltip');
+				tooltipDiv.innerHTML = contents;
+
+		return show(tooltipDiv, target, parent);
 	};
 };
 /*
@@ -9675,620 +10285,6 @@ var SurvivalTab = (function() {
 
 }()); //Close SubvivalTabView (Singular)
 
-function loading ()	{
-	'use strict';
-
-	var model = {};
-
-	function makeCircles (classes)	{
-		var result = [];
-
-		bio.iteration.loop(classes, function (cls)	{
-			var circle = document.createElement('div');	
-
-			circle.className = 'loading-circle-' + cls;
-
-			result.push(circle);
-		});
-
-		return result;
-	};
-
-	function makeLoading (parent, width, height)	{
-		var div = document.createElement('div'),
-				inner = document.createElement('div'),
-				circles = makeCircles([1, 2, 3, 4]),
-				text = document.createElement('span');
-
-		div.className = 'loading';
-		div.style.width = width + 'px';
-		div.style.height = height + 'px';
-
-		text.className = 'loading-text';
-		text.innerHTML = 'Loading';
-
-		for (var i = 0, l = circles.length; i < l; i++)	{
-			inner.appendChild(circles[i]);
-		}
-
-		div.appendChild(inner);
-		div.appendChild(text);
-
-		parent.appendChild(div);
-
-		return div;
-	};
-
-	function start (parent, width, height)	{
-		if (!width || !height)	{
-			throw new Error('Please define the width and height');
-		}	
-
-		model.loadingElement = document.querySelector('.loading') ? 
-														document.querySelector('.loading') : 
-														makeLoading(parent, width, height);
-
-		if (model.loadingElement.style.display === 'none')	{
-			model.loadingElement.style.display = 'block';
-		}
-	};
-
-	function end (num, sec)	{
-		$(model.loadingElement).fadeOut('slow')
-	};
-	
-	return function (parent, num, sec)	{
-		return { start: start, end: end };
-	}
-};
-function modal ()	{
-	'use strict';
-
-	var model = {};
-	// TODO.. 
-	function okButton ()	{
-
-	};
-	// Make close button.
-	function closeButton ()	{
-		var btn = document.createElement('button');
-		
-		btn.id = 'modal_close';
-		// Bootstrap style button.
-		btn.className = 'btn btn-default';
-		btn.innerHTML = 'Close';
-
-		btn.setAttribute('type', 'button');
-		// This attribute is close the modal.
-		btn.setAttribute('data-dismiss', 'modal');
-
-		return btn;
-	};
-
-	function makeModal (id)	{
-		model.modal = document.createElement('div');
-		model.modal.setAttribute('tabindex', '-1');
-		model.modal.setAttribute('role', 'dialog');
-		model.modal.setAttribute('aria-labelledby', id);
-		model.dialog = document.createElement('div');
-		model.dialog.setAttribute('role', 'document');
-		model.content = document.createElement('div');
-		model.header = document.createElement('div');
-		model.footer = document.createElement('div');
-		model.title = document.createElement('div');
-		model.body = document.createElement('div');
-
-		model.modal.id = id;
-		model.body.className = 'modal-body';
-		model.modal.className = 'modal fade';
-		model.title.className = 'modal-title';
-		model.dialog.className = 'modal-dialog';
-		model.footer.className = 'modal-footer';
-		model.header.className = 'modal-header';
-		model.content.className = 'modal-content';
-
-		model.modal.style.display = 'none';
-
-		model.header.appendChild(model.title);
-		model.content.appendChild(model.header);
-		model.content.appendChild(model.body);
-		model.footer.appendChild(closeButton());
-		model.content.appendChild(model.footer);
-		model.dialog.appendChild(model.content);
-		model.modal.appendChild(model.dialog);
-	};
-
-	return function (opts)	{
-		makeModal(opts.id || 'modal');
-		
-		model.element = opts.element;
-		model.element.appendChild(model.modal);
-	};
-};
-function selectBox ()	{
-	'use strict';
-
-	var model = {};
-	/*
-		select box frame 구현 함수.
-	 */
-	function makeSelectBoxFrame (className)	{
-		var div = document.createElement('div'),
-				width = (model.width - model.margin.left * 2),
-				height = (model.height - model.margin.top * 2) < 40 ? 
-								 (model.height - model.margin.top * 2) : 40;
-
-		div.className = className + ' drop-menu';
-		div.style.width = width + 'px';
-		div.style.height = height + 'px';
-		div.style.marginLeft = model.margin.left + 'px';
-		div.style.marginTop = model.margin.top + 'px';
-		div.style.fontSize = model.fontSize;
-
-		return div;
-	};
-	/*
-		처음 select box 에 표시될 문자열을 설정.
-	 */
-	function defaultText (className, defText)	{
-		var div = document.createElement('div'),
-				span = document.createElement('span'),
-				itag = document.createElement('i');
-
-		div.className = className + ' select';
-		div.style.paddingTop = 10 - model.margin.top + 1 + 'px';
-		div.style.paddingBottom = 10 - model.margin.top + 1 + 'px';
-		div.style.paddingLeft = 10 - model.margin.left + 1 + 'px';
-		div.style.paddingRight = 10 - model.margin.left + 1 + 'px';
-
-		span.title = defText;
-		span.innerHTML = defText;
-
-		itag.className = 'fa fa-chevron-down';
-
-		return div.appendChild(span), div.appendChild(itag), div;
-	};
-	/*
-		선택한 값이 표시 될 input 태그를 만드는 함수.
-	 */
-	function inputViewer (viewName)	{
-		var input = document.createElement('input');
-
-		return input.type = 'hidden', input.name = viewName, input;
-	};
-	/*
-		Item 들을 list 형식으로 만드는 함수.
-	 */
-	function addItems (items)	{
-		var ul = document.createElement('ul');
-
-		ul.className = 'dropeddown';
-
-		bio.iteration.loop(items, function (item)	{
-			var li = document.createElement('li');
-
-			li.id = item;
-			li.title = item;
-			li.innerHTML = bio.drawing().textOverflow(
-				item, model.fontSize, model.width * 0.40);
-
-			ul.appendChild(li);
-		});
-
-		return ul;
-	};
-	/*
-		Animation 및 Click 이벤트 처리 함수.
-	 */
-	function selectEvent (className, callback)	{
-		// var tag = document.querySelector('.drop-menu');
-
-		// tag.addEventListener('click', function (e)	{
-		// 	e.stopPropagation();
-		// 	e.preventDefault();
-
-		// 	var ul = bio.drawing().findDom(this, '.dropeddown');
-		// 	this.setAttribute('tabindex', 1);
-		// 	this.focus();
-		// 	this.className += ' active';
-		// 	// Target 의 display 를 처음에 설정해주지 않으면,
-		// 	// max-height 값이 적용되어진다. 그러므로 처음에 실행하도록하자.
-		// 	ul.style.display = 'block';
-		// 	bio.drawing().slideDown(ul);
-		// }, true);
-
-		// tag.addEventListener('blur', function (e)	{
-		// 	e.stopPropagation();
-		// 	e.preventDefault();
-
-		// 	var ul = bio.drawing().findDom(this, '.dropeddown');
-			
-		// 	this.classList.remove('active');
-		// 	bio.drawing().slideUp(ul);
-		// }, true);
-
-		// var items = Array.prototype.slice.call(
-		// 						document.querySelectorAll('.dropeddown li'));
-
-		// bio.iteration.loop(items, function (item)	{
-		// 	item.addEventListener('click', function (e)	{
-		// 		// Event bubbling 을 방지하기 위함.
-		// 		e.stopPropagation();
-		// 		e.preventDefault();
-
-		// 		var sele = document.querySelector('.select'),
-		// 				drmn = document.querySelector('.drop-menu'),
-		// 				span = bio.drawing().findDom(sele, 'span'),
-		// 				input = bio.drawing().findDom(drmn, 'input'),
-		// 				ul = bio.drawing().findDom(tag, '.dropeddown');
-
-		// 		span.textContent = this.id;
-		// 		span.title = this.id;
-		// 		input.value = this.id;
-
-		// 		tag.classList.remove('active');
-		// 		bio.drawing().slideUp(ul);
-
-		// 		return !callback ? false : 
-		// 						callback(this.id.toLowerCase());
-		// 	}, true);
-		// });
-		className = '.' + className;
-
-		// Click Event 중복 발생 금지 방법.
-		$(className).click(function (e) {
-      $(this).attr('tabindex', 1).focus();
-      $(this).toggleClass('active');
-      $(this).find('.dropeddown').slideToggle(300);
-    });
-    $(className).focusout(function () {
-      $(this).removeClass('active');
-      $(this).find('.dropeddown').slideUp(300);
-    });
-    $(className + ' .dropeddown li').click(function (e) {
-      $(this).parents('.drop-menu')
-      			 .find('span').text($(this).text());
-      $(this).parents('.drop-menu')
-      			 .find('span').attr('title', $(this).attr('id'));
-      $(this).parents('.drop-menu')
-      			 .find('input').attr('value', $(this).attr('id'));
-
-      return !callback ? false : 
-      				callback($(this).attr('id').toLowerCase());
-    });
-	};
-
-	return function (opts)	{
-		model = {};
-		model.element = document.querySelector(opts.id);
-		model.className = opts.className || '';
-		model.margin = bio.sizing.setMargin(
-			opts.margin || [0, 0, 0, 0]);
-		model.width = 
-		opts.width || parseFloat(model.element.style.width);
-		model.height = 
-		opts.height || parseFloat(model.element.style.height);
-		model.defaultText = opts.defaultText || 'Select';
-		model.viewName = opts.viewName || 'viewName';
-		model.fontSize = opts.fontSize || '10px';
-		model.items = opts.items || [''];
-		model.clickItem = opts.clickItem || null;
-		model.frame = makeSelectBoxFrame(model.className);
-		model.defaultText = defaultText(
-			model.className, model.defaultText);
-		model.viewer = inputViewer(model.viewName);
-		model.addItems = addItems(model.items);
-
-		if (model.element.children.length < 1)	{
-			model.frame.appendChild(model.defaultText);
-			model.frame.appendChild(model.viewer);
-			model.frame.appendChild(model.addItems);
-
-			model.element.appendChild(model.frame);
-
-			selectEvent(model.className, model.clickItem);
-
-			document.querySelector('.drop-menu .select')
-							.style.lineHeight = model.fontSize;
-		}
-	};
-};
-function table ()	{
-	'use strict';
-
-	var model = { cellData: [], cellWidth: [] };
-
-	function makeTable (width, height)	{
-		var tb = document.createElement('div');
-
-		tb.className = 'table-frame';
-		tb.style.width = width + 'px';
-		tb.style.height = height + 'px';
-
-		return tb;
-	};
-
-	function caption (text)	{
-		var capt = document.createElement('div');
-
-		capt.innerHTML = text || '';
-		capt.className = 'table-caption';
-		capt.style.display = 'table-caption';
-
-		return capt;
-	};
-
-	function rows (id)	{
-		var row = document.createElement('div');
-
-		row.id = id || '';
-		row.className = 'table-row';
-		row.style.display = 'table-row';
-
-		return row;
-	};
-
-	function cells (text, width, height)	{
-		var cell = document.createElement('div');
-
-		cell.className = 'table-cell ' + text.removeWhiteSpace();
-		cell.style.padding = '5px';
-		cell.style.width = width + 'px';
-		cell.style.height = (height || 35) + 'px';
-		cell.style.lineHeight = (height || 25) + 'px';
-		cell.style.display = 'table-cell';
-		cell.innerHTML = text;
-
-		return cell;
-	};
-
-	function getWidth (text)	{
-		var div = document.createElement('div'),
-				txt = text.indexOf('<') > -1 ? 
-					 		text.substring(0, text.indexOf('<')) : text,
-				width = 0;
-
-		div.id = 'temp_width';
-		div.style.fontSize = '16px';
-		div.style.fontWeight = 'bold';
-		div.style.overflow = 'hidden';
-		div.style.border = '1px solid';
-		div.style.whiteSpace = 'nowrap';
-		div.style.display = 'table-cell';
-		div.style.textOverflow = 'ellipse';
-
-		div.innerHTML = txt;
-
-		document.body.appendChild(div);
-
-		width = div.getBoundingClientRect().width;
-
-		document.body.removeChild(
-			document.querySelector('#temp_width'));
-
-		return width + 12;
-	};
-	/*
-		각 컬럼의 최대 크기를 구한다.
-	 */
-	function getColumnSize (heads, datas, callback)	{
-		model.cellWidth.fill(heads.length, 0);
-
-		bio.iteration.loop(heads, function (head, col)	{
-			model.cellWidth[col] = getWidth(head);
-		});
-
-		bio.iteration.loop(datas, function (data, row)	{
-			var temp = [];
-
-			bio.iteration.loop(heads, function (head, col)	{
-				var cols = callback(col, row, head, data);
-
-				model.cellWidth[col] = 
-				model.cellWidth[col] > getWidth(cols) ? 
-				model.cellWidth[col] : getWidth(cols);
-
-				temp.push(cols);
-			});
-
-			model.cellData.push(temp);
-		});
-		// 최상위 div 가 table 이 아니므로 크기를 설정해준다.
-		var width = 0;
-
-		bio.iteration.loop(model.cellWidth, function (cell)	{
-			width += cell;
-		});
-
-		model.frame.style.width = (width + 20) + 'px';
-	};
-
-	function makeHeads (frame, list)	{
-		var div = document.createElement('div'),
-				header = rows();
-
-		div.className = 'table-header';
-
-		bio.iteration.loop(list, function (l, i)	{
-			header.appendChild(cells(l, model.cellWidth[i]));
-		});
-
-		div.appendChild(header);
-		frame.appendChild(div);
-
-		return header;
-	}
-
-	function makeContents (frame, cellDatas, opts)	{
-		var div = document.createElement('div');
-
-		div.className = 'table-contents';
-		div.style.height = opts.height + 'px';
-
-		bio.iteration.loop(cellDatas, function (cell)	{
-			var row = rows();
-
-			bio.iteration.loop(cell, function (c, i)	{
-				row.appendChild(cells(c, model.cellWidth[i]));
-			});
-			
-			div.appendChild(row);
-		});
-
-		frame.appendChild(div);
-	};
-
-	return function (opts)	{
-		if (document.querySelector('.table-frame'))	{
-			opts.element.removeChild(
-				document.querySelector('.table-frame'));
-		}
-
-		if (!opts.columns)	throw new Error('Not found Columns');
-
-		model.element = opts.element;
-		model.width = opts.width || 0;
-		model.height = opts.height || 0;
-
-		model.frame = makeTable(model.width, model.height);
-
-		getColumnSize(opts.heads, opts.data, opts.columns);
-
-		model.frame.appendChild(caption(opts.title));
-		makeHeads(model.frame, opts.heads);
-		makeContents(model.frame, model.cellData, opts);
-
-		model.element.appendChild(model.frame);
-	};
-};
-function title ()	{
-	'use strict';
-
-	var model = {};
-	/*
-		각 차트의 제목을 생성해주는 함수.
-	 */
-	return function (element, text)	{
-		var target = bio.dom().get(element),
-				width = parseFloat(target.style.width),
-				height = parseFloat(target.style.height);
-
-		// Set title text.
-		target.innerHTML = text;
-		// >>> Setting style for title.
-		target.style.fontSize = bio.drawing().fitText(
-														text, width, height, 'bold');
-		target.style.lineHeight = target.style.height;
-	};
-};
-function tooltip ()	{
-	'use strict';
-
-	var model = {};
-	/*
-		Tooltip 의 방향을 설정해주는 함수.
-	 */
-	function setDirection (tbcr, pbcr, bcr)	{
-		if (tbcr.left - bcr.width / 2 < pbcr.left)	{
-			return 'right';
-		} else if (tbcr.top - bcr.height < pbcr.top)	{
-			return 'bottom';
-		} else if (tbcr.right + bcr.width > pbcr.right)	{
-			return 'left';
-		} else if (tbcr.bottom + bcr.height > pbcr.bottom)	{
-			return 'top';
-		} else {
-			return 'top';
-		}
-	};	
-	/*
-		Tooltip 을 띄워주는 함수.
-	 */
-	function show (div, target, parent)	{
-		if (!div)	{
-			throw new Error('Do not find a Tooltip element');
-		}
-
-		var bcr = div.getBoundingClientRect(),
-				tbcr = target.getBoundingClientRect(),
-				pbcr = parent.getBoundingClientRect(),
-				dir = setDirection(tbcr, pbcr, bcr);
-		/*
-			Tooltip 의 위쪽 Position 값 설정.
-		 */
-		function setTop (dir, pos, height)	{
-			if (dir !== 'left' && dir !=='top' && 
-					dir !== 'bottom' && dir !== 'right')	{
-				throw new Error('Wrong direction');
-			}
-
-			return {
-				top: pos.top - height - 10 + window.scrollY + 'px',
-				left: pos.top - height / 2 + window.scrollY + 'px',
-				bottom: pos.bottom + 10 + window.scrollY + 'px',
-				right: pos.top - height / 2 + window.scrollY + 'px',
-			}[dir];
-		};
-		/*
-			Tooltip 의 왼쪽 Position 값 설정.
-		 */
-		function setLeft (dir, pos, width)	{
-			if (dir !== 'left' && dir !=='top' && 
-					dir !== 'bottom' && dir !== 'right')	{
-				throw new Error('Wrong direction');
-			}
-
-			return {
-				top: pos.left - width / 2 + window.scrollX + 'px',
-				left: pos.left - width - 10 + 'px',
-				bottom: pos.left - width / 2 + window.scrollX + 'px',
-				right: pos.right + 10 + 'px',
-			}[dir];
-		};
-
-		div.className = dir;
-		div.style.visibility = 'visible';
-		// Set top & Left(Scroll 변화가 있을 경우도 고려.)
-		div.style.top = setTop(dir, tbcr, bcr.height);
-		div.style.left = setLeft(dir, tbcr, bcr.width);
-	};
-	/*
-		Tooltip 을 가려주는 함수.
-	 */
-	function hide (div)	{
-		if (!div)	{
-			throw new Error('Do not find a Tooltip element');
-		}
-
-		div.innerHTML = '';
-		div.style.top = '0px';
-		div.style.left = '0px';
-		div.style.visibility = 'hidden';
-	};
-	/*
-		TODO.
-			- Scroll 위치 변경 적용.
-			- SVG 밖을 안벗어나게끔 적용.
-	 */
-	return function (opts)	{
-		if (bio.objects.getType(opts) === 'String')	{
-			if (!document.getElementById('biochart_tooltip'))	{
-				throw new Error('Not found "#biochart_tooltip"');
-			}
-			
-			return hide(document.getElementById('biochart_tooltip'));
-		}
-
-		var target = opts.element || null,
-				contents = opts.contents || '',
-				parent = bio.drawing().getParentSVG(target);
-
-		var tooltipDiv = document.getElementById('biochart_tooltip');
-				tooltipDiv.innerHTML = contents;
-
-		return show(tooltipDiv, target, parent);
-	};
-};
 /*
 	Dependency 라이브러리 관련 버전 확인 등의
 	기능을 모아둔 객체.
