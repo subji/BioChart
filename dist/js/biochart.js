@@ -1,3 +1,573 @@
+function boilerPlate ()	{
+	'use strict';
+
+	var model = {};
+
+	model.variantInfo = {
+		// Mutation.
+		'Amplification': { color: '#FFBDE0', order: 0},
+		'Homozygous_deletion': { color: '#BDE0FF', order: 1},
+		'Nonsense_mutation': { color: '#EA3B29', order: 2},
+		'Splice_site': { color: '#800080', order: 3},
+		'Translation_start_site': { color: '#AAA8AA', order: 4},
+		'Missense_mutation': { color: '#3E87C2', order: 5},
+		'Start_codon_snp': { color: '#3E87C2', order: 5 },
+		'Nonstop_mutation': { color: '#070078', order: 6},
+		'Frame_shift_indel': { color: '#F68D3B', order: 7},
+		'Stop_codon_indel':{ color:  'F68D3B', order: 7},
+		'In_frame_indel': { color: '#F2EE7E', order: 8},
+		'Silent': { color: '#5CB755', order: 9},
+		'Rna': { color: '#FFDF97', order: 10},
+		'Intron': { color: '#A9A9A9', order: 11},
+		'5\'utr': { color: '#A9A9A9', order: 11},
+		'3\'utr': { color: '#A9A9A9', order: 11},
+		'Igr': { color: '#A9A9A9', order: 11},
+	};
+
+	model.clinicalInfo = {
+		// Group.
+		// Vital Status of Group.
+		'alive': { color: '#04CDA4', order: 1 },
+		'dead': { color: '#C50E36', order: 2 },
+		// Gender of Group.
+		'female':{ color:  'E0A4E5', order: 1 },
+		'male': { color: '#0F67B6', order: 2 },
+		// Race of Group.
+		'american indian or alaska native': { color: '#38120B', order: 1 },
+		'asian': { color: '#CB771F', order: 2 },
+		'black or african american': { color: '#302F24', order: 3 },
+		'white': { color: '#9CB1CE', order: 4 },
+		// Ethnicity of Group.
+		'hispanic or latino': { color: '#B8642F', order: 1 },
+		'not hispanic or latino': { color: '#55C53E', order: 2 },
+		// Histological Type of Group.
+		'lung acinar adenocarcinoma': { color: '#716190', order: 1 },
+		'lung adenocarcinoma mixed subtype': { color: '#5154DE', order: 2 },
+		'lung adenocarcinoma- not otherwise specified (nos)': { color: '#8E9A7E', order: 3 },
+		'lung bronchioloalveolar carcinoma mucinous': { color: '#2F91DE', order: 4 },
+		'lung bronchioloalveolar carcinoma nonmucinous': { color: '#ED6EBD', order: 5 },
+		'lung clear cell adenocarcinoma': { color: '#1C8D7A', order: 6 },
+		'lung micropapillary adenocarcinoma': { color: '#B2EE86', order: 7 },
+		'lung mucinous adenocarcinoma': { color: '#785E54', order: 8 },
+		'lung papillary adenocarcinoma': { color: '#69B4C4', order: 9 },
+		'lung signet ring adenocarcinoma': { color: '#C1386E', order: 10 },
+		'lung solid pattern predominant adenocarcinoma': { color: '#D7A355', order: 11 },
+		'mucinous (colloid) carcinoma': { color: '#243833', order: 12 },
+		// Anatomic Neoplasm Subdivision of Group.
+		'bronchial': { color: '#F9E3B9', order: 1 },
+		'l-lower': { color: '#FBA2A3', order: 2 },
+		'l-upper': { color: '#0CA3C7', order: 3 },
+		'other (please specify)': { color: '#D3A16C', order: 4 },
+		'r-lower': { color: '#388A4E', order: 5 },
+		'r-middle': { color: '#D61E43', order: 6 },
+		'r-upper': { color: '#B81BCC', order: 7 },
+		// Other Dx of Group.
+		'no': { color: '#D73A64', order: 1 },
+		'yes': { color: '#1990AA', order: 2 },
+		'yes, history of prior malignancy': { color: '#3BDB11', order: 3 },
+		'yes, history of synchronous/bilateral malignancy': { color: '#803F11', order: 4 },
+		// History of Neoadjuvant Treatment of Group.
+		'no': { color: '#D73A64', order: 1 },
+		'yes': { color: '#1990AA', order: 2 },
+		// Radiation Therapy of Group.
+		'no': { color: '#D73A64', order: 1 },
+		'yes': { color: '#1990AA', order: 2 },
+		// Pathologic T of Group.
+		't1': { color: '#060CDB', order: 1 },
+		't1a': { color: '#696DE9', order: 2 },
+		't1b': { color: '#CDCEF7', order: 3 },
+		't2': { color: '#F6251D', order: 4 },
+		't2a': { color: '#F96D69', order: 5 },
+		't2b': { color: '#FDCECD', order: 6 },
+		't3': { color: '#1AEB42', order: 7 },
+		't4': { color: '#EBBD34', order: 8 },
+		'tx': { color: '#9943DE', order: 9 },
+		// Pathologic N of Group.
+		'n0': { color: '#DC5B35', order: 1 },
+		'n1': { color: '#217C1F', order: 2 },
+		'n2': { color: '#18A6F3', order: 3 },
+		'n3': { color: '#EA68C3', order: 4 },
+		'nx': { color: '#F4E831', order: 5 },
+		// Pathologic M of Group.
+		'm0': { color: '#F0820D', order: 1 },
+		'm1': { color: '#C45A43', order: 2 },
+		'm1a': { color: '#A523C2', order: 3 },
+		'm1b': { color: '#C97BDA', order: 4 },
+		'mx': { color: '#EDD3F2', order: 5 },
+		// Pathologic Stage of Group.
+		'stage i': { color: '#01C606', order: 1 },
+		'stage ia': { color: '#018404', order: 2 },
+		'stage ib': { color: '#002C01', order: 3 },
+		'stage ii': { color: '#0E22C3', order: 4 },
+		'stage iia': { color: '#08136C', order: 5 },
+		'stage iib': { color: '#040B41', order: 6 },
+		'stage iiia': { color: '#BB0C2E', order: 7 },
+		'stage iiib': { color: '#75081D', order: 8 },
+		'stage iv': { color: '#F0CA53', order: 9 },
+		// Residual Tumor of Group.
+		'r0': { color: '#DB8EC0', order: 1 },
+		'r1': { color: '#FFD046', order: 2 },
+		'r2': { color: '#495C50', order: 3 },
+		'rx': { color: '#0E5F8A', order: 4 },
+		// EGFR Mutation Result.
+		'exon 19 deletion': { color: '#4A312A', order: 1 },
+		'l858r': { color: '#74C04C', order: 2 },
+		'l861q': { color: '#FBED09', order: 3 },
+		'other': { color: '#C91DAB', order: 4 },
+		't790m': { color: '#2C517B', order: 5 },
+		// KRAS Mutation Result.
+		'g12a': { color: '#DED0D1', order: 1 },
+		'g12c': { color: '#AE8A8E', order: 2 },
+		'g12d': { color: '#5D161D', order: 3 },
+		'g12s': { color: '#410F14', order: 4 },
+		'g12v': { color: '#25080B', order: 5 },
+		'other': { color: '#C91DAB', order: 6 },
+		// Primary Therapy Outcome Success.
+		'complete remission/response': { color: '#BDED73', order: 1 },
+		'partial remission/response': { color: '#8649F3', order: 2 },
+		'progressive disease': { color: '#C1746B', order: 3 },
+		'stable disease': { color: '#CD4C2A', order: 4 },
+		// Followup Treatment Success.
+		'complete remission/response': { color: '#BDED73', order: 1 },
+		'partial remission/response': { color: '#8649F3', order: 2 },
+		'progressive disease': { color: '#C1746B', order: 3 },
+		'stable disease': { color: '#CD4C2A', order: 4 },
+		// Tobacco Smoking History.
+		'Lifelong Non-Smoker': { color: '#C4B5BB', order: 1 },
+		'Current Smoker': { color: '#896C78', order: 2 },
+		'Current Reformed Smoker for > 15 yrs': { color: '#3B0A1E', order: 3 },
+		'Current Reformed Smoker for < or = 15 yrs': { color: '#2F0818', order: 4 },
+		'Current Reformed Smoker, Duration Not Specified': { color: '#17040C', order: 5 },
+		'NA': { color: '#D6E2E3', order: 6 },
+	};
+
+	model.exclusivityInfo = {
+		'Amplification': '#FFBDE0',
+		'Deletion': '#BDE0FF',
+		'Mutation': '#5CB755',
+		'None': '#D3D3D3',
+	};
+	
+	return model;
+};
+function layout ()	{
+	'use strict';
+
+	var model = {
+		svg: {
+			pathway: {},
+			variants: {},
+			landscape: {},
+			expression: {},
+			exclusivity: {},
+		},
+	};
+	/*
+		ID 목록에 포함된 (Except 파라미터를 제외한) svg 엘리먼트를 만든다.
+	 */
+	function create (expt, chart, ids)	{
+		if (!ids)	return;
+
+		bio.iteration.loop(ids, function (id)	{
+			var isId = true;
+
+			bio.iteration.loop(expt, function (e)	{
+				if (id.indexOf(e) > -1)	{
+					isId = !isId;
+				}
+			});
+
+			if (isId)	{
+				model.svg[chart][id] = bio.rendering().createSVG(id);
+			}
+		});
+
+		return model.svg[chart];
+	};
+	// 배열의 원소에 해당하는 DIV 태그를 제외한 나머지 태그에 svg 를 생성한다.
+	model.landscape = function (ids)	{
+		return create(['option', 'title'], 'landscape', ids);
+	};
+	
+	model.variants = function (ids)	{
+		return create(['title'], 'variants', ids);
+	};
+	
+	model.expression = function (ids)	{
+		return create(
+			['title', 'function', 'color_mapping', 'signature'], 
+			'expression', ids);
+	};
+	
+	model.exclusivity = function (ids)	{
+		return create(
+			['title', 'geneset', 'survival', 'empty'], 
+			'exclusivity', ids);
+	};
+
+	model.pathway = function (ids)	{
+		return create(['title'], 'pathway', ids);
+	};
+	/*
+		SVG 관련 에러 핸들러.
+	 */
+	function getSVGError (args)	{
+		args = Array.prototype.slice.call(args);
+
+		var typeArr = args.map(function (a)	{
+			return bio.objects.getType(a);
+		});
+
+		if (typeArr.indexOf('Object') < 0)	{
+			throw new Error('Not found svg set');
+		} else if (typeArr.indexOf('Function') < 0)	{
+			throw new Error('Not found callback');
+		}
+	};
+	/*
+		SVG 파라미터에서 id 목록과 맞는 svg 만 반환해주는 함수.
+	 */
+	model.get = function (svgs, ids, callback)	{
+		getSVGError(arguments);
+
+		ids = bio.objects.getType(ids) === 'Array' ? 
+		ids : [ids];
+
+		bio.iteration.loop(svgs, function (id, value)	{
+			bio.iteration.loop(ids, function (i)	{
+				if (id.indexOf(i) > -1)	{
+					return callback(id, value);
+				}
+			});
+		});
+	};
+	/*
+		Specific 된 svg 가 없을 경우,
+		'g-tag' 클래스를 가진 g tag 를 모두 지워주는 함수.
+	 */
+	model.removeGroupTag = function (classify)	{
+		if (classify)	{
+			classify = bio.objects.getType(classify) === 'Array' ? 
+			classify : [classify];
+
+			bio.iteration.loop(classify, function (d)	{
+				d3.selectAll((d.indexOf('.') > -1 ? d : '.' + d))
+					.remove();
+			});
+		} else {
+			d3.selectAll('svg g').remove();
+		}
+	};
+
+	return function ()	{
+		return model;
+	};
+};
+function setting ()	{
+	'use strict';
+
+	var model = null;	
+	/*
+		ID 또는 ClassName 으로 된 노드를 찾아
+		DOM 객체로 반환해주는 함수.
+	 */
+	function setTargetedElement (element)	{
+		return model.dom = bio.dom().get(element), model.dom;
+	};
+	/*
+		파라미터에 width, height 값이 있으면 그 값을 
+		없는 경우 전달 된 Dom 의 가로, 세로 길이를 반환하는 함수.
+	 */
+	function setTargetedElementSize (opts)	{
+		model.size.width = opts.width || 
+		parseFloat(model.dom.style.width),
+		model.size.height = opts.height || 
+		parseFloat(model.dom.style.height)
+
+		return { 
+			width: model.size.width, 
+			height: model.size.height,
+		};
+	};
+	/*
+		Layout 의 ID 목록 데이터를 만들어주는 함수.
+		여기서 각각의 Layout 의 크기도 설정해준다.
+	 */
+	function setLayoutIdData (chart, element, width, height, add)	{
+		model.ids = 
+		bio.sizing.chart[chart](element, width, height, add);
+
+		return model.ids;
+	};
+	/*
+		구성된 Layout 에 svg 엘리먼트를 만들어준다.
+	 */
+	function setSVGElement (chart, ids)	{
+		return bio.layout()[chart](ids);
+	};
+
+	return function (chart, opts)	{
+		model = bio.initialize('setting');
+
+		var groupLayout = null;
+
+		if (opts.data.data && opts.data.data.name)	{
+			groupLayout = opts.data.data.group_list;
+		}
+
+		return {
+			defaultData: opts.data,
+			targetedElement: setTargetedElement(opts.element),
+			targetedElementSize: setTargetedElementSize(opts),
+			preprocessData: bio.preprocess(chart)(opts.data),
+			layoutIds: setLayoutIdData(
+									chart,
+									model.dom, 
+									model.size.width, 
+									model.size.height, groupLayout),
+			svgs: setSVGElement(chart, model.ids),
+		};
+	};
+};
+function sizing ()	{
+	'use strict';
+
+	var model = { chart: {}, ids: [] };
+	/*
+		Tooltip Tag 를 만드는 함수.
+	 */
+	function makeTooltipNode ()	{
+		if (document.getElementById('biochart_tooltip'))	{		
+			document.body.removeChild(
+			document.getElementById('biochart_tooltip'));
+		}
+		
+		var div = document.createElement('div');
+
+		div.id = 'biochart_tooltip';
+		div.className = 'biochart-tooltip';
+
+		document.body.appendChild(div);
+	};
+	/*
+		Chart 별 알맞는 layout 을 구성해주는 함수.
+	 */
+	function makeLayout (ids)	{
+		// 초기 화면 구성 시 Tooltip 도 추가해준다.
+		makeTooltipNode();
+
+		bio.iteration.loop.call(this, ids, function (id, size) {
+			var div = document.createElement('div');
+					div.id = id;
+					div.style.width = size.width + 'px';
+					div.style.height = size.height + 'px';
+			// 각 layout 에 구성된 div 태그들의 id 값들을 리스트에 넣어준다.
+			model.ids.push(id);	
+
+			this.appendChild(div);
+		});
+	};
+	/*
+		Sizing 객체의 model 객체를 초기화하고 (나중에 ajax 재 요청시,
+		svg 가 사라지지 않는 문제를 해결하기 위해) 
+		전체 element 의 가로, 세로 크기를 설정한다.
+	 */
+	function setSize (ele, width, height)	{
+		model = bio.initialize('sizing');
+
+		ele.style.width = width + 'px';
+		ele.style.height = height + 'px';
+
+		return ele;
+	};
+	/*
+		배열로 전달 받은 margin 값을 객체 형태의 margin
+		값으로 변환하여 반환해주는 함수.
+	 */
+	model.setMargin = function (margin)	{
+		if (!margin.length && 
+				typeof(margin) === 'string')	{
+			return { 
+				top: margin, left: margin, 
+				bottom: margin, right: margin 
+			};
+		} else if (bio.objects.getType(margin) === 
+							'Object')	{
+			return margin;
+		} else {
+			var len = margin.length;
+			// Margin 리스트의 개수에 따라 알맞은 객체를 생성한다.
+			return {
+				top: margin[0],
+				left: len > 1 ? margin[1] : margin[0],
+				bottom: len > 2 ? margin[2] : margin[0],
+				right: len === 1 ? margin[0] : 
+							 len > 3 ? margin[3] : margin[1],
+			};
+		}
+	};
+	/*
+		Title 과 Contents 부분으로 나눈다.
+	 */
+	function makeDivide (type, ele, w, h, tr)	{
+		var title = document.createElement('div'),
+				contents = document.createElement('div');
+
+		title.id = type + '_title';
+		contents.id = type + '_contents';
+
+		title.style.width = w + 'px';
+		title.style.height = h * tr + 'px';
+
+		contents.style.width = w + 'px';
+		contents.style.height = h * (100 - tr) + 'px';
+
+		ele.appendChild(title);
+		ele.appendChild(contents);
+
+		return { title: title, contents: contents };
+	};
+	/*
+		landscape 의 그룹 레이아웃을 만들어준다.
+	 */
+	function landGroupLayout (groups, id, width, height, type)	{
+		var h = height * 0.16 / groups.length,
+				prefixes = {
+					patient: { w: width * 0.01, h: h },
+					axis: { w: width * 0.14, h: h },
+					group: { w: width * 0.65, h: h },
+				};
+
+		bio.iteration.loop(groups, function (group)	{
+			var name = group.name.removeWhiteSpace(),
+					prefix = prefixes[type] === 'group' ? '' : type;
+
+			id['landscape_' + prefix + '_group_' + name] = 
+				{ 
+					width: prefixes[type].w.toFixed(1), 
+					height: prefixes[type].h.toFixed(1), 
+				};
+		});
+
+		return id;
+	};
+	// Chart 별 영역의 크기 설정 및 ID List 생성.
+	model.chart.landscape = function (ele, w, h, group)	{
+		var id = {
+			landscape_temp_sample: { width: w * 0.1, height: h * 0.15 },
+			landscape_axis_sample: { width: w * 0.14, height: h * 0.15 },
+			landscape_patient_sample: { width: w * 0.01, height: h * 0.15 },
+			landscape_sample: { width: w * 0.65, height: h * 0.15 },
+			landscape_scale_option: { width: w * 0.1, height: h * 0.15 },
+			landscape_temp_group: { width: w * 0.1, height: h * 0.16 },
+			landscape_axis_group: { width: w * 0.14, height: h * 0.15 },
+			landscape_patient_group: { width: w * 0.01, height: h * 0.16 },
+			landscape_group: { width: w * 0.65, height: h * 0.16 },
+			landscape_option: { width: w * 0.1, height: h * 0.16 },
+			landscape_legend: { width: w * 0.1, height: h * 0.64},
+			landscape_gene: { width: w * 0.14, height: h * 0.64 },
+			landscape_patient_heatmap: { width: w * 0.01, height: h * 0.64 },
+			landscape_heatmap: { width: w * 0.65, height: h * 0.64 },
+			landscape_pq: { width: w * 0.1, height: h * 0.64 },
+		};
+
+		var divs = makeDivide('landscape', ele, w, h, 0.05);
+
+		var ga = landGroupLayout(group, {}, w, h, 'axis'),
+				gc = landGroupLayout(group, {}, w, h, 'group'),
+				gp = landGroupLayout(group, {}, w, h, 'patient');
+
+		makeLayout.call(setSize(divs.contents, w, h * 0.95), id);
+		makeLayout.call(bio.dom().get('#landscape_group'), gc);
+		makeLayout.call(bio.dom().get('#landscape_axis_group'), ga);
+		makeLayout.call(bio.dom().get('#landscape_patient_group'), gp);
+
+		return model.ids;
+	};
+	
+	model.chart.variants = function (ele, w, h)	{
+		var id = {
+			variants_needle: {width: w * 0.825, height: h * 0.825},
+			variants_legend: {width: w * 0.175, height: h * 0.5},
+			variants_patient_legend: {width: w * 0.175, height: h * 0.425},
+			variants_navi: {width: w * 0.825, height: h * 0.1},
+		};
+
+		var divs = makeDivide('variants', ele, w, h, 0.075);
+
+		makeLayout.call(setSize(divs.contents, w, h * 0.925), id);
+
+		return model.ids;
+	};
+
+	model.chart.expression = function (ele, w, h)	{
+		var id = {
+			expression_survival: {width: w * 0.4, height: h * 0.925},
+			expression_bar_plot: {width: w * 0.4, height: h * 0.32},
+			expression_function: {width: w * 0.2, height: h * 0.05},
+			expression_color_mapping: {width: w * 0.2, height: h * 0.05},
+			expression_bar_legend: {width: w * 0.2, height: h * 0.35},
+			expression_division: {width: w * 0.4, height: h * 0.04},
+			expression_scatter_plot: {width: w * 0.4, height: h * 0.3},
+			expression_scatter_empty: {width: w * 0.2, height: h * 0.08},
+			expression_scatter_legend: {width: w * 0.2, height: h * 0.2},
+			expression_heatmap: {width: w * 0.4, height: h * 0.25},
+			expression_signature: {width: w * 0.2, height: h * 0.05},
+			expression_color_gradient: {width: w * 0.194, height: h * 0.075},
+		};
+
+		var divs = makeDivide('expression', ele, w, h, 0.075);
+
+		makeLayout.call(setSize(divs.contents, w, h * 0.925), id);
+
+		return model.ids;
+	};
+	
+	model.chart.exclusivity = function (ele, w, h)	{
+		var id =  {
+			exclusivity_select_geneset: {width: w * 0.59, height: h * 0.12},
+			exclusivity_survival: {width: w * 0.4, height: h * 0.925},
+			exclusivity_network: {width: w * 0.25, height: h * 0.65},
+			exclusivity_heatmap: {width: w * 0.35, height: h * 0.45},
+			exclusivity_legend: {width: w * 0.35, height: h * 0.05},
+			exclusivity_sample_legend: {width: w * 0.35, height: h * 0.05},
+		};
+
+		var divs = makeDivide('exclusivity', ele, w, h, 0.075);
+
+		makeLayout.call(setSize(divs.contents, w, h * 0.925), id);
+
+		return model.ids;
+	};
+
+	model.chart.pathway = function (ele, w, h)	{
+		var id =  {};
+		var divs = makeDivide('pathway', ele, w, h, 0.075);
+
+		makeLayout.call(setSize(divs.contents, w, h * 0.925), id);
+
+		return model.ids;
+	};
+	/*
+		각 chart 별 기본 설정 반환함수.
+	 */
+	model.chart.default = function (that, opts)	{
+		that.id = opts.element.attr('id');
+		that.margin = opts.margin ? 
+									bio.sizing.setMargin(opts.margin) : null;
+		that.width = parseFloat(opts.element.attr('width'));
+		that.height = parseFloat(opts.element.attr('height'));
+		that.element = bio.objects.getType(opts.element) === 'Object' || 
+									 bio.objects.getType(opts.element) === 'Array' ? 
+									 opts.element : (/\W/).test(opts.element[0]) ? 
+									 d3.select(opts.element) : 
+									 d3.select('#' + opts.element);
+
+		return that;
+	};
+
+	return model;
+};
 function commonConfig ()	{
 	'use strict';
 
@@ -2067,639 +2637,6 @@ function variantsConfig ()	{
 		};
 	};
 };
-function boilerPlate ()	{
-	'use strict';
-
-	var model = {};
-
-	model.variantInfo = {
-		// Mutation.
-		'Amplification': { color: '#FFBDE0', order: 0},
-		'Homozygous_deletion': { color: '#BDE0FF', order: 1},
-		'Nonsense_mutation': { color: '#EA3B29', order: 2},
-		'Splice_site': { color: '#800080', order: 3},
-		'Translation_start_site': { color: '#AAA8AA', order: 4},
-		'Missense_mutation': { color: '#3E87C2', order: 5},
-		'Start_codon_snp': { color: '#3E87C2', order: 5 },
-		'Nonstop_mutation': { color: '#070078', order: 6},
-		'Frame_shift_indel': { color: '#F68D3B', order: 7},
-		'Stop_codon_indel':{ color:  'F68D3B', order: 7},
-		'In_frame_indel': { color: '#F2EE7E', order: 8},
-		'Silent': { color: '#5CB755', order: 9},
-		'Rna': { color: '#FFDF97', order: 10},
-		'Intron': { color: '#A9A9A9', order: 11},
-		'5\'utr': { color: '#A9A9A9', order: 11},
-		'3\'utr': { color: '#A9A9A9', order: 11},
-		'Igr': { color: '#A9A9A9', order: 11},
-	};
-
-	model.clinicalInfo = {
-		// Group.
-		// Vital Status of Group.
-		'alive': { color: '#04CDA4', order: 1 },
-		'dead': { color: '#C50E36', order: 2 },
-		// Gender of Group.
-		'female':{ color:  'E0A4E5', order: 1 },
-		'male': { color: '#0F67B6', order: 2 },
-		// Race of Group.
-		'american indian or alaska native': { color: '#38120B', order: 1 },
-		'asian': { color: '#CB771F', order: 2 },
-		'black or african american': { color: '#302F24', order: 3 },
-		'white': { color: '#9CB1CE', order: 4 },
-		// Ethnicity of Group.
-		'hispanic or latino': { color: '#B8642F', order: 1 },
-		'not hispanic or latino': { color: '#55C53E', order: 2 },
-		// Histological Type of Group.
-		'lung acinar adenocarcinoma': { color: '#716190', order: 1 },
-		'lung adenocarcinoma mixed subtype': { color: '#5154DE', order: 2 },
-		'lung adenocarcinoma- not otherwise specified (nos)': { color: '#8E9A7E', order: 3 },
-		'lung bronchioloalveolar carcinoma mucinous': { color: '#2F91DE', order: 4 },
-		'lung bronchioloalveolar carcinoma nonmucinous': { color: '#ED6EBD', order: 5 },
-		'lung clear cell adenocarcinoma': { color: '#1C8D7A', order: 6 },
-		'lung micropapillary adenocarcinoma': { color: '#B2EE86', order: 7 },
-		'lung mucinous adenocarcinoma': { color: '#785E54', order: 8 },
-		'lung papillary adenocarcinoma': { color: '#69B4C4', order: 9 },
-		'lung signet ring adenocarcinoma': { color: '#C1386E', order: 10 },
-		'lung solid pattern predominant adenocarcinoma': { color: '#D7A355', order: 11 },
-		'mucinous (colloid) carcinoma': { color: '#243833', order: 12 },
-		// Anatomic Neoplasm Subdivision of Group.
-		'bronchial': { color: '#F9E3B9', order: 1 },
-		'l-lower': { color: '#FBA2A3', order: 2 },
-		'l-upper': { color: '#0CA3C7', order: 3 },
-		'other (please specify)': { color: '#D3A16C', order: 4 },
-		'r-lower': { color: '#388A4E', order: 5 },
-		'r-middle': { color: '#D61E43', order: 6 },
-		'r-upper': { color: '#B81BCC', order: 7 },
-		// Other Dx of Group.
-		'no': { color: '#D73A64', order: 1 },
-		'yes': { color: '#1990AA', order: 2 },
-		'yes, history of prior malignancy': { color: '#3BDB11', order: 3 },
-		'yes, history of synchronous/bilateral malignancy': { color: '#803F11', order: 4 },
-		// History of Neoadjuvant Treatment of Group.
-		'no': { color: '#D73A64', order: 1 },
-		'yes': { color: '#1990AA', order: 2 },
-		// Radiation Therapy of Group.
-		'no': { color: '#D73A64', order: 1 },
-		'yes': { color: '#1990AA', order: 2 },
-		// Pathologic T of Group.
-		't1': { color: '#060CDB', order: 1 },
-		't1a': { color: '#696DE9', order: 2 },
-		't1b': { color: '#CDCEF7', order: 3 },
-		't2': { color: '#F6251D', order: 4 },
-		't2a': { color: '#F96D69', order: 5 },
-		't2b': { color: '#FDCECD', order: 6 },
-		't3': { color: '#1AEB42', order: 7 },
-		't4': { color: '#EBBD34', order: 8 },
-		'tx': { color: '#9943DE', order: 9 },
-		// Pathologic N of Group.
-		'n0': { color: '#DC5B35', order: 1 },
-		'n1': { color: '#217C1F', order: 2 },
-		'n2': { color: '#18A6F3', order: 3 },
-		'n3': { color: '#EA68C3', order: 4 },
-		'nx': { color: '#F4E831', order: 5 },
-		// Pathologic M of Group.
-		'm0': { color: '#F0820D', order: 1 },
-		'm1': { color: '#C45A43', order: 2 },
-		'm1a': { color: '#A523C2', order: 3 },
-		'm1b': { color: '#C97BDA', order: 4 },
-		'mx': { color: '#EDD3F2', order: 5 },
-		// Pathologic Stage of Group.
-		'stage i': { color: '#01C606', order: 1 },
-		'stage ia': { color: '#018404', order: 2 },
-		'stage ib': { color: '#002C01', order: 3 },
-		'stage ii': { color: '#0E22C3', order: 4 },
-		'stage iia': { color: '#08136C', order: 5 },
-		'stage iib': { color: '#040B41', order: 6 },
-		'stage iiia': { color: '#BB0C2E', order: 7 },
-		'stage iiib': { color: '#75081D', order: 8 },
-		'stage iv': { color: '#F0CA53', order: 9 },
-		// Residual Tumor of Group.
-		'r0': { color: '#DB8EC0', order: 1 },
-		'r1': { color: '#FFD046', order: 2 },
-		'r2': { color: '#495C50', order: 3 },
-		'rx': { color: '#0E5F8A', order: 4 },
-		// EGFR Mutation Result.
-		'exon 19 deletion': { color: '#4A312A', order: 1 },
-		'l858r': { color: '#74C04C', order: 2 },
-		'l861q': { color: '#FBED09', order: 3 },
-		'other': { color: '#C91DAB', order: 4 },
-		't790m': { color: '#2C517B', order: 5 },
-		// KRAS Mutation Result.
-		'g12a': { color: '#DED0D1', order: 1 },
-		'g12c': { color: '#AE8A8E', order: 2 },
-		'g12d': { color: '#5D161D', order: 3 },
-		'g12s': { color: '#410F14', order: 4 },
-		'g12v': { color: '#25080B', order: 5 },
-		'other': { color: '#C91DAB', order: 6 },
-		// Primary Therapy Outcome Success.
-		'complete remission/response': { color: '#BDED73', order: 1 },
-		'partial remission/response': { color: '#8649F3', order: 2 },
-		'progressive disease': { color: '#C1746B', order: 3 },
-		'stable disease': { color: '#CD4C2A', order: 4 },
-		// Followup Treatment Success.
-		'complete remission/response': { color: '#BDED73', order: 1 },
-		'partial remission/response': { color: '#8649F3', order: 2 },
-		'progressive disease': { color: '#C1746B', order: 3 },
-		'stable disease': { color: '#CD4C2A', order: 4 },
-		// Tobacco Smoking History.
-		'Lifelong Non-Smoker': { color: '#C4B5BB', order: 1 },
-		'Current Smoker': { color: '#896C78', order: 2 },
-		'Current Reformed Smoker for > 15 yrs': { color: '#3B0A1E', order: 3 },
-		'Current Reformed Smoker for < or = 15 yrs': { color: '#2F0818', order: 4 },
-		'Current Reformed Smoker, Duration Not Specified': { color: '#17040C', order: 5 },
-		'NA': { color: '#D6E2E3', order: 6 },
-	};
-
-	model.exclusivityInfo = {
-		'Amplification': '#FFBDE0',
-		'Deletion': '#BDE0FF',
-		'Mutation': '#5CB755',
-		'None': '#D3D3D3',
-	};
-	
-	return model;
-};
-function layout ()	{
-	'use strict';
-
-	var model = {
-		svg: {
-			pathway: {},
-			variants: {},
-			landscape: {},
-			expression: {},
-			exclusivity: {},
-		},
-	};
-	/*
-		ID 목록에 포함된 (Except 파라미터를 제외한) svg 엘리먼트를 만든다.
-	 */
-	function create (expt, chart, ids)	{
-		if (!ids)	return;
-
-		bio.iteration.loop(ids, function (id)	{
-			var isId = true;
-
-			bio.iteration.loop(expt, function (e)	{
-				if (id.indexOf(e) > -1)	{
-					isId = !isId;
-				}
-			});
-
-			if (isId)	{
-				model.svg[chart][id] = bio.rendering().createSVG(id);
-			}
-		});
-
-		return model.svg[chart];
-	};
-	// 배열의 원소에 해당하는 DIV 태그를 제외한 나머지 태그에 svg 를 생성한다.
-	model.landscape = function (ids)	{
-		return create(['option', 'title'], 'landscape', ids);
-	};
-	
-	model.variants = function (ids)	{
-		return create(['title'], 'variants', ids);
-	};
-	
-	model.expression = function (ids)	{
-		return create(
-			['title', 'function', 'color_mapping', 'signature'], 
-			'expression', ids);
-	};
-	
-	model.exclusivity = function (ids)	{
-		return create(
-			['title', 'geneset', 'survival', 'empty'], 
-			'exclusivity', ids);
-	};
-
-	model.pathway = function (ids)	{
-		return create(['title'], 'pathway', ids);
-	};
-	/*
-		SVG 관련 에러 핸들러.
-	 */
-	function getSVGError (args)	{
-		args = Array.prototype.slice.call(args);
-
-		var typeArr = args.map(function (a)	{
-			return bio.objects.getType(a);
-		});
-
-		if (typeArr.indexOf('Object') < 0)	{
-			throw new Error('Not found svg set');
-		} else if (typeArr.indexOf('Function') < 0)	{
-			throw new Error('Not found callback');
-		}
-	};
-	/*
-		SVG 파라미터에서 id 목록과 맞는 svg 만 반환해주는 함수.
-	 */
-	model.get = function (svgs, ids, callback)	{
-		getSVGError(arguments);
-
-		ids = bio.objects.getType(ids) === 'Array' ? 
-		ids : [ids];
-
-		bio.iteration.loop(svgs, function (id, value)	{
-			bio.iteration.loop(ids, function (i)	{
-				if (id.indexOf(i) > -1)	{
-					return callback(id, value);
-				}
-			});
-		});
-	};
-	/*
-		Specific 된 svg 가 없을 경우,
-		'g-tag' 클래스를 가진 g tag 를 모두 지워주는 함수.
-	 */
-	model.removeGroupTag = function (classify)	{
-		if (classify)	{
-			classify = bio.objects.getType(classify) === 'Array' ? 
-			classify : [classify];
-
-			bio.iteration.loop(classify, function (d)	{
-				d3.selectAll((d.indexOf('.') > -1 ? d : '.' + d))
-					.remove();
-			});
-		} else {
-			d3.selectAll('svg g').remove();
-		}
-	};
-
-	return function ()	{
-		return model;
-	};
-};
-function setting ()	{
-	'use strict';
-
-	var model = null;	
-	/*
-		ID 또는 ClassName 으로 된 노드를 찾아
-		DOM 객체로 반환해주는 함수.
-	 */
-	function setTargetedElement (element)	{
-		return model.dom = bio.dom().get(element), model.dom;
-	};
-	/*
-		파라미터에 width, height 값이 있으면 그 값을 
-		없는 경우 전달 된 Dom 의 가로, 세로 길이를 반환하는 함수.
-	 */
-	function setTargetedElementSize (opts)	{
-		model.size.width = opts.width || 
-		parseFloat(model.dom.style.width),
-		model.size.height = opts.height || 
-		parseFloat(model.dom.style.height)
-
-		return { 
-			width: model.size.width, 
-			height: model.size.height,
-		};
-	};
-	/*
-		Layout 의 ID 목록 데이터를 만들어주는 함수.
-		여기서 각각의 Layout 의 크기도 설정해준다.
-	 */
-	function setLayoutIdData (chart, element, width, height, add)	{
-		model.ids = 
-		bio.sizing.chart[chart](element, width, height, add);
-
-		return model.ids;
-	};
-	/*
-		구성된 Layout 에 svg 엘리먼트를 만들어준다.
-	 */
-	function setSVGElement (chart, ids)	{
-		return bio.layout()[chart](ids);
-	};
-
-	return function (chart, opts)	{
-		model = bio.initialize('setting');
-
-		var groupLayout = null;
-
-		if (opts.data.data && opts.data.data.name)	{
-			groupLayout = opts.data.data.group_list;
-		}
-
-		return {
-			defaultData: opts.data,
-			targetedElement: setTargetedElement(opts.element),
-			targetedElementSize: setTargetedElementSize(opts),
-			preprocessData: bio.preprocess(chart)(opts.data),
-			layoutIds: setLayoutIdData(
-									chart,
-									model.dom, 
-									model.size.width, 
-									model.size.height, groupLayout),
-			svgs: setSVGElement(chart, model.ids),
-		};
-	};
-};
-function sizing ()	{
-	'use strict';
-
-	var model = { chart: {}, ids: [] };
-	/*
-		Tooltip Tag 를 만드는 함수.
-	 */
-	function makeTooltipNode ()	{
-		if (document.getElementById('biochart_tooltip'))	{		
-			document.body.removeChild(
-			document.getElementById('biochart_tooltip'));
-		}
-		
-		var div = document.createElement('div');
-
-		div.id = 'biochart_tooltip';
-		div.className = 'biochart-tooltip';
-
-		document.body.appendChild(div);
-	};
-	/*
-		Chart 별 알맞는 layout 을 구성해주는 함수.
-	 */
-	function makeLayout (ids)	{
-		// 초기 화면 구성 시 Tooltip 도 추가해준다.
-		makeTooltipNode();
-
-		bio.iteration.loop.call(this, ids, function (id, size) {
-			var div = document.createElement('div');
-					div.id = id;
-					div.style.width = size.width + 'px';
-					div.style.height = size.height + 'px';
-			// 각 layout 에 구성된 div 태그들의 id 값들을 리스트에 넣어준다.
-			model.ids.push(id);	
-
-			this.appendChild(div);
-		});
-	};
-	/*
-		Sizing 객체의 model 객체를 초기화하고 (나중에 ajax 재 요청시,
-		svg 가 사라지지 않는 문제를 해결하기 위해) 
-		전체 element 의 가로, 세로 크기를 설정한다.
-	 */
-	function setSize (ele, width, height)	{
-		model = bio.initialize('sizing');
-
-		ele.style.width = width + 'px';
-		ele.style.height = height + 'px';
-
-		return ele;
-	};
-	/*
-		배열로 전달 받은 margin 값을 객체 형태의 margin
-		값으로 변환하여 반환해주는 함수.
-	 */
-	model.setMargin = function (margin)	{
-		if (!margin.length && 
-				typeof(margin) === 'string')	{
-			return { 
-				top: margin, left: margin, 
-				bottom: margin, right: margin 
-			};
-		} else if (bio.objects.getType(margin) === 
-							'Object')	{
-			return margin;
-		} else {
-			var len = margin.length;
-			// Margin 리스트의 개수에 따라 알맞은 객체를 생성한다.
-			return {
-				top: margin[0],
-				left: len > 1 ? margin[1] : margin[0],
-				bottom: len > 2 ? margin[2] : margin[0],
-				right: len === 1 ? margin[0] : 
-							 len > 3 ? margin[3] : margin[1],
-			};
-		}
-	};
-	/*
-		Title 과 Contents 부분으로 나눈다.
-	 */
-	function makeDivide (type, ele, w, h, tr)	{
-		var title = document.createElement('div'),
-				contents = document.createElement('div');
-
-		title.id = type + '_title';
-		contents.id = type + '_contents';
-
-		title.style.width = w + 'px';
-		title.style.height = h * tr + 'px';
-
-		contents.style.width = w + 'px';
-		contents.style.height = h * (100 - tr) + 'px';
-
-		ele.appendChild(title);
-		ele.appendChild(contents);
-
-		return { title: title, contents: contents };
-	};
-	/*
-		landscape 의 그룹 레이아웃을 만들어준다.
-	 */
-	function landGroupLayout (groups, id, width, height, type)	{
-		var h = height * 0.16 / groups.length,
-				prefixes = {
-					patient: { w: width * 0.01, h: h },
-					axis: { w: width * 0.14, h: h },
-					group: { w: width * 0.65, h: h },
-				};
-
-		bio.iteration.loop(groups, function (group)	{
-			var name = group.name.removeWhiteSpace(),
-					prefix = prefixes[type] === 'group' ? '' : type;
-
-			id['landscape_' + prefix + '_group_' + name] = 
-				{ 
-					width: prefixes[type].w.toFixed(1), 
-					height: prefixes[type].h.toFixed(1), 
-				};
-		});
-
-		return id;
-	};
-	// Chart 별 영역의 크기 설정 및 ID List 생성.
-	model.chart.landscape = function (ele, w, h, group)	{
-		var id = {
-			landscape_temp_sample: { width: w * 0.1, height: h * 0.15 },
-			landscape_axis_sample: { width: w * 0.14, height: h * 0.15 },
-			landscape_patient_sample: { width: w * 0.01, height: h * 0.15 },
-			landscape_sample: { width: w * 0.65, height: h * 0.15 },
-			landscape_scale_option: { width: w * 0.1, height: h * 0.15 },
-			landscape_temp_group: { width: w * 0.1, height: h * 0.16 },
-			landscape_axis_group: { width: w * 0.14, height: h * 0.15 },
-			landscape_patient_group: { width: w * 0.01, height: h * 0.16 },
-			landscape_group: { width: w * 0.65, height: h * 0.16 },
-			landscape_option: { width: w * 0.1, height: h * 0.16 },
-			landscape_legend: { width: w * 0.1, height: h * 0.64},
-			landscape_gene: { width: w * 0.14, height: h * 0.64 },
-			landscape_patient_heatmap: { width: w * 0.01, height: h * 0.64 },
-			landscape_heatmap: { width: w * 0.65, height: h * 0.64 },
-			landscape_pq: { width: w * 0.1, height: h * 0.64 },
-		};
-
-		var divs = makeDivide('landscape', ele, w, h, 0.05);
-
-		var ga = landGroupLayout(group, {}, w, h, 'axis'),
-				gc = landGroupLayout(group, {}, w, h, 'group'),
-				gp = landGroupLayout(group, {}, w, h, 'patient');
-
-		makeLayout.call(setSize(divs.contents, w, h * 0.95), id);
-		makeLayout.call(bio.dom().get('#landscape_group'), gc);
-		makeLayout.call(bio.dom().get('#landscape_axis_group'), ga);
-		makeLayout.call(bio.dom().get('#landscape_patient_group'), gp);
-
-		return model.ids;
-	};
-	
-	model.chart.variants = function (ele, w, h)	{
-		var id = {
-			variants_needle: {width: w * 0.825, height: h * 0.825},
-			variants_legend: {width: w * 0.175, height: h * 0.5},
-			variants_patient_legend: {width: w * 0.175, height: h * 0.425},
-			variants_navi: {width: w * 0.825, height: h * 0.1},
-		};
-
-		var divs = makeDivide('variants', ele, w, h, 0.075);
-
-		makeLayout.call(setSize(divs.contents, w, h * 0.925), id);
-
-		return model.ids;
-	};
-
-	model.chart.expression = function (ele, w, h)	{
-		var id = {
-			expression_survival: {width: w * 0.4, height: h * 0.925},
-			expression_bar_plot: {width: w * 0.4, height: h * 0.32},
-			expression_function: {width: w * 0.2, height: h * 0.05},
-			expression_color_mapping: {width: w * 0.2, height: h * 0.05},
-			expression_bar_legend: {width: w * 0.2, height: h * 0.35},
-			expression_division: {width: w * 0.4, height: h * 0.04},
-			expression_scatter_plot: {width: w * 0.4, height: h * 0.3},
-			expression_scatter_empty: {width: w * 0.2, height: h * 0.08},
-			expression_scatter_legend: {width: w * 0.2, height: h * 0.2},
-			expression_heatmap: {width: w * 0.4, height: h * 0.25},
-			expression_signature: {width: w * 0.2, height: h * 0.05},
-			expression_color_gradient: {width: w * 0.194, height: h * 0.075},
-		};
-
-		var divs = makeDivide('expression', ele, w, h, 0.075);
-
-		makeLayout.call(setSize(divs.contents, w, h * 0.925), id);
-
-		return model.ids;
-	};
-	
-	model.chart.exclusivity = function (ele, w, h)	{
-		var id =  {
-			exclusivity_select_geneset: {width: w * 0.59, height: h * 0.12},
-			exclusivity_survival: {width: w * 0.4, height: h * 0.925},
-			exclusivity_network: {width: w * 0.25, height: h * 0.65},
-			exclusivity_heatmap: {width: w * 0.35, height: h * 0.45},
-			exclusivity_legend: {width: w * 0.35, height: h * 0.05},
-			exclusivity_sample_legend: {width: w * 0.35, height: h * 0.05},
-		};
-
-		var divs = makeDivide('exclusivity', ele, w, h, 0.075);
-
-		makeLayout.call(setSize(divs.contents, w, h * 0.925), id);
-
-		return model.ids;
-	};
-
-	model.chart.pathway = function (ele, w, h)	{
-		var id =  {};
-		var divs = makeDivide('pathway', ele, w, h, 0.075);
-
-		makeLayout.call(setSize(divs.contents, w, h * 0.925), id);
-
-		return model.ids;
-	};
-	/*
-		각 chart 별 기본 설정 반환함수.
-	 */
-	model.chart.default = function (that, opts)	{
-		that.id = opts.element.attr('id');
-		that.margin = opts.margin ? 
-									bio.sizing.setMargin(opts.margin) : null;
-		that.width = parseFloat(opts.element.attr('width'));
-		that.height = parseFloat(opts.element.attr('height'));
-		that.element = bio.objects.getType(opts.element) === 'Object' || 
-									 bio.objects.getType(opts.element) === 'Array' ? 
-									 opts.element : (/\W/).test(opts.element[0]) ? 
-									 d3.select(opts.element) : 
-									 d3.select('#' + opts.element);
-
-		return that;
-	};
-
-	return model;
-};
-function handler ()	{
-	'use strict';
-
-	var model = {};
-	/*
-		스크롤 이벤트 핸들러.
-	 */
-	function scroll (target, callback)	{
-		bio.dom().get(target)
-			 .addEventListener('scroll', callback, false);
-	};
-	/*
-	 	특정 이벤트 중 이벤트가 바디태그에서는 Disable 하게 만들어주는 함수.
-	 */
-	function preventBodyEvent (ele, events)	{
-		var DOEVENT = false;
-
-		// 사용자가 지정한 DIV 에 마우스 휠을 작동할때는, 바디에 마우스 휠
-		// 이벤트를 막아놓는다.
-		document.body.addEventListener(events, function (e)	{
-			if (DOEVENT)	{
-				if (e.preventDefault) {
-					e.preventDefault();
-				}
-
-				return false;
-			}
-		});
-
-		ele.addEventListener('mouseenter', function (e)	{
-			DOEVENT = true;
-		});
-
-		ele.addEventListener('mouseleave', function (e)	{
-			DOEVENT = false;
-		});
-	};
-	/*
-		x, y 스크롤이 hidden 일 때, 스크롤을 가능하게 해주는 함수.
-	 */
-	function scrollOnHidden (element, callback)	{
-		if (!element)	{
-			throw new Error('No given element');
-		}
-
-		preventBodyEvent(element, 'mousewheel');
-
-		element.addEventListener('mousewheel', function (e)	{
-			element.scrollTop += element.wheelDelta;
-
-			if (callback) {
-				callback.call(element, e);
-			}
-		});
-	};
-
-	return function ()	{
-		return {
-			scroll: scroll,
-			scrollOnHidden: scrollOnHidden,
-		};
-	};
-};
 function axises ()	{
 	'use strict';
 
@@ -4555,6 +4492,69 @@ function triangle ()	{
 		});
 	};
 };
+function handler ()	{
+	'use strict';
+
+	var model = {};
+	/*
+		스크롤 이벤트 핸들러.
+	 */
+	function scroll (target, callback)	{
+		bio.dom().get(target)
+			 .addEventListener('scroll', callback, false);
+	};
+	/*
+	 	특정 이벤트 중 이벤트가 바디태그에서는 Disable 하게 만들어주는 함수.
+	 */
+	function preventBodyEvent (ele, events)	{
+		var DOEVENT = false;
+
+		// 사용자가 지정한 DIV 에 마우스 휠을 작동할때는, 바디에 마우스 휠
+		// 이벤트를 막아놓는다.
+		document.body.addEventListener(events, function (e)	{
+			if (DOEVENT)	{
+				if (e.preventDefault) {
+					e.preventDefault();
+				}
+
+				return false;
+			}
+		});
+
+		ele.addEventListener('mouseenter', function (e)	{
+			DOEVENT = true;
+		});
+
+		ele.addEventListener('mouseleave', function (e)	{
+			DOEVENT = false;
+		});
+	};
+	/*
+		x, y 스크롤이 hidden 일 때, 스크롤을 가능하게 해주는 함수.
+	 */
+	function scrollOnHidden (element, callback)	{
+		if (!element)	{
+			throw new Error('No given element');
+		}
+
+		preventBodyEvent(element, 'mousewheel');
+
+		element.addEventListener('mousewheel', function (e)	{
+			element.scrollTop += element.wheelDelta;
+
+			if (callback) {
+				callback.call(element, e);
+			}
+		});
+	};
+
+	return function ()	{
+		return {
+			scroll: scroll,
+			scrollOnHidden: scrollOnHidden,
+		};
+	};
+};
 function exclusivity ()	{
 	'use strict';
 
@@ -5631,95 +5631,6 @@ function expression ()	{
 		console.log('>>> Expression model data: ', model);
 	};
 };
-/*
-	BioChart 를 window 객체에 넣어주는 객체.
- */
-// 초기 실행 시 window 객체를 넘겨받는다. window 객체가
-// 존재하지 않을경우 빈 객체를 받는다.
-(function (whole)	{
-	'use strict';
-	// Window 객체에 bio 라는 이름의 객체를 포함 시킨다.
-
-	var bio = {
-		// >>> Model.
-		initialize: initialize(),
-		// >>> Common.
-		sizing: sizing(),
-		layout: layout(),
-		setting: setting(),
-		boilerPlate: boilerPlate(),
-		// >>> Configuration.
-		commonConfig: commonConfig(),
-		pathwayConfig: pathwayConfig(),
-		variantsConfig: variantsConfig(),
-		landscapeConfig: landscapeConfig(),
-		expressionConfig: expressionConfig(),
-		exclusivityConfig: exclusivityConfig(),
-		// >>> Preprocess.
-		preprocess: preprocess(),
-		preprocPathway: preprocPathway(),
-		preprocVariants: preprocVariants(),
-		preprocLandscape: preprocLandscape(),
-		preprocExpression: preprocExpression(),
-		preprocExclusivity: preprocExclusivity(),
-		// >>> Tools.
-		modal: modal(),
-		title: title(),
-		table: table(),
-		loading: loading(),
-		tooltip: tooltip(),
-		selectBox: selectBox(),
-		// >>> Drawing.
-		bar: bar(),
-		text: text(),
-		path: path(),
-		heat: heat(),
-		axises: axises(),
-		circle: circle(),
-		scales: scales(),
-		needle: needle(),
-		legend: legend(),
-		drawing: drawing(),
-		scatter: scatter(),
-		network: network(),
-		triangle: triangle(),
-		survival: survival(),
-		rectangle: rectangle(),
-		rendering: rendering(),
-		divisionLine: divisionLine(),
-		// >>> Utilities.
-		dom: dom(),
-		math: math(),
-		// >>> Events.
-		handler: handler(),
-		// strings 객체는 String 의 프로토 타입을 
-		// 확장한 객체로 여기서 실행만 시켜놓고 따로 객체를 호출하거나
-		// 인스턴스를 생성하지 않는다.
-		strings: strings(), 
-		objects: objects(),
-		iteration: iteration(),
-		dependencies: dependencies(),
-		// >>> Expression.
-		expression: expression(),
-		colorGradient: colorGradient(),
-		// >>> Exclusivity.
-		exclusivity: exclusivity(),
-		// >>> Landscape.
-		scaleSet: scaleSet(),
-		sortTitle: sortTitle(),
-		landscape: landscape(),
-		landscapeSort: landscapeSort(),
-		// >>> Variants.
-		variants: variants(),
-		variantsNavi: variantsNavi(),
-		variantsGraph: variantsGraph(),
-		variantsPatient: variantsPatient(),
-		// >>> Pathway.
-		pathway: pathway(),
-	};
-
-	whole.bio = bio;
-}(window||{}));
 function landscape ()	{
 	'use strict';
 
@@ -6706,6 +6617,95 @@ function initialize ()	{
 					!set[name] ? {} : set[name]);
 	};
 };
+/*
+	BioChart 를 window 객체에 넣어주는 객체.
+ */
+// 초기 실행 시 window 객체를 넘겨받는다. window 객체가
+// 존재하지 않을경우 빈 객체를 받는다.
+(function (whole)	{
+	'use strict';
+	// Window 객체에 bio 라는 이름의 객체를 포함 시킨다.
+
+	var bio = {
+		// >>> Model.
+		initialize: initialize(),
+		// >>> Common.
+		sizing: sizing(),
+		layout: layout(),
+		setting: setting(),
+		boilerPlate: boilerPlate(),
+		// >>> Configuration.
+		commonConfig: commonConfig(),
+		pathwayConfig: pathwayConfig(),
+		variantsConfig: variantsConfig(),
+		landscapeConfig: landscapeConfig(),
+		expressionConfig: expressionConfig(),
+		exclusivityConfig: exclusivityConfig(),
+		// >>> Preprocess.
+		preprocess: preprocess(),
+		preprocPathway: preprocPathway(),
+		preprocVariants: preprocVariants(),
+		preprocLandscape: preprocLandscape(),
+		preprocExpression: preprocExpression(),
+		preprocExclusivity: preprocExclusivity(),
+		// >>> Tools.
+		modal: modal(),
+		title: title(),
+		table: table(),
+		loading: loading(),
+		tooltip: tooltip(),
+		selectBox: selectBox(),
+		// >>> Drawing.
+		bar: bar(),
+		text: text(),
+		path: path(),
+		heat: heat(),
+		axises: axises(),
+		circle: circle(),
+		scales: scales(),
+		needle: needle(),
+		legend: legend(),
+		drawing: drawing(),
+		scatter: scatter(),
+		network: network(),
+		triangle: triangle(),
+		survival: survival(),
+		rectangle: rectangle(),
+		rendering: rendering(),
+		divisionLine: divisionLine(),
+		// >>> Utilities.
+		dom: dom(),
+		math: math(),
+		// >>> Events.
+		handler: handler(),
+		// strings 객체는 String 의 프로토 타입을 
+		// 확장한 객체로 여기서 실행만 시켜놓고 따로 객체를 호출하거나
+		// 인스턴스를 생성하지 않는다.
+		strings: strings(), 
+		objects: objects(),
+		iteration: iteration(),
+		dependencies: dependencies(),
+		// >>> Expression.
+		expression: expression(),
+		colorGradient: colorGradient(),
+		// >>> Exclusivity.
+		exclusivity: exclusivity(),
+		// >>> Landscape.
+		scaleSet: scaleSet(),
+		sortTitle: sortTitle(),
+		landscape: landscape(),
+		landscapeSort: landscapeSort(),
+		// >>> Variants.
+		variants: variants(),
+		variantsNavi: variantsNavi(),
+		variantsGraph: variantsGraph(),
+		variantsPatient: variantsPatient(),
+		// >>> Pathway.
+		pathway: pathway(),
+	};
+
+	whole.bio = bio;
+}(window||{}));
 function pathway ()	{
 	'use strict';
 
@@ -6715,7 +6715,7 @@ function pathway ()	{
 	 */
 	function addSVG (cancer, callback)	{
 		bio.drawing().importSVG(
-			'/data/' + cancer + '.svg', callback);
+			'/data/pathway/' + cancer + '.svg', callback);
 	};
 	/*
 		현재 노드에 속하는 데이터를 배열에서 찾는 함수.
@@ -6867,6 +6867,836 @@ function pathway ()	{
 		console.log('>>> Pathway reponse data: ', opts);
 		console.log('>>> Pathway setting data: ', model.setting);
 		console.log('>>> Pathway model data: ', model);
+	};
+};
+function preprocExclusivity ()	{
+	'use strict';
+
+	var model = {};
+	/*
+		Gene list 를 만드는 함수.
+	 */
+	function makeGeneList (types)	{
+		var result = {};
+
+		bio.iteration.loop(types, function (type)	{
+			result[type.gene] = ['.'];
+		});
+
+		return result;
+	};
+	/*
+		Type 압축 함수.
+	 */
+	function toObjectTypes (types, geneList)	{
+		var res = {};
+
+		bio.iteration.loop(types, function (type)	{
+			var name = bio.boilerPlate.variantInfo[type.type],
+					abb = bio.exclusivityConfig().abbreviation(name),
+					copy = bio.objects.clone(geneList);
+
+			!res[type.participant_id] ? (copy[type.gene] = [abb],
+			 res[type.participant_id] = copy, res) : 
+			(res[type.participant_id][type.gene][0] === '.' ? 
+ 			 res[type.participant_id][type.gene] = [abb] : 
+ 			 res[type.participant_id][type.gene].push(abb), res);
+		});
+
+		return res;
+	};
+	/*
+		Patient 와 Type 을 합치는 함수.
+	 */
+	function merged (patient, types)	{
+		var geneList = makeGeneList(types),
+				objTypes = toObjectTypes(types, geneList);
+
+		bio.iteration.loop(patient, function (p)	{
+			p.gene = objTypes[p.participant_id] ? 
+							 objTypes[p.participant_id] : geneList;
+		});
+
+		model.survival.merge = patient;
+	};
+	/*
+		Text 에서 Gene set name 을 찾아주는 함수.
+	 */
+	function getGeneset (text)	{
+		return (/\[(\w+(\s|\]))+/g).exec(text)[0]
+					.replace(/\[|\]/g, '').split(' ');
+ 	};
+ 	/*
+ 		'**color': '255 255 255' 를 일반 rgb 로 바꿔주는 함수.
+ 	 */
+ 	function toRGB (rgb)	{
+ 		return 'rgb(' + rgb.split(' ').join(',') + ')';
+ 	};
+ 	/*
+ 		Legend object 에 빈 배열을 할당한다.
+ 	 */
+ 	function toLegend (geneset)	{
+ 		return model.type[geneset.join(' ')] = [];
+ 	};
+
+ 	function forHeatmap (data)	{
+		var genesets = data.matchAll(model.regex.geneset),
+				heats = data.matchAll(model.regex.heatmap),
+				config = bio.exclusivityConfig(),
+				heatIdx = 0;
+
+		bio.iteration.loop(genesets, function (geneset)	{
+			var set = geneset.replace(/\[|\]/g, '').split(' '),
+					setLen = set.length + heatIdx,
+					setText = set.join(' '),
+					legend = toLegend(set),
+					heat = [];
+
+			model.heatmap[setText] = [];
+			model.axis.heatmap.x[setText] = [];
+			model.axis.heatmap.y[setText] = set;
+			model.axis.division.x[setText] = [];
+			model.divisionIdx[setText] = { idx: 0 };
+
+			for (var i = 0, l = heats[0].length; i < l; i++)	{
+				model.axis.heatmap.x[setText].push('' + i);
+				model.axis.division.x[setText].push('' + i);
+			}
+
+			for (;heatIdx < setLen; heatIdx++)	{
+				bio.iteration.loop(heats[heatIdx].split(''), 
+				function (variants, idx)	{
+
+					bio.iteration.loop(config.separate(variants), 
+					function (vars)	{
+						vars = config.name(vars);
+
+						model.heatmap[setText].push({
+							x: idx, 
+							y: set[heatIdx >= set.length ? 
+										 heatIdx - (setLen - set.length) : heatIdx], 
+							value: vars
+						});
+
+						legend.indexOf(vars) < 0 ? legend.push(vars) : 
+						legend = legend;
+					});
+
+					model.divisionIdx[setText].idx = variants !== '.' ? 
+					model.divisionIdx[setText].idx > idx ? 
+					model.divisionIdx[setText].idx : idx : 
+					model.divisionIdx[setText].idx;
+				});		
+
+				heat.push(heats[heatIdx]);
+			}
+
+			model.geneset.push(set);
+			model.geneset_all = 
+			model.geneset_all.concat(set);
+			model.survival.heat[setText] = heat;
+		});
+
+		var temp = model.geneset[4];
+
+		model.geneset[4] = model.geneset[0];
+		model.geneset[0] = temp;
+	};
+
+	function formatForNetwork (value)	{
+		var result = [];
+
+		bio.iteration.loop(value, function (v)	{
+			var obj = {};
+
+			v = v.replace(new RegExp(/\t|\s{2,}|\s(?=\D)/, 'ig'), '\t')
+
+			bio.iteration.loop(v.split('\t'), function (vs)	{
+				var vss = vs.split(':');
+
+				obj[vss[0]] = vss[0].indexOf('color') < 0 ? 
+											vss[1] : toRGB(vss[1]);
+			});
+
+			result.push(obj);
+		});
+
+		return result;
+	};
+	/*
+		Network 차트 데이터 형식 변환 함수.
+	 */
+	function dataForNetwork (result)	{
+		var id = null;
+
+		bio.iteration.loop(result, function (key, value)	{
+			model.network[key] = formatForNetwork(value);
+
+			bio.iteration.loop(model.network[key], 
+			function (net)	{
+				if (net.type === 'compound')	{
+					id = net.id;
+
+					net.bgcolor = net.bgcolor.replace('\"', '');
+					net.textcolor = net.textcolor.replace('\"', '');
+				}	else if (net.type === 'edge')	{
+					net.source = net.source.replace(id, '');
+					net.target = net.target.replace(id, '');
+					net.linecolor = net.linecolor.replace('\"', '');
+				} else if (net.type === 'node')	{
+					net.bgcolor = net.bgcolor.replace('\"', '');
+				}	
+			});
+		});
+	};
+
+	function forNetwork (nets)	{
+		var result = {};
+
+		nets = nets.replace(/\\n{1}/g, '\n');
+		nets = nets.replace(/\\t{1}/g, '\t');
+
+		bio.iteration.loop(nets.split('\n'), function (n)	{
+			bio.iteration.loop(model.geneset, function (gs)	{
+				var joined = gs.join('');
+
+				if (n.indexOf(joined) > -1)	{
+					result[joined] ? result[joined].push(n) : 
+													 result[joined] = [n];
+				}
+			});
+		});
+
+		dataForNetwork(result);
+	};
+	/*
+		Survival data 를 찾기위한 기준인 survival 문자를 배열에서 찾아 치환한다.
+	 */
+	function transferType (arr)	{
+		if (arr.indexOf('A') > -1 && arr.indexOf('M') > -1)	{
+			return 'B';
+		} else if (arr.indexOf('D') > -1 && arr.indexOf('M') > -1)	{
+			return 'E';
+		} else {
+			return arr[0];
+		}
+	};
+
+	function forSurvival (suvs)	{
+		var hasPat = {};
+
+		bio.iteration.loop(model.survival.heat, 
+		function (key, value)	{
+			var idx = model.axis.heatmap.x[key].length,
+					ldx = key.split(' '),
+					all = !model.survival.data[key] ? 
+								 model.survival.data[key] = [] : 
+								 model.survival.data[key],
+					pat = hasPat[key] = {};
+
+			for (var i = 0; i < idx; i++)	{
+				model.survival.merge.some(function (m)	{
+					var isType = true;
+
+					for (var l = 0, ll = ldx.length; l < ll; l++)	{
+						if (transferType(m.gene[ldx[l]]) !== value[l][i])	{
+							isType = false;
+						}
+					}
+
+					if (isType)	{
+						if (pat[m.participant_id] === undefined)	{
+							pat[m.participant_id] = '';
+							all[i] = m;
+
+							return all[i] !== undefined;
+						}
+					}
+				});
+			}
+		});
+	};
+
+	return function (data)	{
+		model = {};
+		model = bio.initialize('preprocess').exclusivity;
+		model.regex = {
+			geneset: new RegExp(/\[\w+(\s\w+)+\w+\]/, 'g'),
+			heatmap: new RegExp(/(A|B|D|E|M|\.){10,}/, 'g'),
+		};
+
+		merged(data.survival.patient, data.survival.types);
+		forHeatmap(data.heatmap);
+		forNetwork(data.network);
+		forSurvival(data.survival);
+
+		model.mostGeneWidth = 
+		bio.drawing().mostWidth(model.geneset_all, '12px');
+
+		console.log('>>> Preprocess exclusivity data: ', data);
+		console.log('>>> Preprocess data: ', model);
+
+		return model;
+	};
+};
+function preprocExpression ()	{
+	'use strict';
+
+	var model = {};
+	/*
+		Scatter plot 과 Survival plot 을 그리는 데 필요한
+		Month 데이터를 만든다.
+	 */
+	function getMonths (patients)	{
+		model.axis.scatter.y = { os: [], dfs: [] };
+		model.patient_subtype = {};
+
+		bio.iteration.loop(patients, function (p)	{
+			model.axis.scatter.y.os.push(p.os_days / 30);
+			model.axis.scatter.y.dfs.push(p.dfs_days / 30);
+			// Patient subtype object list 를 만든다.
+			model.patient_subtype[p.participant_id] = p;
+		});
+
+		var osmn = bio.math.min(model.axis.scatter.y.os),
+				osmx = bio.math.max(model.axis.scatter.y.os),
+				dfsmn = bio.math.min(model.axis.scatter.y.dfs),
+				dfsmx = bio.math.max(model.axis.scatter.y.dfs);
+
+		model.axis.scatter.y.os = [osmn, osmx];
+		model.axis.scatter.y.dfs = [dfsmn, dfsmx];
+	};
+	/*
+		Subtype 에 따른 값을 정리해주는 함수.
+	 */
+	function tempSubtypes (subtypes)	{
+		var obj = {};
+
+		bio.iteration.loop(subtypes, function (s)	{
+			!obj[s.subtype] ? 
+			 obj[s.subtype] = [s.value] : 
+			 obj[s.subtype].push(s.value);
+		});
+
+		return obj;
+	};
+	/*
+		Subtype list 를 만드는 함수.		
+	 */
+	function getSubtype (subtypes)	{
+		var temp = tempSubtypes(subtypes);
+
+		bio.iteration.loop(temp, function (key, value)	{
+			model.subtype.push({ key: key, value: value });
+		});
+	};
+	/*
+		Tpm 에 자연로그를 취해주는 함수.
+	 */
+	function toLog (tpm)	{
+		return Math.log((tpm + 1)) / Math.LN2;
+	};
+	/*
+		Sample 별로 gene 들의 tpm 값의 합을 저장하는 배열을 만든다.
+	 */
+	function tpmBySample (a) {
+		model.axis.heatmap.x[a.participant_id] ? 
+		model.axis.heatmap.x[a.participant_id].push({
+			key: a.hugo_symbol, value: a.tpm }) : 
+		model.axis.heatmap.x[a.participant_id] = [{
+			key: a.hugo_symbol, value: a.tpm }];
+	};
+	/*
+		Color Gradient 을 그려주기 위한 tpm 의 최소, 최대값을 구한다.
+	 */
+	function tpmMinMax (tpms)	{
+		model.axis.gradient.x = [
+			bio.math.min(tpms), bio.math.median(tpms),
+			bio.math.max(tpms)
+		];
+		model.axis.gradient.y = [''];
+	};
+	/*
+		Function 이 Average 일 때 호출되는 함수.
+	 */
+	function funcAverage (data)	{
+		bio.iteration.loop(data, function (key, value)	{
+			var sum = 0,
+					avg = 0;
+
+			bio.iteration.loop(value, function (v)	{
+				model.axis.heatmap.y[v.key] = '';
+
+				sum += v.value;
+			});
+
+			avg = sum / value.length;
+
+			model.bar.push({
+				x: key, 
+				value: avg, 
+				info: model.patient_subtype[key]
+			});
+
+			model.func.avg.push(avg);
+		});
+
+		model.func.avg.sorted = 
+		model.func.avg.sort(function (a, b)	{
+			return a > b ? 1 : -1;
+		});
+
+		model.axis.bar.y = [
+			bio.math.min(model.func.avg),
+			bio.math.median(model.func.avg),
+			bio.math.max(model.func.avg)];
+	};
+	/*
+		Function 에 따른 최소, 중간, 최대값을 구한다. 
+	 */
+	function funcMinMedMax (func, data)	{
+		return { average: funcAverage(data) }[func];
+	};
+	/*
+		Average function 으로 데이터를 정렬한다.
+	 */
+	function avgAlign (bars)	{
+		var avg = [].concat(model.func.avg),
+				result = [];
+
+		bio.iteration.loop(bars, function (b)	{
+			result[avg.indexOf(b.value)] = b.x;
+		});
+
+		model.axis.heatmap.x = result;
+	};
+	/*
+		Sample 의 순서를 function 대로 재설정하는 함수.
+	 */
+	function funcAlignment (func, bars)	{
+		return { average: avgAlign(bars) }[func];
+	};
+	/*
+		전체 Cohort 리스트에서 값의 합, 최소 & 최대값을 만든다.
+	 */
+	function loopCohort (alls)	{
+		var func = model.func.now || model.func.default;
+
+		bio.iteration.loop(alls, function (a)	{
+			a.tpm = toLog(a.tpm + 1);
+
+			tpmBySample(a);
+
+			model.tpms.push(a.tpm);
+			model.heatmap.push({
+				x: a.participant_id,
+				y: a.hugo_symbol,
+				value: a.tpm,
+			});
+		});
+
+		tpmMinMax(model.tpms);
+		funcMinMedMax(func, model.axis.heatmap.x);
+		funcAlignment(func, model.bar);
+
+		model.axis.heatmap.y = Object.keys(model.axis.heatmap.y);
+		model.axis.scatter.x = model.axis.heatmap.x;
+		model.axis.bar.x = model.axis.heatmap.x;
+	};
+	/*
+		Patient 데이터를 만들며, 어느 그룹에 속하는지를 결정한다.
+	 */
+	function toPatient (patient)	{
+		var mut = model.axis.bar.y[1],
+				pat = model.func.avg[model.axis.bar.x.indexOf(patient)];
+
+		return mut >= pat ? 'Low score group' : 'High score group';
+	};
+	/*
+		Axis 중 가장 긴 문자열을 왼쪽 여백 값으로 한다.
+	 */
+	function getAxisMargin (yaxis)	{
+		var most = 0;
+
+		bio.iteration.loop(yaxis, function (ya)	{
+			var textWidth = bio.drawing().textSize.width(ya, '10px');
+			
+			most = most > textWidth ? most : textWidth;
+		});
+
+		return most;
+	};
+
+	return function (data)	{
+		model = {};
+		model = bio.initialize('preprocess').expression;
+
+		model.all_rna_list = [].concat(
+			 data.cohort_rna_list.concat(data.sample_rna_list));
+
+		model.genes = data.gene_list.map(function (gl)	{
+			return gl.hugo_symbol;
+		});
+
+		getMonths(data.patient_list);
+		getSubtype(data.subtype_list);
+		loopCohort(model.all_rna_list);
+
+		model.patient = {
+			name: data.sample_rna_list[0].participant_id,
+			data: toPatient(data.sample_rna_list[0].participant_id),
+		};
+
+		bio.iteration.loop(model.bar, function (b)	{
+			b.y = model.axis.bar.y[1];
+		});
+
+		model.axisMargin = getAxisMargin(model.axis.heatmap.y);
+
+		console.log('>>> Preprocess variants data: ', data);
+		console.log('>>> Preprocess data: ', model);
+
+		return model;
+	};
+};
+function preprocLandscape ()	{
+	'use strict';
+
+	var model = {};
+	/*
+		Sample, Patient 의 가로 방향 축 데이터를 만드는 함수.
+	 */
+	function makeXAxis (axis, data)	{
+		if (axis.indexOf(data) < 0)	{
+			axis.push(data);
+		}
+	};
+	/*
+		Heatmap 데이터 포맷을 설정해주는 함수.
+	 */
+	function heatmapDataFormat (heatmap, data)	{
+		heatmap.push({
+			x: data.participant_id,
+			y: data.gene,
+			value: data.type,
+		});
+	};
+	/*
+		기준이 되는 값에 해당되는 value 들을 key - value 
+		형태의 Object 로 만드는 함수.
+	 */
+	function nested (obj, std, value)	{
+		obj[std] = !obj[std] ? {} : obj[std];
+		obj[std][value] = obj[std][value] ? 
+		obj[std][value] + 1 : 1;
+	};
+	/*
+		Mutation 과 Patient 의 리스트를 공통으로
+		묶어낸 함수.
+	 */
+	function iterateCommon (arr, callback)	{
+		bio.iteration.loop(arr, function (d, i)	{
+			// Type 의 이름표기를 통합시킨다.
+			d.type = bio.commonConfig().typeFormat(d.type);
+			// Type name object 를 만든다.
+			model.type[d.type] = null;
+
+			callback(d, i);
+		});
+
+		model.isIterateCommonOk = true;
+	};
+	/*
+		Mutation list 를 반복하며,
+		type list, mutation list, gene, sample 데이터를 만든다.
+	 */
+	function iterateMutation (mutation)	{
+		iterateCommon(mutation, function (d)	{
+			// Stacked bar chart 를 위한 데이터 생성.
+			nested(model.stack.gene, d.gene, d.type);
+			nested(model.stack.sample, d.participant_id, d.type);
+			
+			heatmapDataFormat(model.heatmap, d);
+
+			makeXAxis(model.axis.sample.x, d.participant_id);
+		});
+	};
+	/*
+		Patient list 를 반복하며,
+		Sample, Heatmap 에 들어가는 환자 데이터를 만든다.
+	 */
+	function iteratePatient (patient)	{
+		iterateCommon(patient, function (d)	{
+			// Patient 의 stacked bar chart 데이터 생성.
+			nested(model.stack.patient, d.participant_id, d.type);
+			heatmapDataFormat(model.patient, d);
+
+			makeXAxis(model.axis.patient.x, d.participant_id);
+		});
+	};
+	/*
+		Group list 를 반복하며,
+		Clinical list 데이터를 만든다.
+	 */
+	function iterateGroup (group)	{
+		bio.iteration.loop(group, function (g)	{
+			var temp = [];
+
+			bio.iteration.loop(g.data, function (d)	{
+				var heat = [];
+
+				bio.iteration.loop(model.heatmap, function (h)	{
+					// Group 에 포함된 sample 들을 모은다.
+					// 나중에 Group sort 를 위함이다.
+					if (d.participant_id === h.x)	{
+						heat.push(h);
+					}
+				});
+
+				temp.push({
+					x: d.participant_id, y: g.name,
+					value: d.value, info: heat,
+				});
+			});
+
+			model.group.group.push(temp);
+			// 각각의 Clinical 값을 한 행으로 처리.
+			model.axis.group.y.push([g.name]);
+			// Patient 의 Clinical info 는 없으므로 'NA' 로 처리.
+			model.group.patient.push({
+				x: model.axis.patient.x[0],
+				y: g.name, value: 'NA',
+			});
+		});
+	};
+	/*
+		PQ 관련 리스트를 반복하며, PQ 데이터를 만든다.
+	 */
+	function iteratePQ (pq, what)	{
+		return pq.map(function (d)	{
+			// P-value 또는 Q-value 에 log 값을 취하고 반환하는 함수.
+			var toLog = Math.log(d[what]) / Math.log(12) * -1;
+
+			return { x: 0, y: d.gene, value: toLog };
+		});
+	};
+	/*
+		Gene, Sample, Patient 가 각각 x, y 를 기준으로 하는 것이
+		다르므로 이를 해당 함수에서 정해준다.
+	 */
+	function stackFormat (type, d1, d2, value, idx)	{
+		return type === 'gene' ? 
+					{ x: d1, y: d2, value: value, info: idx } : 
+					{ x: d2, y: d1, value: value, info: idx };
+	};
+	/*
+		Type 파라미터에 기준하여 stacked 데이터를 만드는 함수.
+	 */
+	function byStack (type, stacked)	{
+		var result = [],
+				axis = type === 'gene' ? 'x' : 'y';
+
+		bio.iteration.loop(stacked, function (key, value)	{
+			var before = 0,
+					sumed = 0;
+
+			bio.iteration.loop(value, function (vkey, vvalue)	{
+				result.push(stackFormat(
+					type, before, key, vvalue, vkey));
+				// 현재 위치를 구하기 위해 이전 시작지점 + 이전 값을 구한다.
+				before += vvalue;
+				// axix 의 최대값을 구하기 위한 연산.
+				sumed += vvalue;
+			});
+
+			model.axis[type][axis].push(sumed);
+		});
+
+		return result;
+	};
+	/*
+		[min, max] 배열을 반환하는 함수.
+	 */
+	function makeLinearAxis ()	{
+		model.axis.gene.x = [bio.math.max(model.axis.gene.x), 0];
+		model.axis.sample.y = [bio.math.max(model.axis.sample.y), 0];
+		model.axis.pq.x = [
+			0, bio.math.max(model.pq.map(function (pq)	{
+				return Math.ceil(pq.value);
+		}))];
+	};	
+	/*
+		Axis 의 서수 리스트를 반환하는 함수.
+	 */
+	function makeOrdinalAxis ()	{
+		model.axis.pq.y = 
+		model.axis.gene.y = 
+		model.axis.heatmap.y = model.gene;
+		model.axis.heatmap.x = 
+		model.axis.group.x = model.axis.sample.x;
+	};
+
+	return function (data)	{
+		model = bio.initialize('preprocess').landscape;
+		// Data 안에 다른 객체가 존재할 경우 그 안을 찾아본다.
+		data = data.gene_list ? data : data.data;
+		// Only Gene list.
+		model.gene = data.gene_list.map(function (d)	{
+			return d.gene;
+		});
+		// Mutation, Sample, Gene, Group, Patient 데이터 생성.
+		iterateMutation(data.mutation_list);
+		iteratePatient(data.patient_list);
+		iterateGroup(data.group_list);
+
+		model.type = Object.keys(model.type);
+		// 전달받은 PQ 선정 값이 없을 경우 기본은 P-value 이다.
+		model.pq = iteratePQ(data.gene_list, data.pq || 'p');
+		model.stack.gene = byStack('gene', model.stack.gene);
+		model.stack.sample = byStack('sample', model.stack.sample);
+		model.stack.patient = byStack('patient', model.stack.patient);
+		// Axis 데이터를 만들어준다.
+		makeLinearAxis();
+		makeOrdinalAxis();
+
+		console.log('>>> Preprocess landscape data: ', data);
+		console.log('>>> Preprocess data: ', model);
+
+		return model;
+	};
+};
+function preprocPathway ()	{
+	'use strict';
+
+	var model = {};
+
+	return function (data)	{
+		console.log('>>> Preprocess pathway data: ', data);
+		console.log('>>> Preprocess data: ', model);
+
+		return model;
+	};
+};
+function preprocVariants ()	{
+	'use strict';
+
+	var model = {};
+	/*
+	 	Stack 데이터를 needle plot 을 그리기 좋은 형태로 만들어 주는 함수.
+	 */
+	function optimizeToDraw (obj, target)	{
+		bio.iteration.loop(obj, function (key, value)	{
+			var count = 0,
+					temp = { 
+						key: key, 
+						value: [ { x: parseFloat(key), y: count, value: 0 } 
+					]};
+			// 0 이 들어가야 하므로 한번 설정하였다.
+			model.axis.needle.y.push(count);
+
+			bio.iteration.loop(value, function (vKey, vValue)	{
+				temp.value.push({
+					x: parseFloat(key),
+					y: (count = count + vValue.length, count),
+					value: vValue.length,
+					info: vValue,
+				});
+			});
+
+			model.axis.needle.y.push(count);
+
+			target.push(temp);
+		});
+	};
+	/*
+		Needle plot 을 그리기 위해선 stack 형식의 데이터가 필요하다.
+	 */
+	function toStack (datas, target)	{
+		var obj = {};
+
+		bio.iteration.loop(datas, function (d)	{
+			d.type = bio.commonConfig().typeFormat(d.type);
+
+			var str = d.position + ' ' + d.type + ' ' + d.aachange;
+
+			obj[d.position] ? obj[d.position][str] ? 
+			obj[d.position][str].push(d) : 
+			obj[d.position][str] = [d] : 
+		 (obj[d.position] = {}, obj[d.position][str] = [d]);
+
+		 	if (model.type.indexOf(d.type) < 0)	{
+		 		model.type.push(d.type);
+		 	}
+		});
+
+		optimizeToDraw(obj, target);
+	};
+	/*
+		Graph 의 데이터 설정 함수.
+	 */
+	function toGraph (graphs)	{
+		bio.iteration.loop(graphs, function (graph, i)	{
+			model.graph.push({
+				x: graph.start, y: 0,
+				width: graph.end - graph.start, height: 15,
+				color: graph.colour, info: graph,
+			});
+		});
+	};
+	/*
+		Needle Plot & Graph 를 그릴 때 사용되는 축 데이터를 설정 함수.
+	 */
+	function setAxis (graph)	{
+		model.axis.needle.x = [0, graph[0].length];
+		model.axis.needle.y = 
+		model.axis.needle.y.length < 1 ? [0, 1] : 
+		[bio.math.min(model.axis.needle.y), 
+		 bio.math.max(model.axis.needle.y)];
+	};
+	/*
+		Shape 를 그리기 위해 Stacked 데이터를 펼치는 함수.
+	 */
+	function forShape (lines, shapes)	{
+		bio.iteration.loop(lines, function (l)	{
+			bio.iteration.loop(l.value, function (v, i)	{
+				if (v.info) {
+					// v.info 가 없는 경우는 0 인 경우뿐이므로.
+					// 따로 0 인 조건 검사 없이 연산을 한다.
+					v.value = v.y - l.value[i - 1].y;
+
+					shapes.push(v);
+				}
+			});
+		});
+	};
+
+	return function (data)	{
+		model = bio.initialize('preprocess').variants;
+
+		toStack(data.variants.public_list, model.needle.line);
+		toStack(data.variants.patient_list, model.patient.line);
+		toGraph(data.variants.graph);
+		setAxis(data.variants.graph);
+		forShape(model.needle.line, model.needle.shape);
+		forShape(model.patient.line, model.patient.shape);
+
+		console.log('>>> Preprocess variants data: ', data);
+		console.log('>>> Preprocess data: ', model);
+
+		return model;
+	};
+};
+function preprocess ()	{
+	'use strict';
+	// bio 전역객체는 반드시 함수형태에서만 불러올 수 있다.
+	return function (chart)	{
+		return {
+			pathway: bio.preprocPathway,
+			variants: bio.preprocVariants,
+			landscape: bio.preprocLandscape,
+			expression: bio.preprocExpression,
+			exclusivity: bio.preprocExclusivity,
+		}[chart];
 	};
 };
 /*
@@ -8857,836 +9687,6 @@ var SurvivalTab = (function() {
 
 }()); //Close SubvivalTabView (Singular)
 
-function preprocExclusivity ()	{
-	'use strict';
-
-	var model = {};
-	/*
-		Gene list 를 만드는 함수.
-	 */
-	function makeGeneList (types)	{
-		var result = {};
-
-		bio.iteration.loop(types, function (type)	{
-			result[type.gene] = ['.'];
-		});
-
-		return result;
-	};
-	/*
-		Type 압축 함수.
-	 */
-	function toObjectTypes (types, geneList)	{
-		var res = {};
-
-		bio.iteration.loop(types, function (type)	{
-			var name = bio.boilerPlate.variantInfo[type.type],
-					abb = bio.exclusivityConfig().abbreviation(name),
-					copy = bio.objects.clone(geneList);
-
-			!res[type.participant_id] ? (copy[type.gene] = [abb],
-			 res[type.participant_id] = copy, res) : 
-			(res[type.participant_id][type.gene][0] === '.' ? 
- 			 res[type.participant_id][type.gene] = [abb] : 
- 			 res[type.participant_id][type.gene].push(abb), res);
-		});
-
-		return res;
-	};
-	/*
-		Patient 와 Type 을 합치는 함수.
-	 */
-	function merged (patient, types)	{
-		var geneList = makeGeneList(types),
-				objTypes = toObjectTypes(types, geneList);
-
-		bio.iteration.loop(patient, function (p)	{
-			p.gene = objTypes[p.participant_id] ? 
-							 objTypes[p.participant_id] : geneList;
-		});
-
-		model.survival.merge = patient;
-	};
-	/*
-		Text 에서 Gene set name 을 찾아주는 함수.
-	 */
-	function getGeneset (text)	{
-		return (/\[(\w+(\s|\]))+/g).exec(text)[0]
-					.replace(/\[|\]/g, '').split(' ');
- 	};
- 	/*
- 		'**color': '255 255 255' 를 일반 rgb 로 바꿔주는 함수.
- 	 */
- 	function toRGB (rgb)	{
- 		return 'rgb(' + rgb.split(' ').join(',') + ')';
- 	};
- 	/*
- 		Legend object 에 빈 배열을 할당한다.
- 	 */
- 	function toLegend (geneset)	{
- 		return model.type[geneset.join(' ')] = [];
- 	};
-
- 	function forHeatmap (data)	{
-		var genesets = data.matchAll(model.regex.geneset),
-				heats = data.matchAll(model.regex.heatmap),
-				config = bio.exclusivityConfig(),
-				heatIdx = 0;
-
-		bio.iteration.loop(genesets, function (geneset)	{
-			var set = geneset.replace(/\[|\]/g, '').split(' '),
-					setLen = set.length + heatIdx,
-					setText = set.join(' '),
-					legend = toLegend(set),
-					heat = [];
-
-			model.heatmap[setText] = [];
-			model.axis.heatmap.x[setText] = [];
-			model.axis.heatmap.y[setText] = set;
-			model.axis.division.x[setText] = [];
-			model.divisionIdx[setText] = { idx: 0 };
-
-			for (var i = 0, l = heats[0].length; i < l; i++)	{
-				model.axis.heatmap.x[setText].push('' + i);
-				model.axis.division.x[setText].push('' + i);
-			}
-
-			for (;heatIdx < setLen; heatIdx++)	{
-				bio.iteration.loop(heats[heatIdx].split(''), 
-				function (variants, idx)	{
-
-					bio.iteration.loop(config.separate(variants), 
-					function (vars)	{
-						vars = config.name(vars);
-
-						model.heatmap[setText].push({
-							x: idx, 
-							y: set[heatIdx >= set.length ? 
-										 heatIdx - (setLen - set.length) : heatIdx], 
-							value: vars
-						});
-
-						legend.indexOf(vars) < 0 ? legend.push(vars) : 
-						legend = legend;
-					});
-
-					model.divisionIdx[setText].idx = variants !== '.' ? 
-					model.divisionIdx[setText].idx > idx ? 
-					model.divisionIdx[setText].idx : idx : 
-					model.divisionIdx[setText].idx;
-				});		
-
-				heat.push(heats[heatIdx]);
-			}
-
-			model.geneset.push(set);
-			model.geneset_all = 
-			model.geneset_all.concat(set);
-			model.survival.heat[setText] = heat;
-		});
-
-		var temp = model.geneset[4];
-
-		model.geneset[4] = model.geneset[0];
-		model.geneset[0] = temp;
-	};
-
-	function formatForNetwork (value)	{
-		var result = [];
-
-		bio.iteration.loop(value, function (v)	{
-			var obj = {};
-
-			v = v.replace(new RegExp(/\t|\s{2,}|\s(?=\D)/, 'ig'), '\t')
-
-			bio.iteration.loop(v.split('\t'), function (vs)	{
-				var vss = vs.split(':');
-
-				obj[vss[0]] = vss[0].indexOf('color') < 0 ? 
-											vss[1] : toRGB(vss[1]);
-			});
-
-			result.push(obj);
-		});
-
-		return result;
-	};
-	/*
-		Network 차트 데이터 형식 변환 함수.
-	 */
-	function dataForNetwork (result)	{
-		var id = null;
-
-		bio.iteration.loop(result, function (key, value)	{
-			model.network[key] = formatForNetwork(value);
-
-			bio.iteration.loop(model.network[key], 
-			function (net)	{
-				if (net.type === 'compound')	{
-					id = net.id;
-
-					net.bgcolor = net.bgcolor.replace('\"', '');
-					net.textcolor = net.textcolor.replace('\"', '');
-				}	else if (net.type === 'edge')	{
-					net.source = net.source.replace(id, '');
-					net.target = net.target.replace(id, '');
-					net.linecolor = net.linecolor.replace('\"', '');
-				} else if (net.type === 'node')	{
-					net.bgcolor = net.bgcolor.replace('\"', '');
-				}	
-			});
-		});
-	};
-
-	function forNetwork (nets)	{
-		var result = {};
-
-		nets = nets.replace(/\\n{1}/g, '\n');
-		nets = nets.replace(/\\t{1}/g, '\t');
-
-		bio.iteration.loop(nets.split('\n'), function (n)	{
-			bio.iteration.loop(model.geneset, function (gs)	{
-				var joined = gs.join('');
-
-				if (n.indexOf(joined) > -1)	{
-					result[joined] ? result[joined].push(n) : 
-													 result[joined] = [n];
-				}
-			});
-		});
-
-		dataForNetwork(result);
-	};
-	/*
-		Survival data 를 찾기위한 기준인 survival 문자를 배열에서 찾아 치환한다.
-	 */
-	function transferType (arr)	{
-		if (arr.indexOf('A') > -1 && arr.indexOf('M') > -1)	{
-			return 'B';
-		} else if (arr.indexOf('D') > -1 && arr.indexOf('M') > -1)	{
-			return 'E';
-		} else {
-			return arr[0];
-		}
-	};
-
-	function forSurvival (suvs)	{
-		var hasPat = {};
-
-		bio.iteration.loop(model.survival.heat, 
-		function (key, value)	{
-			var idx = model.axis.heatmap.x[key].length,
-					ldx = key.split(' '),
-					all = !model.survival.data[key] ? 
-								 model.survival.data[key] = [] : 
-								 model.survival.data[key],
-					pat = hasPat[key] = {};
-
-			for (var i = 0; i < idx; i++)	{
-				model.survival.merge.some(function (m)	{
-					var isType = true;
-
-					for (var l = 0, ll = ldx.length; l < ll; l++)	{
-						if (transferType(m.gene[ldx[l]]) !== value[l][i])	{
-							isType = false;
-						}
-					}
-
-					if (isType)	{
-						if (pat[m.participant_id] === undefined)	{
-							pat[m.participant_id] = '';
-							all[i] = m;
-
-							return all[i] !== undefined;
-						}
-					}
-				});
-			}
-		});
-	};
-
-	return function (data)	{
-		model = {};
-		model = bio.initialize('preprocess').exclusivity;
-		model.regex = {
-			geneset: new RegExp(/\[\w+(\s\w+)+\w+\]/, 'g'),
-			heatmap: new RegExp(/(A|B|D|E|M|\.){10,}/, 'g'),
-		};
-
-		merged(data.survival.patient, data.survival.types);
-		forHeatmap(data.heatmap);
-		forNetwork(data.network);
-		forSurvival(data.survival);
-
-		model.mostGeneWidth = 
-		bio.drawing().mostWidth(model.geneset_all, '12px');
-
-		console.log('>>> Preprocess exclusivity data: ', data);
-		console.log('>>> Preprocess data: ', model);
-
-		return model;
-	};
-};
-function preprocExpression ()	{
-	'use strict';
-
-	var model = {};
-	/*
-		Scatter plot 과 Survival plot 을 그리는 데 필요한
-		Month 데이터를 만든다.
-	 */
-	function getMonths (patients)	{
-		model.axis.scatter.y = { os: [], dfs: [] };
-		model.patient_subtype = {};
-
-		bio.iteration.loop(patients, function (p)	{
-			model.axis.scatter.y.os.push(p.os_days / 30);
-			model.axis.scatter.y.dfs.push(p.dfs_days / 30);
-			// Patient subtype object list 를 만든다.
-			model.patient_subtype[p.participant_id] = p;
-		});
-
-		var osmn = bio.math.min(model.axis.scatter.y.os),
-				osmx = bio.math.max(model.axis.scatter.y.os),
-				dfsmn = bio.math.min(model.axis.scatter.y.dfs),
-				dfsmx = bio.math.max(model.axis.scatter.y.dfs);
-
-		model.axis.scatter.y.os = [osmn, osmx];
-		model.axis.scatter.y.dfs = [dfsmn, dfsmx];
-	};
-	/*
-		Subtype 에 따른 값을 정리해주는 함수.
-	 */
-	function tempSubtypes (subtypes)	{
-		var obj = {};
-
-		bio.iteration.loop(subtypes, function (s)	{
-			!obj[s.subtype] ? 
-			 obj[s.subtype] = [s.value] : 
-			 obj[s.subtype].push(s.value);
-		});
-
-		return obj;
-	};
-	/*
-		Subtype list 를 만드는 함수.		
-	 */
-	function getSubtype (subtypes)	{
-		var temp = tempSubtypes(subtypes);
-
-		bio.iteration.loop(temp, function (key, value)	{
-			model.subtype.push({ key: key, value: value });
-		});
-	};
-	/*
-		Tpm 에 자연로그를 취해주는 함수.
-	 */
-	function toLog (tpm)	{
-		return Math.log((tpm + 1)) / Math.LN2;
-	};
-	/*
-		Sample 별로 gene 들의 tpm 값의 합을 저장하는 배열을 만든다.
-	 */
-	function tpmBySample (a) {
-		model.axis.heatmap.x[a.participant_id] ? 
-		model.axis.heatmap.x[a.participant_id].push({
-			key: a.hugo_symbol, value: a.tpm }) : 
-		model.axis.heatmap.x[a.participant_id] = [{
-			key: a.hugo_symbol, value: a.tpm }];
-	};
-	/*
-		Color Gradient 을 그려주기 위한 tpm 의 최소, 최대값을 구한다.
-	 */
-	function tpmMinMax (tpms)	{
-		model.axis.gradient.x = [
-			bio.math.min(tpms), bio.math.median(tpms),
-			bio.math.max(tpms)
-		];
-		model.axis.gradient.y = [''];
-	};
-	/*
-		Function 이 Average 일 때 호출되는 함수.
-	 */
-	function funcAverage (data)	{
-		bio.iteration.loop(data, function (key, value)	{
-			var sum = 0,
-					avg = 0;
-
-			bio.iteration.loop(value, function (v)	{
-				model.axis.heatmap.y[v.key] = '';
-
-				sum += v.value;
-			});
-
-			avg = sum / value.length;
-
-			model.bar.push({
-				x: key, 
-				value: avg, 
-				info: model.patient_subtype[key]
-			});
-
-			model.func.avg.push(avg);
-		});
-
-		model.func.avg.sorted = 
-		model.func.avg.sort(function (a, b)	{
-			return a > b ? 1 : -1;
-		});
-
-		model.axis.bar.y = [
-			bio.math.min(model.func.avg),
-			bio.math.median(model.func.avg),
-			bio.math.max(model.func.avg)];
-	};
-	/*
-		Function 에 따른 최소, 중간, 최대값을 구한다. 
-	 */
-	function funcMinMedMax (func, data)	{
-		return { average: funcAverage(data) }[func];
-	};
-	/*
-		Average function 으로 데이터를 정렬한다.
-	 */
-	function avgAlign (bars)	{
-		var avg = [].concat(model.func.avg),
-				result = [];
-
-		bio.iteration.loop(bars, function (b)	{
-			result[avg.indexOf(b.value)] = b.x;
-		});
-
-		model.axis.heatmap.x = result;
-	};
-	/*
-		Sample 의 순서를 function 대로 재설정하는 함수.
-	 */
-	function funcAlignment (func, bars)	{
-		return { average: avgAlign(bars) }[func];
-	};
-	/*
-		전체 Cohort 리스트에서 값의 합, 최소 & 최대값을 만든다.
-	 */
-	function loopCohort (alls)	{
-		var func = model.func.now || model.func.default;
-
-		bio.iteration.loop(alls, function (a)	{
-			a.tpm = toLog(a.tpm + 1);
-
-			tpmBySample(a);
-
-			model.tpms.push(a.tpm);
-			model.heatmap.push({
-				x: a.participant_id,
-				y: a.hugo_symbol,
-				value: a.tpm,
-			});
-		});
-
-		tpmMinMax(model.tpms);
-		funcMinMedMax(func, model.axis.heatmap.x);
-		funcAlignment(func, model.bar);
-
-		model.axis.heatmap.y = Object.keys(model.axis.heatmap.y);
-		model.axis.scatter.x = model.axis.heatmap.x;
-		model.axis.bar.x = model.axis.heatmap.x;
-	};
-	/*
-		Patient 데이터를 만들며, 어느 그룹에 속하는지를 결정한다.
-	 */
-	function toPatient (patient)	{
-		var mut = model.axis.bar.y[1],
-				pat = model.func.avg[model.axis.bar.x.indexOf(patient)];
-
-		return mut >= pat ? 'Low score group' : 'High score group';
-	};
-	/*
-		Axis 중 가장 긴 문자열을 왼쪽 여백 값으로 한다.
-	 */
-	function getAxisMargin (yaxis)	{
-		var most = 0;
-
-		bio.iteration.loop(yaxis, function (ya)	{
-			var textWidth = bio.drawing().textSize.width(ya, '10px');
-			
-			most = most > textWidth ? most : textWidth;
-		});
-
-		return most;
-	};
-
-	return function (data)	{
-		model = {};
-		model = bio.initialize('preprocess').expression;
-
-		model.all_rna_list = [].concat(
-			 data.cohort_rna_list.concat(data.sample_rna_list));
-
-		model.genes = data.gene_list.map(function (gl)	{
-			return gl.hugo_symbol;
-		});
-
-		getMonths(data.patient_list);
-		getSubtype(data.subtype_list);
-		loopCohort(model.all_rna_list);
-
-		model.patient = {
-			name: data.sample_rna_list[0].participant_id,
-			data: toPatient(data.sample_rna_list[0].participant_id),
-		};
-
-		bio.iteration.loop(model.bar, function (b)	{
-			b.y = model.axis.bar.y[1];
-		});
-
-		model.axisMargin = getAxisMargin(model.axis.heatmap.y);
-
-		console.log('>>> Preprocess variants data: ', data);
-		console.log('>>> Preprocess data: ', model);
-
-		return model;
-	};
-};
-function preprocLandscape ()	{
-	'use strict';
-
-	var model = {};
-	/*
-		Sample, Patient 의 가로 방향 축 데이터를 만드는 함수.
-	 */
-	function makeXAxis (axis, data)	{
-		if (axis.indexOf(data) < 0)	{
-			axis.push(data);
-		}
-	};
-	/*
-		Heatmap 데이터 포맷을 설정해주는 함수.
-	 */
-	function heatmapDataFormat (heatmap, data)	{
-		heatmap.push({
-			x: data.participant_id,
-			y: data.gene,
-			value: data.type,
-		});
-	};
-	/*
-		기준이 되는 값에 해당되는 value 들을 key - value 
-		형태의 Object 로 만드는 함수.
-	 */
-	function nested (obj, std, value)	{
-		obj[std] = !obj[std] ? {} : obj[std];
-		obj[std][value] = obj[std][value] ? 
-		obj[std][value] + 1 : 1;
-	};
-	/*
-		Mutation 과 Patient 의 리스트를 공통으로
-		묶어낸 함수.
-	 */
-	function iterateCommon (arr, callback)	{
-		bio.iteration.loop(arr, function (d, i)	{
-			// Type 의 이름표기를 통합시킨다.
-			d.type = bio.commonConfig().typeFormat(d.type);
-			// Type name object 를 만든다.
-			model.type[d.type] = null;
-
-			callback(d, i);
-		});
-
-		model.isIterateCommonOk = true;
-	};
-	/*
-		Mutation list 를 반복하며,
-		type list, mutation list, gene, sample 데이터를 만든다.
-	 */
-	function iterateMutation (mutation)	{
-		iterateCommon(mutation, function (d)	{
-			// Stacked bar chart 를 위한 데이터 생성.
-			nested(model.stack.gene, d.gene, d.type);
-			nested(model.stack.sample, d.participant_id, d.type);
-			
-			heatmapDataFormat(model.heatmap, d);
-
-			makeXAxis(model.axis.sample.x, d.participant_id);
-		});
-	};
-	/*
-		Patient list 를 반복하며,
-		Sample, Heatmap 에 들어가는 환자 데이터를 만든다.
-	 */
-	function iteratePatient (patient)	{
-		iterateCommon(patient, function (d)	{
-			// Patient 의 stacked bar chart 데이터 생성.
-			nested(model.stack.patient, d.participant_id, d.type);
-			heatmapDataFormat(model.patient, d);
-
-			makeXAxis(model.axis.patient.x, d.participant_id);
-		});
-	};
-	/*
-		Group list 를 반복하며,
-		Clinical list 데이터를 만든다.
-	 */
-	function iterateGroup (group)	{
-		bio.iteration.loop(group, function (g)	{
-			var temp = [];
-
-			bio.iteration.loop(g.data, function (d)	{
-				var heat = [];
-
-				bio.iteration.loop(model.heatmap, function (h)	{
-					// Group 에 포함된 sample 들을 모은다.
-					// 나중에 Group sort 를 위함이다.
-					if (d.participant_id === h.x)	{
-						heat.push(h);
-					}
-				});
-
-				temp.push({
-					x: d.participant_id, y: g.name,
-					value: d.value, info: heat,
-				});
-			});
-
-			model.group.group.push(temp);
-			// 각각의 Clinical 값을 한 행으로 처리.
-			model.axis.group.y.push([g.name]);
-			// Patient 의 Clinical info 는 없으므로 'NA' 로 처리.
-			model.group.patient.push({
-				x: model.axis.patient.x[0],
-				y: g.name, value: 'NA',
-			});
-		});
-	};
-	/*
-		PQ 관련 리스트를 반복하며, PQ 데이터를 만든다.
-	 */
-	function iteratePQ (pq, what)	{
-		return pq.map(function (d)	{
-			// P-value 또는 Q-value 에 log 값을 취하고 반환하는 함수.
-			var toLog = Math.log(d[what]) / Math.log(12) * -1;
-
-			return { x: 0, y: d.gene, value: toLog };
-		});
-	};
-	/*
-		Gene, Sample, Patient 가 각각 x, y 를 기준으로 하는 것이
-		다르므로 이를 해당 함수에서 정해준다.
-	 */
-	function stackFormat (type, d1, d2, value, idx)	{
-		return type === 'gene' ? 
-					{ x: d1, y: d2, value: value, info: idx } : 
-					{ x: d2, y: d1, value: value, info: idx };
-	};
-	/*
-		Type 파라미터에 기준하여 stacked 데이터를 만드는 함수.
-	 */
-	function byStack (type, stacked)	{
-		var result = [],
-				axis = type === 'gene' ? 'x' : 'y';
-
-		bio.iteration.loop(stacked, function (key, value)	{
-			var before = 0,
-					sumed = 0;
-
-			bio.iteration.loop(value, function (vkey, vvalue)	{
-				result.push(stackFormat(
-					type, before, key, vvalue, vkey));
-				// 현재 위치를 구하기 위해 이전 시작지점 + 이전 값을 구한다.
-				before += vvalue;
-				// axix 의 최대값을 구하기 위한 연산.
-				sumed += vvalue;
-			});
-
-			model.axis[type][axis].push(sumed);
-		});
-
-		return result;
-	};
-	/*
-		[min, max] 배열을 반환하는 함수.
-	 */
-	function makeLinearAxis ()	{
-		model.axis.gene.x = [bio.math.max(model.axis.gene.x), 0];
-		model.axis.sample.y = [bio.math.max(model.axis.sample.y), 0];
-		model.axis.pq.x = [
-			0, bio.math.max(model.pq.map(function (pq)	{
-				return Math.ceil(pq.value);
-		}))];
-	};	
-	/*
-		Axis 의 서수 리스트를 반환하는 함수.
-	 */
-	function makeOrdinalAxis ()	{
-		model.axis.pq.y = 
-		model.axis.gene.y = 
-		model.axis.heatmap.y = model.gene;
-		model.axis.heatmap.x = 
-		model.axis.group.x = model.axis.sample.x;
-	};
-
-	return function (data)	{
-		model = bio.initialize('preprocess').landscape;
-		// Data 안에 다른 객체가 존재할 경우 그 안을 찾아본다.
-		data = data.gene_list ? data : data.data;
-		// Only Gene list.
-		model.gene = data.gene_list.map(function (d)	{
-			return d.gene;
-		});
-		// Mutation, Sample, Gene, Group, Patient 데이터 생성.
-		iterateMutation(data.mutation_list);
-		iteratePatient(data.patient_list);
-		iterateGroup(data.group_list);
-
-		model.type = Object.keys(model.type);
-		// 전달받은 PQ 선정 값이 없을 경우 기본은 P-value 이다.
-		model.pq = iteratePQ(data.gene_list, data.pq || 'p');
-		model.stack.gene = byStack('gene', model.stack.gene);
-		model.stack.sample = byStack('sample', model.stack.sample);
-		model.stack.patient = byStack('patient', model.stack.patient);
-		// Axis 데이터를 만들어준다.
-		makeLinearAxis();
-		makeOrdinalAxis();
-
-		console.log('>>> Preprocess landscape data: ', data);
-		console.log('>>> Preprocess data: ', model);
-
-		return model;
-	};
-};
-function preprocPathway ()	{
-	'use strict';
-
-	var model = {};
-
-	return function (data)	{
-		console.log('>>> Preprocess pathway data: ', data);
-		console.log('>>> Preprocess data: ', model);
-
-		return model;
-	};
-};
-function preprocVariants ()	{
-	'use strict';
-
-	var model = {};
-	/*
-	 	Stack 데이터를 needle plot 을 그리기 좋은 형태로 만들어 주는 함수.
-	 */
-	function optimizeToDraw (obj, target)	{
-		bio.iteration.loop(obj, function (key, value)	{
-			var count = 0,
-					temp = { 
-						key: key, 
-						value: [ { x: parseFloat(key), y: count, value: 0 } 
-					]};
-			// 0 이 들어가야 하므로 한번 설정하였다.
-			model.axis.needle.y.push(count);
-
-			bio.iteration.loop(value, function (vKey, vValue)	{
-				temp.value.push({
-					x: parseFloat(key),
-					y: (count = count + vValue.length, count),
-					value: vValue.length,
-					info: vValue,
-				});
-			});
-
-			model.axis.needle.y.push(count);
-
-			target.push(temp);
-		});
-	};
-	/*
-		Needle plot 을 그리기 위해선 stack 형식의 데이터가 필요하다.
-	 */
-	function toStack (datas, target)	{
-		var obj = {};
-
-		bio.iteration.loop(datas, function (d)	{
-			d.type = bio.commonConfig().typeFormat(d.type);
-
-			var str = d.position + ' ' + d.type + ' ' + d.aachange;
-
-			obj[d.position] ? obj[d.position][str] ? 
-			obj[d.position][str].push(d) : 
-			obj[d.position][str] = [d] : 
-		 (obj[d.position] = {}, obj[d.position][str] = [d]);
-
-		 	if (model.type.indexOf(d.type) < 0)	{
-		 		model.type.push(d.type);
-		 	}
-		});
-
-		optimizeToDraw(obj, target);
-	};
-	/*
-		Graph 의 데이터 설정 함수.
-	 */
-	function toGraph (graphs)	{
-		bio.iteration.loop(graphs, function (graph, i)	{
-			model.graph.push({
-				x: graph.start, y: 0,
-				width: graph.end - graph.start, height: 15,
-				color: graph.colour, info: graph,
-			});
-		});
-	};
-	/*
-		Needle Plot & Graph 를 그릴 때 사용되는 축 데이터를 설정 함수.
-	 */
-	function setAxis (graph)	{
-		model.axis.needle.x = [0, graph[0].length];
-		model.axis.needle.y = 
-		model.axis.needle.y.length < 1 ? [0, 1] : 
-		[bio.math.min(model.axis.needle.y), 
-		 bio.math.max(model.axis.needle.y)];
-	};
-	/*
-		Shape 를 그리기 위해 Stacked 데이터를 펼치는 함수.
-	 */
-	function forShape (lines, shapes)	{
-		bio.iteration.loop(lines, function (l)	{
-			bio.iteration.loop(l.value, function (v, i)	{
-				if (v.info) {
-					// v.info 가 없는 경우는 0 인 경우뿐이므로.
-					// 따로 0 인 조건 검사 없이 연산을 한다.
-					v.value = v.y - l.value[i - 1].y;
-
-					shapes.push(v);
-				}
-			});
-		});
-	};
-
-	return function (data)	{
-		model = bio.initialize('preprocess').variants;
-
-		toStack(data.variants.public_list, model.needle.line);
-		toStack(data.variants.patient_list, model.patient.line);
-		toGraph(data.variants.graph);
-		setAxis(data.variants.graph);
-		forShape(model.needle.line, model.needle.shape);
-		forShape(model.patient.line, model.patient.shape);
-
-		console.log('>>> Preprocess variants data: ', data);
-		console.log('>>> Preprocess data: ', model);
-
-		return model;
-	};
-};
-function preprocess ()	{
-	'use strict';
-	// bio 전역객체는 반드시 함수형태에서만 불러올 수 있다.
-	return function (chart)	{
-		return {
-			pathway: bio.preprocPathway,
-			variants: bio.preprocVariants,
-			landscape: bio.preprocLandscape,
-			expression: bio.preprocExpression,
-			exclusivity: bio.preprocExclusivity,
-		}[chart];
-	};
-};
 function loading ()	{
 	'use strict';
 
