@@ -6542,165 +6542,6 @@ function sortTitle ()	{
 
 	whole.bio = bio;
 }(window||{}));
-function pathway ()	{
-	'use strict';
-
-	var model = {};
-	/*
-		Pathway svg file 을 contents 태그에 삽입한다.
-	 */
-	function addSVG (cancer, callback)	{
-		// bio.drawing().importSVG(
-		// 	'/datas/' + cancer + '.svg', callback);
-		bio.drawing().importSVG(
-			'../views/menu/analysis/' + cancer + '.svg', callback);
-	};
-	/*
-		현재 노드에 속하는 데이터를 배열에서 찾는 함수.
-	 */
-	function isGene (text, data)	{
-		var result = null;
-
-		bio.iteration.loop(data, function (d)	{
-			if (d.gene_id === text)	{
-				result = { is: true, data: d };
-			}
-		});
-
-		return !result ? { is: false, data: null } : 
-						result;
-	};
-
-	function twinkle (rect, marker)	{
-		if (marker > -1)	{
-			var is = false;
-
-			setInterval(function () {
-				is = !is;
-
-				rect.style('stroke', is ? '#ff0000' : '#333')
-						.style('stroke-width', is ? 3 : 1);
-			}, 500);
-		}
-	};
-
-	function fillColor (elem, data, opt, marker)	{
-		var config = bio.pathwayConfig().node();
-
-		if (marker)	twinkle(elem, marker);
-
-		elem.attr('cursor', 'pointer')
-				.style('fill', function (d)	{
-					return config.style.fill.call(this, data)
-				})
-				.on('mouseover', function (d, i) { 
-					config.on.mouseover.call(this, data, i, opt);
-				})
-				.on('mouseout', function (d, i)	{
-					config.on.mouseout.call(this, data, i, opt);
-				});
-	};
-
-	function defineIndex (parent)	{
-		bio.iteration.loop(parent.childNodes, 
-		function (i, child)	{
-			if ((/gene_/i).test(child.id))	{
-				d3.select(child).data({ 'index': i });
-			}
-		});
-	};
-	/*
-		Pathway 의 노드에 값에 상응하는 색상을 입히는 함수.
-	 */
-	function colorGenes (data, patient)	{
-		var texts = d3.selectAll('text').nodes();
-
-		bio.iteration.loop(texts, function (txt)	{
-			var gene = isGene(txt.textContent, data);
-
-			if (gene.is || (/gene_/i).test(txt.parentNode.id)) {
-				var rect = d3.select(txt.parentNode).select('rect'),
-						marker = patient.indexOf(txt.textContent),
-						opt = {
-							x: parseInt(rect.attr('x')),
-							y: parseInt(rect.attr('y')),
-							width: parseInt(rect.attr('width')),
-							height: parseInt(rect.attr('height')),
-						};
-
-				fillColor(rect, gene.data, opt, marker);
-				fillColor(d3.select(txt), gene.data, opt);
-			}
-		});
-
-		defineIndex(texts[0].parentNode.parentNode);
-
-		d3.selectAll('text, rect').attr('class', '');
-	};
-
-
-
-	function drugEvent (cancerType)	{
-		var config = bio.pathwayConfig().drug();
-
-		d3.selectAll('g[id*="drug_"]')
-			.datum(function (d)	{
-				var transform = d3.select(this).attr('transform'),
-						trans = bio.dependencies.version.d3v4() ? 
-										bio.rendering().translation(transform) : 
-										d3.transform(transform);
-
-				return {
-					cancer: cancerType,
-					scaleX: trans.scale[0],
-					scaleY: trans.scale[1],
-					translateX: trans.translate[0],
-					translateY: trans.translate[1],
-				};
-			})
-			.on('click', config.on.click)
-			.on('mouseover', config.on.mouseover)
-			.on('mouseout', config.on.mouseout);
-	};
-
-	return function (opts)	{
-		addSVG(opts.cancer_type, function (xml)	{
-			bio.modal({
-				id: 'drug_modal',
-				element: document.querySelector(opts.element),
-			});
-
-			model = bio.initialize('pathway');
-			model.setting = bio.setting('pathway', opts);
-			model.data = model.setting.preprocessData;
-			model.modalID = 'drug_modal';
-
-			bio.title('#pathway_title', 
-								opts.cancer_type.toUpperCase() + ' - Pathway');	
-
-			var contents = document.getElementById(
-											'pathway_contents'),
-					modal = document.querySelector('.modal-body');
-			
-			d3.select(xml.documentElement)
-				.attr('width', parseFloat(contents.style.width))
-				.attr('height', parseFloat(contents.style.height));
-							
-			contents.appendChild(xml.documentElement);
-
-			modal.style.height = 
-			parseFloat(contents.style.height) * 0.8 + 'px';
-			
-			colorGenes(model.setting.defaultData.pathway,
-								model.setting.defaultData.patient);
-			drugEvent(opts.cancer_type);
-		});
-
-		console.log('>>> Pathway reponse data: ', opts);
-		console.log('>>> Pathway setting data: ', model.setting);
-		console.log('>>> Pathway model data: ', model);
-	};
-};
 function initialize ()	{
 	'use strict';
 	// >>> Common.
@@ -6853,6 +6694,998 @@ function initialize ()	{
 	return function (name)	{
 		return bio.objects.clone(
 					!set[name] ? {} : set[name]);
+	};
+};
+function pathway ()	{
+	'use strict';
+
+	var model = {};
+	/*
+		Pathway svg file 을 contents 태그에 삽입한다.
+	 */
+	function addSVG (cancer, callback)	{
+		// bio.drawing().importSVG(
+		// 	'/datas/' + cancer + '.svg', callback);
+		bio.drawing().importSVG(
+			'../views/menu/analysis/' + cancer + '.svg', callback);
+	};
+	/*
+		현재 노드에 속하는 데이터를 배열에서 찾는 함수.
+	 */
+	function isGene (text, data)	{
+		var result = null;
+
+		bio.iteration.loop(data, function (d)	{
+			if (d.gene_id === text)	{
+				result = { is: true, data: d };
+			}
+		});
+
+		return !result ? { is: false, data: null } : 
+						result;
+	};
+
+	function twinkle (rect, marker)	{
+		if (marker > -1)	{
+			var is = false;
+
+			setInterval(function () {
+				is = !is;
+
+				rect.style('stroke', is ? '#ff0000' : '#333')
+						.style('stroke-width', is ? 3 : 1);
+			}, 500);
+		}
+	};
+
+	function fillColor (elem, data, opt, marker)	{
+		var config = bio.pathwayConfig().node();
+
+		if (marker)	twinkle(elem, marker);
+
+		elem.attr('cursor', 'pointer')
+				.style('fill', function (d)	{
+					return config.style.fill.call(this, data)
+				})
+				.on('mouseover', function (d, i) { 
+					config.on.mouseover.call(this, data, i, opt);
+				})
+				.on('mouseout', function (d, i)	{
+					config.on.mouseout.call(this, data, i, opt);
+				});
+	};
+
+	function defineIndex (parent)	{
+		bio.iteration.loop(parent.childNodes, 
+		function (i, child)	{
+			if ((/gene_/i).test(child.id))	{
+				d3.select(child).data({ 'index': i });
+			}
+		});
+	};
+	/*
+		Pathway 의 노드에 값에 상응하는 색상을 입히는 함수.
+	 */
+	function colorGenes (data, patient)	{
+		var texts = d3.selectAll('text').nodes();
+
+		bio.iteration.loop(texts, function (txt)	{
+			var gene = isGene(txt.textContent, data);
+
+			if (gene.is || (/gene_/i).test(txt.parentNode.id)) {
+				var rect = d3.select(txt.parentNode).select('rect'),
+						marker = patient.indexOf(txt.textContent),
+						opt = {
+							x: parseInt(rect.attr('x')),
+							y: parseInt(rect.attr('y')),
+							width: parseInt(rect.attr('width')),
+							height: parseInt(rect.attr('height')),
+						};
+
+				fillColor(rect, gene.data, opt, marker);
+				fillColor(d3.select(txt), gene.data, opt);
+			}
+		});
+
+		defineIndex(texts[0].parentNode.parentNode);
+
+		d3.selectAll('text, rect').attr('class', '');
+	};
+
+
+
+	function drugEvent (cancerType)	{
+		var config = bio.pathwayConfig().drug();
+
+		d3.selectAll('g[id*="drug_"]')
+			.datum(function (d)	{
+				var transform = d3.select(this).attr('transform'),
+						trans = bio.dependencies.version.d3v4() ? 
+										bio.rendering().translation(transform) : 
+										d3.transform(transform);
+
+				return {
+					cancer: cancerType,
+					scaleX: trans.scale[0],
+					scaleY: trans.scale[1],
+					translateX: trans.translate[0],
+					translateY: trans.translate[1],
+				};
+			})
+			.on('click', config.on.click)
+			.on('mouseover', config.on.mouseover)
+			.on('mouseout', config.on.mouseout);
+	};
+
+	return function (opts)	{
+		// addSVG(opts.cancer_type, function (xml)	{
+			bio.modal({
+				id: 'drug_modal',
+				element: document.querySelector(opts.element),
+			});
+
+			model = bio.initialize('pathway');
+			model.setting = bio.setting('pathway', opts);
+			model.data = model.setting.preprocessData;
+			model.modalID = 'drug_modal';
+
+			bio.title('#pathway_title', 
+								opts.cancer_type.toUpperCase() + ' - Pathway');	
+
+			var contents = document.getElementById(
+											'pathway_contents'),
+					modal = document.querySelector('.modal-body');
+
+			var svg = document.querySelector('svg');
+			
+			d3.select(svg)
+			// d3.select(xml.documentElement)
+				.attr('width', parseFloat(contents.style.width))
+				.attr('height', parseFloat(contents.style.height));
+							
+			contents.appendChild(xml.documentElement);
+
+			modal.style.height = 
+			parseFloat(contents.style.height) * 0.8 + 'px';
+			
+			colorGenes(model.setting.defaultData.pathway,
+								model.setting.defaultData.patient);
+			drugEvent(opts.cancer_type);
+		// });
+
+		console.log('>>> Pathway reponse data: ', opts);
+		console.log('>>> Pathway setting data: ', model.setting);
+		console.log('>>> Pathway model data: ', model);
+	};
+};
+function preprocExclusivity ()	{
+	'use strict';
+
+	var model = {};
+	/*
+		Gene list 를 만드는 함수.
+	 */
+	function makeGeneList (types)	{
+		var result = {};
+
+		bio.iteration.loop(types, function (type)	{
+			result[type.gene] = ['.'];
+		});
+
+		return result;
+	};
+	/*
+		Type 압축 함수.
+	 */
+	function toObjectTypes (types, geneList)	{
+		var res = {};
+
+		bio.iteration.loop(types, function (type)	{
+			var name = bio.boilerPlate.variantInfo[type.type],
+					abb = bio.exclusivityConfig().abbreviation(name),
+					copy = bio.objects.clone(geneList);
+
+			!res[type.participant_id] ? (copy[type.gene] = [abb],
+			 res[type.participant_id] = copy, res) : 
+			(res[type.participant_id][type.gene][0] === '.' ? 
+ 			 res[type.participant_id][type.gene] = [abb] : 
+ 			 res[type.participant_id][type.gene].push(abb), res);
+		});
+
+		return res;
+	};
+	/*
+		Patient 와 Type 을 합치는 함수.
+	 */
+	function merged (patient, types)	{
+		var geneList = makeGeneList(types),
+				objTypes = toObjectTypes(types, geneList);
+
+		bio.iteration.loop(patient, function (p)	{
+			p.gene = objTypes[p.participant_id] ? 
+							 objTypes[p.participant_id] : geneList;
+		});
+
+		model.survival.merge = patient;
+	};
+	/*
+		Text 에서 Gene set name 을 찾아주는 함수.
+	 */
+	function getGeneset (text)	{
+		return (/\[(\w+(\s|\]))+/g).exec(text)[0]
+					.replace(/\[|\]/g, '').split(' ');
+ 	};
+ 	/*
+ 		'**color': '255 255 255' 를 일반 rgb 로 바꿔주는 함수.
+ 	 */
+ 	function toRGB (rgb)	{
+ 		return 'rgb(' + rgb.split(' ').join(',') + ')';
+ 	};
+ 	/*
+ 		Legend object 에 빈 배열을 할당한다.
+ 	 */
+ 	function toLegend (geneset)	{
+ 		return model.type[geneset.join(' ')] = [];
+ 	};
+
+ 	function forHeatmap (data)	{
+		var genesets = data.matchAll(model.regex.geneset),
+				heats = data.matchAll(model.regex.heatmap),
+				config = bio.exclusivityConfig(),
+				heatIdx = 0;
+
+		bio.iteration.loop(genesets, function (geneset)	{
+			var set = geneset.replace(/\[|\]/g, '').split(' '),
+					setLen = set.length + heatIdx,
+					setText = set.join(' '),
+					legend = toLegend(set),
+					heat = [];
+
+			model.heatmap[setText] = [];
+			model.axis.heatmap.x[setText] = [];
+			model.axis.heatmap.y[setText] = set;
+			model.axis.division.x[setText] = [];
+			model.divisionIdx[setText] = { idx: 0 };
+
+			for (var i = 0, l = heats[0].length; i < l; i++)	{
+				model.axis.heatmap.x[setText].push('' + i);
+				model.axis.division.x[setText].push('' + i);
+			}
+
+			for (;heatIdx < setLen; heatIdx++)	{
+				bio.iteration.loop(heats[heatIdx].split(''), 
+				function (variants, idx)	{
+
+					bio.iteration.loop(config.separate(variants), 
+					function (vars)	{
+						vars = config.name(vars);
+
+						model.heatmap[setText].push({
+							x: idx, 
+							y: set[heatIdx >= set.length ? 
+										 heatIdx - (setLen - set.length) : heatIdx], 
+							value: vars
+						});
+
+						legend.indexOf(vars) < 0 ? legend.push(vars) : 
+						legend = legend;
+					});
+
+					model.divisionIdx[setText].idx = variants !== '.' ? 
+					model.divisionIdx[setText].idx > idx ? 
+					model.divisionIdx[setText].idx : idx : 
+					model.divisionIdx[setText].idx;
+				});		
+
+				heat.push(heats[heatIdx]);
+			}
+
+			model.geneset.push(set);
+			model.geneset_all = 
+			model.geneset_all.concat(set);
+			model.survival.heat[setText] = heat;
+		});
+
+		var temp = model.geneset[4];
+
+		model.geneset[4] = model.geneset[0];
+		model.geneset[0] = temp;
+	};
+
+	function formatForNetwork (value)	{
+		var result = [];
+
+		bio.iteration.loop(value, function (v)	{
+			var obj = {};
+
+			v = v.replace(new RegExp(/\t|\s{2,}|\s(?=\D)/, 'ig'), '\t')
+
+			bio.iteration.loop(v.split('\t'), function (vs)	{
+				var vss = vs.split(':');
+
+				obj[vss[0]] = vss[0].indexOf('color') < 0 ? 
+											vss[1] : toRGB(vss[1]);
+			});
+
+			result.push(obj);
+		});
+
+		return result;
+	};
+	/*
+		Network 차트 데이터 형식 변환 함수.
+	 */
+	function dataForNetwork (result)	{
+		var id = null;
+
+		bio.iteration.loop(result, function (key, value)	{
+			model.network[key] = formatForNetwork(value);
+
+			bio.iteration.loop(model.network[key], 
+			function (net)	{
+				if (net.type === 'compound')	{
+					id = net.id;
+
+					net.bgcolor = net.bgcolor.replace('\"', '');
+					net.textcolor = net.textcolor.replace('\"', '');
+				}	else if (net.type === 'edge')	{
+					net.source = net.source.replace(id, '');
+					net.target = net.target.replace(id, '');
+					net.linecolor = net.linecolor.replace('\"', '');
+				} else if (net.type === 'node')	{
+					net.bgcolor = net.bgcolor.replace('\"', '');
+				}	
+			});
+		});
+	};
+
+	function forNetwork (nets)	{
+		var result = {};
+
+		nets = nets.replace(/\\n{1}/g, '\n');
+		nets = nets.replace(/\\t{1}/g, '\t');
+
+		bio.iteration.loop(nets.split('\n'), function (n)	{
+			bio.iteration.loop(model.geneset, function (gs)	{
+				var joined = gs.join('');
+
+				if (n.indexOf(joined) > -1)	{
+					result[joined] ? result[joined].push(n) : 
+													 result[joined] = [n];
+				}
+			});
+		});
+
+		dataForNetwork(result);
+	};
+	/*
+		Survival data 를 찾기위한 기준인 survival 문자를 배열에서 찾아 치환한다.
+	 */
+	function transferType (arr)	{
+		if (arr.indexOf('A') > -1 && arr.indexOf('M') > -1)	{
+			return 'B';
+		} else if (arr.indexOf('D') > -1 && arr.indexOf('M') > -1)	{
+			return 'E';
+		} else {
+			return arr[0];
+		}
+	};
+
+	function forSurvival (suvs)	{
+		var hasPat = {};
+
+		bio.iteration.loop(model.survival.heat, 
+		function (key, value)	{
+			var idx = model.axis.heatmap.x[key].length,
+					ldx = key.split(' '),
+					all = !model.survival.data[key] ? 
+								 model.survival.data[key] = [] : 
+								 model.survival.data[key],
+					pat = hasPat[key] = {};
+
+			for (var i = 0; i < idx; i++)	{
+				model.survival.merge.some(function (m)	{
+					var isType = true;
+
+					for (var l = 0, ll = ldx.length; l < ll; l++)	{
+						if (transferType(m.gene[ldx[l]]) !== value[l][i])	{
+							isType = false;
+						}
+					}
+
+					if (isType)	{
+						if (pat[m.participant_id] === undefined)	{
+							pat[m.participant_id] = '';
+							all[i] = m;
+
+							return all[i] !== undefined;
+						}
+					}
+				});
+			}
+		});
+	};
+
+	return function (data)	{
+		model = {};
+		model = bio.initialize('preprocess').exclusivity;
+		model.regex = {
+			geneset: new RegExp(/\[\w+(\s\w+)+\w+\]/, 'g'),
+			heatmap: new RegExp(/(A|B|D|E|M|\.){10,}/, 'g'),
+		};
+
+		merged(data.survival.patient, data.survival.types);
+		forHeatmap(data.heatmap);
+		forNetwork(data.network);
+		forSurvival(data.survival);
+
+		model.mostGeneWidth = 
+		bio.drawing().mostWidth(model.geneset_all, '12px');
+
+		console.log('>>> Preprocess exclusivity data: ', data);
+		console.log('>>> Preprocess data: ', model);
+
+		return model;
+	};
+};
+function preprocExpression ()	{
+	'use strict';
+
+	var model = {};
+	/*
+		Scatter plot 과 Survival plot 을 그리는 데 필요한
+		Month 데이터를 만든다.
+	 */
+	function getMonths (patients)	{
+		model.axis.scatter.y = { os: [], dfs: [] };
+		model.patient_subtype = {};
+
+		bio.iteration.loop(patients, function (p)	{
+			model.axis.scatter.y.os.push(p.os_days / 30);
+			model.axis.scatter.y.dfs.push(p.dfs_days / 30);
+			// Patient subtype object list 를 만든다.
+			model.patient_subtype[p.participant_id] = p;
+		});
+
+		var osmn = bio.math.min(model.axis.scatter.y.os),
+				osmx = bio.math.max(model.axis.scatter.y.os),
+				dfsmn = bio.math.min(model.axis.scatter.y.dfs),
+				dfsmx = bio.math.max(model.axis.scatter.y.dfs);
+
+		model.axis.scatter.y.os = [osmn, osmx];
+		model.axis.scatter.y.dfs = [dfsmn, dfsmx];
+	};
+	/*
+		Subtype 에 따른 값을 정리해주는 함수.
+	 */
+	function tempSubtypes (subtypes)	{
+		var obj = {};
+
+		bio.iteration.loop(subtypes, function (s)	{
+			!obj[s.subtype] ? 
+			 obj[s.subtype] = [s.value] : 
+			 obj[s.subtype].push(s.value);
+		});
+
+		return obj;
+	};
+	/*
+		Subtype list 를 만드는 함수.		
+	 */
+	function getSubtype (subtypes)	{
+		var temp = tempSubtypes(subtypes);
+
+		bio.iteration.loop(temp, function (key, value)	{
+			model.subtype.push({ key: key, value: value });
+		});
+	};
+	/*
+		Tpm 에 자연로그를 취해주는 함수.
+	 */
+	function toLog (tpm)	{
+		return Math.log((tpm + 1)) / Math.LN2;
+	};
+	/*
+		Sample 별로 gene 들의 tpm 값의 합을 저장하는 배열을 만든다.
+	 */
+	function tpmBySample (a) {
+		model.axis.heatmap.x[a.participant_id] ? 
+		model.axis.heatmap.x[a.participant_id].push({
+			key: a.hugo_symbol, value: a.tpm }) : 
+		model.axis.heatmap.x[a.participant_id] = [{
+			key: a.hugo_symbol, value: a.tpm }];
+	};
+	/*
+		Color Gradient 을 그려주기 위한 tpm 의 최소, 최대값을 구한다.
+	 */
+	function tpmMinMax (tpms)	{
+		model.axis.gradient.x = [
+			bio.math.min(tpms), bio.math.median(tpms),
+			bio.math.max(tpms)
+		];
+		model.axis.gradient.y = [''];
+	};
+	/*
+		Function 이 Average 일 때 호출되는 함수.
+	 */
+	function funcAverage (data)	{
+		bio.iteration.loop(data, function (key, value)	{
+			var sum = 0,
+					avg = 0;
+
+			bio.iteration.loop(value, function (v)	{
+				model.axis.heatmap.y[v.key] = '';
+
+				sum += v.value;
+			});
+
+			avg = sum / value.length;
+
+			model.bar.push({
+				x: key, 
+				value: avg, 
+				info: model.patient_subtype[key]
+			});
+
+			model.func.avg.push(avg);
+		});
+
+		model.func.avg.sorted = 
+		model.func.avg.sort(function (a, b)	{
+			return a > b ? 1 : -1;
+		});
+
+		model.axis.bar.y = [
+			bio.math.min(model.func.avg),
+			bio.math.median(model.func.avg),
+			bio.math.max(model.func.avg)];
+	};
+	/*
+		Function 에 따른 최소, 중간, 최대값을 구한다. 
+	 */
+	function funcMinMedMax (func, data)	{
+		return { average: funcAverage(data) }[func];
+	};
+	/*
+		Average function 으로 데이터를 정렬한다.
+	 */
+	function avgAlign (bars)	{
+		var avg = [].concat(model.func.avg),
+				result = [];
+
+		bio.iteration.loop(bars, function (b)	{
+			result[avg.indexOf(b.value)] = b.x;
+		});
+
+		model.axis.heatmap.x = result;
+	};
+	/*
+		Sample 의 순서를 function 대로 재설정하는 함수.
+	 */
+	function funcAlignment (func, bars)	{
+		return { average: avgAlign(bars) }[func];
+	};
+	/*
+		전체 Cohort 리스트에서 값의 합, 최소 & 최대값을 만든다.
+	 */
+	function loopCohort (alls)	{
+		var func = model.func.now || model.func.default;
+
+		bio.iteration.loop(alls, function (a)	{
+			a.tpm = toLog(a.tpm + 1);
+
+			tpmBySample(a);
+
+			model.tpms.push(a.tpm);
+			model.heatmap.push({
+				x: a.participant_id,
+				y: a.hugo_symbol,
+				value: a.tpm,
+			});
+		});
+
+		tpmMinMax(model.tpms);
+		funcMinMedMax(func, model.axis.heatmap.x);
+		funcAlignment(func, model.bar);
+
+		model.axis.heatmap.y = Object.keys(model.axis.heatmap.y);
+		model.axis.scatter.x = model.axis.heatmap.x;
+		model.axis.bar.x = model.axis.heatmap.x;
+	};
+	/*
+		Patient 데이터를 만들며, 어느 그룹에 속하는지를 결정한다.
+	 */
+	function toPatient (patient)	{
+		var mut = model.axis.bar.y[1],
+				pat = model.func.avg[model.axis.bar.x.indexOf(patient)];
+
+		return mut >= pat ? 'Low score group' : 'High score group';
+	};
+	/*
+		Axis 중 가장 긴 문자열을 왼쪽 여백 값으로 한다.
+	 */
+	function getAxisMargin (yaxis)	{
+		var most = 0;
+
+		bio.iteration.loop(yaxis, function (ya)	{
+			var textWidth = bio.drawing().textSize.width(ya, '10px');
+			
+			most = most > textWidth ? most : textWidth;
+		});
+
+		return most;
+	};
+
+	return function (data)	{
+		model = {};
+		model = bio.initialize('preprocess').expression;
+
+		model.all_rna_list = [].concat(
+			 data.cohort_rna_list.concat(data.sample_rna_list));
+
+		model.genes = data.gene_list.map(function (gl)	{
+			return gl.hugo_symbol;
+		});
+
+		getMonths(data.patient_list);
+		getSubtype(data.subtype_list);
+		loopCohort(model.all_rna_list);
+
+		model.patient = {
+			name: data.sample_rna_list[0].participant_id,
+			data: toPatient(data.sample_rna_list[0].participant_id),
+		};
+
+		bio.iteration.loop(model.bar, function (b)	{
+			b.y = model.axis.bar.y[1];
+		});
+
+		model.axisMargin = getAxisMargin(model.axis.heatmap.y);
+
+		console.log('>>> Preprocess variants data: ', data);
+		console.log('>>> Preprocess data: ', model);
+
+		return model;
+	};
+};
+function preprocLandscape ()	{
+	'use strict';
+
+	var model = {};
+	/*
+		Sample, Patient 의 가로 방향 축 데이터를 만드는 함수.
+	 */
+	function makeXAxis (axis, data)	{
+		if (axis.indexOf(data) < 0)	{
+			axis.push(data);
+		}
+	};
+	/*
+		Heatmap 데이터 포맷을 설정해주는 함수.
+	 */
+	function heatmapDataFormat (heatmap, data)	{
+		heatmap.push({
+			x: data.participant_id,
+			y: data.gene,
+			value: data.type,
+		});
+	};
+	/*
+		기준이 되는 값에 해당되는 value 들을 key - value 
+		형태의 Object 로 만드는 함수.
+	 */
+	function nested (obj, std, value)	{
+		obj[std] = !obj[std] ? {} : obj[std];
+		obj[std][value] = obj[std][value] ? 
+		obj[std][value] + 1 : 1;
+	};
+	/*
+		Mutation 과 Patient 의 리스트를 공통으로
+		묶어낸 함수.
+	 */
+	function iterateCommon (arr, callback)	{
+		bio.iteration.loop(arr, function (d, i)	{
+			// Type 의 이름표기를 통합시킨다.
+			d.type = bio.commonConfig().typeFormat(d.type);
+			// Type name object 를 만든다.
+			model.type[d.type] = null;
+
+			callback(d, i);
+		});
+
+		model.isIterateCommonOk = true;
+	};
+	/*
+		Mutation list 를 반복하며,
+		type list, mutation list, gene, sample 데이터를 만든다.
+	 */
+	function iterateMutation (mutation)	{
+		iterateCommon(mutation, function (d)	{
+			// Stacked bar chart 를 위한 데이터 생성.
+			nested(model.stack.gene, d.gene, d.type);
+			nested(model.stack.sample, d.participant_id, d.type);
+			
+			heatmapDataFormat(model.heatmap, d);
+
+			makeXAxis(model.axis.sample.x, d.participant_id);
+		});
+	};
+	/*
+		Patient list 를 반복하며,
+		Sample, Heatmap 에 들어가는 환자 데이터를 만든다.
+	 */
+	function iteratePatient (patient)	{
+		iterateCommon(patient, function (d)	{
+			// Patient 의 stacked bar chart 데이터 생성.
+			nested(model.stack.patient, d.participant_id, d.type);
+			heatmapDataFormat(model.patient, d);
+
+			makeXAxis(model.axis.patient.x, d.participant_id);
+		});
+	};
+	/*
+		Group list 를 반복하며,
+		Clinical list 데이터를 만든다.
+	 */
+	function iterateGroup (group)	{
+		bio.iteration.loop(group, function (g)	{
+			var temp = [];
+
+			bio.iteration.loop(g.data, function (d)	{
+				var heat = [];
+
+				bio.iteration.loop(model.heatmap, function (h)	{
+					// Group 에 포함된 sample 들을 모은다.
+					// 나중에 Group sort 를 위함이다.
+					if (d.participant_id === h.x)	{
+						heat.push(h);
+					}
+				});
+
+				temp.push({
+					x: d.participant_id, y: g.name,
+					value: d.value, info: heat,
+				});
+			});
+
+			model.group.group.push(temp);
+			// 각각의 Clinical 값을 한 행으로 처리.
+			model.axis.group.y.push([g.name]);
+			// Patient 의 Clinical info 는 없으므로 'NA' 로 처리.
+			model.group.patient.push({
+				x: model.axis.patient.x[0],
+				y: g.name, value: 'NA',
+			});
+		});
+	};
+	/*
+		PQ 관련 리스트를 반복하며, PQ 데이터를 만든다.
+	 */
+	function iteratePQ (pq, what)	{
+		return pq.map(function (d)	{
+			// P-value 또는 Q-value 에 log 값을 취하고 반환하는 함수.
+			var toLog = Math.log(d[what]) / Math.log(12) * -1;
+
+			return { x: 0, y: d.gene, value: toLog };
+		});
+	};
+	/*
+		Gene, Sample, Patient 가 각각 x, y 를 기준으로 하는 것이
+		다르므로 이를 해당 함수에서 정해준다.
+	 */
+	function stackFormat (type, d1, d2, value, idx)	{
+		return type === 'gene' ? 
+					{ x: d1, y: d2, value: value, info: idx } : 
+					{ x: d2, y: d1, value: value, info: idx };
+	};
+	/*
+		Type 파라미터에 기준하여 stacked 데이터를 만드는 함수.
+	 */
+	function byStack (type, stacked)	{
+		var result = [],
+				axis = type === 'gene' ? 'x' : 'y';
+
+		bio.iteration.loop(stacked, function (key, value)	{
+			var before = 0,
+					sumed = 0;
+
+			bio.iteration.loop(value, function (vkey, vvalue)	{
+				result.push(stackFormat(
+					type, before, key, vvalue, vkey));
+				// 현재 위치를 구하기 위해 이전 시작지점 + 이전 값을 구한다.
+				before += vvalue;
+				// axix 의 최대값을 구하기 위한 연산.
+				sumed += vvalue;
+			});
+
+			model.axis[type][axis].push(sumed);
+		});
+
+		return result;
+	};
+	/*
+		[min, max] 배열을 반환하는 함수.
+	 */
+	function makeLinearAxis ()	{
+		model.axis.gene.x = [bio.math.max(model.axis.gene.x), 0];
+		model.axis.sample.y = [bio.math.max(model.axis.sample.y), 0];
+		model.axis.pq.x = [
+			0, bio.math.max(model.pq.map(function (pq)	{
+				return Math.ceil(pq.value);
+		}))];
+	};	
+	/*
+		Axis 의 서수 리스트를 반환하는 함수.
+	 */
+	function makeOrdinalAxis ()	{
+		model.axis.pq.y = 
+		model.axis.gene.y = 
+		model.axis.heatmap.y = model.gene;
+		model.axis.heatmap.x = 
+		model.axis.group.x = model.axis.sample.x;
+	};
+
+	return function (data)	{
+		model = bio.initialize('preprocess').landscape;
+		// Data 안에 다른 객체가 존재할 경우 그 안을 찾아본다.
+		data = data.gene_list ? data : data.data;
+		// Only Gene list.
+		model.gene = data.gene_list.map(function (d)	{
+			return d.gene;
+		});
+		// Mutation, Sample, Gene, Group, Patient 데이터 생성.
+		iterateMutation(data.mutation_list);
+		iteratePatient(data.patient_list);
+		iterateGroup(data.group_list);
+
+		model.type = Object.keys(model.type);
+		// 전달받은 PQ 선정 값이 없을 경우 기본은 P-value 이다.
+		model.pq = iteratePQ(data.gene_list, data.pq || 'p');
+		model.stack.gene = byStack('gene', model.stack.gene);
+		model.stack.sample = byStack('sample', model.stack.sample);
+		model.stack.patient = byStack('patient', model.stack.patient);
+		// Axis 데이터를 만들어준다.
+		makeLinearAxis();
+		makeOrdinalAxis();
+
+		console.log('>>> Preprocess landscape data: ', data);
+		console.log('>>> Preprocess data: ', model);
+
+		return model;
+	};
+};
+function preprocPathway ()	{
+	'use strict';
+
+	var model = {};
+
+	return function (data)	{
+		console.log('>>> Preprocess pathway data: ', data);
+		console.log('>>> Preprocess data: ', model);
+
+		return model;
+	};
+};
+function preprocVariants ()	{
+	'use strict';
+
+	var model = {};
+	/*
+	 	Stack 데이터를 needle plot 을 그리기 좋은 형태로 만들어 주는 함수.
+	 */
+	function optimizeToDraw (obj, target)	{
+		bio.iteration.loop(obj, function (key, value)	{
+			var count = 0,
+					temp = { 
+						key: key, 
+						value: [ { x: parseFloat(key), y: count, value: 0 } 
+					]};
+			// 0 이 들어가야 하므로 한번 설정하였다.
+			model.axis.needle.y.push(count);
+
+			bio.iteration.loop(value, function (vKey, vValue)	{
+				temp.value.push({
+					x: parseFloat(key),
+					y: (count = count + vValue.length, count),
+					value: vValue.length,
+					info: vValue,
+				});
+			});
+
+			model.axis.needle.y.push(count);
+
+			target.push(temp);
+		});
+	};
+	/*
+		Needle plot 을 그리기 위해선 stack 형식의 데이터가 필요하다.
+	 */
+	function toStack (datas, target)	{
+		var obj = {};
+
+		bio.iteration.loop(datas, function (d)	{
+			d.type = bio.commonConfig().typeFormat(d.type);
+
+			var str = d.position + ' ' + d.type + ' ' + d.aachange;
+
+			obj[d.position] ? obj[d.position][str] ? 
+			obj[d.position][str].push(d) : 
+			obj[d.position][str] = [d] : 
+		 (obj[d.position] = {}, obj[d.position][str] = [d]);
+
+		 	if (model.type.indexOf(d.type) < 0)	{
+		 		model.type.push(d.type);
+		 	}
+		});
+
+		optimizeToDraw(obj, target);
+	};
+	/*
+		Graph 의 데이터 설정 함수.
+	 */
+	function toGraph (graphs)	{
+		bio.iteration.loop(graphs, function (graph, i)	{
+			model.graph.push({
+				x: graph.start, y: 0,
+				width: graph.end - graph.start, height: 15,
+				color: graph.colour, info: graph,
+			});
+		});
+	};
+	/*
+		Needle Plot & Graph 를 그릴 때 사용되는 축 데이터를 설정 함수.
+	 */
+	function setAxis (graph)	{
+		model.axis.needle.x = [0, graph[0].length];
+		model.axis.needle.y = 
+		model.axis.needle.y.length < 1 ? [0, 1] : 
+		[bio.math.min(model.axis.needle.y), 
+		 bio.math.max(model.axis.needle.y)];
+	};
+	/*
+		Shape 를 그리기 위해 Stacked 데이터를 펼치는 함수.
+	 */
+	function forShape (lines, shapes)	{
+		bio.iteration.loop(lines, function (l)	{
+			bio.iteration.loop(l.value, function (v, i)	{
+				if (v.info) {
+					// v.info 가 없는 경우는 0 인 경우뿐이므로.
+					// 따로 0 인 조건 검사 없이 연산을 한다.
+					v.value = v.y - l.value[i - 1].y;
+
+					shapes.push(v);
+				}
+			});
+		});
+	};
+
+	return function (data)	{
+		model = bio.initialize('preprocess').variants;
+
+		toStack(data.variants.public_list, model.needle.line);
+		toStack(data.variants.patient_list, model.patient.line);
+		toGraph(data.variants.graph);
+		setAxis(data.variants.graph);
+		forShape(model.needle.line, model.needle.shape);
+		forShape(model.patient.line, model.patient.shape);
+
+		console.log('>>> Preprocess variants data: ', data);
+		console.log('>>> Preprocess data: ', model);
+
+		return model;
+	};
+};
+function preprocess ()	{
+	'use strict';
+	// bio 전역객체는 반드시 함수형태에서만 불러올 수 있다.
+	return function (chart)	{
+		return {
+			pathway: bio.preprocPathway,
+			variants: bio.preprocVariants,
+			landscape: bio.preprocLandscape,
+			expression: bio.preprocExpression,
+			exclusivity: bio.preprocExclusivity,
+		}[chart];
 	};
 };
 /*
@@ -8843,836 +9676,6 @@ var SurvivalTab = (function() {
 
 }()); //Close SubvivalTabView (Singular)
 
-function preprocExclusivity ()	{
-	'use strict';
-
-	var model = {};
-	/*
-		Gene list 를 만드는 함수.
-	 */
-	function makeGeneList (types)	{
-		var result = {};
-
-		bio.iteration.loop(types, function (type)	{
-			result[type.gene] = ['.'];
-		});
-
-		return result;
-	};
-	/*
-		Type 압축 함수.
-	 */
-	function toObjectTypes (types, geneList)	{
-		var res = {};
-
-		bio.iteration.loop(types, function (type)	{
-			var name = bio.boilerPlate.variantInfo[type.type],
-					abb = bio.exclusivityConfig().abbreviation(name),
-					copy = bio.objects.clone(geneList);
-
-			!res[type.participant_id] ? (copy[type.gene] = [abb],
-			 res[type.participant_id] = copy, res) : 
-			(res[type.participant_id][type.gene][0] === '.' ? 
- 			 res[type.participant_id][type.gene] = [abb] : 
- 			 res[type.participant_id][type.gene].push(abb), res);
-		});
-
-		return res;
-	};
-	/*
-		Patient 와 Type 을 합치는 함수.
-	 */
-	function merged (patient, types)	{
-		var geneList = makeGeneList(types),
-				objTypes = toObjectTypes(types, geneList);
-
-		bio.iteration.loop(patient, function (p)	{
-			p.gene = objTypes[p.participant_id] ? 
-							 objTypes[p.participant_id] : geneList;
-		});
-
-		model.survival.merge = patient;
-	};
-	/*
-		Text 에서 Gene set name 을 찾아주는 함수.
-	 */
-	function getGeneset (text)	{
-		return (/\[(\w+(\s|\]))+/g).exec(text)[0]
-					.replace(/\[|\]/g, '').split(' ');
- 	};
- 	/*
- 		'**color': '255 255 255' 를 일반 rgb 로 바꿔주는 함수.
- 	 */
- 	function toRGB (rgb)	{
- 		return 'rgb(' + rgb.split(' ').join(',') + ')';
- 	};
- 	/*
- 		Legend object 에 빈 배열을 할당한다.
- 	 */
- 	function toLegend (geneset)	{
- 		return model.type[geneset.join(' ')] = [];
- 	};
-
- 	function forHeatmap (data)	{
-		var genesets = data.matchAll(model.regex.geneset),
-				heats = data.matchAll(model.regex.heatmap),
-				config = bio.exclusivityConfig(),
-				heatIdx = 0;
-
-		bio.iteration.loop(genesets, function (geneset)	{
-			var set = geneset.replace(/\[|\]/g, '').split(' '),
-					setLen = set.length + heatIdx,
-					setText = set.join(' '),
-					legend = toLegend(set),
-					heat = [];
-
-			model.heatmap[setText] = [];
-			model.axis.heatmap.x[setText] = [];
-			model.axis.heatmap.y[setText] = set;
-			model.axis.division.x[setText] = [];
-			model.divisionIdx[setText] = { idx: 0 };
-
-			for (var i = 0, l = heats[0].length; i < l; i++)	{
-				model.axis.heatmap.x[setText].push('' + i);
-				model.axis.division.x[setText].push('' + i);
-			}
-
-			for (;heatIdx < setLen; heatIdx++)	{
-				bio.iteration.loop(heats[heatIdx].split(''), 
-				function (variants, idx)	{
-
-					bio.iteration.loop(config.separate(variants), 
-					function (vars)	{
-						vars = config.name(vars);
-
-						model.heatmap[setText].push({
-							x: idx, 
-							y: set[heatIdx >= set.length ? 
-										 heatIdx - (setLen - set.length) : heatIdx], 
-							value: vars
-						});
-
-						legend.indexOf(vars) < 0 ? legend.push(vars) : 
-						legend = legend;
-					});
-
-					model.divisionIdx[setText].idx = variants !== '.' ? 
-					model.divisionIdx[setText].idx > idx ? 
-					model.divisionIdx[setText].idx : idx : 
-					model.divisionIdx[setText].idx;
-				});		
-
-				heat.push(heats[heatIdx]);
-			}
-
-			model.geneset.push(set);
-			model.geneset_all = 
-			model.geneset_all.concat(set);
-			model.survival.heat[setText] = heat;
-		});
-
-		var temp = model.geneset[4];
-
-		model.geneset[4] = model.geneset[0];
-		model.geneset[0] = temp;
-	};
-
-	function formatForNetwork (value)	{
-		var result = [];
-
-		bio.iteration.loop(value, function (v)	{
-			var obj = {};
-
-			v = v.replace(new RegExp(/\t|\s{2,}|\s(?=\D)/, 'ig'), '\t')
-
-			bio.iteration.loop(v.split('\t'), function (vs)	{
-				var vss = vs.split(':');
-
-				obj[vss[0]] = vss[0].indexOf('color') < 0 ? 
-											vss[1] : toRGB(vss[1]);
-			});
-
-			result.push(obj);
-		});
-
-		return result;
-	};
-	/*
-		Network 차트 데이터 형식 변환 함수.
-	 */
-	function dataForNetwork (result)	{
-		var id = null;
-
-		bio.iteration.loop(result, function (key, value)	{
-			model.network[key] = formatForNetwork(value);
-
-			bio.iteration.loop(model.network[key], 
-			function (net)	{
-				if (net.type === 'compound')	{
-					id = net.id;
-
-					net.bgcolor = net.bgcolor.replace('\"', '');
-					net.textcolor = net.textcolor.replace('\"', '');
-				}	else if (net.type === 'edge')	{
-					net.source = net.source.replace(id, '');
-					net.target = net.target.replace(id, '');
-					net.linecolor = net.linecolor.replace('\"', '');
-				} else if (net.type === 'node')	{
-					net.bgcolor = net.bgcolor.replace('\"', '');
-				}	
-			});
-		});
-	};
-
-	function forNetwork (nets)	{
-		var result = {};
-
-		nets = nets.replace(/\\n{1}/g, '\n');
-		nets = nets.replace(/\\t{1}/g, '\t');
-
-		bio.iteration.loop(nets.split('\n'), function (n)	{
-			bio.iteration.loop(model.geneset, function (gs)	{
-				var joined = gs.join('');
-
-				if (n.indexOf(joined) > -1)	{
-					result[joined] ? result[joined].push(n) : 
-													 result[joined] = [n];
-				}
-			});
-		});
-
-		dataForNetwork(result);
-	};
-	/*
-		Survival data 를 찾기위한 기준인 survival 문자를 배열에서 찾아 치환한다.
-	 */
-	function transferType (arr)	{
-		if (arr.indexOf('A') > -1 && arr.indexOf('M') > -1)	{
-			return 'B';
-		} else if (arr.indexOf('D') > -1 && arr.indexOf('M') > -1)	{
-			return 'E';
-		} else {
-			return arr[0];
-		}
-	};
-
-	function forSurvival (suvs)	{
-		var hasPat = {};
-
-		bio.iteration.loop(model.survival.heat, 
-		function (key, value)	{
-			var idx = model.axis.heatmap.x[key].length,
-					ldx = key.split(' '),
-					all = !model.survival.data[key] ? 
-								 model.survival.data[key] = [] : 
-								 model.survival.data[key],
-					pat = hasPat[key] = {};
-
-			for (var i = 0; i < idx; i++)	{
-				model.survival.merge.some(function (m)	{
-					var isType = true;
-
-					for (var l = 0, ll = ldx.length; l < ll; l++)	{
-						if (transferType(m.gene[ldx[l]]) !== value[l][i])	{
-							isType = false;
-						}
-					}
-
-					if (isType)	{
-						if (pat[m.participant_id] === undefined)	{
-							pat[m.participant_id] = '';
-							all[i] = m;
-
-							return all[i] !== undefined;
-						}
-					}
-				});
-			}
-		});
-	};
-
-	return function (data)	{
-		model = {};
-		model = bio.initialize('preprocess').exclusivity;
-		model.regex = {
-			geneset: new RegExp(/\[\w+(\s\w+)+\w+\]/, 'g'),
-			heatmap: new RegExp(/(A|B|D|E|M|\.){10,}/, 'g'),
-		};
-
-		merged(data.survival.patient, data.survival.types);
-		forHeatmap(data.heatmap);
-		forNetwork(data.network);
-		forSurvival(data.survival);
-
-		model.mostGeneWidth = 
-		bio.drawing().mostWidth(model.geneset_all, '12px');
-
-		console.log('>>> Preprocess exclusivity data: ', data);
-		console.log('>>> Preprocess data: ', model);
-
-		return model;
-	};
-};
-function preprocExpression ()	{
-	'use strict';
-
-	var model = {};
-	/*
-		Scatter plot 과 Survival plot 을 그리는 데 필요한
-		Month 데이터를 만든다.
-	 */
-	function getMonths (patients)	{
-		model.axis.scatter.y = { os: [], dfs: [] };
-		model.patient_subtype = {};
-
-		bio.iteration.loop(patients, function (p)	{
-			model.axis.scatter.y.os.push(p.os_days / 30);
-			model.axis.scatter.y.dfs.push(p.dfs_days / 30);
-			// Patient subtype object list 를 만든다.
-			model.patient_subtype[p.participant_id] = p;
-		});
-
-		var osmn = bio.math.min(model.axis.scatter.y.os),
-				osmx = bio.math.max(model.axis.scatter.y.os),
-				dfsmn = bio.math.min(model.axis.scatter.y.dfs),
-				dfsmx = bio.math.max(model.axis.scatter.y.dfs);
-
-		model.axis.scatter.y.os = [osmn, osmx];
-		model.axis.scatter.y.dfs = [dfsmn, dfsmx];
-	};
-	/*
-		Subtype 에 따른 값을 정리해주는 함수.
-	 */
-	function tempSubtypes (subtypes)	{
-		var obj = {};
-
-		bio.iteration.loop(subtypes, function (s)	{
-			!obj[s.subtype] ? 
-			 obj[s.subtype] = [s.value] : 
-			 obj[s.subtype].push(s.value);
-		});
-
-		return obj;
-	};
-	/*
-		Subtype list 를 만드는 함수.		
-	 */
-	function getSubtype (subtypes)	{
-		var temp = tempSubtypes(subtypes);
-
-		bio.iteration.loop(temp, function (key, value)	{
-			model.subtype.push({ key: key, value: value });
-		});
-	};
-	/*
-		Tpm 에 자연로그를 취해주는 함수.
-	 */
-	function toLog (tpm)	{
-		return Math.log((tpm + 1)) / Math.LN2;
-	};
-	/*
-		Sample 별로 gene 들의 tpm 값의 합을 저장하는 배열을 만든다.
-	 */
-	function tpmBySample (a) {
-		model.axis.heatmap.x[a.participant_id] ? 
-		model.axis.heatmap.x[a.participant_id].push({
-			key: a.hugo_symbol, value: a.tpm }) : 
-		model.axis.heatmap.x[a.participant_id] = [{
-			key: a.hugo_symbol, value: a.tpm }];
-	};
-	/*
-		Color Gradient 을 그려주기 위한 tpm 의 최소, 최대값을 구한다.
-	 */
-	function tpmMinMax (tpms)	{
-		model.axis.gradient.x = [
-			bio.math.min(tpms), bio.math.median(tpms),
-			bio.math.max(tpms)
-		];
-		model.axis.gradient.y = [''];
-	};
-	/*
-		Function 이 Average 일 때 호출되는 함수.
-	 */
-	function funcAverage (data)	{
-		bio.iteration.loop(data, function (key, value)	{
-			var sum = 0,
-					avg = 0;
-
-			bio.iteration.loop(value, function (v)	{
-				model.axis.heatmap.y[v.key] = '';
-
-				sum += v.value;
-			});
-
-			avg = sum / value.length;
-
-			model.bar.push({
-				x: key, 
-				value: avg, 
-				info: model.patient_subtype[key]
-			});
-
-			model.func.avg.push(avg);
-		});
-
-		model.func.avg.sorted = 
-		model.func.avg.sort(function (a, b)	{
-			return a > b ? 1 : -1;
-		});
-
-		model.axis.bar.y = [
-			bio.math.min(model.func.avg),
-			bio.math.median(model.func.avg),
-			bio.math.max(model.func.avg)];
-	};
-	/*
-		Function 에 따른 최소, 중간, 최대값을 구한다. 
-	 */
-	function funcMinMedMax (func, data)	{
-		return { average: funcAverage(data) }[func];
-	};
-	/*
-		Average function 으로 데이터를 정렬한다.
-	 */
-	function avgAlign (bars)	{
-		var avg = [].concat(model.func.avg),
-				result = [];
-
-		bio.iteration.loop(bars, function (b)	{
-			result[avg.indexOf(b.value)] = b.x;
-		});
-
-		model.axis.heatmap.x = result;
-	};
-	/*
-		Sample 의 순서를 function 대로 재설정하는 함수.
-	 */
-	function funcAlignment (func, bars)	{
-		return { average: avgAlign(bars) }[func];
-	};
-	/*
-		전체 Cohort 리스트에서 값의 합, 최소 & 최대값을 만든다.
-	 */
-	function loopCohort (alls)	{
-		var func = model.func.now || model.func.default;
-
-		bio.iteration.loop(alls, function (a)	{
-			a.tpm = toLog(a.tpm + 1);
-
-			tpmBySample(a);
-
-			model.tpms.push(a.tpm);
-			model.heatmap.push({
-				x: a.participant_id,
-				y: a.hugo_symbol,
-				value: a.tpm,
-			});
-		});
-
-		tpmMinMax(model.tpms);
-		funcMinMedMax(func, model.axis.heatmap.x);
-		funcAlignment(func, model.bar);
-
-		model.axis.heatmap.y = Object.keys(model.axis.heatmap.y);
-		model.axis.scatter.x = model.axis.heatmap.x;
-		model.axis.bar.x = model.axis.heatmap.x;
-	};
-	/*
-		Patient 데이터를 만들며, 어느 그룹에 속하는지를 결정한다.
-	 */
-	function toPatient (patient)	{
-		var mut = model.axis.bar.y[1],
-				pat = model.func.avg[model.axis.bar.x.indexOf(patient)];
-
-		return mut >= pat ? 'Low score group' : 'High score group';
-	};
-	/*
-		Axis 중 가장 긴 문자열을 왼쪽 여백 값으로 한다.
-	 */
-	function getAxisMargin (yaxis)	{
-		var most = 0;
-
-		bio.iteration.loop(yaxis, function (ya)	{
-			var textWidth = bio.drawing().textSize.width(ya, '10px');
-			
-			most = most > textWidth ? most : textWidth;
-		});
-
-		return most;
-	};
-
-	return function (data)	{
-		model = {};
-		model = bio.initialize('preprocess').expression;
-
-		model.all_rna_list = [].concat(
-			 data.cohort_rna_list.concat(data.sample_rna_list));
-
-		model.genes = data.gene_list.map(function (gl)	{
-			return gl.hugo_symbol;
-		});
-
-		getMonths(data.patient_list);
-		getSubtype(data.subtype_list);
-		loopCohort(model.all_rna_list);
-
-		model.patient = {
-			name: data.sample_rna_list[0].participant_id,
-			data: toPatient(data.sample_rna_list[0].participant_id),
-		};
-
-		bio.iteration.loop(model.bar, function (b)	{
-			b.y = model.axis.bar.y[1];
-		});
-
-		model.axisMargin = getAxisMargin(model.axis.heatmap.y);
-
-		console.log('>>> Preprocess variants data: ', data);
-		console.log('>>> Preprocess data: ', model);
-
-		return model;
-	};
-};
-function preprocLandscape ()	{
-	'use strict';
-
-	var model = {};
-	/*
-		Sample, Patient 의 가로 방향 축 데이터를 만드는 함수.
-	 */
-	function makeXAxis (axis, data)	{
-		if (axis.indexOf(data) < 0)	{
-			axis.push(data);
-		}
-	};
-	/*
-		Heatmap 데이터 포맷을 설정해주는 함수.
-	 */
-	function heatmapDataFormat (heatmap, data)	{
-		heatmap.push({
-			x: data.participant_id,
-			y: data.gene,
-			value: data.type,
-		});
-	};
-	/*
-		기준이 되는 값에 해당되는 value 들을 key - value 
-		형태의 Object 로 만드는 함수.
-	 */
-	function nested (obj, std, value)	{
-		obj[std] = !obj[std] ? {} : obj[std];
-		obj[std][value] = obj[std][value] ? 
-		obj[std][value] + 1 : 1;
-	};
-	/*
-		Mutation 과 Patient 의 리스트를 공통으로
-		묶어낸 함수.
-	 */
-	function iterateCommon (arr, callback)	{
-		bio.iteration.loop(arr, function (d, i)	{
-			// Type 의 이름표기를 통합시킨다.
-			d.type = bio.commonConfig().typeFormat(d.type);
-			// Type name object 를 만든다.
-			model.type[d.type] = null;
-
-			callback(d, i);
-		});
-
-		model.isIterateCommonOk = true;
-	};
-	/*
-		Mutation list 를 반복하며,
-		type list, mutation list, gene, sample 데이터를 만든다.
-	 */
-	function iterateMutation (mutation)	{
-		iterateCommon(mutation, function (d)	{
-			// Stacked bar chart 를 위한 데이터 생성.
-			nested(model.stack.gene, d.gene, d.type);
-			nested(model.stack.sample, d.participant_id, d.type);
-			
-			heatmapDataFormat(model.heatmap, d);
-
-			makeXAxis(model.axis.sample.x, d.participant_id);
-		});
-	};
-	/*
-		Patient list 를 반복하며,
-		Sample, Heatmap 에 들어가는 환자 데이터를 만든다.
-	 */
-	function iteratePatient (patient)	{
-		iterateCommon(patient, function (d)	{
-			// Patient 의 stacked bar chart 데이터 생성.
-			nested(model.stack.patient, d.participant_id, d.type);
-			heatmapDataFormat(model.patient, d);
-
-			makeXAxis(model.axis.patient.x, d.participant_id);
-		});
-	};
-	/*
-		Group list 를 반복하며,
-		Clinical list 데이터를 만든다.
-	 */
-	function iterateGroup (group)	{
-		bio.iteration.loop(group, function (g)	{
-			var temp = [];
-
-			bio.iteration.loop(g.data, function (d)	{
-				var heat = [];
-
-				bio.iteration.loop(model.heatmap, function (h)	{
-					// Group 에 포함된 sample 들을 모은다.
-					// 나중에 Group sort 를 위함이다.
-					if (d.participant_id === h.x)	{
-						heat.push(h);
-					}
-				});
-
-				temp.push({
-					x: d.participant_id, y: g.name,
-					value: d.value, info: heat,
-				});
-			});
-
-			model.group.group.push(temp);
-			// 각각의 Clinical 값을 한 행으로 처리.
-			model.axis.group.y.push([g.name]);
-			// Patient 의 Clinical info 는 없으므로 'NA' 로 처리.
-			model.group.patient.push({
-				x: model.axis.patient.x[0],
-				y: g.name, value: 'NA',
-			});
-		});
-	};
-	/*
-		PQ 관련 리스트를 반복하며, PQ 데이터를 만든다.
-	 */
-	function iteratePQ (pq, what)	{
-		return pq.map(function (d)	{
-			// P-value 또는 Q-value 에 log 값을 취하고 반환하는 함수.
-			var toLog = Math.log(d[what]) / Math.log(12) * -1;
-
-			return { x: 0, y: d.gene, value: toLog };
-		});
-	};
-	/*
-		Gene, Sample, Patient 가 각각 x, y 를 기준으로 하는 것이
-		다르므로 이를 해당 함수에서 정해준다.
-	 */
-	function stackFormat (type, d1, d2, value, idx)	{
-		return type === 'gene' ? 
-					{ x: d1, y: d2, value: value, info: idx } : 
-					{ x: d2, y: d1, value: value, info: idx };
-	};
-	/*
-		Type 파라미터에 기준하여 stacked 데이터를 만드는 함수.
-	 */
-	function byStack (type, stacked)	{
-		var result = [],
-				axis = type === 'gene' ? 'x' : 'y';
-
-		bio.iteration.loop(stacked, function (key, value)	{
-			var before = 0,
-					sumed = 0;
-
-			bio.iteration.loop(value, function (vkey, vvalue)	{
-				result.push(stackFormat(
-					type, before, key, vvalue, vkey));
-				// 현재 위치를 구하기 위해 이전 시작지점 + 이전 값을 구한다.
-				before += vvalue;
-				// axix 의 최대값을 구하기 위한 연산.
-				sumed += vvalue;
-			});
-
-			model.axis[type][axis].push(sumed);
-		});
-
-		return result;
-	};
-	/*
-		[min, max] 배열을 반환하는 함수.
-	 */
-	function makeLinearAxis ()	{
-		model.axis.gene.x = [bio.math.max(model.axis.gene.x), 0];
-		model.axis.sample.y = [bio.math.max(model.axis.sample.y), 0];
-		model.axis.pq.x = [
-			0, bio.math.max(model.pq.map(function (pq)	{
-				return Math.ceil(pq.value);
-		}))];
-	};	
-	/*
-		Axis 의 서수 리스트를 반환하는 함수.
-	 */
-	function makeOrdinalAxis ()	{
-		model.axis.pq.y = 
-		model.axis.gene.y = 
-		model.axis.heatmap.y = model.gene;
-		model.axis.heatmap.x = 
-		model.axis.group.x = model.axis.sample.x;
-	};
-
-	return function (data)	{
-		model = bio.initialize('preprocess').landscape;
-		// Data 안에 다른 객체가 존재할 경우 그 안을 찾아본다.
-		data = data.gene_list ? data : data.data;
-		// Only Gene list.
-		model.gene = data.gene_list.map(function (d)	{
-			return d.gene;
-		});
-		// Mutation, Sample, Gene, Group, Patient 데이터 생성.
-		iterateMutation(data.mutation_list);
-		iteratePatient(data.patient_list);
-		iterateGroup(data.group_list);
-
-		model.type = Object.keys(model.type);
-		// 전달받은 PQ 선정 값이 없을 경우 기본은 P-value 이다.
-		model.pq = iteratePQ(data.gene_list, data.pq || 'p');
-		model.stack.gene = byStack('gene', model.stack.gene);
-		model.stack.sample = byStack('sample', model.stack.sample);
-		model.stack.patient = byStack('patient', model.stack.patient);
-		// Axis 데이터를 만들어준다.
-		makeLinearAxis();
-		makeOrdinalAxis();
-
-		console.log('>>> Preprocess landscape data: ', data);
-		console.log('>>> Preprocess data: ', model);
-
-		return model;
-	};
-};
-function preprocPathway ()	{
-	'use strict';
-
-	var model = {};
-
-	return function (data)	{
-		console.log('>>> Preprocess pathway data: ', data);
-		console.log('>>> Preprocess data: ', model);
-
-		return model;
-	};
-};
-function preprocVariants ()	{
-	'use strict';
-
-	var model = {};
-	/*
-	 	Stack 데이터를 needle plot 을 그리기 좋은 형태로 만들어 주는 함수.
-	 */
-	function optimizeToDraw (obj, target)	{
-		bio.iteration.loop(obj, function (key, value)	{
-			var count = 0,
-					temp = { 
-						key: key, 
-						value: [ { x: parseFloat(key), y: count, value: 0 } 
-					]};
-			// 0 이 들어가야 하므로 한번 설정하였다.
-			model.axis.needle.y.push(count);
-
-			bio.iteration.loop(value, function (vKey, vValue)	{
-				temp.value.push({
-					x: parseFloat(key),
-					y: (count = count + vValue.length, count),
-					value: vValue.length,
-					info: vValue,
-				});
-			});
-
-			model.axis.needle.y.push(count);
-
-			target.push(temp);
-		});
-	};
-	/*
-		Needle plot 을 그리기 위해선 stack 형식의 데이터가 필요하다.
-	 */
-	function toStack (datas, target)	{
-		var obj = {};
-
-		bio.iteration.loop(datas, function (d)	{
-			d.type = bio.commonConfig().typeFormat(d.type);
-
-			var str = d.position + ' ' + d.type + ' ' + d.aachange;
-
-			obj[d.position] ? obj[d.position][str] ? 
-			obj[d.position][str].push(d) : 
-			obj[d.position][str] = [d] : 
-		 (obj[d.position] = {}, obj[d.position][str] = [d]);
-
-		 	if (model.type.indexOf(d.type) < 0)	{
-		 		model.type.push(d.type);
-		 	}
-		});
-
-		optimizeToDraw(obj, target);
-	};
-	/*
-		Graph 의 데이터 설정 함수.
-	 */
-	function toGraph (graphs)	{
-		bio.iteration.loop(graphs, function (graph, i)	{
-			model.graph.push({
-				x: graph.start, y: 0,
-				width: graph.end - graph.start, height: 15,
-				color: graph.colour, info: graph,
-			});
-		});
-	};
-	/*
-		Needle Plot & Graph 를 그릴 때 사용되는 축 데이터를 설정 함수.
-	 */
-	function setAxis (graph)	{
-		model.axis.needle.x = [0, graph[0].length];
-		model.axis.needle.y = 
-		model.axis.needle.y.length < 1 ? [0, 1] : 
-		[bio.math.min(model.axis.needle.y), 
-		 bio.math.max(model.axis.needle.y)];
-	};
-	/*
-		Shape 를 그리기 위해 Stacked 데이터를 펼치는 함수.
-	 */
-	function forShape (lines, shapes)	{
-		bio.iteration.loop(lines, function (l)	{
-			bio.iteration.loop(l.value, function (v, i)	{
-				if (v.info) {
-					// v.info 가 없는 경우는 0 인 경우뿐이므로.
-					// 따로 0 인 조건 검사 없이 연산을 한다.
-					v.value = v.y - l.value[i - 1].y;
-
-					shapes.push(v);
-				}
-			});
-		});
-	};
-
-	return function (data)	{
-		model = bio.initialize('preprocess').variants;
-
-		toStack(data.variants.public_list, model.needle.line);
-		toStack(data.variants.patient_list, model.patient.line);
-		toGraph(data.variants.graph);
-		setAxis(data.variants.graph);
-		forShape(model.needle.line, model.needle.shape);
-		forShape(model.patient.line, model.patient.shape);
-
-		console.log('>>> Preprocess variants data: ', data);
-		console.log('>>> Preprocess data: ', model);
-
-		return model;
-	};
-};
-function preprocess ()	{
-	'use strict';
-	// bio 전역객체는 반드시 함수형태에서만 불러올 수 있다.
-	return function (chart)	{
-		return {
-			pathway: bio.preprocPathway,
-			variants: bio.preprocVariants,
-			landscape: bio.preprocLandscape,
-			expression: bio.preprocExpression,
-			exclusivity: bio.preprocExclusivity,
-		}[chart];
-	};
-};
 function loading ()	{
 	'use strict';
 
