@@ -654,10 +654,10 @@ function exclusivityConfig ()	{
 					x: function (data, idx, that)	{
 						var width = tempWidth ? tempWidth : 0,
 								forSize = data.text.replace(' ', 'H');
-
+						// To be modify
 						tempWidth = tempWidth ? tempWidth + 
-						bio.drawing().textSize.width(forSize, '10px') : 
-						bio.drawing().textSize.width(forSize, '10px') + 5;
+						bio.drawing().textSize.width(forSize, '14px') : 
+						bio.drawing().textSize.width(forSize, '14px') + 5;
 
 						return leftMargin + width;
 					},
@@ -670,7 +670,8 @@ function exclusivityConfig ()	{
 						return data.color;
 					},
 					fontSize: function (data, idx, that)	{
-						return data.text === '**' ? '12px' : '10px';
+						// To be modify.
+						return data.text === '**' ? '16px' : '14px';
 					},
 				},
 				text: function (data, idx, that)	{ return data.text; },
@@ -678,8 +679,9 @@ function exclusivityConfig ()	{
 			division: {
 				attr: {
 					x: function (data, idx, that)	{
+						// To be modify.
 						var width = bio.drawing().textSize.width(
-													data.text, '14px');
+													data.text, '18px');
 
 						return data.color === '#00AC52' ? 
 									 svg.attr('width') - (10 + width) : leftMargin;
@@ -692,7 +694,8 @@ function exclusivityConfig ()	{
 					fill: function (data, idx, that)	{
 						return data.color;
 					},
-					fontSize: '14px',
+					// To be modify
+					fontSize: '18px',
 				},
 				text: function (data, idx, that)	{ 
 					if (data.text === '**')	{ return data.text; }
@@ -897,6 +900,7 @@ function exclusivityConfig ()	{
 		};
 	};
 };
+
 function expressionConfig ()	{
 	'use strict';
 
@@ -2601,7 +2605,8 @@ function variantsConfig ()	{
 	 */
 	function patient ()	{
 		return {
-			margin: [20, 40, 7.5, 40],
+			// To be modify.
+			margin: [20, 40, 25, 40],
 			attr: {
 				points: function (data, idx, that)	{
 					var x = that.scaleX(data.x);
@@ -2612,8 +2617,8 @@ function variantsConfig ()	{
 					}
 
 					return bio.rendering().triangleStr(
-										x, that.scaleY(data.y) - that.margin.bottom, 
-										10, 'top');
+								x, that.scaleY(0) - that.margin.bottom, 
+								10, 'top');
 				},
 			},
 			style: {
@@ -2737,6 +2742,7 @@ function axises ()	{
 		return model;
 	};
 };
+// ward 2
 function bar ()	{
 	'use strict';
 
@@ -3428,7 +3434,7 @@ function network ()	{
 		return d3.layout.force()
 										.nodes(nodes)
 										.links(links)
-										.charge(d3.forceManyBody())
+										.charge(-300)
 										.linkDistance(150);
 	};
 
@@ -4708,6 +4714,8 @@ function exclusivity ()	{
 				'fill': function (d, i) { 
 					return config.style.fill(d, i, model); 
 				},
+				// To be modify.
+				'fontSize': '14px',
 			},
 			text: function (d, i) { return config.text(d, i, model); },
 		});
@@ -4986,6 +4994,8 @@ function expression ()	{
 	
 	function drawFuncSelectBox ()	{
 		bio.selectBox({
+			// To be modify
+			fontSize: '14px',
 			items: ['Average'],
 			viewName: 'function',
 			margin: [3, 3, 0, 0],
@@ -5003,6 +5013,10 @@ function expression ()	{
 
 		var state = data.info ? 
 								data.info[model.now.color_mapping] : 'NA';
+		// To be modify.
+		if (model.now.color_mapping.indexOf('pathologic') > -1)	{
+			state = state.replace(/[a-z]/ig, '');
+		}
 
 		return state === 'NA' ? '#A4AAA7' : 
 					bio.expressionConfig().colorSet[
@@ -5011,6 +5025,8 @@ function expression ()	{
 	
 	function drawColorMapSelectBox (items)	{
 		bio.selectBox({
+			// To be modify
+			fontSize: '14px',
 			margin: [3, 3, 0, 0],
 			viewName: 'color_mapping',
 			defaultText: 'Color Mapping',
@@ -5053,6 +5069,8 @@ function expression ()	{
 	
 	function drawSigSelectBox (data)	{
 		bio.selectBox({
+			// To be modify
+			fontSize: '14px',
 			margin: [3, 3, 0, 0],
 			viewName: 'signature',
 			id: '#expression_signature',
@@ -5065,11 +5083,15 @@ function expression ()	{
 
 				model.now.signature = value;
 				model.requestData.signature = model.now.signature;
-
+				
 				$.ajax({
-					type:'post',
-					url:'/files',
-					data: {name: 'expression'},
+					// To be modify.
+					type:'get',
+					url: model.requestURL,
+					data: model.requestData,
+					// type: 'post',
+					// url:'/files',
+					// data: {name: 'expression'},
 					beforeSend: function ()	{
 						bio.loading().start(
 							model.setting.targetedElement,
@@ -5086,15 +5108,15 @@ function expression ()	{
 
 						bio.layout().removeGroupTag();
 						// To be delete.
-						if (model.now.signature.indexOf('50') > -1)	{
-							selectedData = d.data.data_pam50.data;
-						} else if (model.now.signature.indexOf('1') > -1)	{
-							selectedData = d.data.data_sig1.data;
-						}	else if (model.now.signature.indexOf('2') > -1)	{
-							selectedData = d.data.data_sig2.data;
-						}	else if (model.now.signature.indexOf('3') > -1)	{
-							selectedData = d.data.data_sig3.data;
-						}
+						// if (model.now.signature.indexOf('50') > -1)	{
+						// 	selectedData = d.data.data_pam50.data;
+						// } else if (model.now.signature.indexOf('1') > -1)	{
+						// 	selectedData = d.data.data_sig1.data;
+						// }	else if (model.now.signature.indexOf('2') > -1)	{
+						// 	selectedData = d.data.data_sig2.data;
+						// }	else if (model.now.signature.indexOf('3') > -1)	{
+						// 	selectedData = d.data.data_sig3.data;
+						// }
 
 						bio.expression({
 							element: model.setting.targetedElement.id,
@@ -5107,12 +5129,15 @@ function expression ()	{
 								signature: model.now.signature,
 								filter: model.requestData.filter,
 							},
-							data: selectedData,
+							// To be modify.
+							// data: selectedData,
+							data: d.data,
 						});
 
 						bio.loading().end();
 					},
 				});
+				// To be Delete.
 				// $.ajax({
 				// 	type: 'GET',
 				// 	url: model.requestURL,
@@ -5855,7 +5880,7 @@ function landscape ()	{
 			if (part.indexOf('Patient') > -1)	{
 				config.margin[3] = 5;
 			}
-
+			// ward 1
 			bio.bar({
 				data: data,
 				element: svg,

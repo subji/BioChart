@@ -607,7 +607,8 @@ g {
 .drop-menu .select {
   display: block;
   cursor: pointer;
-  line-height: 5px;
+  /* To be delete*/
+  /*line-height: 5px;*/
 }
 
 .drop-menu .select i {
