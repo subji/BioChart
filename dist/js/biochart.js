@@ -900,7 +900,6 @@ function exclusivityConfig ()	{
 		};
 	};
 };
-
 function expressionConfig ()	{
 	'use strict';
 
@@ -2742,7 +2741,6 @@ function axises ()	{
 		return model;
 	};
 };
-// ward 2
 function bar ()	{
 	'use strict';
 
@@ -4714,7 +4712,6 @@ function exclusivity ()	{
 				'fill': function (d, i) { 
 					return config.style.fill(d, i, model); 
 				},
-				// To be modify.
 				'fontSize': '14px',
 			},
 			text: function (d, i) { return config.text(d, i, model); },
@@ -4752,7 +4749,8 @@ function exclusivity ()	{
 
 			bio.network({
 				element: svg,
-				data: data.network[model.now.geneset.replaceAll(' ', '')],
+				data: data.network[
+							model.now.geneset.replaceAll(' ', '')],
 			});
 		});
 	};
@@ -4994,7 +4992,6 @@ function expression ()	{
 	
 	function drawFuncSelectBox ()	{
 		bio.selectBox({
-			// To be modify
 			fontSize: '14px',
 			items: ['Average'],
 			viewName: 'function',
@@ -5013,7 +5010,6 @@ function expression ()	{
 
 		var state = data.info ? 
 								data.info[model.now.color_mapping] : 'NA';
-		// To be modify.
 		if (model.now.color_mapping.indexOf('pathologic') > -1)	{
 			state = state.replace(/[a-z]/ig, '');
 		}
@@ -5025,7 +5021,6 @@ function expression ()	{
 	
 	function drawColorMapSelectBox (items)	{
 		bio.selectBox({
-			// To be modify
 			fontSize: '14px',
 			margin: [3, 3, 0, 0],
 			viewName: 'color_mapping',
@@ -5069,7 +5064,6 @@ function expression ()	{
 	
 	function drawSigSelectBox (data)	{
 		bio.selectBox({
-			// To be modify
 			fontSize: '14px',
 			margin: [3, 3, 0, 0],
 			viewName: 'signature',
@@ -5085,7 +5079,6 @@ function expression ()	{
 				model.requestData.signature = model.now.signature;
 				
 				$.ajax({
-					// To be modify.
 					type:'get',
 					url: model.requestURL,
 					data: model.requestData,
@@ -5129,7 +5122,6 @@ function expression ()	{
 								signature: model.now.signature,
 								filter: model.requestData.filter,
 							},
-							// To be modify.
 							// data: selectedData,
 							data: d.data,
 						});
@@ -5880,7 +5872,7 @@ function landscape ()	{
 			if (part.indexOf('Patient') > -1)	{
 				config.margin[3] = 5;
 			}
-			// ward 1
+			
 			bio.bar({
 				data: data,
 				element: svg,
@@ -6894,6 +6886,19 @@ function pathway ()	{
 		console.log('>>> Pathway model data: ', model);
 	};
 };
+function preprocess ()	{
+	'use strict';
+	// bio 전역객체는 반드시 함수형태에서만 불러올 수 있다.
+	return function (chart)	{
+		return {
+			pathway: bio.preprocPathway,
+			variants: bio.preprocVariants,
+			landscape: bio.preprocLandscape,
+			expression: bio.preprocExpression,
+			exclusivity: bio.preprocExclusivity,
+		}[chart];
+	};
+};
 function preprocExclusivity ()	{
 	'use strict';
 
@@ -7711,19 +7716,122 @@ function preprocVariants ()	{
 		return model;
 	};
 };
-function preprocess ()	{
-	'use strict';
-	// bio 전역객체는 반드시 함수형태에서만 불러올 수 있다.
-	return function (chart)	{
-		return {
-			pathway: bio.preprocPathway,
-			variants: bio.preprocVariants,
-			landscape: bio.preprocLandscape,
-			expression: bio.preprocExpression,
-			exclusivity: bio.preprocExclusivity,
-		}[chart];
-	};
-};
+// /*
+//  * Copyright (c) 2015 Memorial Sloan-Kettering Cancer Center.
+//  *
+//  * This library is distributed in the hope that it will be useful, but WITHOUT
+//  * ANY WARRANTY, WITHOUT EVEN THE IMPLIED WARRANTY OF MERCHANTABILITY OR FITNESS
+//  * FOR A PARTICULAR PURPOSE. The software and documentation provided hereunder
+//  * is on an "as is" basis, and Memorial Sloan-Kettering Cancer Center has no
+//  * obligations to provide maintenance, support, updates, enhancements or
+//  * modifications. In no event shall Memorial Sloan-Kettering Cancer Center be
+//  * liable to any party for direct, indirect, special, incidental or
+//  * consequential damages, including lost profits, arising out of the use of this
+//  * software and its documentation, even if Memorial Sloan-Kettering Cancer
+//  * Center has been advised of the possibility of such damage.
+//  */
+
+// /*
+//  * This file is part of cBioPortal.
+//  *
+//  * cBioPortal is free software: you can redistribute it and/or modify
+//  * it under the terms of the GNU Affero General Public License as
+//  * published by the Free Software Foundation, either version 3 of the
+//  * License.
+//  *
+//  * This program is distributed in the hope that it will be useful,
+//  * but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//  * GNU Affero General Public License for more details.
+//  *
+//  * You should have received a copy of the GNU Affero General Public License
+//  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+// */
+
+// var SurvivalCurveBroilerPlate = {
+// 	elem : {
+// 	    svg 				 : "",
+// 	    xScale 			 : "",
+// 	    yScale 		   : "",
+// 	    xAxis 			 : "",
+// 	    yAxis 			 : "",
+// 	    line 				 : "", 
+// 	    curve 			 : "",
+// 	    dots 				 : [], //The invisible dots laied on top of the curve for mouse over effect
+// 	    censoredDots : "" 
+// 	},
+// 	settings : {
+// 	    // canvas_width: 1005,
+// 	    // canvas_height: 620,
+// 	    // Modified.
+// 		canvas_width 			 : 500  ,
+// 		canvas_height 		 : 500  ,
+// 	    // chart_width: 600,
+// 	    // chart_height: 500,
+// 	    // Modified.
+// 		chart_width 			 : 500  ,
+// 	  chart_height 			 : 500	,
+// 	    // chart_left: 100,
+// 	    // chart_top: 50,
+// 	    // Modified.
+// 	  chart_left 				 : 70		,
+// 	  chart_top 				 : 25		,
+// 	  include_info_table : false, //Statistic Results from the curve
+// 		include_legend 		 : true ,
+// 		include_pvalue 		 : true ,
+// 		// pval_x: 710,
+// 		// pval_y: 110
+// 		// Modified.
+// 		pval_x 						 : 85		,
+// 		pval_y 						 : 57
+// 	},
+// 	divs : {
+// 		curveDivId     : "",
+// 		headerDivId 	 : "",
+// 		infoTableDivId : ""
+// 	},
+// 	subGroupSettings : {
+// 		line_color 			: "red" 	 ,
+// 		mouseover_color : "#F5BCA9",
+// 		legend 					: "" 			 ,
+//     curveId  				: ''//curve unique ID
+// 	},
+// 	text : {
+// 	  xTitle : "",
+// 	  yTitle : "",
+// 		qTips  : {
+// 			estimation    : "", //example: Survival Estimate: 69.89%
+// 			censoredEvent : "", //example: Time of last observation: 186.7 (months)
+// 			failureEvent  : "" //example: Time of death: 86.2 (months)
+// 		},
+// 		infoTableTitles : {
+// 			total_cases 				: "#total cases",
+// 			num_of_events_cases : "" 						,
+// 			median 							: ""
+// 		},
+// 		pValTitle 						: 'Logrank Test P-Value: '
+// 	},
+// 	style : {
+// 	  censored_sign_size : 5   		,
+// 	  axis_stroke_width  : 1   		,
+// 	    // axisX_title_pos_x: 380,
+// 	    // axisX_title_pos_y: 600,
+// 	    // axisY_title_pos_x: -270,
+// 	    // axisY_title_pos_y: 45,
+// 	    // Modified.
+// 	  axisX_title_pos_x  : 260 		 ,
+// 	  axisX_title_pos_y  : 495 		 ,
+// 	  axisY_title_pos_x  : -250		 ,
+// 	  axisY_title_pos_y  : 25      ,
+// 	  axis_color 				 : "black" ,
+// 		pval_font_size 		 : 12 		 ,
+// 		pval_font_style 	 : 'normal'
+// 	},
+// 	vals : {
+// 		pVal : 0
+// 	}	
+// };
+
 /*
  * Copyright (c) 2015 Memorial Sloan-Kettering Cancer Center.
  *
@@ -7837,7 +7945,7 @@ var SurvivalCurveBroilerPlate = {
 	  axisY_title_pos_x  : 10		 ,
 	  axisY_title_pos_y  : 10      ,
 	  axis_color 				 : "black" ,
-		pval_font_size 		 : 10 		 ,
+		pval_font_size 		 : 12 		 ,
 		pval_font_style 	 : 'normal'
 	},
 	vals : {
@@ -8757,12 +8865,12 @@ var SurvivalCurve = function() {
             });
         });
         // elem.xScale = d3.scale.linear()
-        elem.xScale = d3.scaleLinear()
+        elem.xScale = d33.scaleLinear()
             .domain([0, d3.max(_dataset) + 0.1 * d3.max(_dataset)])
             .range([settings.chart_left, settings.chart_width]);
             // .range([settings.chart_left, settings.chart_left + settings.chart_width]);
-        elem.yScale = d3.scaleLinear()
         // elem.yScale = d3.scale.linear()
+        elem.yScale = d3.scaleLinear()
             .domain([-0.03, 1.05]) //fixed to be 0-1
             .range([settings.chart_height - 40, settings.chart_left]);
             // .range([settings.chart_top + settings.chart_height, settings.chart_top]);
@@ -8770,8 +8878,7 @@ var SurvivalCurve = function() {
         //     .scale(elem.xScale)
         //     .orient("bottom")
         //     .tickSize(6, 0, 0);
-        // elem.xAxis = d3.axisBottom(elem.xScale).tickSize(6, 0, 0);
-        elem.xAxis = d3.axisBottom(elem.xScale).tickSize(6, 0, 0);
+        elem.xAxis = d3.axisBottom(elem.xScale).tickSize(6, 0, 0)
         // elem.yAxis = d3.svg.axis()
         //     .scale(elem.yScale)
         //     .tickFormat(formatAsPercentage)
@@ -8828,11 +8935,9 @@ var SurvivalCurve = function() {
             .data(data)
             .enter()
             .append("svg:path")
-            .attr("d", d3.symbol()
             // .attr("d", d3.svg.symbol()
                 .size(400)
                 // .type("circle"))
-                .type(d3.symbolCircle))
             .attr("transform", function(d){
                 return "translate(" + elem.xScale(d.time) + ", " + elem.yScale(d.survival_rate) + ")";
             })
@@ -8912,7 +9017,7 @@ var SurvivalCurve = function() {
             // .attr("transform", "translate(0, " + settings.chart_top + ")")
             // Modified.
             // .call(elemAxisX.orient("bottom").ticks(0));
-            .call(elemAxisX.ticks(0));
+            .call(elemAxisX.ticks(0))
         elem.svg.append("g")
             .style("stroke-width", style.axis_stroke_width)
             .style("fill", "none")
@@ -8955,8 +9060,7 @@ var SurvivalCurve = function() {
             .attr("transform", function(d) {
                 return "translate(" + elem.xScale(d.time) + "," + elem.yScale(d.survival_rate) + ")";
             })
-            // .attr("d", d3.svg.symbol().type("cross")
-            .attr("d", d3.symbol().type(d3.symbolCross)
+            .attr("d", d3.svg.symbol().type("cross")
                 .size(function(d){
                     return 25;
                 })
@@ -8981,28 +9085,24 @@ var SurvivalCurve = function() {
             .attr("transform", function(d, i) {
                 // return "translate(" + (settings.chart_left + settings.chart_width + 15) + ", " + (70 + i * 15) + ")";
                 // Modified.
-                // return 'translate(' + settings.chart_left + ', ' + (20 + i * 15) + ')';
                 return 'translate(' + settings.chart_left + ', ' + (20 + i * 15) + ')';
             });
 
         legend.append("path")
             .attr("width", 18)
             .attr("height", 18)
-            // .attr("d", d3.svg.symbol()
             .attr("d", d3.symbol()
                 .size(60)
                 // .type(function(d) { return "square"; }))
-                .type(function (d) { return d3.symbolSquare; }))
+                .type(function(d) { return d3.symbolSquare; }))
             .attr("fill", function (d) { return d.color; })
             .attr("stroke", "black")
-            .attr("stroke-width",.9);
+            .attr("stroke-width", .9);
 
         legend.append("text")
-            .attr("x", 10)
-            .attr("y", 5)
-            // .attr("y", $('#exclusivity_survival div').position().top - 45)
+            .attr("x", 15)
+            .attr("y", 4)
             .style("text-anchor", "front")
-            .style('font-size', '11px')
             .text(function(d) { return d.text; });
 
     }
@@ -9010,9 +9110,6 @@ var SurvivalCurve = function() {
     function appendAxisTitles(xTitle, yTitle) {
         elem.svg.append("text")
             .attr("class", "label")
-            // Modified.
-            // .attr("x", style.axisX_title_pos_x)
-            // .attr("y", style.axisX_title_pos_y)
             .attr("x", style.axisX_title_pos_x)
             .attr("y", style.axisX_title_pos_y)
             .style("text-anchor", "middle")
@@ -9022,9 +9119,6 @@ var SurvivalCurve = function() {
         elem.svg.append("text")
             .attr("class", "label")
             .attr("transform", "rotate(-90)")
-            // Modified.
-            // .attr("x", style.axisY_title_pos_x)
-            // .attr("y", style.axisY_title_pos_y)
             .attr("x", style.axisY_title_pos_x)
             .attr("y", style.axisY_title_pos_y)
             .style("text-anchor", "middle")
@@ -9036,9 +9130,6 @@ var SurvivalCurve = function() {
     function addPvals(_pval) {
         elem.svg.append("text")
             .attr("class","pval")
-            // Modified.
-            // .attr("x", settings.pval_x)
-            // .attr("y", settings.pval_y)
             .attr("x", settings.pval_x)
             .attr("y", settings.pval_y)
             .attr("font-size", style.pval_font_size)
@@ -9079,13 +9170,14 @@ var SurvivalCurve = function() {
             var color = obj.groupName === 'High score group' || 
                         obj.groupName === 'Altered group' ? '#FF6252' : '#00AC52';
             // Modified.
+            
             var width = $('#exclusivity_survival div').width();
 
             $('#' + divs.infoTableDivId).append(
-              '<tr><td style="width: ' + width + 'px; text-align:right;"></td><td style="width: ' + width + 'px; text-align:center;"><b style="color : ' + color + ';">' 
+              '<tr><td style="width: ' + width + 'px; text-align:right;"></td><td style="width:' + width + 'px; text-align:center;"><b style="color : ' + color + ';">' 
               + obj.groupName + '</b></td></tr>' + 
-              '<tr><td style="width: ' + width + 'px; text-align:right;">' 
-              + text.infoTableTitles.total_cases + '</td><td style="width: ' + width + 'px; text-align:center;"><b>' 
+              '<tr><td style="width:' + width + 'px; text-align:right;">' 
+              + text.infoTableTitles.total_cases + '</td><td style="width:' + width + 'px; text-align:center;"><b>' 
               + obj.num_cases + '</b></td></tr>' + 
               '<tr><td style="width: ' + width + 'px; text-align:right;">' 
               + text.infoTableTitles.num_of_events_cases + '</td><td style="width: ' + width + 'px; text-align:center;"><b>' 
@@ -9569,8 +9661,8 @@ var SurvivalCurveView = function(_opts) {
 		// unalteredSettingsInst.mouseover_color = "#81BEF7";
 		// Modified.
 		unalteredSettingsInst.mouseover_color = "#00AC52";
-		unalteredSettingsInst.legend = SurvivalCurveBroilerPlate.subGroupSettings.legend.low;
 		// unalteredSettingsInst.legend = "Low score group";
+		unalteredSettingsInst.legend = SurvivalCurveBroilerPlate.subGroupSettings.legend.low;
 		// unalteredSettingsInst.legend = "Cases without Alteration(s) in Query Gene(s)";
 		// Modified.
 		var alteredSettingsInst = jQuery.extend(true, {}, SurvivalCurveBroilerPlate.subGroupSettings);
@@ -9580,8 +9672,8 @@ var SurvivalCurveView = function(_opts) {
 		// alteredSettingsInst.mouseover_color = "#F5BCA9";
 		// Modified.
 		alteredSettingsInst.mouseover_color = "#FF6252";
-		alteredSettingsInst.legend = SurvivalCurveBroilerPlate.subGroupSettings.legend.high;
 		// alteredSettingsInst.legend = "High score group";
+		alteredSettingsInst.legend = SurvivalCurveBroilerPlate.subGroupSettings.legend.high;
 		// alteredSettingsInst.legend = "Cases with Alteration(s) in Query Gene(s)";
 		// Modified.
 
@@ -9657,12 +9749,10 @@ var SurvivalTab = (function() {
             osOpts.divs.curveDivId = "os_survival_curve";
             // Modified.
             // osOpts.divs.curveDivId = "osChart";
-            // osOpts.divs.curveDivId = 'osSurvival_chart_content';
             osOpts.divs.headerDivId = "os_header";
             osOpts.divs.infoTableDivId = "os_stat_table";
             // Modified.
             // osOpts.divs.infoTableDivId = "osTable";
-            // osOpts.divs.infoTableDivId = "osSurvival_table_content";
             osOpts.text.infoTableTitles.total_cases = "#total cases";
             osOpts.text.infoTableTitles.num_of_events_cases = "#cases deceased";
             osOpts.text.infoTableTitles.median = "median months survival";
@@ -9677,12 +9767,10 @@ var SurvivalTab = (function() {
             dfsOpts.divs.curveDivId = "dfs_survival_curve";
             // Modified.
             // dfsOpts.divs.curveDivId = "dfsChart";
-            // dfsOpts.divs.curveDivId = "dfsSurvival_chart_content";
             dfsOpts.divs.headerDivId = "dfs_header";
             dfsOpts.divs.infoTableDivId = "dfs_stat_table";
             // Modified.
             // dfsOpts.divs.infoTableDivId = "dfsTable";
-            // dfsOpts.divs.infoTableDivId = "dfsSurvival_table_content";
             dfsOpts.text.infoTableTitles.total_cases = "#total cases";
             dfsOpts.text.infoTableTitles.num_of_events_cases = "#cases relapsed";
             dfsOpts.text.infoTableTitles.median = "median months disease free";
@@ -9700,6 +9788,7 @@ var SurvivalTab = (function() {
             //     survivalCurveViewOS.getResultInit(_caseList,data);
             // }, "json");
             // Modified.
+            
             var survivalCurveViewDFS = new SurvivalCurveView(dfsOpts);
                 survivalCurveViewDFS.getResultInit(_caseList,data.dfs);
             // params.data_type = "dfs";
@@ -9712,6 +9801,67 @@ var SurvivalTab = (function() {
 
 }()); //Close SubvivalTabView (Singular)
 
+// (function ()	{
+// 	'use strict';
+  /*
+    Exclusivity
+   */
+	// $.ajax({
+ //    'type': 'POST',
+ //    'url': '/files/datas',
+ //    data: {
+ //    	name: 'exclusivity',
+ //    },
+ //    beforeSend: function () {
+ //      bio.loading().start(document.querySelector('#main'), 900, 600);
+ //    },
+ //    success: function (d) {
+ //      bio.exclusivity({
+ //        element: '#main',
+ //        width: 900,
+ //        height: 600,
+ //        data: {
+ //          heatmap: d[0],
+ //          network: d[2],
+ //          sample: d[3].data.sample_variants,
+ //          survival: {
+ //            patient: d[4].data,
+ //            types: d[5].data,
+ //          },
+ //          type: 'LUAD',
+ //        }
+ //      });
+
+ //      bio.loading().end();
+ //    },
+ //  });
+
+ /*
+    Expression
+  */
+ // $.ajax({
+ //    'type': 'POST',
+ //    'url': '/files/datas',
+ //    data: {
+ //     name: 'expression',
+ //    },
+ //    beforeSend: function () {
+ //      bio.loading().start(document.querySelector('#main'), 900, 600);
+ //    },
+ //    success: function (d) {
+ //      console.log(d)
+ //      // bio.expression({
+ //      //   element: '#main',
+ //      //   width: 900,
+ //      //   height: 600,
+ //      //   requestData: expressionReqParams,
+ //      //   data: d.data,
+ //      // });
+
+ //      bio.loading().end();
+ //    },
+ //  });
+// })();
 function loading ()	{
 	'use strict';
 
@@ -10173,7 +10323,11 @@ function table ()	{
 			div.appendChild(row);
 		});
 
-		frame.appendChild(div);
+		if (opts.data.length < 1)	{
+			return div;
+		} else {
+			frame.appendChild(div);			
+		}
 	};
 
 	return function (opts)	{
@@ -10325,6 +10479,274 @@ function tooltip ()	{
 				tooltipDiv.innerHTML = contents;
 
 		return show(tooltipDiv, target, parent);
+	};
+};
+function dependencies ()	{
+	'use strict';
+	// Dependencies 의 기능을 모아둔 Model 객체.
+	var model = {
+		version: {},	// Dependencies library 의 버전관련 객체.
+	};
+	/*
+		현재 적용 된 D3JS 의 버전이 
+		4 버전이면 true,
+		3 버전이면 false 를 반환하는 함수.
+	 */
+	model.version.d3v4 = function ()	{
+		// D3JS 가 존재하지 않을 경우 에러를 발생시킨다.
+		if (!d3)	{
+			throw new Error ('D3JS is not found');
+		}
+		// d3.version 의 0 번째 Index 가 '3' 일 경우 현재 D3JS
+		// 의 버전은 3 버전이다.
+		return d3.version.indexOf('3') === 0 ? false : true;
+	};
+	// Dependencies 객체의 기능을 모아둔 Model 객체를 반환한다.
+	return model;
+};
+function dom ()	{
+	'use strict';
+
+	var model = {};
+	/*
+		'#ID', '.Class' 중 존재하는 엘리먼트를 반환하는 함수.
+	 */
+	model.get = function (ele)	{
+		if (typeof(ele) === 'object')	{
+			return ele;
+		}
+
+		var classify = ['#', '.'],
+				classifyName = ele.removeSymbol(),
+				result = null;
+
+		bio.iteration.loop(classify, function (symbol)	{
+			var name = symbol + classifyName,
+					dom = document.querySelector(name);
+
+			if (dom)	{
+				result = dom;
+			}
+		});
+
+		return result;
+	};
+
+	model.remove = function (element, childs)	{
+		if (bio.objects.getType(element).indexOf('HTML') < 0)	{
+			throw new Error('Not a dom element');
+		}
+
+		bio.iteration.loop(childs, function (child)	{
+			element.removeChild(child);
+		});
+	};
+	/*
+		Element 파라미터 하위 Element 들을 
+		모두 제거하는 함수.
+	 */
+	model.removeAll = function (element)	{
+		if (bio.objects.getType(element).indexOf('HTML') < 0)	{
+			throw new Error('Not a dom element');
+		}
+
+	 	while (element.firstChild)	{
+	 		element.removeChild(element.firstChild);
+	 	}
+	};
+
+	return function ()	{
+		return model;
+	};
+};
+function iteration ()	{
+	'use strict';
+
+	var model = {};
+	/*
+		객체, 리스트를 반복하는 함수.
+		결과 값은 콜백함수의 파라미터로 전달 된다.
+	 */
+	model.loop = function (data, callback)	{
+		if (typeof(data) !== 'object')	{
+			throw new Error ('This is not Object or Array');
+		}
+
+		if (bio.objects.getType(data) === 'Array')	{
+			for (var i = 0, l = data.length; i < l; i++)	{
+				callback.call(this, data[i], i);
+			}
+		} else {
+			for (var key in data)	{
+				callback.call(this, key, data[key]);
+			}
+		}
+	};
+	// >>> About Array. 
+	/*
+		주어진 길이 만큼 주어진 값으로 리스트를 채워넣고 반환하는 함수.
+	 */
+	Array.prototype.fill = function (len, value)	{
+		for (var i = 0; i < len; i++)	{
+			this.push(value);
+		}
+
+		return this;
+	};
+
+	return model;
+};
+function math ()	{
+	'use strict';
+
+	var model = {};
+	/*
+		Number sequence 리스트에서 중간값의 위치를 반환한다.
+	 */
+	model.medianIndex = function (seqList)	{
+		var len = seqList.length;
+		// 홀수일 경우 1을 더한 후 2로 나누고 짝수는 그냥 2로 나눈다.
+		return len % 2 === 1 ? (len + 1) / 2 : len / 2;
+	};
+	/*
+		Number sequence 리스트에서 중간값을 반환한다.
+	 */
+	model.median = function (seqList)	{
+		var list = bio.objects.clone(seqList);
+		// 혹시라도 정렬이 안되어있을 경우를 고려하여 정렬한다.
+		return list.sort(function (a, b)	{
+						 return a > b ? 1 : -1;
+					 })[model.medianIndex(list)];
+	};
+	/*
+		두 수 혹은 숫자 리스트에서 가장 작은 값을 반환한다.
+	 */
+	model.min = function (v1, v2)	{
+		return arguments.length < 2 ? 
+					 Math.min.apply(null, v1) : 
+					 Math.min.call(null, v1, v2);
+	};
+	/*
+		두 수 혹은 숫자 리스트에서 가장 큰 값을 반환한다.
+	 */
+	model.max = function (v1, v2)	{
+		return arguments.length < 2 ? 
+					 Math.max.apply(null, v1) : 
+					 Math.max.call(null, v1, v2);
+	};
+	/*
+		Start 부터 End 까지의 범위내의 랜덤 값을 반환하는 함수.
+	 */
+	model.random = function (start, end)	{
+		start = start || 0;
+		end = end || 1;
+
+		return Math.floor(Math.random() * end) + start;
+	};
+
+	return model;
+};
+function objects ()	{
+	'use strict';
+
+	var model = {};
+	/*
+		Object 의 Type 을 문자열로 반환하는 함수.
+		Ex) 'SSS' -> 'String'.
+	 */
+	model.getType = function (obj)	{
+		var str = Object.prototype
+										.toString.call(obj);
+
+		return str.substring(
+					 str.indexOf(' ') + 1, 
+					 str.indexOf(']'));
+	};
+	/*
+		객체를 복사 (완전복사) 하여 반환하는 함수.
+	 */
+	model.clone = function (obj)	{
+		if (typeof(obj) !== 'object')	{
+			return obj;
+		} else {
+			if (model.getType(obj) === 'Array')	{
+				return new Array().concat(obj);
+			} else {
+				var copy = {};
+
+				bio.iteration.loop(obj, function (key, value)	{
+					if (obj.hasOwnProperty(key))	{
+						copy[key] = model.clone(obj[key]);
+					}
+				});
+
+				return copy;
+			}
+		}
+	};
+	/*
+		객체의 키를 값으로 찾아주는 함수.
+	 */
+	model.getKey = function (obj, value)	{
+		var keys = Object.keys(obj),
+				values = Object.values(obj);
+
+		return keys[values.indexOf(value)];
+	};
+
+	return model;
+}
+/*
+	String 객체의 prototype 으로 붙일 기능들을
+	모아둔 객체.
+ */
+function strings ()	{
+	'use strict';
+
+	String.prototype.matchAll = function (regex)	{
+		var matched = [], found;
+
+		while (found = regex.exec(this))	{
+			matched.push(found[0]);
+		}
+
+		return matched;
+	};
+	/*
+		String 을 대명사 표기법 형태로 바꿔 반환하는 함수.
+	 */
+	String.prototype.pronoun = function ()	{
+		return this[0].toUpperCase() + 
+					 this.substring(1).toLowerCase();
+	};
+	/*
+		문자열에 포함된 공백들을 지워주는 함수.
+	 */
+	String.prototype.removeWhiteSpace = function ()	{
+		return this.replace(/\s/ig, '');
+	};
+	/*
+		문자열에 포함된 특수문자들을 지워주는 함수.
+	 */
+	String.prototype.removeSymbol = function ()	{
+		return this.replace(/\W/ig, '');
+	}
+	/*
+		문자열에서 사용자지정위치의 문자를 다른 문자로 대치해주는 함수.
+		String 객체의 프로토타입으로 지정하였다.
+	 */
+	String.prototype.replaceAt = function (idx, rep)	{
+		// substring !== substr 
+		// substring 은 start 부터 end 까지,
+		// substr 은 start 부터 num 개를 자른다.
+		return this.substring(0, idx) + rep + 
+					 this.substring(idx + 1);
+	};
+	/*
+		파라미터 값을 문자열내에서 모두 바꿔준다.
+	 */
+	String.prototype.replaceAll = function (target, change)	{
+		return this.replace(new RegExp(target, 'ig'), change);
 	};
 };
 function variants ()	{
@@ -10686,277 +11108,5 @@ function variantsPatient ()	{
 			'#' + model.id + '_needle_patient_shape');
 		
 		bio.triangle(model.opts, model);
-	};
-};
-/*
-	Dependency 라이브러리 관련 버전 확인 등의
-	기능을 모아둔 객체.
- */
-function dependencies ()	{
-	'use strict';
-	// Dependencies 의 기능을 모아둔 Model 객체.
-	var model = {
-		version: {},	// Dependencies library 의 버전관련 객체.
-	};
-	/*
-		현재 적용 된 D3JS 의 버전이 
-		4 버전이면 true,
-		3 버전이면 false 를 반환하는 함수.
-	 */
-	model.version.d3v4 = function ()	{
-		// D3JS 가 존재하지 않을 경우 에러를 발생시킨다.
-		if (!d3)	{
-			throw new Error ('D3JS is not found');
-		}
-		// d3.version 의 0 번째 Index 가 '3' 일 경우 현재 D3JS
-		// 의 버전은 3 버전이다.
-		return d3.version.indexOf('3') === 0 ? false : true;
-	};
-	// Dependencies 객체의 기능을 모아둔 Model 객체를 반환한다.
-	return model;
-};
-function dom ()	{
-	'use strict';
-
-	var model = {};
-	/*
-		'#ID', '.Class' 중 존재하는 엘리먼트를 반환하는 함수.
-	 */
-	model.get = function (ele)	{
-		if (typeof(ele) === 'object')	{
-			return ele;
-		}
-
-		var classify = ['#', '.'],
-				classifyName = ele.removeSymbol(),
-				result = null;
-
-		bio.iteration.loop(classify, function (symbol)	{
-			var name = symbol + classifyName,
-					dom = document.querySelector(name);
-
-			if (dom)	{
-				result = dom;
-			}
-		});
-
-		return result;
-	};
-
-	model.remove = function (element, childs)	{
-		if (bio.objects.getType(element).indexOf('HTML') < 0)	{
-			throw new Error('Not a dom element');
-		}
-
-		bio.iteration.loop(childs, function (child)	{
-			element.removeChild(child);
-		});
-	};
-	/*
-		Element 파라미터 하위 Element 들을 
-		모두 제거하는 함수.
-	 */
-	model.removeAll = function (element)	{
-		if (bio.objects.getType(element).indexOf('HTML') < 0)	{
-			throw new Error('Not a dom element');
-		}
-
-	 	while (element.firstChild)	{
-	 		element.removeChild(element.firstChild);
-	 	}
-	};
-
-	return function ()	{
-		return model;
-	};
-};
-function iteration ()	{
-	'use strict';
-
-	var model = {};
-	/*
-		객체, 리스트를 반복하는 함수.
-		결과 값은 콜백함수의 파라미터로 전달 된다.
-	 */
-	model.loop = function (data, callback)	{
-		if (typeof(data) !== 'object')	{
-			throw new Error ('This is not Object or Array');
-		}
-
-		if (bio.objects.getType(data) === 'Array')	{
-			for (var i = 0, l = data.length; i < l; i++)	{
-				callback.call(this, data[i], i);
-			}
-		} else {
-			for (var key in data)	{
-				callback.call(this, key, data[key]);
-			}
-		}
-	};
-	// >>> About Array. 
-	/*
-		주어진 길이 만큼 주어진 값으로 리스트를 채워넣고 반환하는 함수.
-	 */
-	Array.prototype.fill = function (len, value)	{
-		for (var i = 0; i < len; i++)	{
-			this.push(value);
-		}
-
-		return this;
-	};
-
-	return model;
-};
-function math ()	{
-	'use strict';
-
-	var model = {};
-	/*
-		Number sequence 리스트에서 중간값의 위치를 반환한다.
-	 */
-	model.medianIndex = function (seqList)	{
-		var len = seqList.length;
-		// 홀수일 경우 1을 더한 후 2로 나누고 짝수는 그냥 2로 나눈다.
-		return len % 2 === 1 ? (len + 1) / 2 : len / 2;
-	};
-	/*
-		Number sequence 리스트에서 중간값을 반환한다.
-	 */
-	model.median = function (seqList)	{
-		var list = bio.objects.clone(seqList);
-		// 혹시라도 정렬이 안되어있을 경우를 고려하여 정렬한다.
-		return list.sort(function (a, b)	{
-						 return a > b ? 1 : -1;
-					 })[model.medianIndex(list)];
-	};
-	/*
-		두 수 혹은 숫자 리스트에서 가장 작은 값을 반환한다.
-	 */
-	model.min = function (v1, v2)	{
-		return arguments.length < 2 ? 
-					 Math.min.apply(null, v1) : 
-					 Math.min.call(null, v1, v2);
-	};
-	/*
-		두 수 혹은 숫자 리스트에서 가장 큰 값을 반환한다.
-	 */
-	model.max = function (v1, v2)	{
-		return arguments.length < 2 ? 
-					 Math.max.apply(null, v1) : 
-					 Math.max.call(null, v1, v2);
-	};
-	/*
-		Start 부터 End 까지의 범위내의 랜덤 값을 반환하는 함수.
-	 */
-	model.random = function (start, end)	{
-		start = start || 0;
-		end = end || 1;
-
-		return Math.floor(Math.random() * end) + start;
-	};
-
-	return model;
-};
-function objects ()	{
-	'use strict';
-
-	var model = {};
-	/*
-		Object 의 Type 을 문자열로 반환하는 함수.
-		Ex) 'SSS' -> 'String'.
-	 */
-	model.getType = function (obj)	{
-		var str = Object.prototype
-										.toString.call(obj);
-
-		return str.substring(
-					 str.indexOf(' ') + 1, 
-					 str.indexOf(']'));
-	};
-	/*
-		객체를 복사 (완전복사) 하여 반환하는 함수.
-	 */
-	model.clone = function (obj)	{
-		if (typeof(obj) !== 'object')	{
-			return obj;
-		} else {
-			if (model.getType(obj) === 'Array')	{
-				return new Array().concat(obj);
-			} else {
-				var copy = {};
-
-				bio.iteration.loop(obj, function (key, value)	{
-					if (obj.hasOwnProperty(key))	{
-						copy[key] = model.clone(obj[key]);
-					}
-				});
-
-				return copy;
-			}
-		}
-	};
-	/*
-		객체의 키를 값으로 찾아주는 함수.
-	 */
-	model.getKey = function (obj, value)	{
-		var keys = Object.keys(obj),
-				values = Object.values(obj);
-
-		return keys[values.indexOf(value)];
-	};
-
-	return model;
-}
-/*
-	String 객체의 prototype 으로 붙일 기능들을
-	모아둔 객체.
- */
-function strings ()	{
-	'use strict';
-
-	String.prototype.matchAll = function (regex)	{
-		var matched = [], found;
-
-		while (found = regex.exec(this))	{
-			matched.push(found[0]);
-		}
-
-		return matched;
-	};
-	/*
-		String 을 대명사 표기법 형태로 바꿔 반환하는 함수.
-	 */
-	String.prototype.pronoun = function ()	{
-		return this[0].toUpperCase() + 
-					 this.substring(1).toLowerCase();
-	};
-	/*
-		문자열에 포함된 공백들을 지워주는 함수.
-	 */
-	String.prototype.removeWhiteSpace = function ()	{
-		return this.replace(/\s/ig, '');
-	};
-	/*
-		문자열에 포함된 특수문자들을 지워주는 함수.
-	 */
-	String.prototype.removeSymbol = function ()	{
-		return this.replace(/\W/ig, '');
-	}
-	/*
-		문자열에서 사용자지정위치의 문자를 다른 문자로 대치해주는 함수.
-		String 객체의 프로토타입으로 지정하였다.
-	 */
-	String.prototype.replaceAt = function (idx, rep)	{
-		// substring !== substr 
-		// substring 은 start 부터 end 까지,
-		// substr 은 start 부터 num 개를 자른다.
-		return this.substring(0, idx) + rep + 
-					 this.substring(idx + 1);
-	};
-	/*
-		파라미터 값을 문자열내에서 모두 바꿔준다.
-	 */
-	String.prototype.replaceAll = function (target, change)	{
-		return this.replace(new RegExp(target, 'ig'), change);
 	};
 };

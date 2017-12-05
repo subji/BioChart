@@ -1,0 +1,120 @@
+.modal-body {
+	/*max-height: 550px;*/
+}
+.drop-menu {
+  outline: 0;
+  color: #474747;
+  text-align: left;
+  border-radius: 5px;
+  position: relative;
+  display: inline-block;
+  background-color: #fff;
+  transition: all .5s ease;
+  box-shadow: 0 0 2px rgb(204, 204, 204);
+}
+
+.drop-menu .select {
+  display: block;
+  cursor: pointer;
+  /* To be delete*/
+  /*line-height: 5px;*/
+}
+
+.drop-menu .select i {
+  color: #888;
+  float: right;
+  cursor: pointer;
+  transition: all .5s ease;
+}
+
+.drop-menu:hover {
+  box-shadow: 0 0 4px rgb(204, 204, 204);
+}
+
+.drop-menu:active {
+  background-color: #f8f8f8;
+}
+
+.drop-menu.active:hover,
+.drop-menu.active {
+  background-color: #f8f8f8;
+  border-radius: 5px 5px 0 0;
+  box-shadow: 0 0 4px rgb(204, 204, 204);
+}
+
+.drop-menu.active .select i {
+  transform: rotate(180deg);
+}
+
+.drop-menu .dropeddown {
+  left: 0;
+  z-index: 9;
+  width: 100%;
+  height: auto;
+  display: none;
+  margin-top: 1px;
+  overflow: hidden;
+  overflow-y: auto;
+  max-height: 100px;
+  position: absolute;
+  background-color: #fff;
+  border-radius: 0 1px 5px 5px;
+  box-shadow: 0 1px 2px rgb(204, 204, 204);
+}
+
+.drop-menu .dropeddown li {
+  padding: 12px;
+  cursor: pointer;
+  transition: all .2s ease;
+} 
+
+.drop-menu .dropeddown {
+  padding: 0;
+  list-style: none;
+}
+
+.drop-menu .dropeddown li:hover {
+  color: #fff;
+  background-color: #5B5959;
+}
+
+.drop-menu .dropeddown li:active {
+  color: #fff;
+  background-color: #512DA8;  
+}
+.table-header	{
+	overflow-y: auto;
+}
+
+.table-contents {
+	overflow-y: auto;
+}
+
+.table-cell {
+	float: left;
+	overflow: hidden;
+	position: relative;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	/*border: 0.5px solid;*/
+}
+
+.table-header > .table-row > .table-cell {
+	font-size: 16px;
+	font-weight: bold;
+	text-align: center;
+	color: #FFFFFF;
+}
+
+.table-header > .table-row {
+	background-color: #333333
+}
+
+.table-contents .table-cell {
+	font-size: 12px;
+}
+
+.table-contents > .table-row:hover {
+	/*cursor: pointer;*/
+	background-color: #C4C4C4;
+}
