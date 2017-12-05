@@ -71,7 +71,7 @@ var SurvivalCurve = function() {
             });
         });
         // elem.xScale = d3.scale.linear()
-        elem.xScale = d33.scaleLinear()
+        elem.xScale = d3.scaleLinear()
             .domain([0, d3.max(_dataset) + 0.1 * d3.max(_dataset)])
             .range([settings.chart_left, settings.chart_width]);
             // .range([settings.chart_left, settings.chart_left + settings.chart_width]);
