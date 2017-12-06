@@ -42,12 +42,16 @@ function rectangle ()	{
 					return opts.attr.width ? 
 					typeof(opts.attr.width) !== 'function' ?  
 								 opts.attr.width : 
+								 opts.attr.width.call(this, d, i, that) < 0 ? 
+								 Math.abs(opts.attr.width.call(this, d, i, that)) : 
 								 opts.attr.width.call(this, d, i, that) : 1;
 				},
 				height: function (d, i)	{
 					return opts.attr.height ? 
 					typeof(opts.attr.height) !== 'function' ?  
 								 opts.attr.height : 
+								 opts.attr.height.call(this, d, i, that) < 0 ? 
+								 Math.abs(opts.attr.height.call(this, d, i, that)) : 
 								 opts.attr.height.call(this, d, i, that) : 1;
 				},
 			},
