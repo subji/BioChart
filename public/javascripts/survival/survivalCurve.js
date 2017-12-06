@@ -141,9 +141,12 @@ var SurvivalCurve = function() {
             .data(data)
             .enter()
             .append("svg:path")
-            // .attr("d", d3.svg.symbol()
+            // // .attr("d", d3.svg.symbol()
+            //     .size(400)
+            //     // .type("circle"))
+            .attr("d", d3.symbol()
                 .size(400)
-                // .type("circle"))
+                .type(function(d) { return d3.symbolCircle; }))
             .attr("transform", function(d){
                 return "translate(" + elem.xScale(d.time) + ", " + elem.yScale(d.survival_rate) + ")";
             })
@@ -266,10 +269,9 @@ var SurvivalCurve = function() {
             .attr("transform", function(d) {
                 return "translate(" + elem.xScale(d.time) + "," + elem.yScale(d.survival_rate) + ")";
             })
-            .attr("d", d3.svg.symbol().type("cross")
-                .size(function(d){
-                    return 25;
-                })
+            .attr("d", d3.symbol()
+                .type(function (d) { return d3.symbolCross; })
+                .size(25)
             )
             .attr("fill", opts.line_color);
 

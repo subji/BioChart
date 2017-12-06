@@ -195,6 +195,7 @@ function preprocLandscape ()	{
 		model.stack.sample = byStack('sample', model.stack.sample);
 		model.stack.patient = byStack('patient', model.stack.patient);
 		// Axis 데이터를 만들어준다.
+		console.log(model.axis.sample, model.axis.patient)
 		makeLinearAxis();
 		makeOrdinalAxis();
 

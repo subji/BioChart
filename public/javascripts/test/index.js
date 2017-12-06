@@ -1,5 +1,5 @@
-// (function ()	{
-// 	'use strict';
+(function ()	{
+	'use strict';
   /*
     Exclusivity
    */
@@ -57,5 +57,35 @@
 
  //      bio.loading().end();
  //    },
- //  });
-// })();
+
+
+ /*
+    Landscape
+  */
+ $.ajax({
+    'type': 'POST',
+    'url': '/files/datas',
+    data: {
+     name: 'landscape',
+    },
+    beforeSend: function () {
+      bio.loading().start(document.querySelector('#main'), 900, 600);
+    },
+    success: function (d) {
+    	console.log(d3.symbol())
+   //    bio.landscape({
+			// 	element: '#main',
+			// 	width: 1620,
+			// 	height: 850,
+			// 	data: {
+			// 		pq: 'p',
+			// 		type: 'LUAD',
+			// 		data: d[0].data,
+			// 		title:d[0].data.name,
+			// 	},
+			// });
+
+      bio.loading().end();
+    },
+  });
+})();
