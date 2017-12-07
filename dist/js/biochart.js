@@ -6740,7 +6740,7 @@ function pathway ()	{
 	 */
 	function addSVG (cancer, callback)	{
 		bio.drawing().importSVG(
-			'/data/pathway' + cancer + '.svg', callback);
+			'/data/pathway/' + cancer + '.svg', callback);
 	};
 	/*
 		현재 노드에 속하는 데이터를 배열에서 찾는 함수.
@@ -6773,7 +6773,7 @@ function pathway ()	{
 
 	function fillColor (elem, data, opt, marker)	{
 		var config = bio.pathwayConfig().node();
-
+		console.log(marker)
 		if (marker)	twinkle(elem, marker);
 
 		elem.attr('cursor', 'pointer')
