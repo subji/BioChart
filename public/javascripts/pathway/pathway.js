@@ -150,7 +150,9 @@ function pathway ()	{
 			var margin = parseFloat(d3.select('#pathway_title')
 																.node().style.height);
 
-			contents.style.height -= margin;
+			console.log(margin);
+
+			contents.style.height -= margin + 'px';
 
 			d3.select(xml.documentElement)
 				.attr('width', parseFloat(contents.style.width))
