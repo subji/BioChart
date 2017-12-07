@@ -7,8 +7,8 @@ function pathway ()	{
 	 */
 	function addSVG (cancer, callback)	{
 		bio.drawing().importSVG(
-			// '/data/pathway/' + cancer + '.svg', callback);
-			'/datas/' + cancer + '.svg', callback);
+			'/data/pathway/' + cancer + '.svg', callback);
+			// '/datas/' + cancer + '.svg', callback);
 	};
 	/*
 		현재 노드에 속하는 데이터를 배열에서 찾는 함수.
@@ -129,7 +129,7 @@ function pathway ()	{
 	};
 
 	return function (opts)	{
-		// addSVG(opts.cancer_type, function (xml)	{
+		addSVG(opts.cancer_type, function (xml)	{
 			bio.modal({
 				id: 'drug_modal',
 				element: document.querySelector(opts.element),
@@ -146,20 +146,12 @@ function pathway ()	{
 			var contents = document.getElementById(
 											'pathway_contents'),
 					modal = document.querySelector('.modal-body');
-
-			var xml = d3.select('svg').node();
-			// console.log(xml.documentElement, temp)
 			
-			// d3.select(xml.documentElement)
-			// 	.attr('width', parseFloat(contents.style.width))
-			// 	.attr('height', parseFloat(contents.style.height));
-			
-			// contents.appendChild(xml.documentElement);
-			d3.select(xml)
+			d3.select(xml.documentElement)
 				.attr('width', parseFloat(contents.style.width))
 				.attr('height', parseFloat(contents.style.height));
 			
-			contents.appendChild(xml);
+			contents.appendChild(xml.documentElement);
 
 			modal.style.height = 
 			parseFloat(contents.style.height) * 0.8 + 'px';
@@ -167,7 +159,7 @@ function pathway ()	{
 			colorGenes(model.setting.defaultData.pathway,
 								model.setting.defaultData.patient);
 			drugEvent(opts.cancer_type);
-		// });
+		});
 
 		console.log('>>> Pathway reponse data: ', opts);
 		console.log('>>> Pathway setting data: ', model.setting);
