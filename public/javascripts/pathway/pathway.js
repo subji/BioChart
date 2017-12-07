@@ -7,7 +7,7 @@ function pathway ()	{
 	 */
 	function addSVG (cancer, callback)	{
 		bio.drawing().importSVG(
-			'/datas/' + cancer + '.svg', callback);
+			'/data/pathway' + cancer + '.svg', callback);
 	};
 	/*
 		현재 노드에 속하는 데이터를 배열에서 찾는 함수.
@@ -98,13 +98,6 @@ function pathway ()	{
 
 	function drugEvent (cancerType)	{
 		var config = bio.pathwayConfig().drug();
-		
-
-		// var temp = d3.selectAll('g[id*="drug_"]').nodes()[0];
-		// var paths = d3.selectAll(temp.childNodes[1].childNodes[1]);
-
-		// console.log(temp, paths.selectAll('path'));
-
 
 		d3.selectAll('g[id*="drug_"]')
 			.datum(function (d)	{
