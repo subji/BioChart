@@ -7,8 +7,8 @@ function pathway ()	{
 	 */
 	function addSVG (cancer, callback)	{
 		bio.drawing().importSVG(
-			'/data/pathway/' + cancer + '.svg', callback);
-			// '/datas/' + cancer + '.svg', callback);
+			// '/data/pathway/' + cancer + '.svg', callback);
+			'/datas/' + cancer + '.svg', callback);
 	};
 	/*
 		현재 노드에 속하는 데이터를 배열에서 찾는 함수.
@@ -27,7 +27,6 @@ function pathway ()	{
 	};
 
 	function twinkle (rect, marker)	{
-		console.log(marker, rect)
 		if (marker > -1)	{
 			var is = false;
 
@@ -101,6 +100,14 @@ function pathway ()	{
 	function drugEvent (cancerType)	{
 		var config = bio.pathwayConfig().drug();
 
+
+		var temp = d3.selectAll('g[id*="drug_"]');
+		console.log(temp.nodes()[0])
+		// Gene 에 Drug 가 있을 때만 데이터를 넣어주고, 마우스 이벤트를 적용한다.
+		// 이외의 Drug 는 display = 'none' 을 한다.
+		// 색 지정은... type1, 2, 3 가 있는데, type1 이 하나라도 포함되면 붉은색,
+		// type1 이 없고 type2 가 하나라도 존재할 경우 파란색, type1, 2 가 없고 3 만 존재하는 경우 검정색
+		// 아무것도 없을 경우에는 display = 'none' 이 된다.
 		d3.selectAll('g[id*="drug_"]')
 			.datum(function (d)	{
 				var transform = d3.select(this).attr('transform'),
@@ -122,7 +129,7 @@ function pathway ()	{
 	};
 
 	return function (opts)	{
-		addSVG(opts.cancer_type, function (xml)	{
+		// addSVG(opts.cancer_type, function (xml)	{
 			bio.modal({
 				id: 'drug_modal',
 				element: document.querySelector(opts.element),
@@ -139,12 +146,20 @@ function pathway ()	{
 			var contents = document.getElementById(
 											'pathway_contents'),
 					modal = document.querySelector('.modal-body');
+
+			var xml = d3.select('svg').node();
+			// console.log(xml.documentElement, temp)
 			
-			d3.select(xml.documentElement)
+			// d3.select(xml.documentElement)
+			// 	.attr('width', parseFloat(contents.style.width))
+			// 	.attr('height', parseFloat(contents.style.height));
+			
+			// contents.appendChild(xml.documentElement);
+			d3.select(xml)
 				.attr('width', parseFloat(contents.style.width))
 				.attr('height', parseFloat(contents.style.height));
 			
-			contents.appendChild(xml.documentElement);
+			contents.appendChild(xml);
 
 			modal.style.height = 
 			parseFloat(contents.style.height) * 0.8 + 'px';
@@ -152,7 +167,7 @@ function pathway ()	{
 			colorGenes(model.setting.defaultData.pathway,
 								model.setting.defaultData.patient);
 			drugEvent(opts.cancer_type);
-		});
+		// });
 
 		console.log('>>> Pathway reponse data: ', opts);
 		console.log('>>> Pathway setting data: ', model.setting);

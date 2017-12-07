@@ -35,7 +35,7 @@ function pathwayConfig ()	{
 				fill: function (data, idx, that)	{
 					return this.tagName === 'rect' ? color(data) : 
 								 data && data.frequency >= 30 ? 
-								'#F2F2F2' : '#333333';;
+								'#F2F2F2' : '#333333';
 				},
 			},
 			on: { 
