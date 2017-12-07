@@ -146,7 +146,12 @@ function pathway ()	{
 			var contents = document.getElementById(
 											'pathway_contents'),
 					modal = document.querySelector('.modal-body');
-			
+		
+			var margin = parseFloat(d3.select('#pathway_title')
+																.node().style.fontSize);
+
+			contents.style.height -= margin;
+
 			d3.select(xml.documentElement)
 				.attr('width', parseFloat(contents.style.width))
 				.attr('height', parseFloat(contents.style.height));
