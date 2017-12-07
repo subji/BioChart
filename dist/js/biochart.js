@@ -6881,7 +6881,7 @@ function pathway ()	{
 					modal = document.querySelector('.modal-body');
 		
 			var margin = parseFloat(d3.select('#pathway_title')
-																.node().style.fontSize);
+																.node().style.height);
 
 			contents.style.height -= margin;
 
