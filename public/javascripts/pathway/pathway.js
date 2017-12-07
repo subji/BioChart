@@ -148,7 +148,7 @@ function pathway ()	{
 					modal = document.querySelector('.modal-body');
 		
 			var margin = parseFloat(d3.select('#pathway_title')
-																.node().style.height);
+																.node().style.height) * 2;
 
 			console.log(margin);
 
