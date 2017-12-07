@@ -148,11 +148,11 @@ function pathway ()	{
 					modal = document.querySelector('.modal-body');
 		
 			var margin = parseFloat(d3.select('#pathway_title')
-																.node().style.height) * 2;
+																.node().style.height);
 
-			console.log(margin);
+			console.log(margin, contents.style.height);
 
-			contents.style.height -= margin + 'px';
+			contents.style.height = (parseFloat(contents.style.height) - margin) + 'px';
 
 			d3.select(xml.documentElement)
 				.attr('width', parseFloat(contents.style.width))
