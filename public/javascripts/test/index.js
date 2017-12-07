@@ -58,6 +58,34 @@
 //  //      bio.loading().end();
 //  //    },
 
+//  /*
+//     Landscape
+//   */
+//  // $.ajax({
+//  //    'type': 'POST',
+//  //    'url': '/files/datas',
+//  //    data: {
+//  //     name: 'landscape',
+//  //    },
+//  //    beforeSend: function () {
+//  //      bio.loading().start(document.querySelector('#main'), 900, 600);
+//  //    },
+//  //    success: function (d) {
+//  //      bio.landscape({
+// 	// 			element: '#main',
+// 	// 			width: 1620,
+// 	// 			height: 850,
+// 	// 			data: {
+// 	// 				pq: 'p',
+// 	// 				type: 'LUAD',
+// 	// 				data: d[0].data,
+// 	// 				title:d[0].data.name,
+// 	// 			},
+// 	// 		});
+
+//  //      bio.loading().end();
+//  //    },
+//  //  });
 
 //  /*
 //     Landscape
@@ -66,23 +94,22 @@
 //     'type': 'POST',
 //     'url': '/files/datas',
 //     data: {
-//      name: 'landscape',
+//      name: 'pathway',
 //     },
 //     beforeSend: function () {
 //       bio.loading().start(document.querySelector('#main'), 900, 600);
 //     },
 //     success: function (d) {
-//       bio.landscape({
-// 				element: '#main',
-// 				width: 1620,
-// 				height: 850,
-// 				data: {
-// 					pq: 'p',
-// 					type: 'LUAD',
-// 					data: d[0].data,
-// 					title:d[0].data.name,
-// 				},
-// 			});
+//       bio.pathway({
+//         width: 900,
+//         height: 600,
+//         element: '#main',
+//         data: {
+//           pathway: d[0].data.pathway_list,
+//           patient: d[0].data.gene_list,
+//         },
+//         cancer_type: d[0].data.cancer_type,
+//       });
 
 //       bio.loading().end();
 //     },
