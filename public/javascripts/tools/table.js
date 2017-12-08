@@ -154,7 +154,8 @@ function table ()	{
 		}
 
 		if (!opts.columns)	throw new Error('Not found Columns');
-
+		model = { cellData: [], cellWidth: [] };
+		
 		model.element = opts.element;
 		model.width = opts.width || 0;
 		model.height = opts.height || 0;

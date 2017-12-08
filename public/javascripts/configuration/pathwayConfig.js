@@ -122,26 +122,26 @@ function pathwayConfig ()	{
 							title = document.querySelector('.modal-title'),
 							body = document.querySelector('.modal-body');
 					// Example are post, but real is get.
-					$.ajax({
-						// type: 'POST',
-						// url: '/files',
-						type: 'GET',
-						url: '/models/drug/getPathwayDrugList?pathway_gene='
-									+ gene + '&cancer_type=' + data.cancer,
-						// data: { name: 'drug' },
-						success: function (d)	{
+					// $.ajax({
+					// 	// type: 'POST',
+					// 	// url: '/files',
+					// 	type: 'GET',
+					// 	url: '/models/drug/getPathwayDrugList?pathway_gene='
+					// 				+ gene + '&cancer_type=' + data.cancer,
+					// 	// data: { name: 'drug' },
+					// 	success: function (d)	{
 							title.innerHTML = '<div id="modal_gene_title">' + 
 															 	'Available drugs</div>' + 
 															 	'<div id="modal_gene_name">' + 
 															 	gene.toUpperCase() + '</div>';
 
 							bio.table({
-								height: 550,
+								height: 330,
 								element: body,
 								heads: ['Type', 'Drug', 'Level of approval', 
 												'Treated Cancer', 'Reference'],
 								// data: d.data.egfr,
-								data: d,
+								data: data.drugs,
 								columns: function (col, row, head, data, that)	{
 									if (col === 0) return drugShape(data.drug_type);
 									else if (col === 1) 	{
@@ -158,11 +158,11 @@ function pathwayConfig ()	{
 									else if (col === 4) 	return data.source;
 								},
 							});
-						},
-						error: function (err)	{
-							console.log('Error: ', err);
-						}
-					});
+					// 	},
+					// 	error: function (err)	{
+					// 		console.log('Error: ', err);
+					// 	}
+					// });
 
 					$('#drug_modal').modal({
 						keyboard: false,

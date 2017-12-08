@@ -107,6 +107,7 @@
 //         data: {
 //           pathway: d[0].data.pathway_list,
 //           patient: d[0].data.gene_list,
+//           drugs: d[0].data.drug_list,
 //           // drugs_list 로 붙어서 drug list 가 존재하는 gene 에 한해서만, 
 //           // [gene_name:[각 gene 별 drug 리스트.]]
 //         },

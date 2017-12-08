@@ -95,14 +95,52 @@ function pathway ()	{
 		d3.selectAll('text, rect').attr('class', '');
 	};
 
+	function coloringDrugs (dr, drId, type)	{
+		var color = d3.select('path[id*="' + drId + '_color"]');
 
+		if (type === 'type1')	{
+			color.style('fill', '#ff0000');
+		} else if (type === 'type2')	{
+			color.style('fill', '#0000ff');
+		} else if (type === 'type3')	{
+			color.style('fill', '#000000');
+		} else {
+			return;
+		}
+	};
 
-	function drugEvent (cancerType)	{
+	function disableDrugs (list)	{
+		var drugs = d3.selectAll('g[id*="drug_"]').nodes();
+		
+		bio.iteration.loop(drugs, function (dr)	{
+			var id = dr.id.replace('drug_', '').replace('_', '/').toUpperCase();
+			var hasDrug = false;
+
+			bio.iteration.loop(list, function (l, i)	{
+				if (l.gene.toUpperCase() === id)	{
+					hasDrug = true;
+
+					d3.select(dr).datum(function (d)	{
+						return {
+							drugs: l.drugs,
+						};
+					});
+
+					coloringDrugs(dr, dr.id, l.drugs[0].drug_type);
+				}
+			});	
+
+			if (!hasDrug)	{
+				d3.select(dr).remove();
+			}
+		});
+	};
+
+	function drugEvent (cancerType, drugs)	{
 		var config = bio.pathwayConfig().drug();
 
+		disableDrugs(drugs);
 
-		var temp = d3.selectAll('g[id*="drug_"]');
-		console.log(temp.nodes()[0])
 		// Gene 에 Drug 가 있을 때만 데이터를 넣어주고, 마우스 이벤트를 적용한다.
 		// 이외의 Drug 는 display = 'none' 을 한다.
 		// 색 지정은... type1, 2, 3 가 있는데, type1 이 하나라도 포함되면 붉은색,
@@ -116,6 +154,7 @@ function pathway ()	{
 										d3.transform(transform);
 
 				return {
+					drugs: d.drugs,
 					cancer: cancerType,
 					scaleX: trans.scale[0],
 					scaleY: trans.scale[1],
@@ -150,8 +189,6 @@ function pathway ()	{
 			var margin = parseFloat(d3.select('#pathway_title')
 																.node().style.height);
 
-			console.log(margin, contents.style.height);
-
 			contents.style.height = (parseFloat(contents.style.height) - margin) + 'px';
 
 			d3.select(xml.documentElement)
@@ -165,7 +202,7 @@ function pathway ()	{
 			
 			colorGenes(model.setting.defaultData.pathway,
 								model.setting.defaultData.patient);
-			drugEvent(opts.cancer_type);
+			drugEvent(opts.cancer_type, model.data.drugs);
 		});
 
 		console.log('>>> Pathway reponse data: ', opts);

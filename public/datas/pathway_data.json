@@ -1,6 +1,4068 @@
 {
   "data": {
     "cancer_type": "luad",
+    "drug_list": [
+      {
+        "agent": "everolimus",
+        "cancer": "Breast Neoplasms",
+        "dailymed_id": "e082a024-7850-400b-a5c2-2a140612562a",
+        "drug_class": "FDA approved",
+        "drug_type": "type2",
+        "gene_id": "AKT1",
+        "nci_id": "everolimus",
+        "source": "Handbook of Targeted Cancer Therapy (2015)"
+      },
+      {
+        "agent": "midostaurin",
+        "cancer": "Leukemia",
+        "dailymed_id": null,
+        "drug_class": "FDA approved",
+        "drug_type": "type2",
+        "gene_id": "AKT1",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "midostaurin",
+        "cancer": "Connective Tissue Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "FDA approved",
+        "drug_type": "type2",
+        "gene_id": "AKT1",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "gsk690693",
+        "cancer": "Breast Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "AKT1",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "staurosporine",
+        "cancer": "Connective Tissue Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "AKT1",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "staurosporine",
+        "cancer": "Leukemia",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "AKT1",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "enzastaurin",
+        "cancer": "Ovarian Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "AKT3",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "gsk690693",
+        "cancer": "Breast Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "AKT3",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "staurosporine",
+        "cancer": "Connective Tissue Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "AKT3",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "staurosporine",
+        "cancer": "Leukemia",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "AKT3",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "alectinib",
+        "cancer": "Lung Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "FDA approved",
+        "drug_type": "type1",
+        "gene_id": "ALK",
+        "nci_id": null,
+        "source": "My Cancer Genome (2015)"
+      },
+      {
+        "agent": "alectinib",
+        "cancer": "Lung Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "FDA approved",
+        "drug_type": "type1",
+        "gene_id": "ALK",
+        "nci_id": null,
+        "source": "VarDrugPub (2017.5)"
+      },
+      {
+        "agent": "brigatinib",
+        "cancer": "Lung Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "FDA approved",
+        "drug_type": "type1",
+        "gene_id": "ALK",
+        "nci_id": null,
+        "source": "My Cancer Genome (2015)"
+      },
+      {
+        "agent": "ceritinib",
+        "cancer": "Lung Neoplasms",
+        "dailymed_id": "",
+        "drug_class": "FDA approved",
+        "drug_type": "type1",
+        "gene_id": "ALK",
+        "nci_id": "ceritinib",
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "ceritinib",
+        "cancer": "Lung Neoplasms",
+        "dailymed_id": "",
+        "drug_class": "FDA approved",
+        "drug_type": "type1",
+        "gene_id": "ALK",
+        "nci_id": "ceritinib",
+        "source": "Manual curation (2016)"
+      },
+      {
+        "agent": "ceritinib",
+        "cancer": "Lung Neoplasms",
+        "dailymed_id": "",
+        "drug_class": "FDA approved",
+        "drug_type": "type1",
+        "gene_id": "ALK",
+        "nci_id": "ceritinib",
+        "source": "Handbook of Targeted Cancer Therapy (2015)"
+      },
+      {
+        "agent": "ceritinib",
+        "cancer": "Lung Neoplasms",
+        "dailymed_id": "",
+        "drug_class": "FDA approved",
+        "drug_type": "type1",
+        "gene_id": "ALK",
+        "nci_id": "ceritinib",
+        "source": "My Cancer Genome (2015)"
+      },
+      {
+        "agent": "crizotinib",
+        "cancer": "Lung Neoplasms",
+        "dailymed_id": "2a51b0de-47d6-455e-a94c-d2c737b04ff7",
+        "drug_class": "FDA approved",
+        "drug_type": "type1",
+        "gene_id": "ALK",
+        "nci_id": "crizotinib",
+        "source": "Manual curation (2016)"
+      },
+      {
+        "agent": "crizotinib",
+        "cancer": "Lung Neoplasms",
+        "dailymed_id": "2a51b0de-47d6-455e-a94c-d2c737b04ff7",
+        "drug_class": "FDA approved",
+        "drug_type": "type1",
+        "gene_id": "ALK",
+        "nci_id": "crizotinib",
+        "source": "VarDrugPub (2017.3)"
+      },
+      {
+        "agent": "crizotinib",
+        "cancer": "Lung Neoplasms",
+        "dailymed_id": "2a51b0de-47d6-455e-a94c-d2c737b04ff7",
+        "drug_class": "FDA approved",
+        "drug_type": "type1",
+        "gene_id": "ALK",
+        "nci_id": "crizotinib",
+        "source": "Handbook of Targeted Cancer Therapy (2015)"
+      },
+      {
+        "agent": "crizotinib",
+        "cancer": "Lung Neoplasms",
+        "dailymed_id": "2a51b0de-47d6-455e-a94c-d2c737b04ff7",
+        "drug_class": "FDA approved",
+        "drug_type": "type1",
+        "gene_id": "ALK",
+        "nci_id": "crizotinib",
+        "source": "My Cancer Genome (2015)"
+      },
+      {
+        "agent": "crizotinib",
+        "cancer": "Lung Neoplasms",
+        "dailymed_id": "2a51b0de-47d6-455e-a94c-d2c737b04ff7",
+        "drug_class": "FDA approved",
+        "drug_type": "type1",
+        "gene_id": "ALK",
+        "nci_id": "crizotinib",
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "pemetrexed",
+        "cancer": "Lung Neoplasms",
+        "dailymed_id": "f5a860f3-37ec-429c-ae04-9c88d7c55c08",
+        "drug_class": "FDA approved",
+        "drug_type": "type1",
+        "gene_id": "ALK",
+        "nci_id": "pemetrexeddisodium",
+        "source": "My Cancer Genome (2015)"
+      },
+      {
+        "agent": "ganetespib",
+        "cancer": "Lung Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type1",
+        "gene_id": "ALK",
+        "nci_id": null,
+        "source": "My Cancer Genome (2015)"
+      },
+      {
+        "agent": "retaspimycin",
+        "cancer": "Lung Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type1",
+        "gene_id": "ALK",
+        "nci_id": null,
+        "source": "My Cancer Genome (2015)"
+      },
+      {
+        "agent": "midostaurin",
+        "cancer": "Leukemia",
+        "dailymed_id": null,
+        "drug_class": "FDA approved",
+        "drug_type": "type2",
+        "gene_id": "ALK",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "midostaurin",
+        "cancer": "Connective Tissue Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "FDA approved",
+        "drug_type": "type2",
+        "gene_id": "ALK",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "alvocidib",
+        "cancer": "Leukemia",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "ALK",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "alvocidib",
+        "cancer": "Plasma Cell Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "ALK",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "alvocidib",
+        "cancer": "Gonadal Tissue Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "ALK",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "alvocidib",
+        "cancer": "Esophageal Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "ALK",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "staurosporine",
+        "cancer": "Connective Tissue Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "ALK",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "staurosporine",
+        "cancer": "Leukemia",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "ALK",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "gefitinib",
+        "cancer": "Lung Neoplasms",
+        "dailymed_id": "827d60e8-7e07-41b7-c28b-49ef1c4a5a41",
+        "drug_class": "FDA approved",
+        "drug_type": "type1",
+        "gene_id": "BRAF",
+        "nci_id": "gefitinib",
+        "source": "VarDrugPub (2017.3)"
+      },
+      {
+        "agent": "dabrafenib",
+        "cancer": "Lung Neoplasms",
+        "dailymed_id": "803beaaa-33f9-48cc-9a95-c2e887e095b4",
+        "drug_class": "Clinical Trials",
+        "drug_type": "type1",
+        "gene_id": "BRAF",
+        "nci_id": "dabrafenib",
+        "source": "Handbook of Targeted Cancer Therapy (2015)"
+      },
+      {
+        "agent": "dabrafenib",
+        "cancer": "Lung Neoplasms",
+        "dailymed_id": "803beaaa-33f9-48cc-9a95-c2e887e095b4",
+        "drug_class": "Clinical Trials",
+        "drug_type": "type1",
+        "gene_id": "BRAF",
+        "nci_id": "dabrafenib",
+        "source": "VarDrugPub (2017.5)"
+      },
+      {
+        "agent": "dabrafenib + trametinib",
+        "cancer": "Lung Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type1",
+        "gene_id": "BRAF",
+        "nci_id": null,
+        "source": "VarDrugPub (2017.5)"
+      },
+      {
+        "agent": "vemurafenib",
+        "cancer": "Lung Neoplasms",
+        "dailymed_id": "38eea320-7e0c-485a-bc30-98c3c45e2763",
+        "drug_class": "Clinical Trials",
+        "drug_type": "type1",
+        "gene_id": "BRAF",
+        "nci_id": "vemurafenib",
+        "source": "Manual curation (2016)"
+      },
+      {
+        "agent": "vemurafenib",
+        "cancer": "Lung Neoplasms",
+        "dailymed_id": "38eea320-7e0c-485a-bc30-98c3c45e2763",
+        "drug_class": "Clinical Trials",
+        "drug_type": "type1",
+        "gene_id": "BRAF",
+        "nci_id": "vemurafenib",
+        "source": "VarDrugPub (2017.3)"
+      },
+      {
+        "agent": "dabrafenib",
+        "cancer": "Melanoma",
+        "dailymed_id": "803beaaa-33f9-48cc-9a95-c2e887e095b4",
+        "drug_class": "FDA approved",
+        "drug_type": "type2",
+        "gene_id": "BRAF",
+        "nci_id": "dabrafenib",
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "dabrafenib",
+        "cancer": "Melanoma",
+        "dailymed_id": "803beaaa-33f9-48cc-9a95-c2e887e095b4",
+        "drug_class": "FDA approved",
+        "drug_type": "type2",
+        "gene_id": "BRAF",
+        "nci_id": "dabrafenib",
+        "source": "VarDrugPub (2017.5)"
+      },
+      {
+        "agent": "dabrafenib",
+        "cancer": "Melanoma",
+        "dailymed_id": "803beaaa-33f9-48cc-9a95-c2e887e095b4",
+        "drug_class": "FDA approved",
+        "drug_type": "type2",
+        "gene_id": "BRAF",
+        "nci_id": "dabrafenib",
+        "source": "VarDrugPub (2017.3)"
+      },
+      {
+        "agent": "dabrafenib + trametinib",
+        "cancer": "Melanoma",
+        "dailymed_id": null,
+        "drug_class": "FDA approved",
+        "drug_type": "type2",
+        "gene_id": "BRAF",
+        "nci_id": null,
+        "source": "VarDrugPub (2017.5)"
+      },
+      {
+        "agent": "dasatinib",
+        "cancer": "Leukemia",
+        "dailymed_id": "4764f37b-c9e6-4ede-bcc2-8a03b7c521df",
+        "drug_class": "FDA approved",
+        "drug_type": "type2",
+        "gene_id": "BRAF",
+        "nci_id": "dasatinib",
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "nilotinib",
+        "cancer": "Leukemia",
+        "dailymed_id": "6093952a-5248-45cb-ad17-33716a411146",
+        "drug_class": "FDA approved",
+        "drug_type": "type2",
+        "gene_id": "BRAF",
+        "nci_id": "nilotinib",
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "regorafenib",
+        "cancer": "Gastrointestinal Neoplasms",
+        "dailymed_id": "824f19c9-0546-4a8a-8d8f-c4055c04f7c7",
+        "drug_class": "FDA approved",
+        "drug_type": "type2",
+        "gene_id": "BRAF",
+        "nci_id": "regorafenib",
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "regorafenib",
+        "cancer": "Colorectal Neoplasms",
+        "dailymed_id": "824f19c9-0546-4a8a-8d8f-c4055c04f7c7",
+        "drug_class": "FDA approved",
+        "drug_type": "type2",
+        "gene_id": "BRAF",
+        "nci_id": "regorafenib",
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "sorafenib",
+        "cancer": "Kidney Neoplasms",
+        "dailymed_id": "b50667e4-5ebc-4968-a646-d605058dbef0",
+        "drug_class": "FDA approved",
+        "drug_type": "type2",
+        "gene_id": "BRAF",
+        "nci_id": "sorafenibtosylate",
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "trametinib",
+        "cancer": "Melanoma",
+        "dailymed_id": "aeaf0430-f8ad-4e72-9dbf-1954503c3410",
+        "drug_class": "FDA approved",
+        "drug_type": "type2",
+        "gene_id": "BRAF",
+        "nci_id": "trametinib",
+        "source": "VarDrugPub (2017.5)"
+      },
+      {
+        "agent": "trametinib",
+        "cancer": "Melanoma",
+        "dailymed_id": "aeaf0430-f8ad-4e72-9dbf-1954503c3410",
+        "drug_class": "FDA approved",
+        "drug_type": "type2",
+        "gene_id": "BRAF",
+        "nci_id": "trametinib",
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "vemurafenib",
+        "cancer": "Melanoma",
+        "dailymed_id": "38eea320-7e0c-485a-bc30-98c3c45e2763",
+        "drug_class": "FDA approved",
+        "drug_type": "type2",
+        "gene_id": "BRAF",
+        "nci_id": "vemurafenib",
+        "source": "VarDrugPub (2017.5)"
+      },
+      {
+        "agent": "vemurafenib",
+        "cancer": "Melanoma",
+        "dailymed_id": "38eea320-7e0c-485a-bc30-98c3c45e2763",
+        "drug_class": "FDA approved",
+        "drug_type": "type2",
+        "gene_id": "BRAF",
+        "nci_id": "vemurafenib",
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "vemurafenib",
+        "cancer": "Melanoma",
+        "dailymed_id": "38eea320-7e0c-485a-bc30-98c3c45e2763",
+        "drug_class": "FDA approved",
+        "drug_type": "type2",
+        "gene_id": "BRAF",
+        "nci_id": "vemurafenib",
+        "source": "VarDrugPub (2017.3)"
+      },
+      {
+        "agent": "dabrafenib",
+        "cancer": "Melanoma",
+        "dailymed_id": "803beaaa-33f9-48cc-9a95-c2e887e095b4",
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "BRAF",
+        "nci_id": "dabrafenib",
+        "source": "VarDrugPub (2017.5)"
+      },
+      {
+        "agent": "dabrafenib",
+        "cancer": "Nerve Tissue Neoplasms",
+        "dailymed_id": "803beaaa-33f9-48cc-9a95-c2e887e095b4",
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "BRAF",
+        "nci_id": "dabrafenib",
+        "source": "VarDrugPub (2017.5)"
+      },
+      {
+        "agent": "dabrafenib + trametinib",
+        "cancer": "Nerve Tissue Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "BRAF",
+        "nci_id": null,
+        "source": "VarDrugPub (2017.5)"
+      },
+      {
+        "agent": "dabrafenib + trametinib",
+        "cancer": "Glandular and Epithelial Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "BRAF",
+        "nci_id": null,
+        "source": "VarDrugPub (2017.5)"
+      },
+      {
+        "agent": "dabrafenib + trametinib",
+        "cancer": "Endometrial Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "BRAF",
+        "nci_id": null,
+        "source": "VarDrugPub (2017.5)"
+      },
+      {
+        "agent": "dabrafenib + trametinib",
+        "cancer": "Colorectal Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "BRAF",
+        "nci_id": null,
+        "source": "VarDrugPub (2017.5)"
+      },
+      {
+        "agent": "sorafenib",
+        "cancer": "Liver Neoplasms",
+        "dailymed_id": "b50667e4-5ebc-4968-a646-d605058dbef0",
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "BRAF",
+        "nci_id": "sorafenibtosylate",
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "vemurafenib + cobimetinib",
+        "cancer": "Plasma Cell Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "BRAF",
+        "nci_id": null,
+        "source": "VarDrugPub (2017.5)"
+      },
+      {
+        "agent": "veliparib",
+        "cancer": "Lung Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type1",
+        "gene_id": "BRCA1",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "olaparib",
+        "cancer": "Ovarian Neoplasms",
+        "dailymed_id": "5e31a6a9-864f-4aba-8085-37ee1ddcd499",
+        "drug_class": "FDA approved",
+        "drug_type": "type2",
+        "gene_id": "BRCA1",
+        "nci_id": "olaparib",
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "olaparib",
+        "cancer": "Breast Neoplasms",
+        "dailymed_id": "5e31a6a9-864f-4aba-8085-37ee1ddcd499",
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "BRCA1",
+        "nci_id": "olaparib",
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "veliparib",
+        "cancer": "Lymphoma",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "BRCA1",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "veliparib",
+        "cancer": "Breast Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "BRCA1",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "veliparib",
+        "cancer": "Lung Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type1",
+        "gene_id": "BRCA2",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "olaparib",
+        "cancer": "Ovarian Neoplasms",
+        "dailymed_id": "5e31a6a9-864f-4aba-8085-37ee1ddcd499",
+        "drug_class": "FDA approved",
+        "drug_type": "type2",
+        "gene_id": "BRCA2",
+        "nci_id": "olaparib",
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "olaparib",
+        "cancer": "Breast Neoplasms",
+        "dailymed_id": "5e31a6a9-864f-4aba-8085-37ee1ddcd499",
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "BRCA2",
+        "nci_id": "olaparib",
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "veliparib",
+        "cancer": "Lymphoma",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "BRCA2",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "veliparib",
+        "cancer": "Breast Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "BRCA2",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "palbociclib",
+        "cancer": "Lung Neoplasms",
+        "dailymed_id": "e0e6412f-50b4-4fd4-9364-62818d121a07",
+        "drug_class": "Clinical Trials",
+        "drug_type": "type1",
+        "gene_id": "CCND1",
+        "nci_id": "palbociclib",
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "lee011",
+        "cancer": "Hematologic Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "CCND1",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "lee011",
+        "cancer": "Solid Tumors",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "CCND1",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "palbociclib",
+        "cancer": "Gastrointestinal Neoplasms",
+        "dailymed_id": "e0e6412f-50b4-4fd4-9364-62818d121a07",
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "CCND1",
+        "nci_id": "palbociclib",
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "palbociclib",
+        "cancer": "Vascular Tissue Neoplasms",
+        "dailymed_id": "e0e6412f-50b4-4fd4-9364-62818d121a07",
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "CCND1",
+        "nci_id": "palbociclib",
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "staurosporine",
+        "cancer": "Connective Tissue Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "CCND1",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "staurosporine",
+        "cancer": "Leukemia",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "CCND1",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "palbociclib",
+        "cancer": "Lung Neoplasms",
+        "dailymed_id": "e0e6412f-50b4-4fd4-9364-62818d121a07",
+        "drug_class": "Clinical Trials",
+        "drug_type": "type1",
+        "gene_id": "CCND2",
+        "nci_id": "palbociclib",
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "alvocidib",
+        "cancer": "Leukemia",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "CCND2",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "alvocidib",
+        "cancer": "Plasma Cell Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "CCND2",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "alvocidib",
+        "cancer": "Gonadal Tissue Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "CCND2",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "alvocidib",
+        "cancer": "Esophageal Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "CCND2",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "lee011",
+        "cancer": "Hematologic Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "CCND2",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "lee011",
+        "cancer": "Solid Tumors",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "CCND2",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "palbociclib",
+        "cancer": "Vascular Tissue Neoplasms",
+        "dailymed_id": "e0e6412f-50b4-4fd4-9364-62818d121a07",
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "CCND2",
+        "nci_id": "palbociclib",
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "palbociclib",
+        "cancer": "Gastrointestinal Neoplasms",
+        "dailymed_id": "e0e6412f-50b4-4fd4-9364-62818d121a07",
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "CCND2",
+        "nci_id": "palbociclib",
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "alvocidib",
+        "cancer": "Leukemia",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "CCNE1",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "alvocidib",
+        "cancer": "Plasma Cell Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "CCNE1",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "alvocidib",
+        "cancer": "Gonadal Tissue Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "CCNE1",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "alvocidib",
+        "cancer": "Esophageal Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "CCNE1",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "staurosporine",
+        "cancer": "Connective Tissue Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "CCNE1",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "staurosporine",
+        "cancer": "Leukemia",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "CCNE1",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "palbociclib",
+        "cancer": "Lung Neoplasms",
+        "dailymed_id": "e0e6412f-50b4-4fd4-9364-62818d121a07",
+        "drug_class": "Clinical Trials",
+        "drug_type": "type1",
+        "gene_id": "CDK4",
+        "nci_id": "palbociclib",
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "palbociclib + fulvestrant",
+        "cancer": "Breast Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "FDA approved",
+        "drug_type": "type2",
+        "gene_id": "CDK4",
+        "nci_id": null,
+        "source": "Manual curation (2016)"
+      },
+      {
+        "agent": "alvocidib",
+        "cancer": "Plasma Cell Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "CDK4",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "alvocidib",
+        "cancer": "Gonadal Tissue Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "CDK4",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "alvocidib",
+        "cancer": "Esophageal Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "CDK4",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "alvocidib",
+        "cancer": "Leukemia",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "CDK4",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "lee011",
+        "cancer": "Hematologic Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "CDK4",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "lee011",
+        "cancer": "Solid Tumors",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "CDK4",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "palbociclib",
+        "cancer": "Gastrointestinal Neoplasms",
+        "dailymed_id": "e0e6412f-50b4-4fd4-9364-62818d121a07",
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "CDK4",
+        "nci_id": "palbociclib",
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "palbociclib",
+        "cancer": "Vascular Tissue Neoplasms",
+        "dailymed_id": "e0e6412f-50b4-4fd4-9364-62818d121a07",
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "CDK4",
+        "nci_id": "palbociclib",
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "staurosporine",
+        "cancer": "Connective Tissue Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "CDK4",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "staurosporine",
+        "cancer": "Leukemia",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "CDK4",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "palbociclib",
+        "cancer": "Lung Neoplasms",
+        "dailymed_id": "e0e6412f-50b4-4fd4-9364-62818d121a07",
+        "drug_class": "Clinical Trials",
+        "drug_type": "type1",
+        "gene_id": "CDK6",
+        "nci_id": "palbociclib",
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "palbociclib + fulvestrant",
+        "cancer": "Breast Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "FDA approved",
+        "drug_type": "type2",
+        "gene_id": "CDK6",
+        "nci_id": null,
+        "source": "Manual curation (2016)"
+      },
+      {
+        "agent": "alvocidib",
+        "cancer": "Plasma Cell Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "CDK6",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "alvocidib",
+        "cancer": "Gonadal Tissue Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "CDK6",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "alvocidib",
+        "cancer": "Esophageal Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "CDK6",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "alvocidib",
+        "cancer": "Leukemia",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "CDK6",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "lee011",
+        "cancer": "Solid Tumors",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "CDK6",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "lee011",
+        "cancer": "Hematologic Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "CDK6",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "palbociclib",
+        "cancer": "Vascular Tissue Neoplasms",
+        "dailymed_id": "e0e6412f-50b4-4fd4-9364-62818d121a07",
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "CDK6",
+        "nci_id": "palbociclib",
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "palbociclib",
+        "cancer": "Gastrointestinal Neoplasms",
+        "dailymed_id": "e0e6412f-50b4-4fd4-9364-62818d121a07",
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "CDK6",
+        "nci_id": "palbociclib",
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "staurosporine",
+        "cancer": "Connective Tissue Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "CDK6",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "staurosporine",
+        "cancer": "Leukemia",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "CDK6",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "palbociclib",
+        "cancer": "Lung Neoplasms",
+        "dailymed_id": "e0e6412f-50b4-4fd4-9364-62818d121a07",
+        "drug_class": "Clinical Trials",
+        "drug_type": "type1",
+        "gene_id": "CDKN2A",
+        "nci_id": "palbociclib",
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "lee011",
+        "cancer": "Hematologic Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "CDKN2A",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "lee011",
+        "cancer": "Solid Tumors",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "CDKN2A",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "palbociclib",
+        "cancer": "Gastrointestinal Neoplasms",
+        "dailymed_id": "e0e6412f-50b4-4fd4-9364-62818d121a07",
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "CDKN2A",
+        "nci_id": "palbociclib",
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "palbociclib",
+        "cancer": "Vascular Tissue Neoplasms",
+        "dailymed_id": "e0e6412f-50b4-4fd4-9364-62818d121a07",
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "CDKN2A",
+        "nci_id": "palbociclib",
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "afatinib",
+        "cancer": "Lung Neoplasms",
+        "dailymed_id": "fd638e5e-8032-e7ca-0179-95e96ab5d387",
+        "drug_class": "FDA approved",
+        "drug_type": "type1",
+        "gene_id": "EGFR",
+        "nci_id": "afatinibdimaleate",
+        "source": "VarDrugPub (2017.5)"
+      },
+      {
+        "agent": "afatinib",
+        "cancer": "Lung Neoplasms",
+        "dailymed_id": "fd638e5e-8032-e7ca-0179-95e96ab5d387",
+        "drug_class": "FDA approved",
+        "drug_type": "type1",
+        "gene_id": "EGFR",
+        "nci_id": "afatinibdimaleate",
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "afatinib",
+        "cancer": "Lung Neoplasms",
+        "dailymed_id": "fd638e5e-8032-e7ca-0179-95e96ab5d387",
+        "drug_class": "FDA approved",
+        "drug_type": "type1",
+        "gene_id": "EGFR",
+        "nci_id": "afatinibdimaleate",
+        "source": "Handbook of Targeted Cancer Therapy (2015)"
+      },
+      {
+        "agent": "afatinib",
+        "cancer": "Lung Neoplasms",
+        "dailymed_id": "fd638e5e-8032-e7ca-0179-95e96ab5d387",
+        "drug_class": "FDA approved",
+        "drug_type": "type1",
+        "gene_id": "EGFR",
+        "nci_id": "afatinibdimaleate",
+        "source": "My Cancer Genome (2015)"
+      },
+      {
+        "agent": "brigatinib",
+        "cancer": "Lung Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "FDA approved",
+        "drug_type": "type1",
+        "gene_id": "EGFR",
+        "nci_id": null,
+        "source": "VarDrugPub (2017.5)"
+      },
+      {
+        "agent": "brigatinib",
+        "cancer": "Lung Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "FDA approved",
+        "drug_type": "type1",
+        "gene_id": "EGFR",
+        "nci_id": null,
+        "source": "My Cancer Genome (2015)"
+      },
+      {
+        "agent": "carboplatin + pemetrexed",
+        "cancer": "Lung Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "FDA approved",
+        "drug_type": "type1",
+        "gene_id": "EGFR",
+        "nci_id": null,
+        "source": "VarDrugPub (2017.5)"
+      },
+      {
+        "agent": "carboplatin + taxol",
+        "cancer": "Lung Neoplasms",
+        "dailymed_id": "",
+        "drug_class": "FDA approved",
+        "drug_type": "type1",
+        "gene_id": "EGFR",
+        "nci_id": "CARBOPLATIN-TAXOL",
+        "source": "My Cancer Genome (2015)"
+      },
+      {
+        "agent": "docetaxel + carboplatin",
+        "cancer": "Lung Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "FDA approved",
+        "drug_type": "type1",
+        "gene_id": "EGFR",
+        "nci_id": null,
+        "source": "My Cancer Genome (2015)"
+      },
+      {
+        "agent": "docetaxel + cisplatin",
+        "cancer": "Lung Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "FDA approved",
+        "drug_type": "type1",
+        "gene_id": "EGFR",
+        "nci_id": null,
+        "source": "My Cancer Genome (2015)"
+      },
+      {
+        "agent": "erlotinib",
+        "cancer": "Lung Neoplasms",
+        "dailymed_id": "57bccb29-1c47-4c64-ab6a-77960a91cc20",
+        "drug_class": "FDA approved",
+        "drug_type": "type1",
+        "gene_id": "EGFR",
+        "nci_id": "erlotinibhydrochloride",
+        "source": "VarDrugPub (2017.3)"
+      },
+      {
+        "agent": "erlotinib",
+        "cancer": "Lung Neoplasms",
+        "dailymed_id": "57bccb29-1c47-4c64-ab6a-77960a91cc20",
+        "drug_class": "FDA approved",
+        "drug_type": "type1",
+        "gene_id": "EGFR",
+        "nci_id": "erlotinibhydrochloride",
+        "source": "Manual curation (2016)"
+      },
+      {
+        "agent": "erlotinib",
+        "cancer": "Lung Neoplasms",
+        "dailymed_id": "57bccb29-1c47-4c64-ab6a-77960a91cc20",
+        "drug_class": "FDA approved",
+        "drug_type": "type1",
+        "gene_id": "EGFR",
+        "nci_id": "erlotinibhydrochloride",
+        "source": "Handbook of Targeted Cancer Therapy (2015)"
+      },
+      {
+        "agent": "erlotinib",
+        "cancer": "Lung Neoplasms",
+        "dailymed_id": "57bccb29-1c47-4c64-ab6a-77960a91cc20",
+        "drug_class": "FDA approved",
+        "drug_type": "type1",
+        "gene_id": "EGFR",
+        "nci_id": "erlotinibhydrochloride",
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "erlotinib",
+        "cancer": "Lung Neoplasms",
+        "dailymed_id": "57bccb29-1c47-4c64-ab6a-77960a91cc20",
+        "drug_class": "FDA approved",
+        "drug_type": "type1",
+        "gene_id": "EGFR",
+        "nci_id": "erlotinibhydrochloride",
+        "source": "VarDrugPub (2017.5)"
+      },
+      {
+        "agent": "erlotinib",
+        "cancer": "Lung Neoplasms",
+        "dailymed_id": "57bccb29-1c47-4c64-ab6a-77960a91cc20",
+        "drug_class": "FDA approved",
+        "drug_type": "type1",
+        "gene_id": "EGFR",
+        "nci_id": "erlotinibhydrochloride",
+        "source": "My Cancer Genome (2015)"
+      },
+      {
+        "agent": "erlotinib + gemcitabine + cisplatin",
+        "cancer": "Lung Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "FDA approved",
+        "drug_type": "type1",
+        "gene_id": "EGFR",
+        "nci_id": null,
+        "source": "VarDrugPub (2017.3)"
+      },
+      {
+        "agent": "gefitinib",
+        "cancer": "Lung Neoplasms",
+        "dailymed_id": "827d60e8-7e07-41b7-c28b-49ef1c4a5a41",
+        "drug_class": "FDA approved",
+        "drug_type": "type1",
+        "gene_id": "EGFR",
+        "nci_id": "gefitinib",
+        "source": "VarDrugPub (2017.3)"
+      },
+      {
+        "agent": "gefitinib",
+        "cancer": "Lung Neoplasms",
+        "dailymed_id": "827d60e8-7e07-41b7-c28b-49ef1c4a5a41",
+        "drug_class": "FDA approved",
+        "drug_type": "type1",
+        "gene_id": "EGFR",
+        "nci_id": "gefitinib",
+        "source": "Handbook of Targeted Cancer Therapy (2015)"
+      },
+      {
+        "agent": "gefitinib",
+        "cancer": "Lung Neoplasms",
+        "dailymed_id": "827d60e8-7e07-41b7-c28b-49ef1c4a5a41",
+        "drug_class": "FDA approved",
+        "drug_type": "type1",
+        "gene_id": "EGFR",
+        "nci_id": "gefitinib",
+        "source": "Manual curation (2016)"
+      },
+      {
+        "agent": "gefitinib",
+        "cancer": "Lung Neoplasms",
+        "dailymed_id": "827d60e8-7e07-41b7-c28b-49ef1c4a5a41",
+        "drug_class": "FDA approved",
+        "drug_type": "type1",
+        "gene_id": "EGFR",
+        "nci_id": "gefitinib",
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "gefitinib",
+        "cancer": "Lung Neoplasms",
+        "dailymed_id": "827d60e8-7e07-41b7-c28b-49ef1c4a5a41",
+        "drug_class": "FDA approved",
+        "drug_type": "type1",
+        "gene_id": "EGFR",
+        "nci_id": "gefitinib",
+        "source": "VarDrugPub (2017.5)"
+      },
+      {
+        "agent": "gefitinib",
+        "cancer": "Lung Neoplasms",
+        "dailymed_id": "827d60e8-7e07-41b7-c28b-49ef1c4a5a41",
+        "drug_class": "FDA approved",
+        "drug_type": "type1",
+        "gene_id": "EGFR",
+        "nci_id": "gefitinib",
+        "source": "My Cancer Genome (2015)"
+      },
+      {
+        "agent": "gefitinib + docetaxel",
+        "cancer": "Lung Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "FDA approved",
+        "drug_type": "type1",
+        "gene_id": "EGFR",
+        "nci_id": null,
+        "source": "VarDrugPub (2017.3)"
+      },
+      {
+        "agent": "gemcitabine + carboplatin",
+        "cancer": "Lung Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "FDA approved",
+        "drug_type": "type1",
+        "gene_id": "EGFR",
+        "nci_id": null,
+        "source": "My Cancer Genome (2015)"
+      },
+      {
+        "agent": "gemcitabine + cisplatin",
+        "cancer": "Lung Neoplasms",
+        "dailymed_id": "",
+        "drug_class": "FDA approved",
+        "drug_type": "type1",
+        "gene_id": "EGFR",
+        "nci_id": "GEMCITABINE-CISPLATIN",
+        "source": "My Cancer Genome (2015)"
+      },
+      {
+        "agent": "osimertinib",
+        "cancer": "Lung Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "FDA approved",
+        "drug_type": "type1",
+        "gene_id": "EGFR",
+        "nci_id": null,
+        "source": "VarDrugPub (2017.5)"
+      },
+      {
+        "agent": "osimertinib",
+        "cancer": "Lung Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "FDA approved",
+        "drug_type": "type1",
+        "gene_id": "EGFR",
+        "nci_id": null,
+        "source": "Manual curation (2016)"
+      },
+      {
+        "agent": "pemetrexed",
+        "cancer": "Lung Neoplasms",
+        "dailymed_id": "f5a860f3-37ec-429c-ae04-9c88d7c55c08",
+        "drug_class": "FDA approved",
+        "drug_type": "type1",
+        "gene_id": "EGFR",
+        "nci_id": "pemetrexeddisodium",
+        "source": "VarDrugPub (2017.5)"
+      },
+      {
+        "agent": "pemetrexed + cisplatin",
+        "cancer": "Lung Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "FDA approved",
+        "drug_type": "type1",
+        "gene_id": "EGFR",
+        "nci_id": null,
+        "source": "My Cancer Genome (2015)"
+      },
+      {
+        "agent": "pemetrexed + cisplatin",
+        "cancer": "Lung Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "FDA approved",
+        "drug_type": "type1",
+        "gene_id": "EGFR",
+        "nci_id": null,
+        "source": "VarDrugPub (2017.5)"
+      },
+      {
+        "agent": "afatinib",
+        "cancer": "Lung Neoplasms",
+        "dailymed_id": "fd638e5e-8032-e7ca-0179-95e96ab5d387",
+        "drug_class": "Clinical Trials",
+        "drug_type": "type1",
+        "gene_id": "EGFR",
+        "nci_id": "afatinibdimaleate",
+        "source": "VarDrugPub (2017.3)"
+      },
+      {
+        "agent": "afatinib + cetuximab",
+        "cancer": "Lung Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type1",
+        "gene_id": "EGFR",
+        "nci_id": null,
+        "source": "VarDrugPub (2017.5)"
+      },
+      {
+        "agent": "afatinib + cetuximab",
+        "cancer": "Lung Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type1",
+        "gene_id": "EGFR",
+        "nci_id": null,
+        "source": "VarDrugPub (2017.3)"
+      },
+      {
+        "agent": "afatinib + cetuximab",
+        "cancer": "Lung Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type1",
+        "gene_id": "EGFR",
+        "nci_id": null,
+        "source": "My Cancer Genome (2015)"
+      },
+      {
+        "agent": "azd-9291",
+        "cancer": "Lung Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type1",
+        "gene_id": "EGFR",
+        "nci_id": null,
+        "source": "VarDrugPub (2017.5)"
+      },
+      {
+        "agent": "azd-9291",
+        "cancer": "Lung Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type1",
+        "gene_id": "EGFR",
+        "nci_id": null,
+        "source": "My Cancer Genome (2015)"
+      },
+      {
+        "agent": "carboplatin + pemetrexed + bevacizumab",
+        "cancer": "Lung Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type1",
+        "gene_id": "EGFR",
+        "nci_id": null,
+        "source": "VarDrugPub (2017.3)"
+      },
+      {
+        "agent": "cetuximab",
+        "cancer": "Lung Neoplasms",
+        "dailymed_id": "8bc6397e-4bd8-4d37-a007-a327e4da34d9",
+        "drug_class": "Clinical Trials",
+        "drug_type": "type1",
+        "gene_id": "EGFR",
+        "nci_id": "cetuximab",
+        "source": "Handbook of Targeted Cancer Therapy (2015)"
+      },
+      {
+        "agent": "dacomitinib",
+        "cancer": "Lung Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type1",
+        "gene_id": "EGFR",
+        "nci_id": null,
+        "source": "My Cancer Genome (2015)"
+      },
+      {
+        "agent": "dacomitinib",
+        "cancer": "Lung Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type1",
+        "gene_id": "EGFR",
+        "nci_id": null,
+        "source": "Handbook of Targeted Cancer Therapy (2015)"
+      },
+      {
+        "agent": "dacomitinib",
+        "cancer": "Lung Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type1",
+        "gene_id": "EGFR",
+        "nci_id": null,
+        "source": "VarDrugPub (2017.5)"
+      },
+      {
+        "agent": "hm61713",
+        "cancer": "Lung Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type1",
+        "gene_id": "EGFR",
+        "nci_id": null,
+        "source": "My Cancer Genome (2015)"
+      },
+      {
+        "agent": "icotinib",
+        "cancer": "Lung Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type1",
+        "gene_id": "EGFR",
+        "nci_id": null,
+        "source": "My Cancer Genome (2015)"
+      },
+      {
+        "agent": "icotinib",
+        "cancer": "Lung Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type1",
+        "gene_id": "EGFR",
+        "nci_id": null,
+        "source": "VarDrugPub (2017.5)"
+      },
+      {
+        "agent": "neratinib",
+        "cancer": "Lung Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type1",
+        "gene_id": "EGFR",
+        "nci_id": null,
+        "source": "My Cancer Genome (2015)"
+      },
+      {
+        "agent": "neratinib",
+        "cancer": "Lung Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type1",
+        "gene_id": "EGFR",
+        "nci_id": null,
+        "source": "VarDrugPub (2017.5)"
+      },
+      {
+        "agent": "neratinib",
+        "cancer": "Lung Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type1",
+        "gene_id": "EGFR",
+        "nci_id": null,
+        "source": "VarDrugPub (2017.3)"
+      },
+      {
+        "agent": "rociletinib",
+        "cancer": "Lung Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type1",
+        "gene_id": "EGFR",
+        "nci_id": null,
+        "source": "My Cancer Genome (2015)"
+      },
+      {
+        "agent": "rociletinib",
+        "cancer": "Lung Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type1",
+        "gene_id": "EGFR",
+        "nci_id": null,
+        "source": "Manual curation (2016)"
+      },
+      {
+        "agent": "rociletinib",
+        "cancer": "Lung Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type1",
+        "gene_id": "EGFR",
+        "nci_id": null,
+        "source": "VarDrugPub (2017.5)"
+      },
+      {
+        "agent": "wz4002 + trametinib",
+        "cancer": "Lung Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type1",
+        "gene_id": "EGFR",
+        "nci_id": null,
+        "source": "VarDrugPub (2017.5)"
+      },
+      {
+        "agent": "cetuximab",
+        "cancer": "Colorectal Neoplasms",
+        "dailymed_id": "8bc6397e-4bd8-4d37-a007-a327e4da34d9",
+        "drug_class": "FDA approved",
+        "drug_type": "type2",
+        "gene_id": "EGFR",
+        "nci_id": "cetuximab",
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "dasatinib",
+        "cancer": "Leukemia",
+        "dailymed_id": "4764f37b-c9e6-4ede-bcc2-8a03b7c521df",
+        "drug_class": "FDA approved",
+        "drug_type": "type2",
+        "gene_id": "EGFR",
+        "nci_id": "dasatinib",
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "ibrutinib",
+        "cancer": "Leukemia",
+        "dailymed_id": "0dfd0279-ff17-4ea9-89be-9803c71bab44",
+        "drug_class": "FDA approved",
+        "drug_type": "type2",
+        "gene_id": "EGFR",
+        "nci_id": "ibrutinib",
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "ibrutinib",
+        "cancer": "Lymphoma",
+        "dailymed_id": "0dfd0279-ff17-4ea9-89be-9803c71bab44",
+        "drug_class": "FDA approved",
+        "drug_type": "type2",
+        "gene_id": "EGFR",
+        "nci_id": "ibrutinib",
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "lapatinib",
+        "cancer": "Breast Neoplasms",
+        "dailymed_id": "63319b01-cad6-4d0a-c39b-938fa951a808",
+        "drug_class": "FDA approved",
+        "drug_type": "type2",
+        "gene_id": "EGFR",
+        "nci_id": "lapatinibditosylate",
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "lapatinib",
+        "cancer": "Brain Neoplasms",
+        "dailymed_id": "63319b01-cad6-4d0a-c39b-938fa951a808",
+        "drug_class": "FDA approved",
+        "drug_type": "type2",
+        "gene_id": "EGFR",
+        "nci_id": "lapatinibditosylate",
+        "source": "Handbook of Targeted Cancer Therapy (2015)"
+      },
+      {
+        "agent": "panitumumab",
+        "cancer": "Colorectal Neoplasms",
+        "dailymed_id": "e0fa4bca-f245-4d92-ae29-b0c630a315c2",
+        "drug_class": "FDA approved",
+        "drug_type": "type2",
+        "gene_id": "EGFR",
+        "nci_id": "panitumumab",
+        "source": "VarDrugPub (2017.3)"
+      },
+      {
+        "agent": "panitumumab",
+        "cancer": "Colorectal Neoplasms",
+        "dailymed_id": "e0fa4bca-f245-4d92-ae29-b0c630a315c2",
+        "drug_class": "FDA approved",
+        "drug_type": "type2",
+        "gene_id": "EGFR",
+        "nci_id": "panitumumab",
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "vandetanib",
+        "cancer": "Thyroid Neoplasms",
+        "dailymed_id": "d2a87691-c9ad-4753-97a1-311fccfe6515",
+        "drug_class": "FDA approved",
+        "drug_type": "type2",
+        "gene_id": "EGFR",
+        "nci_id": "vandetanib",
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "alisertib",
+        "cancer": "Lymphoma",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "EGFR",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "cediranib",
+        "cancer": "Sarcoma",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "EGFR",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "cediranib",
+        "cancer": "Muscle Tissue Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "EGFR",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "cetuximab",
+        "cancer": "Head and Neck Neoplasms",
+        "dailymed_id": "8bc6397e-4bd8-4d37-a007-a327e4da34d9",
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "EGFR",
+        "nci_id": "cetuximab",
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "dacomitinib",
+        "cancer": "Penile Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "EGFR",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "erlotinib",
+        "cancer": "Brain Neoplasms",
+        "dailymed_id": "57bccb29-1c47-4c64-ab6a-77960a91cc20",
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "EGFR",
+        "nci_id": "erlotinibhydrochloride",
+        "source": "Handbook of Targeted Cancer Therapy (2015)"
+      },
+      {
+        "agent": "erlotinib",
+        "cancer": "Thyroid Neoplasms",
+        "dailymed_id": "57bccb29-1c47-4c64-ab6a-77960a91cc20",
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "EGFR",
+        "nci_id": "erlotinibhydrochloride",
+        "source": "VarDrugPub (2017.3)"
+      },
+      {
+        "agent": "erlotinib",
+        "cancer": "Pancreatic Neoplasms",
+        "dailymed_id": "57bccb29-1c47-4c64-ab6a-77960a91cc20",
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "EGFR",
+        "nci_id": "erlotinibhydrochloride",
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "gefitinib",
+        "cancer": "Central Nervous System Neoplasms",
+        "dailymed_id": "827d60e8-7e07-41b7-c28b-49ef1c4a5a41",
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "EGFR",
+        "nci_id": "gefitinib",
+        "source": "VarDrugPub (2017.3)"
+      },
+      {
+        "agent": "gefitinib",
+        "cancer": "Brain Neoplasms",
+        "dailymed_id": "827d60e8-7e07-41b7-c28b-49ef1c4a5a41",
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "EGFR",
+        "nci_id": "gefitinib",
+        "source": "Handbook of Targeted Cancer Therapy (2015)"
+      },
+      {
+        "agent": "lapatinib",
+        "cancer": "Endometrial Neoplasms",
+        "dailymed_id": "63319b01-cad6-4d0a-c39b-938fa951a808",
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "EGFR",
+        "nci_id": "lapatinibditosylate",
+        "source": "VarDrugPub (2017.3)"
+      },
+      {
+        "agent": "staurosporine",
+        "cancer": "Connective Tissue Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "EGFR",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "staurosporine",
+        "cancer": "Leukemia",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "EGFR",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "vandetanib",
+        "cancer": "Brain Neoplasms",
+        "dailymed_id": "d2a87691-c9ad-4753-97a1-311fccfe6515",
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "EGFR",
+        "nci_id": "vandetanib",
+        "source": "Handbook of Targeted Cancer Therapy (2015)"
+      },
+      {
+        "agent": "afatinib",
+        "cancer": "Lung Neoplasms",
+        "dailymed_id": "fd638e5e-8032-e7ca-0179-95e96ab5d387",
+        "drug_class": "FDA approved",
+        "drug_type": "type1",
+        "gene_id": "ERBB2",
+        "nci_id": "afatinibdimaleate",
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "gefitinib",
+        "cancer": "Lung Neoplasms",
+        "dailymed_id": "827d60e8-7e07-41b7-c28b-49ef1c4a5a41",
+        "drug_class": "FDA approved",
+        "drug_type": "type1",
+        "gene_id": "ERBB2",
+        "nci_id": "gefitinib",
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "dasatinib",
+        "cancer": "Leukemia",
+        "dailymed_id": "4764f37b-c9e6-4ede-bcc2-8a03b7c521df",
+        "drug_class": "FDA approved",
+        "drug_type": "type2",
+        "gene_id": "ERBB2",
+        "nci_id": "dasatinib",
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "lapatinib",
+        "cancer": "Breast Neoplasms",
+        "dailymed_id": "63319b01-cad6-4d0a-c39b-938fa951a808",
+        "drug_class": "FDA approved",
+        "drug_type": "type2",
+        "gene_id": "ERBB2",
+        "nci_id": "lapatinibditosylate",
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "lapatinib",
+        "cancer": "Breast Neoplasms",
+        "dailymed_id": "63319b01-cad6-4d0a-c39b-938fa951a808",
+        "drug_class": "FDA approved",
+        "drug_type": "type2",
+        "gene_id": "ERBB2",
+        "nci_id": "lapatinibditosylate",
+        "source": "Handbook of Targeted Cancer Therapy (2015)"
+      },
+      {
+        "agent": "pertuzumab",
+        "cancer": "Breast Neoplasms",
+        "dailymed_id": "17f85d17-ab71-4f5b-9fe3-0b8c822f69ff",
+        "drug_class": "FDA approved",
+        "drug_type": "type2",
+        "gene_id": "ERBB2",
+        "nci_id": "pertuzumab",
+        "source": "Handbook of Targeted Cancer Therapy (2015)"
+      },
+      {
+        "agent": "pertuzumab",
+        "cancer": "Breast Neoplasms",
+        "dailymed_id": "17f85d17-ab71-4f5b-9fe3-0b8c822f69ff",
+        "drug_class": "FDA approved",
+        "drug_type": "type2",
+        "gene_id": "ERBB2",
+        "nci_id": "pertuzumab",
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "trastuzumab",
+        "cancer": "Breast Neoplasms",
+        "dailymed_id": "492dbdb2-077e-4064-bff3-372d6af0a7a2",
+        "drug_class": "FDA approved",
+        "drug_type": "type2",
+        "gene_id": "ERBB2",
+        "nci_id": "trastuzumab",
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "trastuzumab",
+        "cancer": "Breast Neoplasms",
+        "dailymed_id": "492dbdb2-077e-4064-bff3-372d6af0a7a2",
+        "drug_class": "FDA approved",
+        "drug_type": "type2",
+        "gene_id": "ERBB2",
+        "nci_id": "trastuzumab",
+        "source": "Handbook of Targeted Cancer Therapy (2015)"
+      },
+      {
+        "agent": "trastuzumab + pertuzumab + fulvestrant",
+        "cancer": "Breast Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "FDA approved",
+        "drug_type": "type2",
+        "gene_id": "ERBB2",
+        "nci_id": null,
+        "source": "VarDrugPub (2017.5)"
+      },
+      {
+        "agent": "vandetanib",
+        "cancer": "Thyroid Neoplasms",
+        "dailymed_id": "d2a87691-c9ad-4753-97a1-311fccfe6515",
+        "drug_class": "FDA approved",
+        "drug_type": "type2",
+        "gene_id": "ERBB2",
+        "nci_id": "vandetanib",
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "staurosporine",
+        "cancer": "Connective Tissue Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "ERBB2",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "staurosporine",
+        "cancer": "Leukemia",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "ERBB2",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "tanespimycin",
+        "cancer": "Thyroid Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "ERBB2",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "tanespimycin",
+        "cancer": "Eosinophilia",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "ERBB2",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "tanespimycin",
+        "cancer": "Lymphoma",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "ERBB2",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "gefitinib",
+        "cancer": "Lung Neoplasms",
+        "dailymed_id": "827d60e8-7e07-41b7-c28b-49ef1c4a5a41",
+        "drug_class": "FDA approved",
+        "drug_type": "type1",
+        "gene_id": "ERBB3",
+        "nci_id": "gefitinib",
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "dasatinib",
+        "cancer": "Leukemia",
+        "dailymed_id": "4764f37b-c9e6-4ede-bcc2-8a03b7c521df",
+        "drug_class": "FDA approved",
+        "drug_type": "type2",
+        "gene_id": "ERBB3",
+        "nci_id": "dasatinib",
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "vandetanib",
+        "cancer": "Thyroid Neoplasms",
+        "dailymed_id": "d2a87691-c9ad-4753-97a1-311fccfe6515",
+        "drug_class": "FDA approved",
+        "drug_type": "type2",
+        "gene_id": "ERBB3",
+        "nci_id": "vandetanib",
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "cediranib",
+        "cancer": "Muscle Tissue Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "ERBB3",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "cediranib",
+        "cancer": "Sarcoma",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "ERBB3",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "axitinib",
+        "cancer": "Kidney Neoplasms",
+        "dailymed_id": "8a903e31-936e-4ed7-8a59-59f32374f338",
+        "drug_class": "FDA approved",
+        "drug_type": "type2",
+        "gene_id": "FGFR",
+        "nci_id": "axitinib",
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "pazopanib",
+        "cancer": "Kidney Neoplasms",
+        "dailymed_id": "f5b7b3a4-c3a4-4722-8ca5-8f6a5c622553",
+        "drug_class": "FDA approved",
+        "drug_type": "type2",
+        "gene_id": "FGFR",
+        "nci_id": "pazopanibhydrochloride",
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "regorafenib",
+        "cancer": "Gastrointestinal Neoplasms",
+        "dailymed_id": "824f19c9-0546-4a8a-8d8f-c4055c04f7c7",
+        "drug_class": "FDA approved",
+        "drug_type": "type2",
+        "gene_id": "FGFR",
+        "nci_id": "regorafenib",
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "regorafenib",
+        "cancer": "Colorectal Neoplasms",
+        "dailymed_id": "824f19c9-0546-4a8a-8d8f-c4055c04f7c7",
+        "drug_class": "FDA approved",
+        "drug_type": "type2",
+        "gene_id": "FGFR",
+        "nci_id": "regorafenib",
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "alisertib",
+        "cancer": "Lymphoma",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "FGFR",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "cediranib",
+        "cancer": "Sarcoma",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "FGFR",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "cediranib",
+        "cancer": "Muscle Tissue Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "FGFR",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "pazopanib",
+        "cancer": "Sarcoma",
+        "dailymed_id": "f5b7b3a4-c3a4-4722-8ca5-8f6a5c622553",
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "FGFR",
+        "nci_id": "pazopanibhydrochloride",
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "staurosporine",
+        "cancer": "Connective Tissue Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "FGFR",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "staurosporine",
+        "cancer": "Leukemia",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "FGFR",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "axitinib",
+        "cancer": "Kidney Neoplasms",
+        "dailymed_id": "8a903e31-936e-4ed7-8a59-59f32374f338",
+        "drug_class": "FDA approved",
+        "drug_type": "type2",
+        "gene_id": "FGFR1",
+        "nci_id": "axitinib",
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "pazopanib",
+        "cancer": "Kidney Neoplasms",
+        "dailymed_id": "f5b7b3a4-c3a4-4722-8ca5-8f6a5c622553",
+        "drug_class": "FDA approved",
+        "drug_type": "type2",
+        "gene_id": "FGFR1",
+        "nci_id": "pazopanibhydrochloride",
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "regorafenib",
+        "cancer": "Gastrointestinal Neoplasms",
+        "dailymed_id": "824f19c9-0546-4a8a-8d8f-c4055c04f7c7",
+        "drug_class": "FDA approved",
+        "drug_type": "type2",
+        "gene_id": "FGFR1",
+        "nci_id": "regorafenib",
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "regorafenib",
+        "cancer": "Colorectal Neoplasms",
+        "dailymed_id": "824f19c9-0546-4a8a-8d8f-c4055c04f7c7",
+        "drug_class": "FDA approved",
+        "drug_type": "type2",
+        "gene_id": "FGFR1",
+        "nci_id": "regorafenib",
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "alisertib",
+        "cancer": "Lymphoma",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "FGFR1",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "cediranib",
+        "cancer": "Sarcoma",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "FGFR1",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "cediranib",
+        "cancer": "Muscle Tissue Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "FGFR1",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "pazopanib",
+        "cancer": "Sarcoma",
+        "dailymed_id": "f5b7b3a4-c3a4-4722-8ca5-8f6a5c622553",
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "FGFR1",
+        "nci_id": "pazopanibhydrochloride",
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "staurosporine",
+        "cancer": "Connective Tissue Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "FGFR1",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "staurosporine",
+        "cancer": "Leukemia",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "FGFR1",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "axitinib",
+        "cancer": "Kidney Neoplasms",
+        "dailymed_id": "8a903e31-936e-4ed7-8a59-59f32374f338",
+        "drug_class": "FDA approved",
+        "drug_type": "type2",
+        "gene_id": "FGFR2",
+        "nci_id": "axitinib",
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "regorafenib",
+        "cancer": "Gastrointestinal Neoplasms",
+        "dailymed_id": "824f19c9-0546-4a8a-8d8f-c4055c04f7c7",
+        "drug_class": "FDA approved",
+        "drug_type": "type2",
+        "gene_id": "FGFR2",
+        "nci_id": "regorafenib",
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "regorafenib",
+        "cancer": "Colorectal Neoplasms",
+        "dailymed_id": "824f19c9-0546-4a8a-8d8f-c4055c04f7c7",
+        "drug_class": "FDA approved",
+        "drug_type": "type2",
+        "gene_id": "FGFR2",
+        "nci_id": "regorafenib",
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "cediranib",
+        "cancer": "Muscle Tissue Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "FGFR2",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "cediranib",
+        "cancer": "Sarcoma",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "FGFR2",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "staurosporine",
+        "cancer": "Connective Tissue Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "FGFR2",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "staurosporine",
+        "cancer": "Leukemia",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "FGFR2",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "axitinib",
+        "cancer": "Kidney Neoplasms",
+        "dailymed_id": "8a903e31-936e-4ed7-8a59-59f32374f338",
+        "drug_class": "FDA approved",
+        "drug_type": "type2",
+        "gene_id": "FGFR3",
+        "nci_id": "axitinib",
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "pazopanib",
+        "cancer": "Kidney Neoplasms",
+        "dailymed_id": "f5b7b3a4-c3a4-4722-8ca5-8f6a5c622553",
+        "drug_class": "FDA approved",
+        "drug_type": "type2",
+        "gene_id": "FGFR3",
+        "nci_id": "pazopanibhydrochloride",
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "alisertib",
+        "cancer": "Lymphoma",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "FGFR3",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "cediranib",
+        "cancer": "Muscle Tissue Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "FGFR3",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "cediranib",
+        "cancer": "Sarcoma",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "FGFR3",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "pazopanib",
+        "cancer": "Sarcoma",
+        "dailymed_id": "f5b7b3a4-c3a4-4722-8ca5-8f6a5c622553",
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "FGFR3",
+        "nci_id": "pazopanibhydrochloride",
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "staurosporine",
+        "cancer": "Connective Tissue Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "FGFR3",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "staurosporine",
+        "cancer": "Leukemia",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "FGFR3",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "selumetinib",
+        "cancer": "Lung Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type1",
+        "gene_id": "HRAS",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "trametinib",
+        "cancer": "Melanoma",
+        "dailymed_id": "aeaf0430-f8ad-4e72-9dbf-1954503c3410",
+        "drug_class": "FDA approved",
+        "drug_type": "type2",
+        "gene_id": "HRAS",
+        "nci_id": "trametinib",
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "lonafarnib",
+        "cancer": "Leukemia",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "HRAS",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "crizotinib",
+        "cancer": "Lung Neoplasms",
+        "dailymed_id": "2a51b0de-47d6-455e-a94c-d2c737b04ff7",
+        "drug_class": "FDA approved",
+        "drug_type": "type1",
+        "gene_id": "IGF1R",
+        "nci_id": "crizotinib",
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "linsitinib",
+        "cancer": "Connective Tissue Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "IGF1R",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "staurosporine",
+        "cancer": "Connective Tissue Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "IGF1R",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "staurosporine",
+        "cancer": "Leukemia",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "IGF1R",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "axitinib",
+        "cancer": "Kidney Neoplasms",
+        "dailymed_id": "8a903e31-936e-4ed7-8a59-59f32374f338",
+        "drug_class": "FDA approved",
+        "drug_type": "type2",
+        "gene_id": "KDR",
+        "nci_id": "axitinib",
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "cabozantinib",
+        "cancer": "Thyroid Neoplasms",
+        "dailymed_id": "1a0c3bea-c87b-4d25-bb44-5f0174da6b34",
+        "drug_class": "FDA approved",
+        "drug_type": "type2",
+        "gene_id": "KDR",
+        "nci_id": "cabozantinib-s-malate",
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "pazopanib",
+        "cancer": "Kidney Neoplasms",
+        "dailymed_id": "f5b7b3a4-c3a4-4722-8ca5-8f6a5c622553",
+        "drug_class": "FDA approved",
+        "drug_type": "type2",
+        "gene_id": "KDR",
+        "nci_id": "pazopanibhydrochloride",
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "ramucirumab",
+        "cancer": "Stomach Neoplasms",
+        "dailymed_id": "c6080942-dee6-423e-b688-1272c2ae90d4",
+        "drug_class": "FDA approved",
+        "drug_type": "type2",
+        "gene_id": "KDR",
+        "nci_id": "ramucirumab",
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "ramucirumab",
+        "cancer": "Esophageal Neoplasms",
+        "dailymed_id": "c6080942-dee6-423e-b688-1272c2ae90d4",
+        "drug_class": "FDA approved",
+        "drug_type": "type2",
+        "gene_id": "KDR",
+        "nci_id": "ramucirumab",
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "regorafenib",
+        "cancer": "Gastrointestinal Neoplasms",
+        "dailymed_id": "824f19c9-0546-4a8a-8d8f-c4055c04f7c7",
+        "drug_class": "FDA approved",
+        "drug_type": "type2",
+        "gene_id": "KDR",
+        "nci_id": "regorafenib",
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "regorafenib",
+        "cancer": "Colorectal Neoplasms",
+        "dailymed_id": "824f19c9-0546-4a8a-8d8f-c4055c04f7c7",
+        "drug_class": "FDA approved",
+        "drug_type": "type2",
+        "gene_id": "KDR",
+        "nci_id": "regorafenib",
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "sorafenib",
+        "cancer": "Kidney Neoplasms",
+        "dailymed_id": "b50667e4-5ebc-4968-a646-d605058dbef0",
+        "drug_class": "FDA approved",
+        "drug_type": "type2",
+        "gene_id": "KDR",
+        "nci_id": "sorafenibtosylate",
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "sunitinib",
+        "cancer": "Kidney Neoplasms",
+        "dailymed_id": "43a4d7f8-48ae-4a63-9108-2fa8e3ea9d9c",
+        "drug_class": "FDA approved",
+        "drug_type": "type2",
+        "gene_id": "KDR",
+        "nci_id": "sunitinibmalate",
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "sunitinib",
+        "cancer": "Gastrointestinal Neoplasms",
+        "dailymed_id": "43a4d7f8-48ae-4a63-9108-2fa8e3ea9d9c",
+        "drug_class": "FDA approved",
+        "drug_type": "type2",
+        "gene_id": "KDR",
+        "nci_id": "sunitinibmalate",
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "vandetanib",
+        "cancer": "Thyroid Neoplasms",
+        "dailymed_id": "d2a87691-c9ad-4753-97a1-311fccfe6515",
+        "drug_class": "FDA approved",
+        "drug_type": "type2",
+        "gene_id": "KDR",
+        "nci_id": "vandetanib",
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "alisertib",
+        "cancer": "Lymphoma",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "KDR",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "cediranib",
+        "cancer": "Sarcoma",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "KDR",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "cediranib",
+        "cancer": "Muscle Tissue Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "KDR",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "fostamatinib",
+        "cancer": "Head and Neck Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "KDR",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "pazopanib",
+        "cancer": "Sarcoma",
+        "dailymed_id": "f5b7b3a4-c3a4-4722-8ca5-8f6a5c622553",
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "KDR",
+        "nci_id": "pazopanibhydrochloride",
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "sorafenib",
+        "cancer": "Liver Neoplasms",
+        "dailymed_id": "b50667e4-5ebc-4968-a646-d605058dbef0",
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "KDR",
+        "nci_id": "sorafenibtosylate",
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "staurosporine",
+        "cancer": "Connective Tissue Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "KDR",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "staurosporine",
+        "cancer": "Leukemia",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "KDR",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "sunitinib",
+        "cancer": "Pancreatic Neoplasms",
+        "dailymed_id": "43a4d7f8-48ae-4a63-9108-2fa8e3ea9d9c",
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "KDR",
+        "nci_id": "sunitinibmalate",
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "erlotinib",
+        "cancer": "Lung Neoplasms",
+        "dailymed_id": "57bccb29-1c47-4c64-ab6a-77960a91cc20",
+        "drug_class": "FDA approved",
+        "drug_type": "type1",
+        "gene_id": "KRAS",
+        "nci_id": "erlotinibhydrochloride",
+        "source": "VarDrugPub (2017.3)"
+      },
+      {
+        "agent": "defactinib",
+        "cancer": "Lung Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type1",
+        "gene_id": "KRAS",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "selumetinib",
+        "cancer": "Lung Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type1",
+        "gene_id": "KRAS",
+        "nci_id": null,
+        "source": "Handbook of Targeted Cancer Therapy (2015)"
+      },
+      {
+        "agent": "sorafenib",
+        "cancer": "Lung Neoplasms",
+        "dailymed_id": "b50667e4-5ebc-4968-a646-d605058dbef0",
+        "drug_class": "Clinical Trials",
+        "drug_type": "type1",
+        "gene_id": "KRAS",
+        "nci_id": "sorafenibtosylate",
+        "source": "Handbook of Targeted Cancer Therapy (2015)"
+      },
+      {
+        "agent": "trametinib",
+        "cancer": "Lung Neoplasms",
+        "dailymed_id": "aeaf0430-f8ad-4e72-9dbf-1954503c3410",
+        "drug_class": "Clinical Trials",
+        "drug_type": "type1",
+        "gene_id": "KRAS",
+        "nci_id": "trametinib",
+        "source": "Handbook of Targeted Cancer Therapy (2015)"
+      },
+      {
+        "agent": "cetuximab",
+        "cancer": "Colorectal Neoplasms",
+        "dailymed_id": "8bc6397e-4bd8-4d37-a007-a327e4da34d9",
+        "drug_class": "FDA approved",
+        "drug_type": "type2",
+        "gene_id": "KRAS",
+        "nci_id": "cetuximab",
+        "source": "VarDrugPub (2017.3)"
+      },
+      {
+        "agent": "cetuximab + irinotecan",
+        "cancer": "Colorectal Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "FDA approved",
+        "drug_type": "type2",
+        "gene_id": "KRAS",
+        "nci_id": null,
+        "source": "VarDrugPub (2017.5)"
+      },
+      {
+        "agent": "cetuximab + folinic acid + fluorouracil + oxaliplatin",
+        "cancer": "Colorectal Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "KRAS",
+        "nci_id": null,
+        "source": "VarDrugPub (2017.3)"
+      },
+      {
+        "agent": "folfiri + cetuximab",
+        "cancer": "Colorectal Neoplasms",
+        "dailymed_id": "",
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "KRAS",
+        "nci_id": "FOLFIRI-CETUXIMAB",
+        "source": "VarDrugPub (2017.3)"
+      },
+      {
+        "agent": "folinic acid +  fluorouracil + oxaliplatin + cetuximab",
+        "cancer": "Colorectal Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "KRAS",
+        "nci_id": null,
+        "source": "VarDrugPub (2017.3)"
+      },
+      {
+        "agent": "mek162",
+        "cancer": "Melanoma",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "KRAS",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "selumetinib",
+        "cancer": "Lung Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type1",
+        "gene_id": "MAP2K1",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "trametinib",
+        "cancer": "Melanoma",
+        "dailymed_id": "aeaf0430-f8ad-4e72-9dbf-1954503c3410",
+        "drug_class": "FDA approved",
+        "drug_type": "type2",
+        "gene_id": "MAP2K1",
+        "nci_id": "trametinib",
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "staurosporine",
+        "cancer": "Connective Tissue Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "MAP2K1",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "staurosporine",
+        "cancer": "Leukemia",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "MAP2K1",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "afatinib + crizotinib",
+        "cancer": "Lung Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "FDA approved",
+        "drug_type": "type1",
+        "gene_id": "MET",
+        "nci_id": null,
+        "source": "VarDrugPub (2017.5)"
+      },
+      {
+        "agent": "crizotinib",
+        "cancer": "Lung Neoplasms",
+        "dailymed_id": "2a51b0de-47d6-455e-a94c-d2c737b04ff7",
+        "drug_class": "FDA approved",
+        "drug_type": "type1",
+        "gene_id": "MET",
+        "nci_id": "crizotinib",
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "onartuzumab",
+        "cancer": "Lung Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type1",
+        "gene_id": "MET",
+        "nci_id": null,
+        "source": "Handbook of Targeted Cancer Therapy (2015)"
+      },
+      {
+        "agent": "axitinib",
+        "cancer": "Kidney Neoplasms",
+        "dailymed_id": "8a903e31-936e-4ed7-8a59-59f32374f338",
+        "drug_class": "FDA approved",
+        "drug_type": "type2",
+        "gene_id": "MET",
+        "nci_id": "axitinib",
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "cabozantinib",
+        "cancer": "Thyroid Neoplasms",
+        "dailymed_id": "1a0c3bea-c87b-4d25-bb44-5f0174da6b34",
+        "drug_class": "FDA approved",
+        "drug_type": "type2",
+        "gene_id": "MET",
+        "nci_id": "cabozantinib-s-malate",
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "midostaurin",
+        "cancer": "Leukemia",
+        "dailymed_id": null,
+        "drug_class": "FDA approved",
+        "drug_type": "type2",
+        "gene_id": "MET",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "midostaurin",
+        "cancer": "Connective Tissue Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "FDA approved",
+        "drug_type": "type2",
+        "gene_id": "MET",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "cediranib",
+        "cancer": "Sarcoma",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "MET",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "cediranib",
+        "cancer": "Muscle Tissue Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "MET",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "staurosporine",
+        "cancer": "Connective Tissue Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "MET",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "staurosporine",
+        "cancer": "Leukemia",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "MET",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "everolimus",
+        "cancer": "Neuroepithelial Neoplasms",
+        "dailymed_id": "e082a024-7850-400b-a5c2-2a140612562a",
+        "drug_class": "FDA approved",
+        "drug_type": "type2",
+        "gene_id": "mTOR",
+        "nci_id": "everolimus",
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "everolimus",
+        "cancer": "Breast Neoplasms",
+        "dailymed_id": "e082a024-7850-400b-a5c2-2a140612562a",
+        "drug_class": "FDA approved",
+        "drug_type": "type2",
+        "gene_id": "mTOR",
+        "nci_id": "everolimus",
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "everolimus",
+        "cancer": "Kidney Neoplasms",
+        "dailymed_id": "e082a024-7850-400b-a5c2-2a140612562a",
+        "drug_class": "FDA approved",
+        "drug_type": "type2",
+        "gene_id": "mTOR",
+        "nci_id": "everolimus",
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "rapamycin",
+        "cancer": "Skin Neoplasms",
+        "dailymed_id": "f06f88c9-462c-4bf3-aac3-2d155680df6d",
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "mTOR",
+        "nci_id": "",
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "everolimus",
+        "cancer": "Breast Neoplasms",
+        "dailymed_id": "e082a024-7850-400b-a5c2-2a140612562a",
+        "drug_class": "FDA approved",
+        "drug_type": "type2",
+        "gene_id": "NF1",
+        "nci_id": "everolimus",
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "everolimus",
+        "cancer": "Kidney Neoplasms",
+        "dailymed_id": "e082a024-7850-400b-a5c2-2a140612562a",
+        "drug_class": "FDA approved",
+        "drug_type": "type2",
+        "gene_id": "NF1",
+        "nci_id": "everolimus",
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "everolimus",
+        "cancer": "Neuroepithelial Neoplasms",
+        "dailymed_id": "e082a024-7850-400b-a5c2-2a140612562a",
+        "drug_class": "FDA approved",
+        "drug_type": "type2",
+        "gene_id": "NF1",
+        "nci_id": "everolimus",
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "everolimus",
+        "cancer": "Brain Neoplasms",
+        "dailymed_id": "e082a024-7850-400b-a5c2-2a140612562a",
+        "drug_class": "FDA approved",
+        "drug_type": "type2",
+        "gene_id": "NF1",
+        "nci_id": "everolimus",
+        "source": "Handbook of Targeted Cancer Therapy (2015)"
+      },
+      {
+        "agent": "bronticuzumab",
+        "cancer": "Solid Tumors",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "NOTCH1",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "bronticuzumab",
+        "cancer": "Lymphoma",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "NOTCH1",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "tarextumab",
+        "cancer": "Solid Tumors",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "NOTCH2",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "selumetinib",
+        "cancer": "Lung Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type1",
+        "gene_id": "NRAS",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "mek162",
+        "cancer": "Melanoma",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "NRAS",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "crizotinib",
+        "cancer": "Lung Neoplasms",
+        "dailymed_id": "2a51b0de-47d6-455e-a94c-d2c737b04ff7",
+        "drug_class": "FDA approved",
+        "drug_type": "type1",
+        "gene_id": "NTRK",
+        "nci_id": "crizotinib",
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "midostaurin",
+        "cancer": "Leukemia",
+        "dailymed_id": null,
+        "drug_class": "FDA approved",
+        "drug_type": "type2",
+        "gene_id": "NTRK",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "midostaurin",
+        "cancer": "Connective Tissue Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "FDA approved",
+        "drug_type": "type2",
+        "gene_id": "NTRK",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "nilotinib",
+        "cancer": "Leukemia",
+        "dailymed_id": "6093952a-5248-45cb-ad17-33716a411146",
+        "drug_class": "FDA approved",
+        "drug_type": "type2",
+        "gene_id": "NTRK",
+        "nci_id": "nilotinib",
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "alisertib",
+        "cancer": "Lymphoma",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "NTRK",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "staurosporine",
+        "cancer": "Connective Tissue Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "NTRK",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "staurosporine",
+        "cancer": "Leukemia",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "NTRK",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "imatinib",
+        "cancer": "Gastrointestinal Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "FDA approved",
+        "drug_type": "type2",
+        "gene_id": "PDGFR",
+        "nci_id": null,
+        "source": "VarDrugPub (2017.3)"
+      },
+      {
+        "agent": "imatinib",
+        "cancer": "Gastrointestinal Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "FDA approved",
+        "drug_type": "type2",
+        "gene_id": "PDGFRA",
+        "nci_id": null,
+        "source": "VarDrugPub (2017.3)"
+      },
+      {
+        "agent": "everolimus",
+        "cancer": "Breast Neoplasms",
+        "dailymed_id": "e082a024-7850-400b-a5c2-2a140612562a",
+        "drug_class": "FDA approved",
+        "drug_type": "type2",
+        "gene_id": "PI(3)K",
+        "nci_id": "everolimus",
+        "source": "Handbook of Targeted Cancer Therapy (2015)"
+      },
+      {
+        "agent": "idelalisib",
+        "cancer": "Lymphoma",
+        "dailymed_id": "efbdafa9-d18c-4e85-b4a2-1e620fc74e50",
+        "drug_class": "FDA approved",
+        "drug_type": "type2",
+        "gene_id": "PI(3)K",
+        "nci_id": "idelalisib",
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "trastuzumab",
+        "cancer": "Breast Neoplasms",
+        "dailymed_id": "492dbdb2-077e-4064-bff3-372d6af0a7a2",
+        "drug_class": "FDA approved",
+        "drug_type": "type2",
+        "gene_id": "PI(3)K",
+        "nci_id": "trastuzumab",
+        "source": "Handbook of Targeted Cancer Therapy (2015)"
+      },
+      {
+        "agent": "alpelisib",
+        "cancer": "Breast Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "PI(3)K",
+        "nci_id": null,
+        "source": "Handbook of Targeted Cancer Therapy (2015)"
+      },
+      {
+        "agent": "buparlisib",
+        "cancer": "Breast Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "PI(3)K",
+        "nci_id": null,
+        "source": "Handbook of Targeted Cancer Therapy (2015)"
+      },
+      {
+        "agent": "gsk2636771",
+        "cancer": "Brain Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "PI(3)K",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "staurosporine",
+        "cancer": "Leukemia",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "PI(3)K",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "staurosporine",
+        "cancer": "Connective Tissue Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "PI(3)K",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "sunitinib",
+        "cancer": "Brain Neoplasms",
+        "dailymed_id": "43a4d7f8-48ae-4a63-9108-2fa8e3ea9d9c",
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "PI(3)K",
+        "nci_id": "sunitinibmalate",
+        "source": "Handbook of Targeted Cancer Therapy (2015)"
+      },
+      {
+        "agent": "temsirolimus",
+        "cancer": "Breast Neoplasms",
+        "dailymed_id": "95b7dc92-2180-42f1-8699-3c28f609e674",
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "PI(3)K",
+        "nci_id": "temsirolimus",
+        "source": "Handbook of Targeted Cancer Therapy (2015)"
+      },
+      {
+        "agent": "temsirolimus",
+        "cancer": "Brain Neoplasms",
+        "dailymed_id": "95b7dc92-2180-42f1-8699-3c28f609e674",
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "PI(3)K",
+        "nci_id": "temsirolimus",
+        "source": "Handbook of Targeted Cancer Therapy (2015)"
+      },
+      {
+        "agent": "everolimus",
+        "cancer": "Breast Neoplasms",
+        "dailymed_id": "e082a024-7850-400b-a5c2-2a140612562a",
+        "drug_class": "FDA approved",
+        "drug_type": "type2",
+        "gene_id": "PIK3CA",
+        "nci_id": "everolimus",
+        "source": "Handbook of Targeted Cancer Therapy (2015)"
+      },
+      {
+        "agent": "idelalisib",
+        "cancer": "Lymphoma",
+        "dailymed_id": "efbdafa9-d18c-4e85-b4a2-1e620fc74e50",
+        "drug_class": "FDA approved",
+        "drug_type": "type2",
+        "gene_id": "PIK3CA",
+        "nci_id": "idelalisib",
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "trastuzumab",
+        "cancer": "Breast Neoplasms",
+        "dailymed_id": "492dbdb2-077e-4064-bff3-372d6af0a7a2",
+        "drug_class": "FDA approved",
+        "drug_type": "type2",
+        "gene_id": "PIK3CA",
+        "nci_id": "trastuzumab",
+        "source": "Handbook of Targeted Cancer Therapy (2015)"
+      },
+      {
+        "agent": "alpelisib",
+        "cancer": "Breast Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "PIK3CA",
+        "nci_id": null,
+        "source": "Handbook of Targeted Cancer Therapy (2015)"
+      },
+      {
+        "agent": "buparlisib",
+        "cancer": "Breast Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "PIK3CA",
+        "nci_id": null,
+        "source": "Handbook of Targeted Cancer Therapy (2015)"
+      },
+      {
+        "agent": "gsk2636771",
+        "cancer": "Brain Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "PIK3CA",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "staurosporine",
+        "cancer": "Connective Tissue Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "PIK3CA",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "staurosporine",
+        "cancer": "Leukemia",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "PIK3CA",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "sunitinib",
+        "cancer": "Brain Neoplasms",
+        "dailymed_id": "43a4d7f8-48ae-4a63-9108-2fa8e3ea9d9c",
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "PIK3CA",
+        "nci_id": "sunitinibmalate",
+        "source": "Handbook of Targeted Cancer Therapy (2015)"
+      },
+      {
+        "agent": "temsirolimus",
+        "cancer": "Breast Neoplasms",
+        "dailymed_id": "95b7dc92-2180-42f1-8699-3c28f609e674",
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "PIK3CA",
+        "nci_id": "temsirolimus",
+        "source": "Handbook of Targeted Cancer Therapy (2015)"
+      },
+      {
+        "agent": "everolimus",
+        "cancer": "Breast Neoplasms",
+        "dailymed_id": "e082a024-7850-400b-a5c2-2a140612562a",
+        "drug_class": "FDA approved",
+        "drug_type": "type2",
+        "gene_id": "PIK3R1",
+        "nci_id": "everolimus",
+        "source": "Handbook of Targeted Cancer Therapy (2015)"
+      },
+      {
+        "agent": "temsirolimus",
+        "cancer": "Breast Neoplasms",
+        "dailymed_id": "95b7dc92-2180-42f1-8699-3c28f609e674",
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "PIK3R1",
+        "nci_id": "temsirolimus",
+        "source": "Handbook of Targeted Cancer Therapy (2015)"
+      },
+      {
+        "agent": "temsirolimus",
+        "cancer": "Brain Neoplasms",
+        "dailymed_id": "95b7dc92-2180-42f1-8699-3c28f609e674",
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "PIK3R1",
+        "nci_id": "temsirolimus",
+        "source": "Handbook of Targeted Cancer Therapy (2015)"
+      },
+      {
+        "agent": "everolimus",
+        "cancer": "Brain Neoplasms",
+        "dailymed_id": "e082a024-7850-400b-a5c2-2a140612562a",
+        "drug_class": "FDA approved",
+        "drug_type": "type2",
+        "gene_id": "PTEN",
+        "nci_id": "everolimus",
+        "source": "Handbook of Targeted Cancer Therapy (2015)"
+      },
+      {
+        "agent": "everolimus",
+        "cancer": "Breast Neoplasms",
+        "dailymed_id": "e082a024-7850-400b-a5c2-2a140612562a",
+        "drug_class": "FDA approved",
+        "drug_type": "type2",
+        "gene_id": "PTEN",
+        "nci_id": "everolimus",
+        "source": "Handbook of Targeted Cancer Therapy (2015)"
+      },
+      {
+        "agent": "alpelisib",
+        "cancer": "Breast Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "PTEN",
+        "nci_id": null,
+        "source": "Handbook of Targeted Cancer Therapy (2015)"
+      },
+      {
+        "agent": "buparlisib",
+        "cancer": "Breast Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "PTEN",
+        "nci_id": null,
+        "source": "Handbook of Targeted Cancer Therapy (2015)"
+      },
+      {
+        "agent": "gsk2636771",
+        "cancer": "Brain Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "PTEN",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "temsirolimus",
+        "cancer": "Breast Neoplasms",
+        "dailymed_id": "95b7dc92-2180-42f1-8699-3c28f609e674",
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "PTEN",
+        "nci_id": "temsirolimus",
+        "source": "Handbook of Targeted Cancer Therapy (2015)"
+      },
+      {
+        "agent": "erlotinib",
+        "cancer": "Lung Neoplasms",
+        "dailymed_id": "57bccb29-1c47-4c64-ab6a-77960a91cc20",
+        "drug_class": "FDA approved",
+        "drug_type": "type1",
+        "gene_id": "RAS",
+        "nci_id": "erlotinibhydrochloride",
+        "source": "VarDrugPub (2017.3)"
+      },
+      {
+        "agent": "defactinib",
+        "cancer": "Lung Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type1",
+        "gene_id": "RAS",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "selumetinib",
+        "cancer": "Lung Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type1",
+        "gene_id": "RAS",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "selumetinib",
+        "cancer": "Lung Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type1",
+        "gene_id": "RAS",
+        "nci_id": null,
+        "source": "Handbook of Targeted Cancer Therapy (2015)"
+      },
+      {
+        "agent": "sorafenib",
+        "cancer": "Lung Neoplasms",
+        "dailymed_id": "b50667e4-5ebc-4968-a646-d605058dbef0",
+        "drug_class": "Clinical Trials",
+        "drug_type": "type1",
+        "gene_id": "RAS",
+        "nci_id": "sorafenibtosylate",
+        "source": "Handbook of Targeted Cancer Therapy (2015)"
+      },
+      {
+        "agent": "trametinib",
+        "cancer": "Lung Neoplasms",
+        "dailymed_id": "aeaf0430-f8ad-4e72-9dbf-1954503c3410",
+        "drug_class": "Clinical Trials",
+        "drug_type": "type1",
+        "gene_id": "RAS",
+        "nci_id": "trametinib",
+        "source": "Handbook of Targeted Cancer Therapy (2015)"
+      },
+      {
+        "agent": "cetuximab",
+        "cancer": "Colorectal Neoplasms",
+        "dailymed_id": "8bc6397e-4bd8-4d37-a007-a327e4da34d9",
+        "drug_class": "FDA approved",
+        "drug_type": "type2",
+        "gene_id": "RAS",
+        "nci_id": "cetuximab",
+        "source": "VarDrugPub (2017.3)"
+      },
+      {
+        "agent": "cetuximab + irinotecan",
+        "cancer": "Colorectal Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "FDA approved",
+        "drug_type": "type2",
+        "gene_id": "RAS",
+        "nci_id": null,
+        "source": "VarDrugPub (2017.5)"
+      },
+      {
+        "agent": "cetuximab + folinic acid + fluorouracil + oxaliplatin",
+        "cancer": "Colorectal Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "RAS",
+        "nci_id": null,
+        "source": "VarDrugPub (2017.3)"
+      },
+      {
+        "agent": "folfiri + cetuximab",
+        "cancer": "Colorectal Neoplasms",
+        "dailymed_id": "",
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "RAS",
+        "nci_id": "FOLFIRI-CETUXIMAB",
+        "source": "VarDrugPub (2017.3)"
+      },
+      {
+        "agent": "folinic acid +  fluorouracil + oxaliplatin + cetuximab",
+        "cancer": "Colorectal Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "RAS",
+        "nci_id": null,
+        "source": "VarDrugPub (2017.3)"
+      },
+      {
+        "agent": "mek162",
+        "cancer": "Melanoma",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "RAS",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "cabozantinib",
+        "cancer": "Lung Neoplasms",
+        "dailymed_id": "1a0c3bea-c87b-4d25-bb44-5f0174da6b34",
+        "drug_class": "Clinical Trials",
+        "drug_type": "type1",
+        "gene_id": "RET",
+        "nci_id": "cabozantinib-s-malate",
+        "source": "My Cancer Genome (2015)"
+      },
+      {
+        "agent": "vandetanib",
+        "cancer": "Lung Neoplasms",
+        "dailymed_id": "d2a87691-c9ad-4753-97a1-311fccfe6515",
+        "drug_class": "Clinical Trials",
+        "drug_type": "type1",
+        "gene_id": "RET",
+        "nci_id": "vandetanib",
+        "source": "Handbook of Targeted Cancer Therapy (2015)"
+      },
+      {
+        "agent": "axitinib",
+        "cancer": "Kidney Neoplasms",
+        "dailymed_id": "8a903e31-936e-4ed7-8a59-59f32374f338",
+        "drug_class": "FDA approved",
+        "drug_type": "type2",
+        "gene_id": "RET",
+        "nci_id": "axitinib",
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "cabozantinib",
+        "cancer": "Thyroid Neoplasms",
+        "dailymed_id": "1a0c3bea-c87b-4d25-bb44-5f0174da6b34",
+        "drug_class": "FDA approved",
+        "drug_type": "type2",
+        "gene_id": "RET",
+        "nci_id": "cabozantinib-s-malate",
+        "source": "VarDrugPub (2017.5)"
+      },
+      {
+        "agent": "dasatinib",
+        "cancer": "Leukemia",
+        "dailymed_id": "4764f37b-c9e6-4ede-bcc2-8a03b7c521df",
+        "drug_class": "FDA approved",
+        "drug_type": "type2",
+        "gene_id": "RET",
+        "nci_id": "dasatinib",
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "ibrutinib",
+        "cancer": "Leukemia",
+        "dailymed_id": "0dfd0279-ff17-4ea9-89be-9803c71bab44",
+        "drug_class": "FDA approved",
+        "drug_type": "type2",
+        "gene_id": "RET",
+        "nci_id": "ibrutinib",
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "ibrutinib",
+        "cancer": "Lymphoma",
+        "dailymed_id": "0dfd0279-ff17-4ea9-89be-9803c71bab44",
+        "drug_class": "FDA approved",
+        "drug_type": "type2",
+        "gene_id": "RET",
+        "nci_id": "ibrutinib",
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "midostaurin",
+        "cancer": "Leukemia",
+        "dailymed_id": null,
+        "drug_class": "FDA approved",
+        "drug_type": "type2",
+        "gene_id": "RET",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "midostaurin",
+        "cancer": "Connective Tissue Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "FDA approved",
+        "drug_type": "type2",
+        "gene_id": "RET",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "nilotinib",
+        "cancer": "Leukemia",
+        "dailymed_id": "6093952a-5248-45cb-ad17-33716a411146",
+        "drug_class": "FDA approved",
+        "drug_type": "type2",
+        "gene_id": "RET",
+        "nci_id": "nilotinib",
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "regorafenib",
+        "cancer": "Gastrointestinal Neoplasms",
+        "dailymed_id": "824f19c9-0546-4a8a-8d8f-c4055c04f7c7",
+        "drug_class": "FDA approved",
+        "drug_type": "type2",
+        "gene_id": "RET",
+        "nci_id": "regorafenib",
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "regorafenib",
+        "cancer": "Colorectal Neoplasms",
+        "dailymed_id": "824f19c9-0546-4a8a-8d8f-c4055c04f7c7",
+        "drug_class": "FDA approved",
+        "drug_type": "type2",
+        "gene_id": "RET",
+        "nci_id": "regorafenib",
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "sorafenib",
+        "cancer": "Kidney Neoplasms",
+        "dailymed_id": "b50667e4-5ebc-4968-a646-d605058dbef0",
+        "drug_class": "FDA approved",
+        "drug_type": "type2",
+        "gene_id": "RET",
+        "nci_id": "sorafenibtosylate",
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "sunitinib",
+        "cancer": "Kidney Neoplasms",
+        "dailymed_id": "43a4d7f8-48ae-4a63-9108-2fa8e3ea9d9c",
+        "drug_class": "FDA approved",
+        "drug_type": "type2",
+        "gene_id": "RET",
+        "nci_id": "sunitinibmalate",
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "sunitinib",
+        "cancer": "Gastrointestinal Neoplasms",
+        "dailymed_id": "43a4d7f8-48ae-4a63-9108-2fa8e3ea9d9c",
+        "drug_class": "FDA approved",
+        "drug_type": "type2",
+        "gene_id": "RET",
+        "nci_id": "sunitinibmalate",
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "vandetanib",
+        "cancer": "Thyroid Neoplasms",
+        "dailymed_id": "d2a87691-c9ad-4753-97a1-311fccfe6515",
+        "drug_class": "FDA approved",
+        "drug_type": "type2",
+        "gene_id": "RET",
+        "nci_id": "vandetanib",
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "alisertib",
+        "cancer": "Lymphoma",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "RET",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "cediranib",
+        "cancer": "Sarcoma",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "RET",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "cediranib",
+        "cancer": "Muscle Tissue Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "RET",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "sorafenib",
+        "cancer": "Liver Neoplasms",
+        "dailymed_id": "b50667e4-5ebc-4968-a646-d605058dbef0",
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "RET",
+        "nci_id": "sorafenibtosylate",
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "staurosporine",
+        "cancer": "Leukemia",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "RET",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "staurosporine",
+        "cancer": "Connective Tissue Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "RET",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "sunitinib",
+        "cancer": "Pancreatic Neoplasms",
+        "dailymed_id": "43a4d7f8-48ae-4a63-9108-2fa8e3ea9d9c",
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "RET",
+        "nci_id": "sunitinibmalate",
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "crizotinib",
+        "cancer": "Lung Neoplasms",
+        "dailymed_id": "2a51b0de-47d6-455e-a94c-d2c737b04ff7",
+        "drug_class": "FDA approved",
+        "drug_type": "type1",
+        "gene_id": "ROS1",
+        "nci_id": "crizotinib",
+        "source": "Manual curation (2016)"
+      },
+      {
+        "agent": "crizotinib",
+        "cancer": "Lung Neoplasms",
+        "dailymed_id": "2a51b0de-47d6-455e-a94c-d2c737b04ff7",
+        "drug_class": "FDA approved",
+        "drug_type": "type1",
+        "gene_id": "ROS1",
+        "nci_id": "crizotinib",
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "midostaurin",
+        "cancer": "Leukemia",
+        "dailymed_id": null,
+        "drug_class": "FDA approved",
+        "drug_type": "type2",
+        "gene_id": "ROS1",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "midostaurin",
+        "cancer": "Connective Tissue Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "FDA approved",
+        "drug_type": "type2",
+        "gene_id": "ROS1",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "alisertib",
+        "cancer": "Lymphoma",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "ROS1",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "staurosporine",
+        "cancer": "Connective Tissue Neoplasms",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "ROS1",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "staurosporine",
+        "cancer": "Leukemia",
+        "dailymed_id": null,
+        "drug_class": "Clinical Trials",
+        "drug_type": "type2",
+        "gene_id": "ROS1",
+        "nci_id": null,
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "everolimus",
+        "cancer": "Breast Neoplasms",
+        "dailymed_id": "e082a024-7850-400b-a5c2-2a140612562a",
+        "drug_class": "FDA approved",
+        "drug_type": "type2",
+        "gene_id": "TSC1",
+        "nci_id": "everolimus",
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "everolimus",
+        "cancer": "Kidney Neoplasms",
+        "dailymed_id": "e082a024-7850-400b-a5c2-2a140612562a",
+        "drug_class": "FDA approved",
+        "drug_type": "type2",
+        "gene_id": "TSC1",
+        "nci_id": "everolimus",
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "everolimus",
+        "cancer": "Neuroepithelial Neoplasms",
+        "dailymed_id": "e082a024-7850-400b-a5c2-2a140612562a",
+        "drug_class": "FDA approved",
+        "drug_type": "type2",
+        "gene_id": "TSC1",
+        "nci_id": "everolimus",
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "everolimus",
+        "cancer": "Breast Neoplasms",
+        "dailymed_id": "e082a024-7850-400b-a5c2-2a140612562a",
+        "drug_class": "FDA approved",
+        "drug_type": "type2",
+        "gene_id": "TSC1/2",
+        "nci_id": "everolimus",
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "everolimus",
+        "cancer": "Kidney Neoplasms",
+        "dailymed_id": "e082a024-7850-400b-a5c2-2a140612562a",
+        "drug_class": "FDA approved",
+        "drug_type": "type2",
+        "gene_id": "TSC1/2",
+        "nci_id": "everolimus",
+        "source": "IntOGen (2015)"
+      },
+      {
+        "agent": "everolimus",
+        "cancer": "Neuroepithelial Neoplasms",
+        "dailymed_id": "e082a024-7850-400b-a5c2-2a140612562a",
+        "drug_class": "FDA approved",
+        "drug_type": "type2",
+        "gene_id": "TSC1/2",
+        "nci_id": "everolimus",
+        "source": "IntOGen (2015)"
+      }
+    ],
     "gene_list": [
       "PIK3CA",
       "AKT1",
