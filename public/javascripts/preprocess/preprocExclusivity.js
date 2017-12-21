@@ -254,7 +254,7 @@ function preprocExclusivity ()	{
 			heatmap: new RegExp(/(A|B|D|E|M|\.){10,}/, 'g'),
 		};
 
-		// merged(data.survival.patient, data.survival.types);
+		merged(data.survival.patient, data.survival.types);
 		forHeatmap(data.heatmap);
 		forNetwork(data.network);
 		forSurvival(data.survival);
