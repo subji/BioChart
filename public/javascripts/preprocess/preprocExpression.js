@@ -201,10 +201,12 @@ function preprocExpression ()	{
 		getSubtype(data.subtype_list);
 		loopCohort(model.all_rna_list);
 
-		model.patient = {
-			name: data.sample_rna_list[0].participant_id,
-			data: toPatient(data.sample_rna_list[0].participant_id),
-		};
+		if (data.sample_rna_list.length > 0)	{
+			model.patient = {
+				name: data.sample_rna_list[0].participant_id,
+				data: toPatient(data.sample_rna_list[0].participant_id),
+			};
+		}
 
 		bio.iteration.loop(model.bar, function (b)	{
 			b.y = model.axis.bar.y[1];
