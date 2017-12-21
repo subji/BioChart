@@ -40,7 +40,7 @@ function boilerPlate ()	{
 		// Ethnicity of Group.
 		'hispanic or latino': { color: '#B8642F', order: 1 },
 		'not hispanic or latino': { color: '#55C53E', order: 2 },
-		// Histological Type of Group.
+		// Histological Type of LUAD Group.
 		'lung acinar adenocarcinoma': { color: '#716190', order: 1 },
 		'lung adenocarcinoma mixed subtype': { color: '#5154DE', order: 2 },
 		'lung adenocarcinoma- not otherwise specified (nos)': { color: '#8E9A7E', order: 3 },
@@ -53,6 +53,10 @@ function boilerPlate ()	{
 		'lung signet ring adenocarcinoma': { color: '#C1386E', order: 10 },
 		'lung solid pattern predominant adenocarcinoma': { color: '#D7A355', order: 11 },
 		'mucinous (colloid) carcinoma': { color: '#243833', order: 12 },
+		// Histological Type of GBM Group
+		'glioblastoma multiforme (gbm)': { color: '#716190', order: 1 },
+		'treated primary gbm': { color: '#5154DE', order: 2 },
+		'untreated primary (de novo) gbm': { color: '#8E9A7E', order: 3 },
 		// Anatomic Neoplasm Subdivision of Group.
 		'bronchial': { color: '#F9E3B9', order: 1 },
 		'l-lower': { color: '#FBA2A3', order: 2 },
@@ -128,17 +132,23 @@ function boilerPlate ()	{
 		'progressive disease': { color: '#C1746B', order: 3 },
 		'stable disease': { color: '#CD4C2A', order: 4 },
 		// Followup Treatment Success.
-		'complete remission/response': { color: '#BDED73', order: 1 },
-		'partial remission/response': { color: '#8649F3', order: 2 },
-		'progressive disease': { color: '#C1746B', order: 3 },
-		'stable disease': { color: '#CD4C2A', order: 4 },
+		// 'complete remission/response': { color: '#BDED73', order: 1 },
+		// 'partial remission/response': { color: '#8649F3', order: 2 },
+		// 'progressive disease': { color: '#C1746B', order: 3 },
+		// 'stable disease': { color: '#CD4C2A', order: 4 },
 		// Tobacco Smoking History.
 		'Lifelong Non-Smoker': { color: '#C4B5BB', order: 1 },
 		'Current Smoker': { color: '#896C78', order: 2 },
 		'Current Reformed Smoker for > 15 yrs': { color: '#3B0A1E', order: 3 },
 		'Current Reformed Smoker for < or = 15 yrs': { color: '#2F0818', order: 4 },
 		'Current Reformed Smoker, Duration Not Specified': { color: '#17040C', order: 5 },
+		// Treatment outcome of primary therapy.
+		// 'complete remission/response': { color: '#BDED73', order: 1 },
+		// 'partial remission/response': { color: '#8649F3', order: 2 },
+		// 'progressive disease': { color: '#C1746B', order: 3 },
+		// 'stable disease': { color: '#CD4C2A', order: 4 },
 		'NA': { color: '#D6E2E3', order: 6 },
+		
 	};
 
 	model.exclusivityInfo = {
