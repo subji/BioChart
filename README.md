@@ -2,3 +2,69 @@ BioChart 0.0.1
 ==============
 
 > This is a set of charts for Clinical Decision support.
+
+```
+	Expression
+
+	$.ajax({
+		type: 'GET',
+		url: expressionUrl,
+		data: expressionReqParams,
+		beforeSend: function ()	{
+			bio.loading().start(document.querySelector('#main'), width, height);
+		},
+		success: function (d)	{
+			bio.expression({
+				element: '#main',
+				width: "userdefined width",
+				height: "userdefined height",
+				requestData: {
+					source: "cohort_source",
+					cancer_type: "sample_cancer_type",
+					sample_id: "sample_id",
+					signature: 'PAM50',
+					filter: "cohort_filter_option",
+				},
+				data: d.data,
+			});
+
+			bio.loading().end();
+		},
+	});
+  ```
+
+```
+	Exclusivity
+
+	$.ajax({
+    'type': 'GET',
+    'url': '/rest/mutext',
+    data: {
+      source: 'GDAC',
+      cancer_type: 'luad',
+      sample_id: $('#sample_id').val(),
+    },
+    beforeSend: function () {
+      bio.loading().start(document.querySelector('#main'), 1620, 850);
+    },
+    success: function (d) {
+      bio.exclusivity({
+        element: '#main',
+        width: 1620,
+        height: 850,
+        data: {
+          heatmap: d.data.file_list[1].contents,
+          network: d.data.file_list[0].contents,
+          sample: d.data.sample_variants,
+          survival: {
+            patient: d.data.patient_list,
+            types: d.data.variant_types,
+          },
+          type: 'LUAD',
+        }
+      });
+
+      bio.loading().end();
+    },
+  });
+  ```
