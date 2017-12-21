@@ -57,6 +57,15 @@ function boilerPlate ()	{
 		'glioblastoma multiforme (gbm)': { color: '#716190', order: 1 },
 		'treated primary gbm': { color: '#5154DE', order: 2 },
 		'untreated primary (de novo) gbm': { color: '#8E9A7E', order: 3 },
+		// Histological Type of BRCA Group
+		'infiltrating carcinoma nos': { color: '#716190', order: 1 },
+		'infiltrating ductal carcinoma': { color: '#5154DE', order: 2 },
+		'infiltrating lobular carcinoma': { color: '#8E9A7E', order: 3 },
+		'medullary carcinoma': { color: '#2F91DE', order: 4 },
+		'metaplastic carcinoma': { color: '#ED6EBD', order: 5 },
+		'mixed histology (please specify)': { color: '#1C8D7A', order: 6 },
+		'mucinous carcinoma': { color: '#B2EE86', order: 7 },
+		'other, specify': { color: '#785E54', order: 8 },
 		// Anatomic Neoplasm Subdivision of Group.
 		'bronchial': { color: '#F9E3B9', order: 1 },
 		'l-lower': { color: '#FBA2A3', order: 2 },
@@ -127,28 +136,26 @@ function boilerPlate ()	{
 		'g12v': { color: '#25080B', order: 5 },
 		'other': { color: '#C91DAB', order: 6 },
 		// Primary Therapy Outcome Success.
+		// Treatment outcome of primary therapy.
+		// Followup Treatment Success.
 		'complete remission/response': { color: '#BDED73', order: 1 },
 		'partial remission/response': { color: '#8649F3', order: 2 },
 		'progressive disease': { color: '#C1746B', order: 3 },
 		'stable disease': { color: '#CD4C2A', order: 4 },
-		// Followup Treatment Success.
-		// 'complete remission/response': { color: '#BDED73', order: 1 },
-		// 'partial remission/response': { color: '#8649F3', order: 2 },
-		// 'progressive disease': { color: '#C1746B', order: 3 },
-		// 'stable disease': { color: '#CD4C2A', order: 4 },
 		// Tobacco Smoking History.
 		'Lifelong Non-Smoker': { color: '#C4B5BB', order: 1 },
 		'Current Smoker': { color: '#896C78', order: 2 },
 		'Current Reformed Smoker for > 15 yrs': { color: '#3B0A1E', order: 3 },
 		'Current Reformed Smoker for < or = 15 yrs': { color: '#2F0818', order: 4 },
 		'Current Reformed Smoker, Duration Not Specified': { color: '#17040C', order: 5 },
-		// Treatment outcome of primary therapy.
-		// 'complete remission/response': { color: '#BDED73', order: 1 },
-		// 'partial remission/response': { color: '#8649F3', order: 2 },
-		// 'progressive disease': { color: '#C1746B', order: 3 },
-		// 'stable disease': { color: '#CD4C2A', order: 4 },
 		'NA': { color: '#D6E2E3', order: 6 },
-		
+		// ER Status
+		// PR Status
+		// HER2/neu Status
+		'equivocal': { color: '#C4B5BB', order: 1 },
+		'indeterminate': { color: '#896C78', order: 2 },
+		'negative': { color: '#3B0A1E', order: 3 },
+		'positive': { color: '#CD4C2A', order: 4 },
 	};
 
 	model.exclusivityInfo = {
