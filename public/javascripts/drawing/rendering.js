@@ -6,8 +6,10 @@ function rendering ()	{
 		SVG 태그를 만들어 삽입해주는 함수.
 	 */
 	model.createSVG = function (element, width, height)	{
-		var dom = bio.dom().get(element),
-				classify = dom.id ? '#' + dom.id : 
+		console.log(element)
+		var dom = bio.dom().get(element);
+		console.log(dom)
+		var classify = dom.id ? '#' + dom.id : 
 						 '.' + dom.className,
 				w = width || parseFloat(dom.style.width),
 				h = height || parseFloat(dom.style.height);
