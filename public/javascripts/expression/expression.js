@@ -558,7 +558,9 @@ function expression ()	{
 			patientByDrag(high);
 			// Survival chart update.
 			drawSurvivalPlot(data);
-			drawPatient(data);
+			if (data.patient)	{
+				drawPatient(data);	
+			}
 			// to blur selected targets.
 			toBlur(
 				d3.selectAll('#expression_bar_plot_svg_bar_rect_rect'),
@@ -637,7 +639,9 @@ function expression ()	{
 		drawFunctionBar(data, data.axis.bar);
 		drawSurvivalPlot(data);
 		drawScatter(data, data.axis.scatter, model.now.osdfs);
-		drawPatient(data);
+		if (data.patient)	{
+			drawPatient(data);
+		}
 		drawDivision(data);
 	};
 

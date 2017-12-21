@@ -206,6 +206,8 @@ function preprocExpression ()	{
 				name: data.sample_rna_list[0].participant_id,
 				data: toPatient(data.sample_rna_list[0].participant_id),
 			};
+		} else {
+			model.patient = null;
 		}
 
 		bio.iteration.loop(model.bar, function (b)	{
