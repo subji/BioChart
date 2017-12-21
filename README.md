@@ -3,6 +3,8 @@ BioChart 0.0.1
 
 > This is a set of charts for Clinical Decision support.
 
+> dist 폴더 안에 js/css 각각의 폴더 안의 js 파일과 css 파일을 import 하고 사용하시면 됩니다.
+
 ```
 	Expression
 
