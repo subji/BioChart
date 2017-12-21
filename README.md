@@ -9,7 +9,13 @@ BioChart 0.0.1
 	$.ajax({
 		type: 'GET',
 		url: expressionUrl,
-		data: expressionReqParams,
+		data: {
+        source: "cohort_source",
+        cancer_type: "sample_cancer_type",
+        sample_id: "sample_id",
+        signature: 'PAM50',
+        filter: "cohort_filter_option",
+      },
 		beforeSend: function ()	{
 			bio.loading().start(document.querySelector('#main'), width, height);
 		},
@@ -68,3 +74,36 @@ BioChart 0.0.1
     },
   });
   ```
+
+```
+Landscape
+
+$.ajax({
+  type: 'GET',
+  url: landscapeURL,
+  data: {
+    source: "cohort_source",
+    cancer_type: "sample_cancer_type",
+    sample_id: "sample_id",
+    filter: "cohort_filter_option",
+  },
+  beforeSend: function () {
+    bio.loading().start(document.querySelector('#main'), 1620, 850);
+  },
+  success: function (d) {
+    bio.landscape({
+      element: '#main',
+      width: 1620,
+      height: 850,
+      data: {
+        pq: 'p',
+        type: cancer_type.toUpperCase(),
+        data: d.data,
+        title:d.data.name,
+      },
+    })
+    
+    bio.loading().end();
+  },
+});
+```
