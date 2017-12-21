@@ -200,6 +200,65 @@
 	margin-left: 2px;
 	box-shadow: 0px 1px 3px #CECECE;	
 }
+#pathway_title { 
+	border: none;
+	color: #494949;
+	font-weight: bold; 
+	position: relative;
+	text-align: center;
+	background: #D3D3D3;
+	box-sizing: border-box; 
+	-moz-box-sizing: border-box; 
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
+	-webkit-box-sizing: border-box;
+	box-shadow: 1px 1px 1px -1px #CECECE;	
+}
+
+#pathway_contents {
+	position: relative;
+	border: 1px solid '#BCBCBC';
+	border-bottom-left-radius: 5px;
+	border-bottom-right-radius: 5px;
+	box-shadow: 0px 3px 6px #CECECE;	
+	-moz-box-shadow: 0px 3px 6px #CECECE;
+	-webkit-box-shadow: 0px 3px 6px #CECECE;
+}
+
+#modal_gene_title {
+	float: left;
+	color: #333333;
+	font-size: 24px;
+}
+
+#modal_gene_name {
+	float: right;
+	color: #333333;
+	font-size: 24px;
+}
+
+.modal-body {
+	position: relative;
+	overflow-x: auto;
+	overflow-y: hidden;
+	margin-right: 15px;
+	padding-bottom: 35px;
+	max-height: 600px;
+}
+
+.table-cell {
+	border: none;
+	border-right: 1px solid;
+	border-bottom: 1px solid;
+}
+
+.table-contents > .table-cell {
+	font-size: 14px;
+}
+
+.drug-link {
+	margin-left: 10px;
+}
 #landscape_title { 
 	border: none;
 	color: #494949;
@@ -433,65 +492,6 @@ g {
 	fill: none;
   stroke: #333;
   shape-rendering: crispEdges;
-}
-#pathway_title { 
-	border: none;
-	color: #494949;
-	font-weight: bold; 
-	position: relative;
-	text-align: center;
-	background: #D3D3D3;
-	box-sizing: border-box; 
-	-moz-box-sizing: border-box; 
-	border-top-left-radius: 5px;
-	border-top-right-radius: 5px;
-	-webkit-box-sizing: border-box;
-	box-shadow: 1px 1px 1px -1px #CECECE;	
-}
-
-#pathway_contents {
-	position: relative;
-	border: 1px solid '#BCBCBC';
-	border-bottom-left-radius: 5px;
-	border-bottom-right-radius: 5px;
-	box-shadow: 0px 3px 6px #CECECE;	
-	-moz-box-shadow: 0px 3px 6px #CECECE;
-	-webkit-box-shadow: 0px 3px 6px #CECECE;
-}
-
-#modal_gene_title {
-	float: left;
-	color: #333333;
-	font-size: 24px;
-}
-
-#modal_gene_name {
-	float: right;
-	color: #333333;
-	font-size: 24px;
-}
-
-.modal-body {
-	position: relative;
-	overflow-x: auto;
-	overflow-y: hidden;
-	margin-right: 15px;
-	padding-bottom: 35px;
-	max-height: 600px;
-}
-
-.table-cell {
-	border: none;
-	border-right: 1px solid;
-	border-bottom: 1px solid;
-}
-
-.table-contents > .table-cell {
-	font-size: 14px;
-}
-
-.drug-link {
-	margin-left: 10px;
 }
 .loading {
   opacity: 1;
