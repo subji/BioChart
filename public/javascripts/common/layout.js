@@ -27,7 +27,6 @@ function layout ()	{
 
 			if (isId)	{
 				id = id.replace('/', '');
-				console.log(id);
 				model.svg[chart][id] = bio.rendering().createSVG(id);
 			}
 		});
