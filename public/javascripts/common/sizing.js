@@ -108,7 +108,7 @@ function sizing ()	{
 				};
 
 		bio.iteration.loop(groups, function (group)	{
-			var name = group.name.removeWhiteSpace(),
+			var name = group.name.removeWhiteSpace().replace('/', ''),
 					prefix = prefixes[type] === 'group' ? '' : type;
 
 			id['landscape_' + prefix + '_group_' + name] = 
