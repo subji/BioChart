@@ -3847,7 +3847,7 @@ function rendering ()	{
 		SVG 태그를 만들어 삽입해주는 함수.
 	 */
 	model.createSVG = function (element, width, height)	{
-		console.log(element);
+		element = element.replace('/', '');
 		var dom = bio.dom().get(element),
 				classify = dom.id ? '#' + dom.id : 
 						 '.' + dom.className,
@@ -6584,6 +6584,160 @@ function sortTitle ()	{
 
 	whole.bio = bio;
 }(window||{}));
+function initialize ()	{
+	'use strict';
+	// >>> Common.
+	var SIZING = { ids: [], chart: {} };
+	var SETTING = {
+		idx: [],
+		dom: null, 
+		size: { width: 0, height: 0 },
+	};
+	var LAYOUT = {
+		svg: {
+			variants: {},
+			landscape: {},
+			expression: {},
+			exclusivity: {},
+		},
+	};
+	// >>> Preprocess.
+	var PREPROCESS = {
+		pathway: null,
+		variants: {
+			needle: { line: [], shape: [] },
+			patient: { line: [], shape: [] },
+			type: [],
+			graph: [],
+			axis: {
+				needle: {x: [], y: []},
+				now: { x: [], y: []},
+			},
+		},
+		landscape: {
+			type: {},
+			group: { group: [], patient: [] },
+			heatmap: [],
+			patient: [],
+			stack: { gene: {}, sample: {}, patient: {} },
+			axis: {
+				pq: { x: [], y: [] },
+				gene: { x: [], y: [] },
+				group: { x: [], y: [] },
+				sample: { x: [], y: [] },
+				heatmap: { x: [], y: [] },
+				patient: { x: [], y: [] },
+			},
+		},
+		expression: {
+			func: {
+				default: 'average',
+				now: null,
+				avg: [],
+			},
+			tpms: [],
+			heatmap: [],
+			scatter: {},
+			subtype: [],
+			survival: {},
+			bar: [],
+			axis: {
+				gradient: { x: {}, y: {} },
+				heatmap: { x: {}, y: {} },
+				scatter: { x: {}, y: {} },
+				bar: { x: {}, y: {} },
+			},
+		},
+		exclusivity: {
+			heatmap: {},
+			network: {},
+			type: {},
+			survival: {
+				merge: {},
+				heat: {},
+				data: {},
+			},
+			geneset: [],
+			geneset_all: [],
+			axis: {
+				heatmap: {x: {}, y: {}},
+				division: {x: {}, y: []},
+			},
+			divisionIdx: {},
+		},
+	};
+	// >>> Tools.
+	var LOADING = {};
+	// >>> Expression.
+	var EXPRESSION = {
+		init: {
+			function: 'Average',
+			signature: null,
+			color_mapping: null,
+		},
+		now: {
+			function: null,
+			signature: null,
+			color_mapping: null,
+			osdfs: 'os',
+		},
+		divide: {},
+	};
+	// >>> Exclusivity.
+	var EXCLUSIVITY = { now : { geneset: null } };
+	var COLORGRADIENT = { show: [], data: [] };
+	// >>> Variants.
+	var VARIANTS = { div: {} };
+	var VARIANTSNAVI = { start: 0, end: 0 };
+	// >>> Landscape.
+	var LANDSCAPE = {
+		div: {},
+		init: {
+			axis: { x: [], y: [] },
+			width: 0,
+			height: 0,
+		},
+		now: {
+			sort: {
+				gene: null,
+				sample: null,
+				pq: null,	
+			},
+			group: [],
+			axis: { x: [], y: [] },
+			width: 0,
+			height: 0,
+		},
+		exclusive: { init: null },
+	};
+	var LANDSCAPESORT = { exclusive: [] };
+	var LANDSCAPEHEATMAP = {
+		mutationType: ['cnv', 'var'], 
+		value: {}, 
+		duplicate: [],
+	};
+
+	var set = {
+		layout: LAYOUT,
+		sizing: SIZING,
+		setting: SETTING,
+		preprocess: PREPROCESS,
+		loading: LOADING,
+		expression: EXPRESSION,
+		exclusivity: EXCLUSIVITY,
+		colorGradient: COLORGRADIENT,
+		variants: VARIANTS,
+		variantsNavi: VARIANTSNAVI,
+		landscape: LANDSCAPE,
+		landscapeSort: LANDSCAPESORT,
+		landscapeHeatmap: LANDSCAPEHEATMAP,
+	}
+
+	return function (name)	{
+		return bio.objects.clone(
+					!set[name] ? {} : set[name]);
+	};
+};
 function pathway ()	{
 	'use strict';
 
@@ -6794,160 +6948,6 @@ function pathway ()	{
 		console.log('>>> Pathway reponse data: ', opts);
 		console.log('>>> Pathway setting data: ', model.setting);
 		console.log('>>> Pathway model data: ', model);
-	};
-};
-function initialize ()	{
-	'use strict';
-	// >>> Common.
-	var SIZING = { ids: [], chart: {} };
-	var SETTING = {
-		idx: [],
-		dom: null, 
-		size: { width: 0, height: 0 },
-	};
-	var LAYOUT = {
-		svg: {
-			variants: {},
-			landscape: {},
-			expression: {},
-			exclusivity: {},
-		},
-	};
-	// >>> Preprocess.
-	var PREPROCESS = {
-		pathway: null,
-		variants: {
-			needle: { line: [], shape: [] },
-			patient: { line: [], shape: [] },
-			type: [],
-			graph: [],
-			axis: {
-				needle: {x: [], y: []},
-				now: { x: [], y: []},
-			},
-		},
-		landscape: {
-			type: {},
-			group: { group: [], patient: [] },
-			heatmap: [],
-			patient: [],
-			stack: { gene: {}, sample: {}, patient: {} },
-			axis: {
-				pq: { x: [], y: [] },
-				gene: { x: [], y: [] },
-				group: { x: [], y: [] },
-				sample: { x: [], y: [] },
-				heatmap: { x: [], y: [] },
-				patient: { x: [], y: [] },
-			},
-		},
-		expression: {
-			func: {
-				default: 'average',
-				now: null,
-				avg: [],
-			},
-			tpms: [],
-			heatmap: [],
-			scatter: {},
-			subtype: [],
-			survival: {},
-			bar: [],
-			axis: {
-				gradient: { x: {}, y: {} },
-				heatmap: { x: {}, y: {} },
-				scatter: { x: {}, y: {} },
-				bar: { x: {}, y: {} },
-			},
-		},
-		exclusivity: {
-			heatmap: {},
-			network: {},
-			type: {},
-			survival: {
-				merge: {},
-				heat: {},
-				data: {},
-			},
-			geneset: [],
-			geneset_all: [],
-			axis: {
-				heatmap: {x: {}, y: {}},
-				division: {x: {}, y: []},
-			},
-			divisionIdx: {},
-		},
-	};
-	// >>> Tools.
-	var LOADING = {};
-	// >>> Expression.
-	var EXPRESSION = {
-		init: {
-			function: 'Average',
-			signature: null,
-			color_mapping: null,
-		},
-		now: {
-			function: null,
-			signature: null,
-			color_mapping: null,
-			osdfs: 'os',
-		},
-		divide: {},
-	};
-	// >>> Exclusivity.
-	var EXCLUSIVITY = { now : { geneset: null } };
-	var COLORGRADIENT = { show: [], data: [] };
-	// >>> Variants.
-	var VARIANTS = { div: {} };
-	var VARIANTSNAVI = { start: 0, end: 0 };
-	// >>> Landscape.
-	var LANDSCAPE = {
-		div: {},
-		init: {
-			axis: { x: [], y: [] },
-			width: 0,
-			height: 0,
-		},
-		now: {
-			sort: {
-				gene: null,
-				sample: null,
-				pq: null,	
-			},
-			group: [],
-			axis: { x: [], y: [] },
-			width: 0,
-			height: 0,
-		},
-		exclusive: { init: null },
-	};
-	var LANDSCAPESORT = { exclusive: [] };
-	var LANDSCAPEHEATMAP = {
-		mutationType: ['cnv', 'var'], 
-		value: {}, 
-		duplicate: [],
-	};
-
-	var set = {
-		layout: LAYOUT,
-		sizing: SIZING,
-		setting: SETTING,
-		preprocess: PREPROCESS,
-		loading: LOADING,
-		expression: EXPRESSION,
-		exclusivity: EXCLUSIVITY,
-		colorGradient: COLORGRADIENT,
-		variants: VARIANTS,
-		variantsNavi: VARIANTSNAVI,
-		landscape: LANDSCAPE,
-		landscapeSort: LANDSCAPESORT,
-		landscapeHeatmap: LANDSCAPEHEATMAP,
-	}
-
-	return function (name)	{
-		return bio.objects.clone(
-					!set[name] ? {} : set[name]);
 	};
 };
 function preprocess ()	{
@@ -10023,274 +10023,6 @@ var SurvivalTab = (function() {
 //     },
 //   });
 // })();
-function dependencies ()	{
-	'use strict';
-	// Dependencies 의 기능을 모아둔 Model 객체.
-	var model = {
-		version: {},	// Dependencies library 의 버전관련 객체.
-	};
-	/*
-		현재 적용 된 D3JS 의 버전이 
-		4 버전이면 true,
-		3 버전이면 false 를 반환하는 함수.
-	 */
-	model.version.d3v4 = function ()	{
-		// D3JS 가 존재하지 않을 경우 에러를 발생시킨다.
-		if (!d3)	{
-			throw new Error ('D3JS is not found');
-		}
-		// d3.version 의 0 번째 Index 가 '3' 일 경우 현재 D3JS
-		// 의 버전은 3 버전이다.
-		return d3.version.indexOf('3') === 0 ? false : true;
-	};
-	// Dependencies 객체의 기능을 모아둔 Model 객체를 반환한다.
-	return model;
-};
-function dom ()	{
-	'use strict';
-
-	var model = {};
-	/*
-		'#ID', '.Class' 중 존재하는 엘리먼트를 반환하는 함수.
-	 */
-	model.get = function (ele)	{
-		if (typeof(ele) === 'object')	{
-			return ele;
-		}
-
-		var classify = ['#', '.'],
-				classifyName = ele.removeSymbol(),
-				result = null;
-
-		bio.iteration.loop(classify, function (symbol)	{
-			var name = symbol + classifyName,
-					dom = document.querySelector(name);
-
-			if (dom)	{
-				result = dom;
-			}
-		});
-
-		return result;
-	};
-
-	model.remove = function (element, childs)	{
-		if (bio.objects.getType(element).indexOf('HTML') < 0)	{
-			throw new Error('Not a dom element');
-		}
-
-		bio.iteration.loop(childs, function (child)	{
-			element.removeChild(child);
-		});
-	};
-	/*
-		Element 파라미터 하위 Element 들을 
-		모두 제거하는 함수.
-	 */
-	model.removeAll = function (element)	{
-		if (bio.objects.getType(element).indexOf('HTML') < 0)	{
-			throw new Error('Not a dom element');
-		}
-
-	 	while (element.firstChild)	{
-	 		element.removeChild(element.firstChild);
-	 	}
-	};
-
-	return function ()	{
-		return model;
-	};
-};
-function iteration ()	{
-	'use strict';
-
-	var model = {};
-	/*
-		객체, 리스트를 반복하는 함수.
-		결과 값은 콜백함수의 파라미터로 전달 된다.
-	 */
-	model.loop = function (data, callback)	{
-		if (typeof(data) !== 'object')	{
-			throw new Error ('This is not Object or Array');
-		}
-
-		if (bio.objects.getType(data) === 'Array')	{
-			for (var i = 0, l = data.length; i < l; i++)	{
-				callback.call(this, data[i], i);
-			}
-		} else {
-			for (var key in data)	{
-				callback.call(this, key, data[key]);
-			}
-		}
-	};
-	// >>> About Array. 
-	/*
-		주어진 길이 만큼 주어진 값으로 리스트를 채워넣고 반환하는 함수.
-	 */
-	Array.prototype.fill = function (len, value)	{
-		for (var i = 0; i < len; i++)	{
-			this.push(value);
-		}
-
-		return this;
-	};
-
-	return model;
-};
-function math ()	{
-	'use strict';
-
-	var model = {};
-	/*
-		Number sequence 리스트에서 중간값의 위치를 반환한다.
-	 */
-	model.medianIndex = function (seqList)	{
-		var len = seqList.length;
-		// 홀수일 경우 1을 더한 후 2로 나누고 짝수는 그냥 2로 나눈다.
-		return len % 2 === 1 ? (len + 1) / 2 : len / 2;
-	};
-	/*
-		Number sequence 리스트에서 중간값을 반환한다.
-	 */
-	model.median = function (seqList)	{
-		var list = bio.objects.clone(seqList);
-		// 혹시라도 정렬이 안되어있을 경우를 고려하여 정렬한다.
-		return list.sort(function (a, b)	{
-						 return a > b ? 1 : -1;
-					 })[model.medianIndex(list)];
-	};
-	/*
-		두 수 혹은 숫자 리스트에서 가장 작은 값을 반환한다.
-	 */
-	model.min = function (v1, v2)	{
-		return arguments.length < 2 ? 
-					 Math.min.apply(null, v1) : 
-					 Math.min.call(null, v1, v2);
-	};
-	/*
-		두 수 혹은 숫자 리스트에서 가장 큰 값을 반환한다.
-	 */
-	model.max = function (v1, v2)	{
-		return arguments.length < 2 ? 
-					 Math.max.apply(null, v1) : 
-					 Math.max.call(null, v1, v2);
-	};
-	/*
-		Start 부터 End 까지의 범위내의 랜덤 값을 반환하는 함수.
-	 */
-	model.random = function (start, end)	{
-		start = start || 0;
-		end = end || 1;
-
-		return Math.floor(Math.random() * end) + start;
-	};
-
-	return model;
-};
-function objects ()	{
-	'use strict';
-
-	var model = {};
-	/*
-		Object 의 Type 을 문자열로 반환하는 함수.
-		Ex) 'SSS' -> 'String'.
-	 */
-	model.getType = function (obj)	{
-		var str = Object.prototype
-										.toString.call(obj);
-
-		return str.substring(
-					 str.indexOf(' ') + 1, 
-					 str.indexOf(']'));
-	};
-	/*
-		객체를 복사 (완전복사) 하여 반환하는 함수.
-	 */
-	model.clone = function (obj)	{
-		if (typeof(obj) !== 'object')	{
-			return obj;
-		} else {
-			if (model.getType(obj) === 'Array')	{
-				return new Array().concat(obj);
-			} else {
-				var copy = {};
-
-				bio.iteration.loop(obj, function (key, value)	{
-					if (obj.hasOwnProperty(key))	{
-						copy[key] = model.clone(obj[key]);
-					}
-				});
-
-				return copy;
-			}
-		}
-	};
-	/*
-		객체의 키를 값으로 찾아주는 함수.
-	 */
-	model.getKey = function (obj, value)	{
-		var keys = Object.keys(obj),
-				values = Object.values(obj);
-
-		return keys[values.indexOf(value)];
-	};
-
-	return model;
-}
-/*
-	String 객체의 prototype 으로 붙일 기능들을
-	모아둔 객체.
- */
-function strings ()	{
-	'use strict';
-
-	String.prototype.matchAll = function (regex)	{
-		var matched = [], found;
-
-		while (found = regex.exec(this))	{
-			matched.push(found[0]);
-		}
-
-		return matched;
-	};
-	/*
-		String 을 대명사 표기법 형태로 바꿔 반환하는 함수.
-	 */
-	String.prototype.pronoun = function ()	{
-		return this[0].toUpperCase() + 
-					 this.substring(1).toLowerCase();
-	};
-	/*
-		문자열에 포함된 공백들을 지워주는 함수.
-	 */
-	String.prototype.removeWhiteSpace = function ()	{
-		return this.replace(/\s/ig, '');
-	};
-	/*
-		문자열에 포함된 특수문자들을 지워주는 함수.
-	 */
-	String.prototype.removeSymbol = function ()	{
-		return this.replace(/\W/ig, '');
-	}
-	/*
-		문자열에서 사용자지정위치의 문자를 다른 문자로 대치해주는 함수.
-		String 객체의 프로토타입으로 지정하였다.
-	 */
-	String.prototype.replaceAt = function (idx, rep)	{
-		// substring !== substr 
-		// substring 은 start 부터 end 까지,
-		// substr 은 start 부터 num 개를 자른다.
-		return this.substring(0, idx) + rep + 
-					 this.substring(idx + 1);
-	};
-	/*
-		파라미터 값을 문자열내에서 모두 바꿔준다.
-	 */
-	String.prototype.replaceAll = function (target, change)	{
-		return this.replace(new RegExp(target, 'ig'), change);
-	};
-};
 function loading ()	{
 	'use strict';
 
@@ -10909,6 +10641,274 @@ function tooltip ()	{
 				tooltipDiv.innerHTML = contents;
 
 		return show(tooltipDiv, target, parent);
+	};
+};
+function dependencies ()	{
+	'use strict';
+	// Dependencies 의 기능을 모아둔 Model 객체.
+	var model = {
+		version: {},	// Dependencies library 의 버전관련 객체.
+	};
+	/*
+		현재 적용 된 D3JS 의 버전이 
+		4 버전이면 true,
+		3 버전이면 false 를 반환하는 함수.
+	 */
+	model.version.d3v4 = function ()	{
+		// D3JS 가 존재하지 않을 경우 에러를 발생시킨다.
+		if (!d3)	{
+			throw new Error ('D3JS is not found');
+		}
+		// d3.version 의 0 번째 Index 가 '3' 일 경우 현재 D3JS
+		// 의 버전은 3 버전이다.
+		return d3.version.indexOf('3') === 0 ? false : true;
+	};
+	// Dependencies 객체의 기능을 모아둔 Model 객체를 반환한다.
+	return model;
+};
+function dom ()	{
+	'use strict';
+
+	var model = {};
+	/*
+		'#ID', '.Class' 중 존재하는 엘리먼트를 반환하는 함수.
+	 */
+	model.get = function (ele)	{
+		if (typeof(ele) === 'object')	{
+			return ele;
+		}
+
+		var classify = ['#', '.'],
+				classifyName = ele.removeSymbol(),
+				result = null;
+
+		bio.iteration.loop(classify, function (symbol)	{
+			var name = symbol + classifyName,
+					dom = document.querySelector(name);
+
+			if (dom)	{
+				result = dom;
+			}
+		});
+
+		return result;
+	};
+
+	model.remove = function (element, childs)	{
+		if (bio.objects.getType(element).indexOf('HTML') < 0)	{
+			throw new Error('Not a dom element');
+		}
+
+		bio.iteration.loop(childs, function (child)	{
+			element.removeChild(child);
+		});
+	};
+	/*
+		Element 파라미터 하위 Element 들을 
+		모두 제거하는 함수.
+	 */
+	model.removeAll = function (element)	{
+		if (bio.objects.getType(element).indexOf('HTML') < 0)	{
+			throw new Error('Not a dom element');
+		}
+
+	 	while (element.firstChild)	{
+	 		element.removeChild(element.firstChild);
+	 	}
+	};
+
+	return function ()	{
+		return model;
+	};
+};
+function iteration ()	{
+	'use strict';
+
+	var model = {};
+	/*
+		객체, 리스트를 반복하는 함수.
+		결과 값은 콜백함수의 파라미터로 전달 된다.
+	 */
+	model.loop = function (data, callback)	{
+		if (typeof(data) !== 'object')	{
+			throw new Error ('This is not Object or Array');
+		}
+
+		if (bio.objects.getType(data) === 'Array')	{
+			for (var i = 0, l = data.length; i < l; i++)	{
+				callback.call(this, data[i], i);
+			}
+		} else {
+			for (var key in data)	{
+				callback.call(this, key, data[key]);
+			}
+		}
+	};
+	// >>> About Array. 
+	/*
+		주어진 길이 만큼 주어진 값으로 리스트를 채워넣고 반환하는 함수.
+	 */
+	Array.prototype.fill = function (len, value)	{
+		for (var i = 0; i < len; i++)	{
+			this.push(value);
+		}
+
+		return this;
+	};
+
+	return model;
+};
+function math ()	{
+	'use strict';
+
+	var model = {};
+	/*
+		Number sequence 리스트에서 중간값의 위치를 반환한다.
+	 */
+	model.medianIndex = function (seqList)	{
+		var len = seqList.length;
+		// 홀수일 경우 1을 더한 후 2로 나누고 짝수는 그냥 2로 나눈다.
+		return len % 2 === 1 ? (len + 1) / 2 : len / 2;
+	};
+	/*
+		Number sequence 리스트에서 중간값을 반환한다.
+	 */
+	model.median = function (seqList)	{
+		var list = bio.objects.clone(seqList);
+		// 혹시라도 정렬이 안되어있을 경우를 고려하여 정렬한다.
+		return list.sort(function (a, b)	{
+						 return a > b ? 1 : -1;
+					 })[model.medianIndex(list)];
+	};
+	/*
+		두 수 혹은 숫자 리스트에서 가장 작은 값을 반환한다.
+	 */
+	model.min = function (v1, v2)	{
+		return arguments.length < 2 ? 
+					 Math.min.apply(null, v1) : 
+					 Math.min.call(null, v1, v2);
+	};
+	/*
+		두 수 혹은 숫자 리스트에서 가장 큰 값을 반환한다.
+	 */
+	model.max = function (v1, v2)	{
+		return arguments.length < 2 ? 
+					 Math.max.apply(null, v1) : 
+					 Math.max.call(null, v1, v2);
+	};
+	/*
+		Start 부터 End 까지의 범위내의 랜덤 값을 반환하는 함수.
+	 */
+	model.random = function (start, end)	{
+		start = start || 0;
+		end = end || 1;
+
+		return Math.floor(Math.random() * end) + start;
+	};
+
+	return model;
+};
+function objects ()	{
+	'use strict';
+
+	var model = {};
+	/*
+		Object 의 Type 을 문자열로 반환하는 함수.
+		Ex) 'SSS' -> 'String'.
+	 */
+	model.getType = function (obj)	{
+		var str = Object.prototype
+										.toString.call(obj);
+
+		return str.substring(
+					 str.indexOf(' ') + 1, 
+					 str.indexOf(']'));
+	};
+	/*
+		객체를 복사 (완전복사) 하여 반환하는 함수.
+	 */
+	model.clone = function (obj)	{
+		if (typeof(obj) !== 'object')	{
+			return obj;
+		} else {
+			if (model.getType(obj) === 'Array')	{
+				return new Array().concat(obj);
+			} else {
+				var copy = {};
+
+				bio.iteration.loop(obj, function (key, value)	{
+					if (obj.hasOwnProperty(key))	{
+						copy[key] = model.clone(obj[key]);
+					}
+				});
+
+				return copy;
+			}
+		}
+	};
+	/*
+		객체의 키를 값으로 찾아주는 함수.
+	 */
+	model.getKey = function (obj, value)	{
+		var keys = Object.keys(obj),
+				values = Object.values(obj);
+
+		return keys[values.indexOf(value)];
+	};
+
+	return model;
+}
+/*
+	String 객체의 prototype 으로 붙일 기능들을
+	모아둔 객체.
+ */
+function strings ()	{
+	'use strict';
+
+	String.prototype.matchAll = function (regex)	{
+		var matched = [], found;
+
+		while (found = regex.exec(this))	{
+			matched.push(found[0]);
+		}
+
+		return matched;
+	};
+	/*
+		String 을 대명사 표기법 형태로 바꿔 반환하는 함수.
+	 */
+	String.prototype.pronoun = function ()	{
+		return this[0].toUpperCase() + 
+					 this.substring(1).toLowerCase();
+	};
+	/*
+		문자열에 포함된 공백들을 지워주는 함수.
+	 */
+	String.prototype.removeWhiteSpace = function ()	{
+		return this.replace(/\s/ig, '');
+	};
+	/*
+		문자열에 포함된 특수문자들을 지워주는 함수.
+	 */
+	String.prototype.removeSymbol = function ()	{
+		return this.replace(/\W/ig, '');
+	}
+	/*
+		문자열에서 사용자지정위치의 문자를 다른 문자로 대치해주는 함수.
+		String 객체의 프로토타입으로 지정하였다.
+	 */
+	String.prototype.replaceAt = function (idx, rep)	{
+		// substring !== substr 
+		// substring 은 start 부터 end 까지,
+		// substr 은 start 부터 num 개를 자른다.
+		return this.substring(0, idx) + rep + 
+					 this.substring(idx + 1);
+	};
+	/*
+		파라미터 값을 문자열내에서 모두 바꿔준다.
+	 */
+	String.prototype.replaceAll = function (target, change)	{
+		return this.replace(new RegExp(target, 'ig'), change);
 	};
 };
 function variants ()	{
