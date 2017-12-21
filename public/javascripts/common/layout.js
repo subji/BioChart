@@ -26,6 +26,7 @@ function layout ()	{
 			});
 
 			if (isId)	{
+				id = id.replace('/', '');
 				model.svg[chart][id] = bio.rendering().createSVG(id);
 			}
 		});
