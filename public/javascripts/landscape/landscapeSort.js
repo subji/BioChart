@@ -221,12 +221,20 @@ function landscapeSort ()	{
 		Type 을 문자열의 형태로 바꿔주는 함수.
 	 */
 	function typeToString (result, genes, data)	{
-		var geneIdx = genes.indexOf(data.y) * 2,
-				mutIdx = bio.landscapeConfig()
-										.byCase(data.value) === 'cnv' ? 0 : 1;
+		bio.iteration.loop(result, function (r)	{
+			bio.iteration.loop(data, function(d)	{
+				if (d.x === r.key)	{
+					var geneIdx = genes.indexOf(d.y) * 2,
+							mutIdx = geneIdx + 2,
+							mutVal = bio.landscapeConfig()
+													.byCase(d.value);
+					r.value = r.value.replaceAt(geneIdx, '11');
+					r.value = r.value.replaceAt(mutIdx -1, mutVal === 'cnv' ? '11' : '00');
+				}
+			});
+		});
 
-		result.value = result.value.replaceAt(
-									geneIdx, '00'.replaceAt(mutIdx, '1'));
+		return result;
 	};
 	/*
 		앞서 만들어진 Exclusive 용 데이터를 여기 함수에서
@@ -248,7 +256,7 @@ function landscapeSort ()	{
 		var temp = {},
 				result = [],
 				idx = 0;
-
+				
 		bio.iteration.loop(data, function (d)	{
 			if (!temp[d.x])	{
 				temp[d.x] = true;
@@ -259,15 +267,13 @@ function landscapeSort ()	{
 					// 문자열을 만든다.
 					value: [].fill(genes.length, '00').join('')
 				});
-
-				idx += 1;
 			} else {
 				temp[d.x] = temp[d.x];
 			}
-
-			typeToString(result[idx - 1], genes, d);
 		});
 
+		typeToString(result, genes, data);
+		
 		return model.exclusive = result, sortByExclusive(result);
 	};
 	/*
