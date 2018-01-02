@@ -545,6 +545,15 @@ function expression ()	{
 
 						model.divide.divide[a] = model.data.survival.divide[a];
 					}
+				} else {
+					bio.iteration.loop(model.setting.defaultData.patient_list, 
+						function (p)	{
+							if (p.participant_id === a)	{
+								model.divide.patient_list.push(p);
+							}
+						});
+
+						model.divide.divide[a] = model.data.survival.divide[a];
 				}
 			});
 		};
