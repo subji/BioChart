@@ -33,30 +33,37 @@
  //    },
  //  });
 
-//  /*
-//     Expression
-//   */
-//  // $.ajax({
-//  //    'type': 'POST',
-//  //    'url': '/files/datas',
-//  //    data: {
-//  //     name: 'expression',
-//  //    },
-//  //    beforeSend: function () {
-//  //      bio.loading().start(document.querySelector('#main'), 900, 600);
-//  //    },
-//  //    success: function (d) {
-//  //      console.log(d)
-//  //      // bio.expression({
-//  //      //   element: '#main',
-//  //      //   width: 900,
-//  //      //   height: 600,
-//  //      //   requestData: expressionReqParams,
-//  //      //   data: d.data,
-//  //      // });
+ /*
+    Expression
+  */
+ $.ajax({
+    'type': 'POST',
+    'url': '/files/datas',
+    data: {
+     name: 'expression',
+    },
+    beforeSend: function () {
+      bio.loading().start(document.querySelector('#main'), 900, 600);
+    },
+    success: function (d) {
+      console.log(d)
+      bio.expression({
+        element: '#main',
+        width: 900,
+        height: 600,
+        requestData: {
+          source: 'GDAC',
+          cancer_type: 'luad',
+          sample_id: 'SMCLUAD1705230001',
+          signature: 'PAM50',
+          filter: ':'
+        },
+        data: d[0].data,
+      });
 
-//  //      bio.loading().end();
-//  //    },
+      bio.loading().end();
+    },
+  });
 
 //  /*
 //     Landscape
@@ -89,35 +96,3 @@
  //      bio.loading().end();
  //    },
  //  });
-
-//  /*
-//     Landscape
-//   */
-//  $.ajax({
-//     'type': 'POST',
-//     'url': '/files/datas',
-//     data: {
-//      name: 'pathway',
-//     },
-//     beforeSend: function () {
-//       bio.loading().start(document.querySelector('#main'), 900, 600);
-//     },
-//     success: function (d) {
-//       bio.pathway({
-//         width: 900,
-//         height: 600,
-//         element: '#main',
-//         data: {
-//           pathway: d[0].data.pathway_list,
-//           patient: d[0].data.gene_list,
-//           drugs: d[0].data.drug_list,
-//           // drugs_list 로 붙어서 drug list 가 존재하는 gene 에 한해서만, 
-//           // [gene_name:[각 gene 별 drug 리스트.]]
-//         },
-//         cancer_type: d[0].data.cancer_type,
-//       });
-
-//       bio.loading().end();
-//     },
-//   });
-// })();
