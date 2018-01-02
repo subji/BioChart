@@ -534,15 +534,17 @@ function expression ()	{
 		 */
 		function patientByDrag (arr)	{
 			bio.iteration.loop(arr, function (a)	{
-				if (model.data.patient.name && (a !== model.data.patient.name))	{
-					bio.iteration.loop(model.setting.defaultData.patient_list, 
-					function (p)	{
-						if (p.participant_id === a)	{
-							model.divide.patient_list.push(p);
-						}
-					});
+				if (model.data.patient)	{
+					if (a !== model.data.patient.name)	{
+						bio.iteration.loop(model.setting.defaultData.patient_list, 
+						function (p)	{
+							if (p.participant_id === a)	{
+								model.divide.patient_list.push(p);
+							}
+						});
 
-					model.divide.divide[a] = model.data.survival.divide[a];
+						model.divide.divide[a] = model.data.survival.divide[a];
+					}
 				}
 			});
 		};
