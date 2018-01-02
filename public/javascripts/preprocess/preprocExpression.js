@@ -190,21 +190,8 @@ function preprocExpression ()	{
 		model = {};
 		model = bio.initialize('preprocess').expression;
 
-		if (data.sample_rna_list.length > 0)	{
-			model.all_rna_list = [].concat(
+		model.all_rna_list = [].concat(
 			 data.cohort_rna_list.concat(data.sample_rna_list));
-
-			model.patient = {
-				name: data.sample_rna_list[0].participant_id,
-				data: toPatient(data.sample_rna_list[0].participant_id),
-			};
-		} else {
-			model.all_rna_list = data.cohort_rna_list;
-			model.patient = null;
-		}
-
-		// model.all_rna_list = [].concat(
-		// 	 data.cohort_rna_list.concat(data.sample_rna_list));
 
 		model.genes = data.gene_list.map(function (gl)	{
 			return gl.hugo_symbol;
@@ -213,6 +200,15 @@ function preprocExpression ()	{
 		getMonths(data.patient_list);
 		getSubtype(data.subtype_list);
 		loopCohort(model.all_rna_list);
+
+		if (data.sample_rna_list.length > 0)	{
+			model.patient = {
+				name: data.sample_rna_list[0].participant_id,
+				data: toPatient(data.sample_rna_list[0].participant_id),
+			};
+		} else {
+			model.patient = null;
+		}
 
 		bio.iteration.loop(model.bar, function (b)	{
 			b.y = model.axis.bar.y[1];

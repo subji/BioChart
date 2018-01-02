@@ -534,7 +534,7 @@ function expression ()	{
 		 */
 		function patientByDrag (arr)	{
 			bio.iteration.loop(arr, function (a)	{
-				if (a !== model.data.patient.name)	{
+				if (model.data.patient.name && (a !== model.data.patient.name))	{
 					bio.iteration.loop(model.setting.defaultData.patient_list, 
 					function (p)	{
 						if (p.participant_id === a)	{
