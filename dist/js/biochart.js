@@ -9947,34 +9947,34 @@ var SurvivalTab = (function() {
  /*
     Expression
   */
- $.ajax({
-    'type': 'POST',
-    'url': '/files/datas',
-    data: {
-     name: 'expression',
-    },
-    beforeSend: function () {
-      bio.loading().start(document.querySelector('#main'), 900, 600);
-    },
-    success: function (d) {
-      console.log(d)
-      bio.expression({
-        element: '#main',
-        width: 900,
-        height: 600,
-        requestData: {
-          source: 'GDAC',
-          cancer_type: 'luad',
-          sample_id: 'SMCLUAD1705230001',
-          signature: 'PAM50',
-          filter: ':'
-        },
-        data: d[0].data,
-      });
+ // $.ajax({
+ //    'type': 'POST',
+ //    'url': '/files/datas',
+ //    data: {
+ //     name: 'expression',
+ //    },
+ //    beforeSend: function () {
+ //      bio.loading().start(document.querySelector('#main'), 900, 600);
+ //    },
+ //    success: function (d) {
+ //      console.log(d)
+ //      bio.expression({
+ //        element: '#main',
+ //        width: 900,
+ //        height: 600,
+ //        requestData: {
+ //          source: 'GDAC',
+ //          cancer_type: 'luad',
+ //          sample_id: 'SMCLUAD1705230001',
+ //          signature: 'PAM50',
+ //          filter: ':'
+ //        },
+ //        data: d[0].data,
+ //      });
 
-      bio.loading().end();
-    },
-  });
+ //      bio.loading().end();
+ //    },
+ //  });
 
 //  /*
 //     Landscape
