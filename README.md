@@ -1,4 +1,4 @@
-BioChart 0.0.18
+BioChart 0.0.19
 ==============
 
 > This is a set of charts for Clinical Decision support.
@@ -102,6 +102,11 @@ $.ajax({
         type: cancer_type.toUpperCase(),
         data: d.data,
         title:d.data.name,
+      },
+      // false 하면 patient 와 pq plot 이 사라짐.
+      plot: {
+        patient: false, // true
+        pq: false, // true
       },
     })
     

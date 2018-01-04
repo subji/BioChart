@@ -25,7 +25,7 @@ function landscapeConfig ()	{
 								id.indexOf('right') > -1 || 
 								id.indexOf('group') > -1)	{
 							var txt = id.indexOf('gene') > -1 ? 
-							'Sort by <b>' + this.innerHTML + '</b>' : 
+							'Sort by alt + <b>' + this.innerHTML + '</b>' : 
 											'<b>' + this.innerHTML + '</b></br>' + 
 											'Click to sort </br> Alt + Click ' + 
 											'add to key';
@@ -117,11 +117,16 @@ function landscapeConfig ()	{
 							}
 						});
 
-						return {
-							sorted: bio.landscapeSort()
-												 .gene(that.data.axis.heatmap.x, temp),
-							model: that,
-						};
+						if (d3.event.altKey)	{
+							return {
+								sorted: bio.landscapeSort()
+													 .gene(that.data.axis.heatmap.x, temp),
+								model: that,
+							};	
+						} else {
+							// Enable/Disable 
+							return false;
+						}
 					},
 				},
 			},

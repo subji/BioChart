@@ -121,7 +121,7 @@ function sizing ()	{
 		return id;
 	};
 	// Chart 별 영역의 크기 설정 및 ID List 생성.
-	model.chart.landscape = function (ele, w, h, group)	{
+	model.chart.landscape = function (ele, w, h, group, isPlotted)	{
 		var id = {
 			landscape_temp_sample: { width: w * 0.1, height: h * 0.15 },
 			landscape_axis_sample: { width: w * 0.14, height: h * 0.15 },
@@ -149,7 +149,7 @@ function sizing ()	{
 		makeLayout.call(setSize(divs.contents, w, h * 0.95), id);
 		makeLayout.call(bio.dom().get('#landscape_group'), gc);
 		makeLayout.call(bio.dom().get('#landscape_axis_group'), ga);
-		makeLayout.call(bio.dom().get('#landscape_patient_group'), gp);
+		makeLayout.call(bio.dom().get('#landscape_patient_group'), gp)
 
 		return model.ids;
 	};

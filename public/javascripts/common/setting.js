@@ -28,23 +28,24 @@ function setting ()	{
 		Layout 의 ID 목록 데이터를 만들어주는 함수.
 		여기서 각각의 Layout 의 크기도 설정해준다.
 	 */
-	function setLayoutIdData (chart, element, width, height, add)	{
+	function setLayoutIdData (chart, element, width, height, add, isPlotted)	{
 		model.ids = 
-		bio.sizing.chart[chart](element, width, height, add);
+		bio.sizing.chart[chart](element, width, height, add, isPlotted);
 
 		return model.ids;
 	};
 	/*
 		구성된 Layout 에 svg 엘리먼트를 만들어준다.
 	 */
-	function setSVGElement (chart, ids)	{
-		return bio.layout()[chart](ids);
+	function setSVGElement (chart, ids, isPlotted)	{
+		return bio.layout()[chart](ids, isPlotted);
 	};
 
 	return function (chart, opts)	{
 		model = bio.initialize('setting');
 
-		var groupLayout = null;
+		var groupLayout = null,
+				isPlotted = opts.plot ? opts.plot : null;
 
 		if (opts.data.data && opts.data.data.name)	{
 			groupLayout = opts.data.data.group_list;
@@ -54,13 +55,13 @@ function setting ()	{
 			defaultData: opts.data,
 			targetedElement: setTargetedElement(opts.element),
 			targetedElementSize: setTargetedElementSize(opts),
-			preprocessData: bio.preprocess(chart)(opts.data),
+			preprocessData: bio.preprocess(chart)(opts.data, isPlotted),
 			layoutIds: setLayoutIdData(
 									chart,
 									model.dom, 
 									model.size.width, 
-									model.size.height, groupLayout),
-			svgs: setSVGElement(chart, model.ids),
+									model.size.height, groupLayout, isPlotted),
+			svgs: setSVGElement(chart, model.ids, isPlotted),
 		};
 	};
 };

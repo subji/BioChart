@@ -51,15 +51,27 @@ function scaleSet ()	{
 		(model.scaleRate -= model.termRate, model.scaleRate) : 
 		model.defaultRate;
 		// Input 태그 값 범위 제한.
+		// model.scaleRate = 
+		// model.defaultValue / 2 > model.scaleValue ? 
+		// (model.scaleRate += model.termRate, model.scaleRate) : 
+		// model.defaultValue * 2 < model.scaleValue ? 
+		// model.defaultRate * 2 : model.scaleRate;
+		// // 실제 크기 값 범위 제한.
+		// model.scaleValue = 
+		// model.defaultValue / 2 > model.scaleValue ? 
+		// model.defaultValue / 2 : 
+		// model.defaultValue * 2 < model.scaleValue ? 
+		// model.defaultValue * 2 : model.scaleValue;
+		// 2018.01.02 Paper support code.
 		model.scaleRate = 
-		model.defaultValue / 2 > model.scaleValue ? 
+		model.defaultValue > model.scaleValue ? 
 		(model.scaleRate += model.termRate, model.scaleRate) : 
 		model.defaultValue * 2 < model.scaleValue ? 
 		model.defaultRate * 2 : model.scaleRate;
 		// 실제 크기 값 범위 제한.
 		model.scaleValue = 
-		model.defaultValue / 2 > model.scaleValue ? 
-		model.defaultValue / 2 : 
+		model.defaultValue > model.scaleValue ? 
+		model.defaultValue : 
 		model.defaultValue * 2 < model.scaleValue ? 
 		model.defaultValue * 2 : model.scaleValue;
 		// Input 태그 값 변경 적용.

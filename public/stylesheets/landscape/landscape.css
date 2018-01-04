@@ -232,3 +232,21 @@ g {
   stroke: #333;
   shape-rendering: crispEdges;
 }
+
+#option_group	{
+	left: 6.5%;
+	margin-top: 5px;
+}
+
+#option_label {
+	margin-top: 10px;
+	margin-left: 15px;
+	font-weight: bold;
+}
+
+.btn.btn-default {
+	color: #333;
+	font-size: 14px;
+	font-weight: bold;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+}

@@ -220,7 +220,7 @@ function landscapeSort ()	{
 	/*
 		Type 을 문자열의 형태로 바꿔주는 함수.
 	 */
-	function typeToString (result, genes, data)	{
+	function typeToString (result, genes, data, type)	{
 		bio.iteration.loop(result, function (r)	{
 			bio.iteration.loop(data, function(d)	{
 				if (d.x === r.key)	{
@@ -229,7 +229,7 @@ function landscapeSort ()	{
 							mutVal = bio.landscapeConfig()
 													.byCase(d.value);
 					r.value = r.value.replaceAt(geneIdx, '11');
-					r.value = r.value.replaceAt(mutIdx -1, mutVal === 'cnv' ? '11' : '00');
+					r.value = r.value.replaceAt(mutIdx -1, mutVal === 'cnv' ? (type === '1' ? '00' : '11') : '00');
 				}
 			});
 		});
@@ -252,7 +252,7 @@ function landscapeSort ()	{
 	/*
 		Exclusive 하게 보여지는데 필요한 데이터를 만드는 함수.
 	 */
-	function exclusive (data, genes)	{
+	function exclusive (data, genes, type)	{
 		var temp = {},
 				result = [],
 				idx = 0;
@@ -272,7 +272,7 @@ function landscapeSort ()	{
 			}
 		});
 
-		typeToString(result, genes, data);
+		typeToString(result, genes, data, type);
 		
 		return model.exclusive = result, sortByExclusive(result);
 	};

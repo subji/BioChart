@@ -156,12 +156,20 @@ function preprocLandscape ()	{
 	/*
 		[min, max] 배열을 반환하는 함수.
 	 */
-	function makeLinearAxis ()	{
+	function makeLinearAxis (isPlotted)	{
 		model.axis.gene.x = [bio.math.max(model.axis.gene.x), 0];
-		model.axis.sample.y = [
-			bio.math.max(model.axis.patient.y, 
-			bio.math.max(model.axis.sample.y)), 0
-		];
+
+		if (isPlotted.patient)	{
+			model.axis.sample.y = [
+				bio.math.max(model.axis.patient.y, 
+				bio.math.max(model.axis.sample.y)), 0
+			];
+		} else {
+			model.axis.sample.y = [
+				bio.math.max(model.axis.sample.y), 0
+			];
+		}
+		
 		model.axis.pq.x = [
 			0, bio.math.max(model.pq.map(function (pq)	{
 				return Math.ceil(pq.value);
@@ -178,7 +186,7 @@ function preprocLandscape ()	{
 		model.axis.group.x = model.axis.sample.x;
 	};
 
-	return function (data)	{
+	return function (data, isPlotted)	{
 		model = bio.initialize('preprocess').landscape;
 		// Data 안에 다른 객체가 존재할 경우 그 안을 찾아본다.
 		data = data.gene_list ? data : data.data;
@@ -198,7 +206,7 @@ function preprocLandscape ()	{
 		model.stack.sample = byStack('sample', model.stack.sample);
 		model.stack.patient = byStack('patient', model.stack.patient);
 		// Axis 데이터를 만들어준다.
-		makeLinearAxis();
+		makeLinearAxis(isPlotted);
 		makeOrdinalAxis();
 
 		console.log('>>> Preprocess landscape data: ', data);

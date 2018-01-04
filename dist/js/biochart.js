@@ -1,66 +1,3 @@
-function handler ()	{
-	'use strict';
-
-	var model = {};
-	/*
-		스크롤 이벤트 핸들러.
-	 */
-	function scroll (target, callback)	{
-		bio.dom().get(target)
-			 .addEventListener('scroll', callback, false);
-	};
-	/*
-	 	특정 이벤트 중 이벤트가 바디태그에서는 Disable 하게 만들어주는 함수.
-	 */
-	function preventBodyEvent (ele, events)	{
-		var DOEVENT = false;
-
-		// 사용자가 지정한 DIV 에 마우스 휠을 작동할때는, 바디에 마우스 휠
-		// 이벤트를 막아놓는다.
-		document.body.addEventListener(events, function (e)	{
-			if (DOEVENT)	{
-				if (e.preventDefault) {
-					e.preventDefault();
-				}
-
-				return false;
-			}
-		});
-
-		ele.addEventListener('mouseenter', function (e)	{
-			DOEVENT = true;
-		});
-
-		ele.addEventListener('mouseleave', function (e)	{
-			DOEVENT = false;
-		});
-	};
-	/*
-		x, y 스크롤이 hidden 일 때, 스크롤을 가능하게 해주는 함수.
-	 */
-	function scrollOnHidden (element, callback)	{
-		if (!element)	{
-			throw new Error('No given element');
-		}
-
-		preventBodyEvent(element, 'mousewheel');
-
-		element.addEventListener('mousewheel', function (e)	{
-			element.scrollTop += element.wheelDelta;
-
-			if (callback) {
-				callback.call(element, e);
-			}
-		});
-	};
-
-	return function ()	{
-		return {
-			scroll: scroll,
-			scrollOnHidden: scrollOnHidden,
-		};
-	};
-};
 function commonConfig ()	{
 	'use strict';
 
@@ -920,7 +857,7 @@ function landscapeConfig ()	{
 								id.indexOf('right') > -1 || 
 								id.indexOf('group') > -1)	{
 							var txt = id.indexOf('gene') > -1 ? 
-							'Sort by <b>' + this.innerHTML + '</b>' : 
+							'Sort by alt + <b>' + this.innerHTML + '</b>' : 
 											'<b>' + this.innerHTML + '</b></br>' + 
 											'Click to sort </br> Alt + Click ' + 
 											'add to key';
@@ -1012,11 +949,16 @@ function landscapeConfig ()	{
 							}
 						});
 
-						return {
-							sorted: bio.landscapeSort()
-												 .gene(that.data.axis.heatmap.x, temp),
-							model: that,
-						};
+						if (d3.event.altKey)	{
+							return {
+								sorted: bio.landscapeSort()
+													 .gene(that.data.axis.heatmap.x, temp),
+								model: that,
+							};	
+						} else {
+							// Enable/Disable 
+							return false;
+						}
 					},
 				},
 			},
@@ -4166,11 +4108,12 @@ function layout ()	{
 	/*
 		ID 목록에 포함된 (Except 파라미터를 제외한) svg 엘리먼트를 만든다.
 	 */
-	function create (expt, chart, ids)	{
+	function create (expt, chart, ids, isPlotted)	{
 		if (!ids)	return;
 
 		bio.iteration.loop(ids, function (id)	{
-			var isId = true;
+			var isId = true,
+					isDraw = true;
 
 			bio.iteration.loop(expt, function (e)	{
 				if (id.indexOf(e) > -1)	{
@@ -4180,15 +4123,28 @@ function layout ()	{
 
 			if (isId)	{
 				id = id.replace('/', '');
-				model.svg[chart][id] = bio.rendering().createSVG(id);
+
+				bio.iteration.loop(isPlotted, function (isP)	{
+					if (id.indexOf(isP) > -1 && !isPlotted[isP])	{
+						if (isP === 'patient')	{
+							$('#landscape_patient_group, #landscape_patient_sample, #landscape_patient_heatmap').css('box-shadow', 'None').css('background', '#fff')
+						}
+						
+						isDraw = false;
+					}
+				});
+
+				if (isDraw)	{
+					model.svg[chart][id] = bio.rendering().createSVG(id);
+				}
 			}
 		});
 
 		return model.svg[chart];
 	};
 	// 배열의 원소에 해당하는 DIV 태그를 제외한 나머지 태그에 svg 를 생성한다.
-	model.landscape = function (ids)	{
-		return create(['option', 'title'], 'landscape', ids);
+	model.landscape = function (ids, isPlotted)	{
+		return create(['option', 'title'], 'landscape', ids, isPlotted);
 	};
 	
 	model.variants = function (ids)	{
@@ -4295,23 +4251,24 @@ function setting ()	{
 		Layout 의 ID 목록 데이터를 만들어주는 함수.
 		여기서 각각의 Layout 의 크기도 설정해준다.
 	 */
-	function setLayoutIdData (chart, element, width, height, add)	{
+	function setLayoutIdData (chart, element, width, height, add, isPlotted)	{
 		model.ids = 
-		bio.sizing.chart[chart](element, width, height, add);
+		bio.sizing.chart[chart](element, width, height, add, isPlotted);
 
 		return model.ids;
 	};
 	/*
 		구성된 Layout 에 svg 엘리먼트를 만들어준다.
 	 */
-	function setSVGElement (chart, ids)	{
-		return bio.layout()[chart](ids);
+	function setSVGElement (chart, ids, isPlotted)	{
+		return bio.layout()[chart](ids, isPlotted);
 	};
 
 	return function (chart, opts)	{
 		model = bio.initialize('setting');
 
-		var groupLayout = null;
+		var groupLayout = null,
+				isPlotted = opts.plot ? opts.plot : null;
 
 		if (opts.data.data && opts.data.data.name)	{
 			groupLayout = opts.data.data.group_list;
@@ -4321,13 +4278,13 @@ function setting ()	{
 			defaultData: opts.data,
 			targetedElement: setTargetedElement(opts.element),
 			targetedElementSize: setTargetedElementSize(opts),
-			preprocessData: bio.preprocess(chart)(opts.data),
+			preprocessData: bio.preprocess(chart)(opts.data, isPlotted),
 			layoutIds: setLayoutIdData(
 									chart,
 									model.dom, 
 									model.size.width, 
-									model.size.height, groupLayout),
-			svgs: setSVGElement(chart, model.ids),
+									model.size.height, groupLayout, isPlotted),
+			svgs: setSVGElement(chart, model.ids, isPlotted),
 		};
 	};
 };
@@ -4454,7 +4411,7 @@ function sizing ()	{
 		return id;
 	};
 	// Chart 별 영역의 크기 설정 및 ID List 생성.
-	model.chart.landscape = function (ele, w, h, group)	{
+	model.chart.landscape = function (ele, w, h, group, isPlotted)	{
 		var id = {
 			landscape_temp_sample: { width: w * 0.1, height: h * 0.15 },
 			landscape_axis_sample: { width: w * 0.14, height: h * 0.15 },
@@ -4482,7 +4439,7 @@ function sizing ()	{
 		makeLayout.call(setSize(divs.contents, w, h * 0.95), id);
 		makeLayout.call(bio.dom().get('#landscape_group'), gc);
 		makeLayout.call(bio.dom().get('#landscape_axis_group'), ga);
-		makeLayout.call(bio.dom().get('#landscape_patient_group'), gp);
+		makeLayout.call(bio.dom().get('#landscape_patient_group'), gp)
 
 		return model.ids;
 	};
@@ -4570,360 +4527,67 @@ function sizing ()	{
 
 	return model;
 };
-function exclusivity ()	{
+function handler ()	{
 	'use strict';
 
 	var model = {};
 	/*
-		현재 Patient 의 (Un)Altered 값을 반환.
+		스크롤 이벤트 핸들러.
 	 */
-	function isAltered (samples, heat)	{
-		var sample = 'SMCLUAD1690060028',
-		// var sample = document.getElementById('sample_id').value,
-				genesetArr = model.now.geneset.split(' '),
-				result = '.';
-
-		if (samples.length < 1)	{
-			return [ 
-				{ text: '**', color: '#00AC52' }, 
-				{ text: sample + ' Belongs to', color: '#333333' }, 
-				{ text: 'Unaltered group', color: '#00AC52' } ];
-		}
-
-		bio.iteration.loop(samples, function (s)	{
-			var geneStr = heat[genesetArr.indexOf(s.gene)];
-
-			if (geneStr.indexOf(s.value) > -1)	{
-				result = result !== '.' ? 
-				result : geneStr[geneStr.indexOf(s.value)];
-			}
-		});
-
-		return result === '.' ? 
-		[ { text: '**', color: '#00AC52' }, 
-			{ text: sample + ' Belongs to', color: '#333333' }, 
-			{ text: 'Unaltered group', color: '#00AC52' } ] : 
-		[ { text: '**', color: '#FF6252' }, 
-			{ text: sample + ' Belongs to', color: '#333333' }, 
-			{ text: 'Altered group', color: '#FF6252' } ];
+	function scroll (target, callback)	{
+		bio.dom().get(target)
+			 .addEventListener('scroll', callback, false);
 	};
+	/*
+	 	특정 이벤트 중 이벤트가 바디태그에서는 Disable 하게 만들어주는 함수.
+	 */
+	function preventBodyEvent (ele, events)	{
+		var DOEVENT = false;
 
-	function forPatient (samples)	{
-		model.data.sample = { data: [], isAltered: false };
-
-		var config = bio.exclusivityConfig(),
-				landCnf = bio.landscapeConfig();
-
-		bio.iteration.loop(samples, function (sample)	{
-			if (model.now.geneset.indexOf(sample.gene) > -1)	{
-				model.data.sample.data.push({
-					gene: sample.gene,
-					value: config.symbol(config.byCase(
-								landCnf.byCase(sample.class), sample.class)),
-				});
-			}
-		});
-
-		model.data.sample.isAltered = 
-			isAltered(model.data.sample.data,
-								model.data.survival.heat[model.now.geneset]);
-	};
-
-	function drawLegend (data)	{
-		bio.layout().get(model.setting.svgs, ['ty_legend'], 
-		function (id, svg)	{
-			var config = bio.exclusivityConfig(),
-					lgdCnf = config.legend(data.mostGeneWidth.value);
-
-			bio.legend({
-				element: svg,
-				on: lgdCnf.on,
-				attr: lgdCnf.attr,
-				text: lgdCnf.text,
-				style: lgdCnf.style,
-				margin: lgdCnf.margin,
-				data: data.type[model.now.geneset].sort(function (a, b)	{
-					return config.priority(a) > config.priority(b) ? 1 : -1;
-				}),
-			});
-
-			document.querySelector('#exclusivity_legend')
-							.style.height = svg.attr('height') + 'px';
-		});
-	};
-
-	function drawSampleLegend (data)	{
-		bio.layout().get(model.setting.svgs, ['sample_legend'], 
-		function (id, svg)	{
-			var group = bio.rendering()
-										 .addGroup(svg, 0, 0, 'sample-legend'),
-					config = bio.exclusivityConfig()
-											.sample('legend', data.mostGeneWidth.value);
-
-			bio.text({
-				text: config.text,
-				attr: config.attr,
-				style: config.style,
-				id: id + '_sample_legend',
-				data: data.sample.isAltered,
-				element: group.selectAll('#' + id + '_sample_legend'),
-			}, model);
-		});
-	};
-
-	function drawSampleDivision (data)	{
-		bio.layout().get(model.setting.svgs, ['heatmap'], 
-		function (id, svg)	{
-			var group = bio.rendering()
-										 .addGroup(svg, 0, 0, 'sample-division'),
-					config = bio.exclusivityConfig().sample(
-										'division', data.mostGeneWidth.value, svg);
-
-			bio.text({
-				text: config.text,
-				attr: config.attr,
-				style: config.style,
-				id: id + '_sample_division',
-				data: data.sample.isAltered,
-				element: group.selectAll('#' + id + '_sample_division'),
-			}, model);
-		});
-	};
-
-	function drawPatientOnSurvivalTable (ostable, dfstable)	{
-		for (var i = 0, l = ostable.length; i < l; i++)	{
-			var os = ostable[i],
-					dfs = dfstable[i];
-
-			bio.iteration.loop(model.data.sample.isAltered, 
-			function (a)	{
-				if (a.text === os.innerHTML)	{
-					os.innerHTML += ' **';
-					dfs.innerHTML += ' **';	
+		// 사용자가 지정한 DIV 에 마우스 휠을 작동할때는, 바디에 마우스 휠
+		// 이벤트를 막아놓는다.
+		document.body.addEventListener(events, function (e)	{
+			if (DOEVENT)	{
+				if (e.preventDefault) {
+					e.preventDefault();
 				}
-			});
-		}
-	};
 
-	function drawPatientOnSurvivalLegend (legend)	{
-		var config = bio.exclusivityConfig().survival();
-
-		bio.text({
-			element: legend,
-			text: config.text,
-			attr: {
-				x: function (d, i) { return config.attr.x(d, i, model); },
-				y: function (d, i) { return config.attr.y(d, i, model); },
-			},
-			style: {
-				'fill': function (d, i) { 
-					return config.style.fill(d, i, model); 
-				},
-				'fontSize': '14px',
-			},
-			text: function (d, i) { return config.text(d, i, model); },
+				return false;
+			}
 		});
-	};
 
-	function drawSampleSurvival (data)	{
-		var obj = {},
-				isDoneSurvival = setInterval(function ()	{
-					obj.os_tb = document.querySelectorAll(
-						'#os_stat_table td b');
-					obj.dfs_tb = document.querySelectorAll(
-						'#dfs_stat_table td b');
-					obj.legend = d3.selectAll('.legend');
-
-					if (obj.os_tb.length > 0 && 
-							obj.dfs_tb.length > 0 && obj.legend.node())	{
-						drawPatientOnSurvivalTable(obj.os_tb, obj.dfs_tb);
-						drawPatientOnSurvivalLegend(obj.legend);
-						clearInterval(isDoneSurvival);
-					}
-				}, 10);
-	};
-
-	function drawSample (data)	{
-		drawSampleLegend(data);
-		drawSampleDivision(data);
-		drawSampleSurvival(data);
-	};
-
-	function drawNetwork (data)	{
-		bio.layout().get(model.setting.svgs, ['network'], 
-		function (id, svg)	{
-			var config = bio.exclusivityConfig().network();
-
-			bio.network({
-				element: svg,
-				data: data.network[
-							model.now.geneset.replaceAll(' ', '')],
-			});
+		ele.addEventListener('mouseenter', function (e)	{
+			DOEVENT = true;
 		});
-	};
 
-	function drawHeatmap (data, axis)	{
-		bio.layout().get(model.setting.svgs, ['heatmap'], 
-		function (id, svg)	{
-			var mLeft = data.mostGeneWidth.value,
-					heatCnf = bio.exclusivityConfig()
-											 .heatmap('shape', svg, mLeft),
-					axisCnf = bio.exclusivityConfig()
-											 .heatmap('axis', svg, mLeft),
-					height = svg.attr('height');
-			
-			bio.heat({
-				element: svg,
-				attr: heatCnf.attr,
-				style: heatCnf.style,
-				margin: heatCnf.margin,
-				xaxis: axis.x[model.now.geneset],
-				yaxis: axis.y[model.now.geneset],
-				data: data.heatmap[model.now.geneset],
-			});
-
-			bio.axises().left({
-				top: 0,
-				left: mLeft,
-				element: svg,
-				direction: 'left',
-				range: axisCnf.range,
-				exclude: 'path, line',
-				margin: axisCnf.margin,
-				domain: axis.y[model.now.geneset],
-			});
+		ele.addEventListener('mouseleave', function (e)	{
+			DOEVENT = false;
 		});
 	};
 	/*
-		Survival chart 의 데이터를 altered, unaltered 로 나눈다.
+		x, y 스크롤이 hidden 일 때, 스크롤을 가능하게 해주는 함수.
 	 */
-	function divideForSurvival (geneset, data)	{
-		var result = {};
+	function scrollOnHidden (element, callback)	{
+		if (!element)	{
+			throw new Error('No given element');
+		}
 
-		bio.iteration.loop(data.survival.data[geneset], 
-		function (sd, i)	{
-			if (sd)	{
-				result[sd.participant_id] = 
-				i <= data.divisionIdx[geneset].idx ? 
-				'altered' : 'unaltered';
+		preventBodyEvent(element, 'mousewheel');
+
+		element.addEventListener('mousewheel', function (e)	{
+			element.scrollTop += element.wheelDelta;
+
+			if (callback) {
+				callback.call(element, e);
 			}
 		});
-
-		return result;
 	};
 
-	function drawSurvival (data)	{
-		var element = document.querySelector('#exclusivity_survival'),
-				width = parseFloat(element.style.width),
-				height = parseFloat(element.style.height);
-
-		SurvivalCurveBroilerPlate.settings = {
-			canvas_width 			 : width * 0.9,
-			canvas_height 		 : height * 0.59,
-		 	chart_width 			 : width * 0.9,
-	  	chart_height 			 : height * 0.59,
-		  chart_left 				 : 50,
-		  chart_top 				 : 15,
-		  include_info_table : false,
-			include_legend 		 : true,
-			include_pvalue 		 : true,
-			pval_x 						 : width / 1.95,
-			pval_y 						 : 40,
+	return function ()	{
+		return {
+			scroll: scroll,
+			scrollOnHidden: scrollOnHidden,
 		};
-
-		SurvivalCurveBroilerPlate.style = {
-		  censored_sign_size : 5,
-		  axis_stroke_width  : 1,
-		  axisX_title_pos_x  : width / 2,
-		  axisX_title_pos_y  : height / 1.725,
-		  axisY_title_pos_x  : -(width / 2),
-		  axisY_title_pos_y  : 10,
-		  axis_color 				 : "black",
-			pval_font_size 		 : 10,
-			pval_font_style 	 : 'normal',
-		};
-
-		SurvivalCurveBroilerPlate.subGroupSettings.legend = {
-			low: 'Unaltered group', high: 'Altered group',
-		};
-
-		bio.survival({
-			element: '#exclusivity_survival',
-			margin: [20, 20, 20, 20],
-			data: data.survival.data[model.now.geneset],
-			division: divideForSurvival(model.now.geneset, data),
-		});
-	};
-
-	function drawDivision (data)	{
-		bio.layout().get(model.setting.svgs, ['heatmap'], 
-		function (id, svg)	{
-			var config = bio.exclusivityConfig()
-											.division(data.mostGeneWidth.value);
-
-			bio.divisionLine({
-				element: svg,
-				isMarker: false,
-				pathElement: [svg],
-				info: [
-					{ 
-						text: 'Altered group', color: '#FF6252', 
-					},
-					{ text: 'Unaltered group', color: '#00AC52' }
-				],
-				text: config.text,
-				attr: config.attr,
-				style: config.style,
-				margin: config.margin,
-				axis: data.axis.heatmap.x[model.now.geneset],
-				idxes: data.divisionIdx[model.now.geneset].idx + 1,
-			}, model);
-		});
-	};
-
-	function drawExclusivity (data)	{
-		forPatient(model.setting.defaultData.sample);
-		drawLegend(data);
-		drawNetwork(data);
-		drawHeatmap(data, data.axis.heatmap);
-		drawSurvival(data);
-		drawDivision(data);
-		drawSample(data);
-	};
-
-	return function (opts)	{
-		model = bio.initialize('exclusivity');
-		model.setting = bio.setting('exclusivity', opts);
-		model.data = model.setting.preprocessData;
-
-		bio.title('#exclusivity_title', 'Mutual Exclusivity');
-
-		model.now.geneset = model.data.geneset[0].join(' ');
-
-		bio.selectBox({
-			viewName: 'geneset',
-			margin: [0, 0, 0, 0],
-			fontSize: '14px',
-			defaultText: model.now.geneset,
-			className: 'exclusivity-geneset',
-			id: '#exclusivity_select_geneset',
-			items: model.data.geneset.map(function (gs)	{
-				return gs.join(' ');
-			}),
-			clickItem: function (value)	{
-				model.now.geneset = value.toUpperCase();
-
-				bio.layout().removeGroupTag();
-
-				drawExclusivity(model.data);
-			},
-		});
-
-		drawExclusivity(model.data);
-
-		console.log('>>> Exclusivity reponse data: ', opts);
-		console.log('>>> Exclusivity setting data: ', model.setting);
-		console.log('>>> Exclusivity model data: ', model);
 	};
 };
 function colorGradient ()	{
@@ -5674,6 +5338,362 @@ function expression ()	{
 		console.log('>>> Expression model data: ', model);
 	};
 };
+function exclusivity ()	{
+	'use strict';
+
+	var model = {};
+	/*
+		현재 Patient 의 (Un)Altered 값을 반환.
+	 */
+	function isAltered (samples, heat)	{
+		var sample = 'SMCLUAD1690060028',
+		// var sample = document.getElementById('sample_id').value,
+				genesetArr = model.now.geneset.split(' '),
+				result = '.';
+
+		if (samples.length < 1)	{
+			return [ 
+				{ text: '**', color: '#00AC52' }, 
+				{ text: sample + ' Belongs to', color: '#333333' }, 
+				{ text: 'Unaltered group', color: '#00AC52' } ];
+		}
+
+		bio.iteration.loop(samples, function (s)	{
+			var geneStr = heat[genesetArr.indexOf(s.gene)];
+
+			if (geneStr.indexOf(s.value) > -1)	{
+				result = result !== '.' ? 
+				result : geneStr[geneStr.indexOf(s.value)];
+			}
+		});
+
+		return result === '.' ? 
+		[ { text: '**', color: '#00AC52' }, 
+			{ text: sample + ' Belongs to', color: '#333333' }, 
+			{ text: 'Unaltered group', color: '#00AC52' } ] : 
+		[ { text: '**', color: '#FF6252' }, 
+			{ text: sample + ' Belongs to', color: '#333333' }, 
+			{ text: 'Altered group', color: '#FF6252' } ];
+	};
+
+	function forPatient (samples)	{
+		model.data.sample = { data: [], isAltered: false };
+
+		var config = bio.exclusivityConfig(),
+				landCnf = bio.landscapeConfig();
+
+		bio.iteration.loop(samples, function (sample)	{
+			if (model.now.geneset.indexOf(sample.gene) > -1)	{
+				model.data.sample.data.push({
+					gene: sample.gene,
+					value: config.symbol(config.byCase(
+								landCnf.byCase(sample.class), sample.class)),
+				});
+			}
+		});
+
+		model.data.sample.isAltered = 
+			isAltered(model.data.sample.data,
+								model.data.survival.heat[model.now.geneset]);
+	};
+
+	function drawLegend (data)	{
+		bio.layout().get(model.setting.svgs, ['ty_legend'], 
+		function (id, svg)	{
+			var config = bio.exclusivityConfig(),
+					lgdCnf = config.legend(data.mostGeneWidth.value);
+
+			bio.legend({
+				element: svg,
+				on: lgdCnf.on,
+				attr: lgdCnf.attr,
+				text: lgdCnf.text,
+				style: lgdCnf.style,
+				margin: lgdCnf.margin,
+				data: data.type[model.now.geneset].sort(function (a, b)	{
+					return config.priority(a) > config.priority(b) ? 1 : -1;
+				}),
+			});
+
+			document.querySelector('#exclusivity_legend')
+							.style.height = svg.attr('height') + 'px';
+		});
+	};
+
+	function drawSampleLegend (data)	{
+		bio.layout().get(model.setting.svgs, ['sample_legend'], 
+		function (id, svg)	{
+			var group = bio.rendering()
+										 .addGroup(svg, 0, 0, 'sample-legend'),
+					config = bio.exclusivityConfig()
+											.sample('legend', data.mostGeneWidth.value);
+
+			bio.text({
+				text: config.text,
+				attr: config.attr,
+				style: config.style,
+				id: id + '_sample_legend',
+				data: data.sample.isAltered,
+				element: group.selectAll('#' + id + '_sample_legend'),
+			}, model);
+		});
+	};
+
+	function drawSampleDivision (data)	{
+		bio.layout().get(model.setting.svgs, ['heatmap'], 
+		function (id, svg)	{
+			var group = bio.rendering()
+										 .addGroup(svg, 0, 0, 'sample-division'),
+					config = bio.exclusivityConfig().sample(
+										'division', data.mostGeneWidth.value, svg);
+
+			bio.text({
+				text: config.text,
+				attr: config.attr,
+				style: config.style,
+				id: id + '_sample_division',
+				data: data.sample.isAltered,
+				element: group.selectAll('#' + id + '_sample_division'),
+			}, model);
+		});
+	};
+
+	function drawPatientOnSurvivalTable (ostable, dfstable)	{
+		for (var i = 0, l = ostable.length; i < l; i++)	{
+			var os = ostable[i],
+					dfs = dfstable[i];
+
+			bio.iteration.loop(model.data.sample.isAltered, 
+			function (a)	{
+				if (a.text === os.innerHTML)	{
+					os.innerHTML += ' **';
+					dfs.innerHTML += ' **';	
+				}
+			});
+		}
+	};
+
+	function drawPatientOnSurvivalLegend (legend)	{
+		var config = bio.exclusivityConfig().survival();
+
+		bio.text({
+			element: legend,
+			text: config.text,
+			attr: {
+				x: function (d, i) { return config.attr.x(d, i, model); },
+				y: function (d, i) { return config.attr.y(d, i, model); },
+			},
+			style: {
+				'fill': function (d, i) { 
+					return config.style.fill(d, i, model); 
+				},
+				'fontSize': '14px',
+			},
+			text: function (d, i) { return config.text(d, i, model); },
+		});
+	};
+
+	function drawSampleSurvival (data)	{
+		var obj = {},
+				isDoneSurvival = setInterval(function ()	{
+					obj.os_tb = document.querySelectorAll(
+						'#os_stat_table td b');
+					obj.dfs_tb = document.querySelectorAll(
+						'#dfs_stat_table td b');
+					obj.legend = d3.selectAll('.legend');
+
+					if (obj.os_tb.length > 0 && 
+							obj.dfs_tb.length > 0 && obj.legend.node())	{
+						drawPatientOnSurvivalTable(obj.os_tb, obj.dfs_tb);
+						drawPatientOnSurvivalLegend(obj.legend);
+						clearInterval(isDoneSurvival);
+					}
+				}, 10);
+	};
+
+	function drawSample (data)	{
+		drawSampleLegend(data);
+		drawSampleDivision(data);
+		drawSampleSurvival(data);
+	};
+
+	function drawNetwork (data)	{
+		bio.layout().get(model.setting.svgs, ['network'], 
+		function (id, svg)	{
+			var config = bio.exclusivityConfig().network();
+
+			bio.network({
+				element: svg,
+				data: data.network[
+							model.now.geneset.replaceAll(' ', '')],
+			});
+		});
+	};
+
+	function drawHeatmap (data, axis)	{
+		bio.layout().get(model.setting.svgs, ['heatmap'], 
+		function (id, svg)	{
+			var mLeft = data.mostGeneWidth.value,
+					heatCnf = bio.exclusivityConfig()
+											 .heatmap('shape', svg, mLeft),
+					axisCnf = bio.exclusivityConfig()
+											 .heatmap('axis', svg, mLeft),
+					height = svg.attr('height');
+			
+			bio.heat({
+				element: svg,
+				attr: heatCnf.attr,
+				style: heatCnf.style,
+				margin: heatCnf.margin,
+				xaxis: axis.x[model.now.geneset],
+				yaxis: axis.y[model.now.geneset],
+				data: data.heatmap[model.now.geneset],
+			});
+
+			bio.axises().left({
+				top: 0,
+				left: mLeft,
+				element: svg,
+				direction: 'left',
+				range: axisCnf.range,
+				exclude: 'path, line',
+				margin: axisCnf.margin,
+				domain: axis.y[model.now.geneset],
+			});
+		});
+	};
+	/*
+		Survival chart 의 데이터를 altered, unaltered 로 나눈다.
+	 */
+	function divideForSurvival (geneset, data)	{
+		var result = {};
+
+		bio.iteration.loop(data.survival.data[geneset], 
+		function (sd, i)	{
+			if (sd)	{
+				result[sd.participant_id] = 
+				i <= data.divisionIdx[geneset].idx ? 
+				'altered' : 'unaltered';
+			}
+		});
+
+		return result;
+	};
+
+	function drawSurvival (data)	{
+		var element = document.querySelector('#exclusivity_survival'),
+				width = parseFloat(element.style.width),
+				height = parseFloat(element.style.height);
+
+		SurvivalCurveBroilerPlate.settings = {
+			canvas_width 			 : width * 0.9,
+			canvas_height 		 : height * 0.59,
+		 	chart_width 			 : width * 0.9,
+	  	chart_height 			 : height * 0.59,
+		  chart_left 				 : 50,
+		  chart_top 				 : 15,
+		  include_info_table : false,
+			include_legend 		 : true,
+			include_pvalue 		 : true,
+			pval_x 						 : width / 1.95,
+			pval_y 						 : 40,
+		};
+
+		SurvivalCurveBroilerPlate.style = {
+		  censored_sign_size : 5,
+		  axis_stroke_width  : 1,
+		  axisX_title_pos_x  : width / 2,
+		  axisX_title_pos_y  : height / 1.725,
+		  axisY_title_pos_x  : -(width / 2),
+		  axisY_title_pos_y  : 10,
+		  axis_color 				 : "black",
+			pval_font_size 		 : 10,
+			pval_font_style 	 : 'normal',
+		};
+
+		SurvivalCurveBroilerPlate.subGroupSettings.legend = {
+			low: 'Unaltered group', high: 'Altered group',
+		};
+
+		bio.survival({
+			element: '#exclusivity_survival',
+			margin: [20, 20, 20, 20],
+			data: data.survival.data[model.now.geneset],
+			division: divideForSurvival(model.now.geneset, data),
+		});
+	};
+
+	function drawDivision (data)	{
+		bio.layout().get(model.setting.svgs, ['heatmap'], 
+		function (id, svg)	{
+			var config = bio.exclusivityConfig()
+											.division(data.mostGeneWidth.value);
+
+			bio.divisionLine({
+				element: svg,
+				isMarker: false,
+				pathElement: [svg],
+				info: [
+					{ 
+						text: 'Altered group', color: '#FF6252', 
+					},
+					{ text: 'Unaltered group', color: '#00AC52' }
+				],
+				text: config.text,
+				attr: config.attr,
+				style: config.style,
+				margin: config.margin,
+				axis: data.axis.heatmap.x[model.now.geneset],
+				idxes: data.divisionIdx[model.now.geneset].idx + 1,
+			}, model);
+		});
+	};
+
+	function drawExclusivity (data)	{
+		forPatient(model.setting.defaultData.sample);
+		drawLegend(data);
+		drawNetwork(data);
+		drawHeatmap(data, data.axis.heatmap);
+		drawSurvival(data);
+		drawDivision(data);
+		drawSample(data);
+	};
+
+	return function (opts)	{
+		model = bio.initialize('exclusivity');
+		model.setting = bio.setting('exclusivity', opts);
+		model.data = model.setting.preprocessData;
+
+		bio.title('#exclusivity_title', 'Mutual Exclusivity');
+
+		model.now.geneset = model.data.geneset[0].join(' ');
+
+		bio.selectBox({
+			viewName: 'geneset',
+			margin: [0, 0, 0, 0],
+			fontSize: '14px',
+			defaultText: model.now.geneset,
+			className: 'exclusivity-geneset',
+			id: '#exclusivity_select_geneset',
+			items: model.data.geneset.map(function (gs)	{
+				return gs.join(' ');
+			}),
+			clickItem: function (value)	{
+				model.now.geneset = value.toUpperCase();
+
+				bio.layout().removeGroupTag();
+
+				drawExclusivity(model.data);
+			},
+		});
+
+		drawExclusivity(model.data);
+
+		console.log('>>> Exclusivity reponse data: ', opts);
+		console.log('>>> Exclusivity setting data: ', model.setting);
+		console.log('>>> Exclusivity model data: ', model);
+	};
+};
 function landscape ()	{
 	'use strict';
 
@@ -5684,8 +5704,10 @@ function landscape ()	{
 	function defaultSize (init)	{
 		// 기준은 '#landscape_heatmap' 태그로 한다.
 		var def = bio.dom().get('#landscape_heatmap');
-
-		init.width = parseFloat(def.style.width) * 2;
+		// model.init.width & height 설정.
+		// init.width = parseFloat(def.style.width) * 2;
+		// 2018.01.02 Paper support 코드.
+		init.width = parseFloat(def.style.width);
 		init.height = parseFloat(def.style.height);
 	};
 	/*
@@ -5710,6 +5732,62 @@ function landscape ()	{
 					(model.now.width = data.value, model.now.width));
 			},
 		});
+	};
+	/*
+	 Exclusivity 타입을 바꿔 주는 함수.
+	 */
+	function changeExclusivityOption ()	{
+		$('input[type="radio"]').change(function (e)	{
+			model.now.exclusivity_opt = this.value;
+
+			bio.layout().removeGroupTag();
+
+			drawExclusivityLandscape(this.value);
+		});
+	};
+
+	function makeInputLabel (type)	{
+		var label = document.createElement('label'),
+				input = document.createElement('input');
+
+		input.id = 'option_' + type;
+		input.setAttribute('type', 'radio');
+		input.setAttribute('name', 'options');
+		input.setAttribute('value', type);
+		input.setAttribute('autocomplete', 'off');
+		input.checked = type === '1' ? true : false;
+
+		label.className = 'btn btn-default btn-sm' 
+										+ (type === '1' ? ' active' : '');
+		label.innerText = 'TYPE ' + type;
+		label.appendChild(input);
+
+		return label;
+	}
+
+	function drawExclusivity ()	{
+		var base = document.querySelector('#landscape_option'),
+				exclusivity = document.createElement('div'),
+				btnGroup = document.createElement('div'),
+				label = document.createElement('div'),
+				opt1 = makeInputLabel('1'),
+				opt2 = makeInputLabel('2');
+
+		btnGroup.id = 'option_group';
+		btnGroup.className = 'btn-group';
+		btnGroup.setAttribute('data-toggle', 'buttons');
+
+		btnGroup.appendChild(opt1);
+		btnGroup.appendChild(opt2);
+
+		label.id = 'option_label';
+		label.innerHTML = 'Exclusivity';
+
+		base.appendChild(label);
+		base.appendChild(btnGroup);
+		base.appendChild(exclusivity);
+
+		model.init.exclusivity_opt = '1';
 	};
 	/*
 		Group 내에 만들어진 임시 svg 를 삭제하는 함수.
@@ -5822,7 +5900,6 @@ function landscape ()	{
 				.on('click', function (data, idx)	{
 					var res = config.on ? config.on.click.call(
 															this, data, idx, model) : false;
-					console.log(res.model)
 					redraw(res);
 				});
 		});
@@ -6009,6 +6086,23 @@ function landscape ()	{
 		drawLegend(md.type);
 	};
 
+	function drawExclusivityLandscape (type)	{
+		// 유전자 위아래 순서조정과 개별 enable/disable 기능을 위해선
+		// 아래 gene list 의 변경이 필요하다.
+		console.log(model.data.gene);
+		// 초기 exclusive 값을 설정한다.
+		model.exclusive.init = bio.landscapeSort().exclusive(
+			model.data.heatmap, model.data.gene, type);
+		// 초기 x, y 축 값 설정. 초기화 동작을 위해서이다.
+		model.init.axis.x = [].concat(model.exclusive.init.data);
+		model.init.axis.y = [].concat(model.data.axis.gene.y);
+
+		orderByTypePriority(model.data.type);
+		patientAxis(model.data.axis);
+		changeAxis(model.exclusive.init);
+		drawLandscape(model.data, model.init.width);
+	};
+
 	return function (opts)	{
 		model = bio.initialize('landscape');
 		model.setting = bio.setting('landscape', opts);
@@ -6021,17 +6115,9 @@ function landscape ()	{
 
 		defaultSize(model.init);
 		drawScaleSet(model.setting);
-		// 초기 exclusive 값을 설정한다.
-		model.exclusive.init = bio.landscapeSort().exclusive(
-			model.data.heatmap, model.data.gene);
-		// 초기 x, y 축 값 설정. 초기화 동작을 위해서이다.
-		model.init.axis.x = [].concat(model.exclusive.init.data);
-		model.init.axis.y = [].concat(model.data.axis.gene.y);
-
-		orderByTypePriority(model.data.type);
-		patientAxis(model.data.axis);
-		changeAxis(model.exclusive.init);
-		drawLandscape(model.data, model.init.width);
+		drawExclusivity();
+		changeExclusivityOption();
+		drawExclusivityLandscape('1');
 
 		bio.handler().scroll('#landscape_heatmap', function (e)	{
 			var sample = bio.dom().get('#landscape_sample'),
@@ -6268,7 +6354,7 @@ function landscapeSort ()	{
 	/*
 		Type 을 문자열의 형태로 바꿔주는 함수.
 	 */
-	function typeToString (result, genes, data)	{
+	function typeToString (result, genes, data, type)	{
 		bio.iteration.loop(result, function (r)	{
 			bio.iteration.loop(data, function(d)	{
 				if (d.x === r.key)	{
@@ -6277,7 +6363,7 @@ function landscapeSort ()	{
 							mutVal = bio.landscapeConfig()
 													.byCase(d.value);
 					r.value = r.value.replaceAt(geneIdx, '11');
-					r.value = r.value.replaceAt(mutIdx -1, mutVal === 'cnv' ? '11' : '00');
+					r.value = r.value.replaceAt(mutIdx -1, mutVal === 'cnv' ? (type === '1' ? '00' : '11') : '00');
 				}
 			});
 		});
@@ -6300,7 +6386,7 @@ function landscapeSort ()	{
 	/*
 		Exclusive 하게 보여지는데 필요한 데이터를 만드는 함수.
 	 */
-	function exclusive (data, genes)	{
+	function exclusive (data, genes, type)	{
 		var temp = {},
 				result = [],
 				idx = 0;
@@ -6320,7 +6406,7 @@ function landscapeSort ()	{
 			}
 		});
 
-		typeToString(result, genes, data);
+		typeToString(result, genes, data, type);
 		
 		return model.exclusive = result, sortByExclusive(result);
 	};
@@ -6403,15 +6489,27 @@ function scaleSet ()	{
 		(model.scaleRate -= model.termRate, model.scaleRate) : 
 		model.defaultRate;
 		// Input 태그 값 범위 제한.
+		// model.scaleRate = 
+		// model.defaultValue / 2 > model.scaleValue ? 
+		// (model.scaleRate += model.termRate, model.scaleRate) : 
+		// model.defaultValue * 2 < model.scaleValue ? 
+		// model.defaultRate * 2 : model.scaleRate;
+		// // 실제 크기 값 범위 제한.
+		// model.scaleValue = 
+		// model.defaultValue / 2 > model.scaleValue ? 
+		// model.defaultValue / 2 : 
+		// model.defaultValue * 2 < model.scaleValue ? 
+		// model.defaultValue * 2 : model.scaleValue;
+		// 2018.01.02 Paper support code.
 		model.scaleRate = 
-		model.defaultValue / 2 > model.scaleValue ? 
+		model.defaultValue > model.scaleValue ? 
 		(model.scaleRate += model.termRate, model.scaleRate) : 
 		model.defaultValue * 2 < model.scaleValue ? 
 		model.defaultRate * 2 : model.scaleRate;
 		// 실제 크기 값 범위 제한.
 		model.scaleValue = 
-		model.defaultValue / 2 > model.scaleValue ? 
-		model.defaultValue / 2 : 
+		model.defaultValue > model.scaleValue ? 
+		model.defaultValue : 
 		model.defaultValue * 2 < model.scaleValue ? 
 		model.defaultValue * 2 : model.scaleValue;
 		// Input 태그 값 변경 적용.
@@ -7632,12 +7730,20 @@ function preprocLandscape ()	{
 	/*
 		[min, max] 배열을 반환하는 함수.
 	 */
-	function makeLinearAxis ()	{
+	function makeLinearAxis (isPlotted)	{
 		model.axis.gene.x = [bio.math.max(model.axis.gene.x), 0];
-		model.axis.sample.y = [
-			bio.math.max(model.axis.patient.y, 
-			bio.math.max(model.axis.sample.y)), 0
-		];
+
+		if (isPlotted.patient)	{
+			model.axis.sample.y = [
+				bio.math.max(model.axis.patient.y, 
+				bio.math.max(model.axis.sample.y)), 0
+			];
+		} else {
+			model.axis.sample.y = [
+				bio.math.max(model.axis.sample.y), 0
+			];
+		}
+		
 		model.axis.pq.x = [
 			0, bio.math.max(model.pq.map(function (pq)	{
 				return Math.ceil(pq.value);
@@ -7654,7 +7760,7 @@ function preprocLandscape ()	{
 		model.axis.group.x = model.axis.sample.x;
 	};
 
-	return function (data)	{
+	return function (data, isPlotted)	{
 		model = bio.initialize('preprocess').landscape;
 		// Data 안에 다른 객체가 존재할 경우 그 안을 찾아본다.
 		data = data.gene_list ? data : data.data;
@@ -7674,7 +7780,7 @@ function preprocLandscape ()	{
 		model.stack.sample = byStack('sample', model.stack.sample);
 		model.stack.patient = byStack('patient', model.stack.patient);
 		// Axis 데이터를 만들어준다.
-		makeLinearAxis();
+		makeLinearAxis(isPlotted);
 		makeOrdinalAxis();
 
 		console.log('>>> Preprocess landscape data: ', data);
@@ -9920,105 +10026,274 @@ var SurvivalTab = (function() {
 
 }()); //Close SubvivalTabView (Singular)
 
-// (function ()	{
-// 	'use strict';
-//   /*
-//     Exclusivity
-//    */
-	// $.ajax({
- //    'type': 'POST',
- //    'url': '/files/datas',
- //    data: {
- //    	name: 'exclusivity',
- //    },
- //    beforeSend: function () {
- //      bio.loading().start(document.querySelector('#main'), 900, 600);
- //    },
- //    success: function (d) {
- //      bio.exclusivity({
- //        element: '#main',
- //        width: 900,
- //        height: 600,
- //        data: {
- //          heatmap: d[0],
- //          network: d[2],
- //          sample: d[3].data.sample_variants,
- //          survival: {
- //            patient: d[4].data,
- //            types: d[5].data,
- //          },
- //          type: 'LUAD',
- //        }
- //      });
+function dependencies ()	{
+	'use strict';
+	// Dependencies 의 기능을 모아둔 Model 객체.
+	var model = {
+		version: {},	// Dependencies library 의 버전관련 객체.
+	};
+	/*
+		현재 적용 된 D3JS 의 버전이 
+		4 버전이면 true,
+		3 버전이면 false 를 반환하는 함수.
+	 */
+	model.version.d3v4 = function ()	{
+		// D3JS 가 존재하지 않을 경우 에러를 발생시킨다.
+		if (!d3)	{
+			throw new Error ('D3JS is not found');
+		}
+		// d3.version 의 0 번째 Index 가 '3' 일 경우 현재 D3JS
+		// 의 버전은 3 버전이다.
+		return d3.version.indexOf('3') === 0 ? false : true;
+	};
+	// Dependencies 객체의 기능을 모아둔 Model 객체를 반환한다.
+	return model;
+};
+function dom ()	{
+	'use strict';
 
- //      bio.loading().end();
- //    },
- //  });
+	var model = {};
+	/*
+		'#ID', '.Class' 중 존재하는 엘리먼트를 반환하는 함수.
+	 */
+	model.get = function (ele)	{
+		if (typeof(ele) === 'object')	{
+			return ele;
+		}
 
- /*
-    Expression
-  */
- // $.ajax({
- //    'type': 'POST',
- //    'url': '/files/datas',
- //    data: {
- //     name: 'expression',
- //    },
- //    beforeSend: function () {
- //      bio.loading().start(document.querySelector('#main'), 900, 600);
- //    },
- //    success: function (d) {
- //      console.log(d)
- //      bio.expression({
- //        element: '#main',
- //        width: 900,
- //        height: 600,
- //        requestData: {
- //          source: 'GDAC',
- //          cancer_type: 'luad',
- //          sample_id: 'SMCLUAD1705230001',
- //          signature: 'PAM50',
- //          filter: ':'
- //        },
- //        data: d[0].data,
- //      });
+		var classify = ['#', '.'],
+				classifyName = ele.removeSymbol(),
+				result = null;
 
- //      bio.loading().end();
- //    },
- //  });
+		bio.iteration.loop(classify, function (symbol)	{
+			var name = symbol + classifyName,
+					dom = document.querySelector(name);
 
-//  /*
-//     Landscape
-//   */
- // $.ajax({
- //    'type': 'POST',
- //    'url': '/files/datas',
- //    data: {
- //     name: 'landscape',
- //    },
- //    beforeSend: function () {
- //      bio.loading().start(document.querySelector('#main'), 900, 600);
- //    },
- //    success: function (d) {
- //      var t = 'test';
- //      console.log(t.substring(0, 1) + '00' + t.substring(3))
+			if (dom)	{
+				result = dom;
+			}
+		});
 
- //      bio.landscape({
-	// 			element: '#main',
-	// 			width: 1200,
-	// 			height: 600,
-	// 			data: {
-	// 				pq: 'p',
-	// 				type: 'LUAD',
-	// 				data: d[0].data,
-	// 				title:d[0].data.name,
-	// 			},
-	// 		});
+		return result;
+	};
 
- //      bio.loading().end();
- //    },
- //  });
+	model.remove = function (element, childs)	{
+		if (bio.objects.getType(element).indexOf('HTML') < 0)	{
+			throw new Error('Not a dom element');
+		}
 
+		bio.iteration.loop(childs, function (child)	{
+			element.removeChild(child);
+		});
+	};
+	/*
+		Element 파라미터 하위 Element 들을 
+		모두 제거하는 함수.
+	 */
+	model.removeAll = function (element)	{
+		if (bio.objects.getType(element).indexOf('HTML') < 0)	{
+			throw new Error('Not a dom element');
+		}
+
+	 	while (element.firstChild)	{
+	 		element.removeChild(element.firstChild);
+	 	}
+	};
+
+	return function ()	{
+		return model;
+	};
+};
+function iteration ()	{
+	'use strict';
+
+	var model = {};
+	/*
+		객체, 리스트를 반복하는 함수.
+		결과 값은 콜백함수의 파라미터로 전달 된다.
+	 */
+	model.loop = function (data, callback)	{
+		if (typeof(data) !== 'object')	{
+			throw new Error ('This is not Object or Array');
+		}
+
+		if (bio.objects.getType(data) === 'Array')	{
+			for (var i = 0, l = data.length; i < l; i++)	{
+				callback.call(this, data[i], i);
+			}
+		} else {
+			for (var key in data)	{
+				callback.call(this, key, data[key]);
+			}
+		}
+	};
+	// >>> About Array. 
+	/*
+		주어진 길이 만큼 주어진 값으로 리스트를 채워넣고 반환하는 함수.
+	 */
+	Array.prototype.fill = function (len, value)	{
+		for (var i = 0; i < len; i++)	{
+			this.push(value);
+		}
+
+		return this;
+	};
+
+	return model;
+};
+function math ()	{
+	'use strict';
+
+	var model = {};
+	/*
+		Number sequence 리스트에서 중간값의 위치를 반환한다.
+	 */
+	model.medianIndex = function (seqList)	{
+		var len = seqList.length;
+		// 홀수일 경우 1을 더한 후 2로 나누고 짝수는 그냥 2로 나눈다.
+		return len % 2 === 1 ? (len + 1) / 2 : len / 2;
+	};
+	/*
+		Number sequence 리스트에서 중간값을 반환한다.
+	 */
+	model.median = function (seqList)	{
+		var list = bio.objects.clone(seqList);
+		// 혹시라도 정렬이 안되어있을 경우를 고려하여 정렬한다.
+		return list.sort(function (a, b)	{
+						 return a > b ? 1 : -1;
+					 })[model.medianIndex(list)];
+	};
+	/*
+		두 수 혹은 숫자 리스트에서 가장 작은 값을 반환한다.
+	 */
+	model.min = function (v1, v2)	{
+		return arguments.length < 2 ? 
+					 Math.min.apply(null, v1) : 
+					 Math.min.call(null, v1, v2);
+	};
+	/*
+		두 수 혹은 숫자 리스트에서 가장 큰 값을 반환한다.
+	 */
+	model.max = function (v1, v2)	{
+		return arguments.length < 2 ? 
+					 Math.max.apply(null, v1) : 
+					 Math.max.call(null, v1, v2);
+	};
+	/*
+		Start 부터 End 까지의 범위내의 랜덤 값을 반환하는 함수.
+	 */
+	model.random = function (start, end)	{
+		start = start || 0;
+		end = end || 1;
+
+		return Math.floor(Math.random() * end) + start;
+	};
+
+	return model;
+};
+function objects ()	{
+	'use strict';
+
+	var model = {};
+	/*
+		Object 의 Type 을 문자열로 반환하는 함수.
+		Ex) 'SSS' -> 'String'.
+	 */
+	model.getType = function (obj)	{
+		var str = Object.prototype
+										.toString.call(obj);
+
+		return str.substring(
+					 str.indexOf(' ') + 1, 
+					 str.indexOf(']'));
+	};
+	/*
+		객체를 복사 (완전복사) 하여 반환하는 함수.
+	 */
+	model.clone = function (obj)	{
+		if (typeof(obj) !== 'object')	{
+			return obj;
+		} else {
+			if (model.getType(obj) === 'Array')	{
+				return new Array().concat(obj);
+			} else {
+				var copy = {};
+
+				bio.iteration.loop(obj, function (key, value)	{
+					if (obj.hasOwnProperty(key))	{
+						copy[key] = model.clone(obj[key]);
+					}
+				});
+
+				return copy;
+			}
+		}
+	};
+	/*
+		객체의 키를 값으로 찾아주는 함수.
+	 */
+	model.getKey = function (obj, value)	{
+		var keys = Object.keys(obj),
+				values = Object.values(obj);
+
+		return keys[values.indexOf(value)];
+	};
+
+	return model;
+}
+/*
+	String 객체의 prototype 으로 붙일 기능들을
+	모아둔 객체.
+ */
+function strings ()	{
+	'use strict';
+
+	String.prototype.matchAll = function (regex)	{
+		var matched = [], found;
+
+		while (found = regex.exec(this))	{
+			matched.push(found[0]);
+		}
+
+		return matched;
+	};
+	/*
+		String 을 대명사 표기법 형태로 바꿔 반환하는 함수.
+	 */
+	String.prototype.pronoun = function ()	{
+		return this[0].toUpperCase() + 
+					 this.substring(1).toLowerCase();
+	};
+	/*
+		문자열에 포함된 공백들을 지워주는 함수.
+	 */
+	String.prototype.removeWhiteSpace = function ()	{
+		return this.replace(/\s/ig, '');
+	};
+	/*
+		문자열에 포함된 특수문자들을 지워주는 함수.
+	 */
+	String.prototype.removeSymbol = function ()	{
+		return this.replace(/\W/ig, '');
+	}
+	/*
+		문자열에서 사용자지정위치의 문자를 다른 문자로 대치해주는 함수.
+		String 객체의 프로토타입으로 지정하였다.
+	 */
+	String.prototype.replaceAt = function (idx, rep)	{
+		// substring !== substr 
+		// substring 은 start 부터 end 까지,
+		// substr 은 start 부터 num 개를 자른다.
+		return this.substring(0, idx) + rep + 
+					 this.substring(idx + 1);
+	};
+	/*
+		파라미터 값을 문자열내에서 모두 바꿔준다.
+	 */
+	String.prototype.replaceAll = function (target, change)	{
+		return this.replace(new RegExp(target, 'ig'), change);
+	};
+};
 function loading ()	{
 	'use strict';
 
@@ -10639,274 +10914,6 @@ function tooltip ()	{
 		return show(tooltipDiv, target, parent);
 	};
 };
-function dependencies ()	{
-	'use strict';
-	// Dependencies 의 기능을 모아둔 Model 객체.
-	var model = {
-		version: {},	// Dependencies library 의 버전관련 객체.
-	};
-	/*
-		현재 적용 된 D3JS 의 버전이 
-		4 버전이면 true,
-		3 버전이면 false 를 반환하는 함수.
-	 */
-	model.version.d3v4 = function ()	{
-		// D3JS 가 존재하지 않을 경우 에러를 발생시킨다.
-		if (!d3)	{
-			throw new Error ('D3JS is not found');
-		}
-		// d3.version 의 0 번째 Index 가 '3' 일 경우 현재 D3JS
-		// 의 버전은 3 버전이다.
-		return d3.version.indexOf('3') === 0 ? false : true;
-	};
-	// Dependencies 객체의 기능을 모아둔 Model 객체를 반환한다.
-	return model;
-};
-function dom ()	{
-	'use strict';
-
-	var model = {};
-	/*
-		'#ID', '.Class' 중 존재하는 엘리먼트를 반환하는 함수.
-	 */
-	model.get = function (ele)	{
-		if (typeof(ele) === 'object')	{
-			return ele;
-		}
-
-		var classify = ['#', '.'],
-				classifyName = ele.removeSymbol(),
-				result = null;
-
-		bio.iteration.loop(classify, function (symbol)	{
-			var name = symbol + classifyName,
-					dom = document.querySelector(name);
-
-			if (dom)	{
-				result = dom;
-			}
-		});
-
-		return result;
-	};
-
-	model.remove = function (element, childs)	{
-		if (bio.objects.getType(element).indexOf('HTML') < 0)	{
-			throw new Error('Not a dom element');
-		}
-
-		bio.iteration.loop(childs, function (child)	{
-			element.removeChild(child);
-		});
-	};
-	/*
-		Element 파라미터 하위 Element 들을 
-		모두 제거하는 함수.
-	 */
-	model.removeAll = function (element)	{
-		if (bio.objects.getType(element).indexOf('HTML') < 0)	{
-			throw new Error('Not a dom element');
-		}
-
-	 	while (element.firstChild)	{
-	 		element.removeChild(element.firstChild);
-	 	}
-	};
-
-	return function ()	{
-		return model;
-	};
-};
-function iteration ()	{
-	'use strict';
-
-	var model = {};
-	/*
-		객체, 리스트를 반복하는 함수.
-		결과 값은 콜백함수의 파라미터로 전달 된다.
-	 */
-	model.loop = function (data, callback)	{
-		if (typeof(data) !== 'object')	{
-			throw new Error ('This is not Object or Array');
-		}
-
-		if (bio.objects.getType(data) === 'Array')	{
-			for (var i = 0, l = data.length; i < l; i++)	{
-				callback.call(this, data[i], i);
-			}
-		} else {
-			for (var key in data)	{
-				callback.call(this, key, data[key]);
-			}
-		}
-	};
-	// >>> About Array. 
-	/*
-		주어진 길이 만큼 주어진 값으로 리스트를 채워넣고 반환하는 함수.
-	 */
-	Array.prototype.fill = function (len, value)	{
-		for (var i = 0; i < len; i++)	{
-			this.push(value);
-		}
-
-		return this;
-	};
-
-	return model;
-};
-function math ()	{
-	'use strict';
-
-	var model = {};
-	/*
-		Number sequence 리스트에서 중간값의 위치를 반환한다.
-	 */
-	model.medianIndex = function (seqList)	{
-		var len = seqList.length;
-		// 홀수일 경우 1을 더한 후 2로 나누고 짝수는 그냥 2로 나눈다.
-		return len % 2 === 1 ? (len + 1) / 2 : len / 2;
-	};
-	/*
-		Number sequence 리스트에서 중간값을 반환한다.
-	 */
-	model.median = function (seqList)	{
-		var list = bio.objects.clone(seqList);
-		// 혹시라도 정렬이 안되어있을 경우를 고려하여 정렬한다.
-		return list.sort(function (a, b)	{
-						 return a > b ? 1 : -1;
-					 })[model.medianIndex(list)];
-	};
-	/*
-		두 수 혹은 숫자 리스트에서 가장 작은 값을 반환한다.
-	 */
-	model.min = function (v1, v2)	{
-		return arguments.length < 2 ? 
-					 Math.min.apply(null, v1) : 
-					 Math.min.call(null, v1, v2);
-	};
-	/*
-		두 수 혹은 숫자 리스트에서 가장 큰 값을 반환한다.
-	 */
-	model.max = function (v1, v2)	{
-		return arguments.length < 2 ? 
-					 Math.max.apply(null, v1) : 
-					 Math.max.call(null, v1, v2);
-	};
-	/*
-		Start 부터 End 까지의 범위내의 랜덤 값을 반환하는 함수.
-	 */
-	model.random = function (start, end)	{
-		start = start || 0;
-		end = end || 1;
-
-		return Math.floor(Math.random() * end) + start;
-	};
-
-	return model;
-};
-function objects ()	{
-	'use strict';
-
-	var model = {};
-	/*
-		Object 의 Type 을 문자열로 반환하는 함수.
-		Ex) 'SSS' -> 'String'.
-	 */
-	model.getType = function (obj)	{
-		var str = Object.prototype
-										.toString.call(obj);
-
-		return str.substring(
-					 str.indexOf(' ') + 1, 
-					 str.indexOf(']'));
-	};
-	/*
-		객체를 복사 (완전복사) 하여 반환하는 함수.
-	 */
-	model.clone = function (obj)	{
-		if (typeof(obj) !== 'object')	{
-			return obj;
-		} else {
-			if (model.getType(obj) === 'Array')	{
-				return new Array().concat(obj);
-			} else {
-				var copy = {};
-
-				bio.iteration.loop(obj, function (key, value)	{
-					if (obj.hasOwnProperty(key))	{
-						copy[key] = model.clone(obj[key]);
-					}
-				});
-
-				return copy;
-			}
-		}
-	};
-	/*
-		객체의 키를 값으로 찾아주는 함수.
-	 */
-	model.getKey = function (obj, value)	{
-		var keys = Object.keys(obj),
-				values = Object.values(obj);
-
-		return keys[values.indexOf(value)];
-	};
-
-	return model;
-}
-/*
-	String 객체의 prototype 으로 붙일 기능들을
-	모아둔 객체.
- */
-function strings ()	{
-	'use strict';
-
-	String.prototype.matchAll = function (regex)	{
-		var matched = [], found;
-
-		while (found = regex.exec(this))	{
-			matched.push(found[0]);
-		}
-
-		return matched;
-	};
-	/*
-		String 을 대명사 표기법 형태로 바꿔 반환하는 함수.
-	 */
-	String.prototype.pronoun = function ()	{
-		return this[0].toUpperCase() + 
-					 this.substring(1).toLowerCase();
-	};
-	/*
-		문자열에 포함된 공백들을 지워주는 함수.
-	 */
-	String.prototype.removeWhiteSpace = function ()	{
-		return this.replace(/\s/ig, '');
-	};
-	/*
-		문자열에 포함된 특수문자들을 지워주는 함수.
-	 */
-	String.prototype.removeSymbol = function ()	{
-		return this.replace(/\W/ig, '');
-	}
-	/*
-		문자열에서 사용자지정위치의 문자를 다른 문자로 대치해주는 함수.
-		String 객체의 프로토타입으로 지정하였다.
-	 */
-	String.prototype.replaceAt = function (idx, rep)	{
-		// substring !== substr 
-		// substring 은 start 부터 end 까지,
-		// substr 은 start 부터 num 개를 자른다.
-		return this.substring(0, idx) + rep + 
-					 this.substring(idx + 1);
-	};
-	/*
-		파라미터 값을 문자열내에서 모두 바꿔준다.
-	 */
-	String.prototype.replaceAll = function (target, change)	{
-		return this.replace(new RegExp(target, 'ig'), change);
-	};
-};
 function variants ()	{
 	'use strict';
 
@@ -11268,3 +11275,102 @@ function variantsPatient ()	{
 		bio.triangle(model.opts, model);
 	};
 };
+// (function ()	{
+// 	'use strict';
+//   /*
+//     Exclusivity
+//    */
+	// $.ajax({
+ //    'type': 'POST',
+ //    'url': '/files/datas',
+ //    data: {
+ //    	name: 'exclusivity',
+ //    },
+ //    beforeSend: function () {
+ //      bio.loading().start(document.querySelector('#main'), 900, 600);
+ //    },
+ //    success: function (d) {
+ //      bio.exclusivity({
+ //        element: '#main',
+ //        width: 900,
+ //        height: 600,
+ //        data: {
+ //          heatmap: d[0],
+ //          network: d[2],
+ //          sample: d[3].data.sample_variants,
+ //          survival: {
+ //            patient: d[4].data,
+ //            types: d[5].data,
+ //          },
+ //          type: 'LUAD',
+ //        }
+ //      });
+
+ //      bio.loading().end();
+ //    },
+ //  });
+
+ /*
+    Expression
+  */
+ // $.ajax({
+ //    'type': 'POST',
+ //    'url': '/files/datas',
+ //    data: {
+ //     name: 'expression',
+ //    },
+ //    beforeSend: function () {
+ //      bio.loading().start(document.querySelector('#main'), 900, 600);
+ //    },
+ //    success: function (d) {
+ //      console.log(d)
+ //      bio.expression({
+ //        element: '#main',
+ //        width: 900,
+ //        height: 600,
+ //        requestData: {
+ //          source: 'GDAC',
+ //          cancer_type: 'luad',
+ //          sample_id: 'SMCLUAD1705230001',
+ //          signature: 'PAM50',
+ //          filter: ':'
+ //        },
+ //        data: d[0].data,
+ //      });
+
+ //      bio.loading().end();
+ //    },
+ //  });
+
+//  /*
+//     Landscape
+//   */
+ $.ajax({
+    'type': 'POST',
+    'url': '/files/datas',
+    data: {
+     name: 'landscape',
+    },
+    beforeSend: function () {
+      bio.loading().start(document.querySelector('#main'), 900, 600);
+    },
+    success: function (d) {
+      bio.landscape({
+				element: '#main',
+				width: 1600,
+				height: 800,
+				data: {
+					pq: 'p',
+					type: 'LUAD',
+					data: d[0].data,
+					title:d[0].data.name,
+				},
+        plot: {
+          patient: false, // true
+          pq: false, // true
+        },
+			});
+
+      bio.loading().end();
+    },
+  });

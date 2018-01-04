@@ -8,8 +8,10 @@ function landscape ()	{
 	function defaultSize (init)	{
 		// 기준은 '#landscape_heatmap' 태그로 한다.
 		var def = bio.dom().get('#landscape_heatmap');
-
-		init.width = parseFloat(def.style.width) * 2;
+		// model.init.width & height 설정.
+		// init.width = parseFloat(def.style.width) * 2;
+		// 2018.01.02 Paper support 코드.
+		init.width = parseFloat(def.style.width);
 		init.height = parseFloat(def.style.height);
 	};
 	/*
@@ -34,6 +36,62 @@ function landscape ()	{
 					(model.now.width = data.value, model.now.width));
 			},
 		});
+	};
+	/*
+	 Exclusivity 타입을 바꿔 주는 함수.
+	 */
+	function changeExclusivityOption ()	{
+		$('input[type="radio"]').change(function (e)	{
+			model.now.exclusivity_opt = this.value;
+
+			bio.layout().removeGroupTag();
+
+			drawExclusivityLandscape(this.value);
+		});
+	};
+
+	function makeInputLabel (type)	{
+		var label = document.createElement('label'),
+				input = document.createElement('input');
+
+		input.id = 'option_' + type;
+		input.setAttribute('type', 'radio');
+		input.setAttribute('name', 'options');
+		input.setAttribute('value', type);
+		input.setAttribute('autocomplete', 'off');
+		input.checked = type === '1' ? true : false;
+
+		label.className = 'btn btn-default btn-sm' 
+										+ (type === '1' ? ' active' : '');
+		label.innerText = 'TYPE ' + type;
+		label.appendChild(input);
+
+		return label;
+	}
+
+	function drawExclusivity ()	{
+		var base = document.querySelector('#landscape_option'),
+				exclusivity = document.createElement('div'),
+				btnGroup = document.createElement('div'),
+				label = document.createElement('div'),
+				opt1 = makeInputLabel('1'),
+				opt2 = makeInputLabel('2');
+
+		btnGroup.id = 'option_group';
+		btnGroup.className = 'btn-group';
+		btnGroup.setAttribute('data-toggle', 'buttons');
+
+		btnGroup.appendChild(opt1);
+		btnGroup.appendChild(opt2);
+
+		label.id = 'option_label';
+		label.innerHTML = 'Exclusivity';
+
+		base.appendChild(label);
+		base.appendChild(btnGroup);
+		base.appendChild(exclusivity);
+
+		model.init.exclusivity_opt = '1';
 	};
 	/*
 		Group 내에 만들어진 임시 svg 를 삭제하는 함수.
@@ -146,7 +204,6 @@ function landscape ()	{
 				.on('click', function (data, idx)	{
 					var res = config.on ? config.on.click.call(
 															this, data, idx, model) : false;
-					console.log(res.model)
 					redraw(res);
 				});
 		});
@@ -333,6 +390,23 @@ function landscape ()	{
 		drawLegend(md.type);
 	};
 
+	function drawExclusivityLandscape (type)	{
+		// 유전자 위아래 순서조정과 개별 enable/disable 기능을 위해선
+		// 아래 gene list 의 변경이 필요하다.
+		console.log(model.data.gene);
+		// 초기 exclusive 값을 설정한다.
+		model.exclusive.init = bio.landscapeSort().exclusive(
+			model.data.heatmap, model.data.gene, type);
+		// 초기 x, y 축 값 설정. 초기화 동작을 위해서이다.
+		model.init.axis.x = [].concat(model.exclusive.init.data);
+		model.init.axis.y = [].concat(model.data.axis.gene.y);
+
+		orderByTypePriority(model.data.type);
+		patientAxis(model.data.axis);
+		changeAxis(model.exclusive.init);
+		drawLandscape(model.data, model.init.width);
+	};
+
 	return function (opts)	{
 		model = bio.initialize('landscape');
 		model.setting = bio.setting('landscape', opts);
@@ -345,17 +419,9 @@ function landscape ()	{
 
 		defaultSize(model.init);
 		drawScaleSet(model.setting);
-		// 초기 exclusive 값을 설정한다.
-		model.exclusive.init = bio.landscapeSort().exclusive(
-			model.data.heatmap, model.data.gene);
-		// 초기 x, y 축 값 설정. 초기화 동작을 위해서이다.
-		model.init.axis.x = [].concat(model.exclusive.init.data);
-		model.init.axis.y = [].concat(model.data.axis.gene.y);
-
-		orderByTypePriority(model.data.type);
-		patientAxis(model.data.axis);
-		changeAxis(model.exclusive.init);
-		drawLandscape(model.data, model.init.width);
+		drawExclusivity();
+		changeExclusivityOption();
+		drawExclusivityLandscape('1');
 
 		bio.handler().scroll('#landscape_heatmap', function (e)	{
 			var sample = bio.dom().get('#landscape_sample'),
