@@ -10,9 +10,13 @@ function rectangle ()	{
 			element: opts.element,
 			data: opts.data || null,
 			attr: !opts.attr ? null : {
-				id: function (d) {
-					return (opts.id || that.id || 
-									opts.element.attr('id')) + '_rect';
+				id: function (d, i) {
+					return opts.attr.id ? 
+					typeof(opts.attr.id) !== 'function' ?  
+								(opts.id || that.id || 
+								 opts.element.attr('id')) + 
+									'_rect' : 
+								 opts.attr.id.call(this, d, i, that) : 0;
 				},
 				x: function (d, i)	{
 					return opts.attr.x ? 

@@ -110,6 +110,7 @@ function initialize ()	{
 			axis: { x: [], y: [] },
 			width: 0,
 			height: 0,
+			geneline: [],
 		},
 		now: {
 			sort: {
@@ -121,6 +122,7 @@ function initialize ()	{
 			axis: { x: [], y: [] },
 			width: 0,
 			height: 0,
+			geneline: [],
 		},
 		exclusive: { init: null },
 	};

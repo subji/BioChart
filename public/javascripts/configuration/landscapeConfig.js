@@ -124,6 +124,7 @@ function landscapeConfig ()	{
 								model: that,
 							};	
 						} else {
+							console.log(data, that);
 							// Enable/Disable 
 							return false;
 						}
@@ -262,6 +263,10 @@ function landscapeConfig ()	{
 			pq: {
 				margin: [10, 15, 45.5, 30],
 				attr: {
+					id: function (data, idx, that)	{
+						return 'landscape_gene_' + data.y + 
+										'_pq_rect';
+					},
 					x: function (data, idx, that) {
 						return bio.math.min(that.rangeX);
 					},
@@ -303,6 +308,10 @@ function landscapeConfig ()	{
 			gene: {
 				margin: [10, 30, 45.5, 70],
 				attr: {
+					id: function (data, idx, that)	{
+						return 'landscape_gene_' + data.y + 
+										'_bar_rect';
+					},
 					x: function (data, idx, that) {
 						return that.scaleX(data.x + data.value) + 0.125;
 					},
@@ -408,6 +417,10 @@ function landscapeConfig ()	{
 			heatmap: {
 				margin: [10, 5, 45.5, 0],
 				attr: {
+					id: function (data, idx, that)	{
+						return 'landscape_gene_' + data.y + 
+										'_heatmap_rect';
+					},
 					x: function (data, idx, that)	{
 						return that.scaleX(data.x);
 					},

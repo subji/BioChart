@@ -63,7 +63,7 @@ function heat ()	{
 			removeDuplicate(model.opts.data) : model.opts.data;
 		model.opts.id = model.id + '_heatmap_rect';
 		model.opts.element = 
-		model.group.selectAll('#' + model.id + '_heatmap_rect');
+		model.group.selectAll('.' + model.id + '_heatmap_rect');
 
 		bio.rectangle(model.opts, model);
 	};

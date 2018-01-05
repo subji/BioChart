@@ -30,7 +30,7 @@ function bar ()	{
 		model.opts = bio.objects.clone(opts);
 		model.opts.id = model.id + '_bar_rect';
 		model.opts.element = 
-		model.group.selectAll('#' + model.id + '_bar_rect')
+		model.group.selectAll('.' + model.id + '_bar_rect')
 
 		bio.rectangle(model.opts, model);
 	};

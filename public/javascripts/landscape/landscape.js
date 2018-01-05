@@ -167,6 +167,63 @@ function landscape ()	{
 		drawLandscape(model.data, model.now.width);	
 	};
 	/*
+		Drag 와 Drag end 에서 모두 사용되는 함수.
+		위 또는 아래 gene 의 반이상의 영역을 넘어갔을 경우
+		해당 gene 과 현재 gene 을 스위칭해주는 함수.
+		이는 gene 뿐 아니라 gene 이 속한 모든 라인을 변경해준다.
+		이때 gene list 가 Drag end 가 되었을 경우만 변경된다.
+	 */
+	function switchGeneList ()	{
+		// console.log(model.init.geneline);
+	};
+
+	function geneDragMove (d)	{
+		var which = this.parentNode.parentNode
+										.className.baseVal;
+
+		if (which.indexOf('gene') > -1 && 
+				which.indexOf('right') > -1)	{
+			var bar = d3.selectAll('#landscape_gene_' + d + '_bar_rect'),
+					heat = d3.selectAll('#landscape_gene_' + d + '_heatmap_rect');
+					// pq = d3.selectAll('#landscape_gene_' + d + '_pq_rect');
+
+			var axis = d3.select(this).attr('y', d3.event.y),
+					gene = bar.attr('y', parseFloat(
+								 bar.attr('y')) + d3.event.dy),
+					ht = heat.attr('y', parseFloat(
+							 heat.attr('y')) + d3.event.dy);
+			// pq.attr('y', 
+			// 	parseFloat(pq.attr('y')) + d3.event.dy);
+
+			console.log('axis : ', axis.attr('y'), '\n'
+									// 'gene : ', gene, '\n',
+									// 'heat : ', ht, '\n',
+									// '=========================='
+									);
+
+			console.log('Drag ============== \n', 
+									// 'init: ', model.init.geneline, '\n',
+									'now: ', model.now.geneline.axis[d]);
+		}
+	};
+
+	function geneDragEnd (d)	{
+		var bar = d3.selectAll('#landscape_gene_' + d + 
+														'_bar_rect'),
+				heat = d3.selectAll('#landscape_gene_' + d + 
+														'_heatmap_rect');
+				// pq = d3.selectAll('#landscape_gene_' + d + 
+				// 										'_pq_rect');
+
+		// model.axis.now.y 를 여기서 변경하고
+		// model 의 axis.y 가 포함된 부분을 다 변경하여 
+		// 새로히 그려주면 될 것 같다.
+		switchGeneList();
+	};
+
+	var geneDrag = d3.drag().on('drag', geneDragMove)
+													.on('end', geneDragEnd);
+	/*
 		Landscape 축들을 그려주는 함수.
 	 */
 	function drawAxis (part, direction)	{
@@ -202,10 +259,11 @@ function landscape ()	{
 				.on('mouseout', common.on ? common.on.mouseout : false)
 				.on('mouseover', common.on ? common.on.mouseover : false)
 				.on('click', function (data, idx)	{
-					var res = config.on ? config.on.click.call(
-															this, data, idx, model) : false;
+					var res = config.on ? 
+										config.on.click.call(this, data, idx, model) : false;
 					redraw(res);
-				});
+				})
+				.call(geneDrag);
 		});
 	};
 	/*
@@ -275,7 +333,7 @@ function landscape ()	{
 			if (part.indexOf('Patient') > -1)	{
 				config.margin[3] = 5;
 			}
-			
+
 			bio.bar({
 				data: data,
 				element: svg,
@@ -389,11 +447,47 @@ function landscape ()	{
 
 		drawLegend(md.type);
 	};
+	/*
+		각 gene 별 y 의 값들을 저장해놓는 데이터를 만든다.
+		이 데이터는 gene 의 위치가 변경되거나 enable/disable 되었을때,
+		사용된다.
+		또한 새로운 gene list 를 생성하여 새로운 exclusivity 로
+		정렬한다.
+	 */
+	function makeGeneLineDataList ()	{
+		model.init.geneline = {
+			gene: [], axis: {}, heat: [], pq: [],
+		};
+
+		bio.iteration.loop(model.data.gene, function(g, i)	{
+			var axisGroup = 
+					d3.select('.landscape_gene_svg.right-axis-g-tag')
+						.selectAll('g').nodes()[i];
+			
+			var axis = parseFloat(d3.select(axisGroup)
+													.attr('transform')
+													.replace(/translate\(|\)/ig, '')
+													.split(',')[1]),
+					gene = parseFloat(
+						d3.select('#landscape_gene_' + g + '_bar_rect')
+							.attr('y')),
+					heat = parseFloat(
+						d3.select('#landscape_gene_' + g + '_heatmap_rect').attr('y'));
+					// pq = parseFloat(
+					// 	d3.selectAll('#landscape_gene_' + g + '_pq_rect')
+					// 		.attr('y'));
+			
+			model.init.geneline.axis[g] = 
+			{ idx : i, value: axis, isGene : 'enable' };
+			model.init.geneline.gene.push({ name: g, y: gene });
+			model.init.geneline.heat.push({ name: g, y: heat });
+			// model.init.geneline.pq.push({ name: g, y: pq });
+		});
+
+		model.now.geneline = [].concat(model.init.geneline)[0];
+	};
 
 	function drawExclusivityLandscape (type)	{
-		// 유전자 위아래 순서조정과 개별 enable/disable 기능을 위해선
-		// 아래 gene list 의 변경이 필요하다.
-		console.log(model.data.gene);
 		// 초기 exclusive 값을 설정한다.
 		model.exclusive.init = bio.landscapeSort().exclusive(
 			model.data.heatmap, model.data.gene, type);
@@ -422,6 +516,7 @@ function landscape ()	{
 		drawExclusivity();
 		changeExclusivityOption();
 		drawExclusivityLandscape('1');
+		makeGeneLineDataList();
 
 		bio.handler().scroll('#landscape_heatmap', function (e)	{
 			var sample = bio.dom().get('#landscape_sample'),
