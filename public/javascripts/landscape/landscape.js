@@ -173,52 +173,79 @@ function landscape ()	{
 		이는 gene 뿐 아니라 gene 이 속한 모든 라인을 변경해준다.
 		이때 gene list 가 Drag end 가 되었을 경우만 변경된다.
 	 */
-	function switchGeneList ()	{
-		// console.log(model.init.geneline);
-	};
-
 	function geneDragMove (d)	{
-		var which = this.parentNode.parentNode
-										.className.baseVal;
+		var nowTranslate = d3.select(this)
+												 .attr('transform')
+												 .replace(/translate\(|\)/ig, '')
+												 .split(',');
 
-		if (which.indexOf('gene') > -1 && 
-				which.indexOf('right') > -1)	{
-			var bar = d3.selectAll('#landscape_gene_' + d + '_bar_rect'),
-					heat = d3.selectAll('#landscape_gene_' + d + '_heatmap_rect');
-					// pq = d3.selectAll('#landscape_gene_' + d + '_pq_rect');
+		var nowIdx = model.now.geneline.temp.now_idx = 
+								 model.now.geneline.temp.now_idx ? 
+								 model.now.geneline.temp.now_idx :
+								 model.now.geneline.axis[d].idx,
+				yAxis = Math.max(model.init.geneline.firstYAxis,
+								Math.min((
+									parseFloat(nowTranslate[1]) + d3.event.dy),
+									model.init.geneline.lastYAxis));
 
-			var axis = d3.select(this).attr('y', d3.event.y),
-					gene = bar.attr('y', parseFloat(
-								 bar.attr('y')) + d3.event.dy),
-					ht = heat.attr('y', parseFloat(
-							 heat.attr('y')) + d3.event.dy);
-			// pq.attr('y', 
-			// 	parseFloat(pq.attr('y')) + d3.event.dy);
+		d3.select(this)
+			.attr('transform', 'translate(0, ' + yAxis + ')');
 
-			console.log('axis : ', axis.attr('y'), '\n'
-									// 'gene : ', gene, '\n',
-									// 'heat : ', ht, '\n',
-									// '=========================='
-									);
+		var beforeGene = model.data.gene[nowIdx - 1],
+				nextGene = model.data.gene[nowIdx + 1],
+				tempGene = model.data.gene[nowIdx],
+				tempGroup = null,
+				tempVal = 0;
 
-			console.log('Drag ============== \n', 
-									// 'init: ', model.init.geneline, '\n',
-									'now: ', model.now.geneline.axis[d]);
+		if ((yAxis > model.now.geneline.axis[nextGene].value) && 
+				tempVal !== model.now.geneline.axis[nextGene].value)	{
+			tempVal = model.now.geneline.axis[d].value;
+
+			model.now.geneline.axis[d].idx += 1;
+			model.now.geneline.temp.now_idx += 1;
+
+			model.now.geneline.axis[d].value = 
+			model.now.geneline.axis[nextGene].value;
+
+			model.now.geneline.axis[nextGene].idx -= 1;
+			model.now.geneline.axis[nextGene].value = tempVal;
+
+			d3.select(model.now.geneline.axis[nextGene].group)
+				.attr('transform', 'translate(0, ' + 
+					model.now.geneline.axis[d].value + ')')
+				.transition()
+				.attr('transform', 'translate(0, ' + 
+					model.now.geneline.axis[nextGene].value + ')');
+
+			model.data.gene[nowIdx] = model.data.gene[nowIdx + 1];
+			model.data.gene[nowIdx + 1] = tempGene;
 		}
 	};
 
 	function geneDragEnd (d)	{
-		var bar = d3.selectAll('#landscape_gene_' + d + 
-														'_bar_rect'),
-				heat = d3.selectAll('#landscape_gene_' + d + 
-														'_heatmap_rect');
-				// pq = d3.selectAll('#landscape_gene_' + d + 
-				// 										'_pq_rect');
+		var type = model.now.exclusivity_opt ? 
+							 model.now.exclusivity_opt : 
+							 model.init.exclusivity_opt;
 
-		// model.axis.now.y 를 여기서 변경하고
-		// model 의 axis.y 가 포함된 부분을 다 변경하여 
-		// 새로히 그려주면 될 것 같다.
-		switchGeneList();
+		bio.layout().removeGroupTag([
+			'.landscape_heatmap_svg.heatmap-g-tag',
+			'.landscape_gene_svg.bar-g-tag',
+			'.landscape_gene_svg.right-axis-g-tag'
+		]);
+
+		model.exclusive.now = bio.landscapeSort().exclusive(
+			model.data.heatmap, model.data.gene, type);
+		
+		changeAxis(model.exclusive.now);
+
+		drawAxis('gene', 'Y');
+		drawBar('pq', model.data.pq, 
+						model.data.axis.pq, ['top', 'left']);
+		drawBar('gene', model.data.stack.gene, 
+						model.data.axis.gene, ['top', 'left']);
+
+		drawHeatmap('heatmap', model.data.heatmap, 
+								model.data.axis.heatmap);
 	};
 
 	var geneDrag = d3.drag().on('drag', geneDragMove)
@@ -247,7 +274,7 @@ function landscape ()	{
 				});
 			} 
 			
-			bio.axises()[config.direction]({
+			var axises = bio.axises()[config.direction]({
 				element: svg,
 				domain: data,
 				top: config.top,
@@ -255,15 +282,23 @@ function landscape ()	{
 				range: config.range,
 				margin: config.margin,
 				exclude: config.exclude,
-			}).selectAll('text')
+			});
+
+			axises.selectAll('g').call(geneDrag)
+						.selectAll('text')
+						.on('click', function ()	{
+							console.log('ttt')
+						});
+
+			axises.selectAll('text')
 				.on('mouseout', common.on ? common.on.mouseout : false)
 				.on('mouseover', common.on ? common.on.mouseover : false)
 				.on('click', function (data, idx)	{
+					console.log('ddd')
 					var res = config.on ? 
 										config.on.click.call(this, data, idx, model) : false;
 					redraw(res);
-				})
-				.call(geneDrag);
+				});
 		});
 	};
 	/*
@@ -447,6 +482,33 @@ function landscape ()	{
 
 		drawLegend(md.type);
 	};
+
+	function geneAxisTermHeight ()	{
+		var axisHeight = 0,
+				axisHalfHeight = 0,
+				zeroIdxVal = 0,
+				firstIdxVal = 0,
+				lastIdxVal = 0;
+
+		bio.iteration.loop(model.init.geneline.axis, 
+		function (k, v)	{
+			if (model.init.geneline.axis[k].idx === 0)	{
+				zeroIdxVal = model.init.geneline.axis[k].value;
+			} else if (model.init.geneline.axis[k].idx === 1)	{
+				firstIdxVal = model.init.geneline.axis[k].value;
+			} else if (model.init.geneline.axis[k].idx === 
+									model.data.gene.length - 1)	{
+				lastIdxVal = model.init.geneline.axis[k].value;
+			}
+		});
+
+		model.init.geneline.firstYAxis = zeroIdxVal;
+		model.init.geneline.axisHeight = 
+			parseFloat((firstIdxVal - zeroIdxVal).toFixed(3));
+		model.init.geneline.axisHalfHeight = 
+			model.init.geneline.axisHeight / 2;
+		model.init.geneline.lastYAxis = lastIdxVal;
+	};
 	/*
 		각 gene 별 y 의 값들을 저장해놓는 데이터를 만든다.
 		이 데이터는 gene 의 위치가 변경되거나 enable/disable 되었을때,
@@ -456,7 +518,7 @@ function landscape ()	{
 	 */
 	function makeGeneLineDataList ()	{
 		model.init.geneline = {
-			gene: [], axis: {}, heat: [], pq: [],
+			gene: [], axis: {}, heat: [], pq: [], temp: {},
 		};
 
 		bio.iteration.loop(model.data.gene, function(g, i)	{
@@ -478,10 +540,15 @@ function landscape ()	{
 					// 		.attr('y'));
 			
 			model.init.geneline.axis[g] = 
-			{ idx : i, value: axis, isGene : 'enable' };
+			{ 
+				idx : i, value: axis, 
+				group: axisGroup, isGene : 'enable' 
+			};
 			model.init.geneline.gene.push({ name: g, y: gene });
 			model.init.geneline.heat.push({ name: g, y: heat });
 			// model.init.geneline.pq.push({ name: g, y: pq });
+
+			geneAxisTermHeight();
 		});
 
 		model.now.geneline = [].concat(model.init.geneline)[0];

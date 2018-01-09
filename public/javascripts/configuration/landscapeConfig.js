@@ -126,7 +126,7 @@ function landscapeConfig ()	{
 						} else {
 							console.log(data, that);
 							// Enable/Disable 
-							return false;
+							// return false;
 						}
 					},
 				},
