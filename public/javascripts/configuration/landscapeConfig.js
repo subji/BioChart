@@ -123,10 +123,6 @@ function landscapeConfig ()	{
 													 .gene(that.data.axis.heatmap.x, temp),
 								model: that,
 							};	
-						} else {
-							console.log(data, that);
-							// Enable/Disable 
-							// return false;
 						}
 					},
 				},

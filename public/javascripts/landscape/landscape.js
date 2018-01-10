@@ -174,51 +174,69 @@ function landscape ()	{
 		이때 gene list 가 Drag end 가 되었을 경우만 변경된다.
 	 */
 	function geneDragMove (d)	{
+		console.log(d3.event);
 		var nowTranslate = d3.select(this)
 												 .attr('transform')
 												 .replace(/translate\(|\)/ig, '')
 												 .split(',');
-
-		var nowIdx = model.now.geneline.temp.now_idx = 
-								 model.now.geneline.temp.now_idx ? 
-								 model.now.geneline.temp.now_idx :
-								 model.now.geneline.axis[d].idx,
+		
+		var nowIdx = model.now.geneline.axis[d].idx,
 				yAxis = Math.max(model.init.geneline.firstYAxis,
 								Math.min((
 									parseFloat(nowTranslate[1]) + d3.event.dy),
 									model.init.geneline.lastYAxis));
-
+		
 		d3.select(this)
 			.attr('transform', 'translate(0, ' + yAxis + ')');
 
 		var beforeGene = model.data.gene[nowIdx - 1],
 				nextGene = model.data.gene[nowIdx + 1],
 				tempGene = model.data.gene[nowIdx],
-				tempGroup = null,
-				tempVal = 0;
+				tempVal = model.now.geneline.axis[d].value,
+				direction = d3.event.sourceEvent.movementY > -1 ? 
+										1 : -1;
+				
 
-		if ((yAxis > model.now.geneline.axis[nextGene].value) && 
-				tempVal !== model.now.geneline.axis[nextGene].value)	{
-			tempVal = model.now.geneline.axis[d].value;
+		beforeGene = !beforeGene ? tempGene : beforeGene;
+		nextGene = !nextGene ? tempGene : nextGene;
 
-			model.now.geneline.axis[d].idx += 1;
-			model.now.geneline.temp.now_idx += 1;
+		function moveElement(that, direction, targetGene, nowIdx, tempVal, tempGene)	{
+			model.now.geneline.axis[d].idx += direction;
 
 			model.now.geneline.axis[d].value = 
-			model.now.geneline.axis[nextGene].value;
+			model.now.geneline.axis[targetGene].value;
 
-			model.now.geneline.axis[nextGene].idx -= 1;
-			model.now.geneline.axis[nextGene].value = tempVal;
+			model.now.geneline.axis[targetGene].idx -= direction;
+			model.now.geneline.axis[targetGene].value = tempVal;
 
-			d3.select(model.now.geneline.axis[nextGene].group)
+			var siblings = bio.dom().siblings(that.parentNode.children),
+					sortedSiblings = [];
+
+			bio.iteration.loop(siblings, function (s, i)	{
+				var gene = s.innerHTML.substring(
+										s.innerHTML.indexOf('>') + 1, 
+										s.innerHTML.lastIndexOf('<'));
+
+				sortedSiblings[model.data.gene.indexOf(gene)] = s;
+			});
+
+			d3.select(sortedSiblings[model.now.geneline.axis[targetGene].idx])
 				.attr('transform', 'translate(0, ' + 
 					model.now.geneline.axis[d].value + ')')
 				.transition()
 				.attr('transform', 'translate(0, ' + 
-					model.now.geneline.axis[nextGene].value + ')');
+					model.now.geneline.axis[targetGene].value + ')');
 
-			model.data.gene[nowIdx] = model.data.gene[nowIdx + 1];
-			model.data.gene[nowIdx + 1] = tempGene;
+			model.data.gene[nowIdx] = 
+			model.data.gene[nowIdx + direction];
+			model.data.gene[nowIdx + direction] = tempGene;
+		};
+
+		if ((yAxis > model.now.geneline.axis[nextGene].value) && 
+				tempVal !== model.now.geneline.axis[nextGene].value)	{
+			moveElement(this, direction, nextGene, nowIdx, tempVal, tempGene);
+		} else if ((yAxis < model.now.geneline.axis[beforeGene].value) && tempVal !== model.now.geneline.axis[beforeGene].value)	{
+			moveElement(this, direction, beforeGene, nowIdx, tempVal, tempGene);
 		}
 	};
 
@@ -247,9 +265,6 @@ function landscape ()	{
 		drawHeatmap('heatmap', model.data.heatmap, 
 								model.data.axis.heatmap);
 	};
-
-	var geneDrag = d3.drag().on('drag', geneDragMove)
-													.on('end', geneDragEnd);
 	/*
 		Landscape 축들을 그려주는 함수.
 	 */
@@ -273,6 +288,9 @@ function landscape ()	{
 					}
 				});
 			} 
+
+			var geneDrag = d3.drag().on('drag', geneDragMove)
+															.on('end', geneDragEnd);
 			
 			var axises = bio.axises()[config.direction]({
 				element: svg,
@@ -284,21 +302,61 @@ function landscape ()	{
 				exclude: config.exclude,
 			});
 
-			axises.selectAll('g').call(geneDrag)
-						.selectAll('text')
-						.on('click', function ()	{
-							console.log('ttt')
-						});
+			axises.selectAll('g')
+						.call(geneDrag);
+
+			document.querySelector('g')
+			.addEventListener('click', function ()	{
+				console.log('ddddd');
+			})
 
 			axises.selectAll('text')
 				.on('mouseout', common.on ? common.on.mouseout : false)
 				.on('mouseover', common.on ? common.on.mouseover : false)
-				.on('click', function (data, idx)	{
-					console.log('ddd')
-					var res = config.on ? 
-										config.on.click.call(this, data, idx, model) : false;
-					redraw(res);
-				});
+				// .on('mousedown', function (data, idx)	{
+				// 	if (d3.event.altKey)	{
+				// 		var res = config.on ? 
+				// 							config.on.click.call(this, data, idx, model) : false;
+				// 		redraw(res);	
+				// 	} else {
+				// 		var	tempGeneList = [].concat(model.data.gene),
+				// 				geneIdx = tempGeneList.indexOf(data),
+				// 				endPart = tempGeneList.splice(geneIdx + 1),
+				// 				startPart = tempGeneList.splice(0, geneIdx);
+
+				// 		tempGeneList = startPart.concat(endPart).concat([data]);
+
+				// 		model.data.gene = tempGeneList;
+
+				// 		var type = model.now.exclusivity_opt ? 
+				// 							 model.now.exclusivity_opt : 
+				// 							 model.init.exclusivity_opt;
+
+				// 		bio.layout().removeGroupTag([
+				// 			'.landscape_heatmap_svg.heatmap-g-tag',
+				// 			'.landscape_gene_svg.bar-g-tag',
+				// 			'.landscape_gene_svg.right-axis-g-tag'
+				// 		]);
+
+				// 		console.log(model.data.gene);
+
+				// 		model.exclusive.now = bio.landscapeSort().exclusive(model.data.heatmap, model.data.gene, type);
+						
+				// 		changeAxis(model.exclusive.now);
+
+				// 		drawAxis('gene', 'Y');
+				// 		drawBar('pq', model.data.pq, 
+				// 						model.data.axis.pq, ['top', 'left']);
+				// 		drawBar('gene', model.data.stack.gene, 
+				// 						model.data.axis.gene, ['top', 'left']);
+
+				// 		drawHeatmap('heatmap', model.data.heatmap, 
+				// 								model.data.axis.heatmap);
+				// 	}
+				// })
+				// .on('click', function (data, idx)	{
+					
+				// });
 		});
 	};
 	/*
@@ -570,6 +628,7 @@ function landscape ()	{
 
 	return function (opts)	{
 		model = bio.initialize('landscape');
+		model.isPlotted = opts.plot;
 		model.setting = bio.setting('landscape', opts);
 		model.data = model.setting.preprocessData;
 

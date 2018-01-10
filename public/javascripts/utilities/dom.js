@@ -49,6 +49,16 @@ function dom ()	{
 	 	}
 	};
 
+	model.siblings = function (child)	{
+		var siblingList = [];
+
+		for (var n = child.length - 1; n >= 0; n--)	{
+			siblingList.push(child[n]);
+		}
+
+		return siblingList;
+	};
+
 	return function ()	{
 		return model;
 	};

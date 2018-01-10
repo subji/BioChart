@@ -49,7 +49,7 @@ function preprocLandscape ()	{
 		Mutation list 를 반복하며,
 		type list, mutation list, gene, sample 데이터를 만든다.
 	 */
-	function iterateMutation (mutation)	{
+	function iterateMutation (mutation, restrictedGenes)	{
 		iterateCommon(mutation, function (d)	{
 			// Stacked bar chart 를 위한 데이터 생성.
 			nested(model.stack.gene, d.gene, d.type);
