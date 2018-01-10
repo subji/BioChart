@@ -174,8 +174,8 @@ function landscape ()	{
 		이때 gene list 가 Drag end 가 되었을 경우만 변경된다.
 	 */
 	function geneDragMove (d)	{
-		console.log(d3.event);
-		var nowTranslate = d3.select(this)
+		var that = this.parentNode;
+		var nowTranslate = d3.select(that)
 												 .attr('transform')
 												 .replace(/translate\(|\)/ig, '')
 												 .split(',');
@@ -186,7 +186,7 @@ function landscape ()	{
 									parseFloat(nowTranslate[1]) + d3.event.dy),
 									model.init.geneline.lastYAxis));
 		
-		d3.select(this)
+		d3.select(that)
 			.attr('transform', 'translate(0, ' + yAxis + ')');
 
 		var beforeGene = model.data.gene[nowIdx - 1],
@@ -200,7 +200,7 @@ function landscape ()	{
 		beforeGene = !beforeGene ? tempGene : beforeGene;
 		nextGene = !nextGene ? tempGene : nextGene;
 
-		function moveElement(that, direction, targetGene, nowIdx, tempVal, tempGene)	{
+		function moveElement(tthat, direction, targetGene, nowIdx, tempVal, tempGene)	{
 			model.now.geneline.axis[d].idx += direction;
 
 			model.now.geneline.axis[d].value = 
@@ -209,7 +209,7 @@ function landscape ()	{
 			model.now.geneline.axis[targetGene].idx -= direction;
 			model.now.geneline.axis[targetGene].value = tempVal;
 
-			var siblings = bio.dom().siblings(that.parentNode.children),
+			var siblings = bio.dom().siblings(tthat.parentNode.children),
 					sortedSiblings = [];
 
 			bio.iteration.loop(siblings, function (s, i)	{
@@ -234,9 +234,9 @@ function landscape ()	{
 
 		if ((yAxis > model.now.geneline.axis[nextGene].value) && 
 				tempVal !== model.now.geneline.axis[nextGene].value)	{
-			moveElement(this, direction, nextGene, nowIdx, tempVal, tempGene);
+			moveElement(that, direction, nextGene, nowIdx, tempVal, tempGene);
 		} else if ((yAxis < model.now.geneline.axis[beforeGene].value) && tempVal !== model.now.geneline.axis[beforeGene].value)	{
-			moveElement(this, direction, beforeGene, nowIdx, tempVal, tempGene);
+			moveElement(that, direction, beforeGene, nowIdx, tempVal, tempGene);
 		}
 	};
 
@@ -265,6 +265,10 @@ function landscape ()	{
 		drawHeatmap('heatmap', model.data.heatmap, 
 								model.data.axis.heatmap);
 	};
+
+	function geneDragStart (evt)	{
+		console.log(d3.event.target)
+	}
 	/*
 		Landscape 축들을 그려주는 함수.
 	 */
@@ -289,8 +293,11 @@ function landscape ()	{
 				});
 			} 
 
-			var geneDrag = d3.drag().on('drag', geneDragMove)
+			var geneDrag = d3.drag().on('start', geneDragStart)
+															.on('drag', geneDragMove)
 															.on('end', geneDragEnd);
+
+			var isMoved = false;
 			
 			var axises = bio.axises()[config.direction]({
 				element: svg,
@@ -302,61 +309,63 @@ function landscape ()	{
 				exclude: config.exclude,
 			});
 
-			axises.selectAll('g')
-						.call(geneDrag);
-
-			document.querySelector('g')
-			.addEventListener('click', function ()	{
-				console.log('ddddd');
-			})
-
 			axises.selectAll('text')
 				.on('mouseout', common.on ? common.on.mouseout : false)
 				.on('mouseover', common.on ? common.on.mouseover : false)
-				// .on('mousedown', function (data, idx)	{
-				// 	if (d3.event.altKey)	{
-				// 		var res = config.on ? 
-				// 							config.on.click.call(this, data, idx, model) : false;
-				// 		redraw(res);	
-				// 	} else {
-				// 		var	tempGeneList = [].concat(model.data.gene),
-				// 				geneIdx = tempGeneList.indexOf(data),
-				// 				endPart = tempGeneList.splice(geneIdx + 1),
-				// 				startPart = tempGeneList.splice(0, geneIdx);
+				.on('click', function (data, idx)	{
+					console.log(d3.event);
+					if (d3.event.altKey)	{
+						var res = config.on ? 
+											config.on.click.call(this, data, idx, model) : false;
+						redraw(res);	
+					} else {
+						var	tempGeneList = [].concat(model.data.gene),
+								geneIdx = tempGeneList.indexOf(data),
+								endPart = tempGeneList.splice(geneIdx + 1),
+								startPart = tempGeneList.splice(0, geneIdx);
 
-				// 		tempGeneList = startPart.concat(endPart).concat([data]);
+						tempGeneList = startPart.concat(endPart).concat([data]);
 
-				// 		model.data.gene = tempGeneList;
+						model.data.gene = tempGeneList;
 
-				// 		var type = model.now.exclusivity_opt ? 
-				// 							 model.now.exclusivity_opt : 
-				// 							 model.init.exclusivity_opt;
+						// var type = model.now.exclusivity_opt ? 
+						// 					 model.now.exclusivity_opt : 
+						// 					 model.init.exclusivity_opt;
 
-				// 		bio.layout().removeGroupTag([
-				// 			'.landscape_heatmap_svg.heatmap-g-tag',
-				// 			'.landscape_gene_svg.bar-g-tag',
-				// 			'.landscape_gene_svg.right-axis-g-tag'
-				// 		]);
+						// bio.layout().removeGroupTag([
+						// 	'.landscape_heatmap_svg.heatmap-g-tag',
+						// 	'.landscape_gene_svg.bar-g-tag',
+						// 	'.landscape_gene_svg.right-axis-g-tag'
+						// ]);
 
-				// 		console.log(model.data.gene);
+						// console.log(model.data.gene);
 
-				// 		model.exclusive.now = bio.landscapeSort().exclusive(model.data.heatmap, model.data.gene, type);
+						// model.exclusive.now = bio.landscapeSort().exclusive(model.data.heatmap, model.data.gene, type);
 						
-				// 		changeAxis(model.exclusive.now);
+						// changeAxis(model.exclusive.now);
 
-				// 		drawAxis('gene', 'Y');
-				// 		drawBar('pq', model.data.pq, 
-				// 						model.data.axis.pq, ['top', 'left']);
-				// 		drawBar('gene', model.data.stack.gene, 
-				// 						model.data.axis.gene, ['top', 'left']);
+						// drawAxis('gene', 'Y');
+						// drawBar('pq', model.data.pq, 
+						// 				model.data.axis.pq, ['top', 'left']);
+						// drawBar('gene', model.data.stack.gene, 
+						// 				model.data.axis.gene, ['top', 'left']);
 
-				// 		drawHeatmap('heatmap', model.data.heatmap, 
-				// 								model.data.axis.heatmap);
-				// 	}
-				// })
-				// .on('click', function (data, idx)	{
-					
-				// });
+						// drawHeatmap('heatmap', model.data.heatmap, 
+						// 						model.data.axis.heatmap);
+					}	
+				})
+				.on('mousedown', function ()	{
+					isMoved = true;
+				})
+				.on('mouseup', function ()	{
+					isMoved = false;
+				})
+				.on('mousemove', function (data)	{
+					if (isMoved)	{
+						console.log(d3.event, data);
+					}
+				})
+				// .call(geneDrag);
 		});
 	};
 	/*
