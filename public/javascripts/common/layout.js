@@ -29,15 +29,17 @@ function layout ()	{
 			if (isId)	{
 				id = id.replace('/', '');
 
-				bio.iteration.loop(isPlotted, function (isP)	{
-					if (id.indexOf(isP) > -1 && !isPlotted[isP])	{
-						if (isP === 'patient')	{
-							$('#landscape_patient_group, #landscape_patient_sample, #landscape_patient_heatmap').css('box-shadow', 'None').css('background', '#fff')
+				if (isPlotted)	{
+					bio.iteration.loop(isPlotted, function (isP)	{
+						if (id.indexOf(isP) > -1 && !isPlotted[isP])	{
+							if (isP === 'patient')	{
+								$('#landscape_patient_group, #landscape_patient_sample, #landscape_patient_heatmap').css('box-shadow', 'None').css('background', '#fff')
+							}
+							
+							isDraw = false;
 						}
-						
-						isDraw = false;
-					}
-				});
+					});
+				}
 
 				if (isDraw)	{
 					model.svg[chart][id] = bio.rendering().createSVG(id);
