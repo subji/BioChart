@@ -49,16 +49,31 @@ function preprocLandscape ()	{
 		Mutation list 를 반복하며,
 		type list, mutation list, gene, sample 데이터를 만든다.
 	 */
-	function iterateMutation (mutation, restrictedGenes)	{
+	function iterateMutation (stacks, mutation)	{
+		var result = {};
+
 		iterateCommon(mutation, function (d)	{
+
 			// Stacked bar chart 를 위한 데이터 생성.
-			nested(model.stack.gene, d.gene, d.type);
-			nested(model.stack.sample, d.participant_id, d.type);
+			bio.iteration.loop(stacks, function (s)	{
+				nested(s.obj, d[s.data], d[s.type]);
+			});
+			// nested(model.stack.gene, d.gene, d.type);
+			// nested(model.stack.sample, d.participant_id, d.type);
 			
 			heatmapDataFormat(model.heatmap, d);
 
 			makeXAxis(model.axis.sample.x, d.participant_id);
 		});
+
+		bio.iteration.loop(stacks, function (s)	{
+			result[s.keyName] = s.obj;
+		});
+
+		return {
+			result: result,
+			heatmap: model.heatmap
+		};
 	};
 	/*
 		Patient list 를 반복하며,
@@ -131,7 +146,7 @@ function preprocLandscape ()	{
 	/*
 		Type 파라미터에 기준하여 stacked 데이터를 만드는 함수.
 	 */
-	function byStack (type, stacked)	{
+	function byStack (arr, type, stacked)	{
 		var result = [],
 				axis = type === 'gene' ? 'x' : 'y';
 
@@ -147,33 +162,55 @@ function preprocLandscape ()	{
 				// axix 의 최대값을 구하기 위한 연산.
 				sumed += vvalue;
 			});
-
+			arr.push(sumed);
 			model.axis[type][axis].push(sumed);
 		});
 
-		return result;
+		return {
+			data: result,
+			axis: arr,
+		};
 	};
 	/*
 		[min, max] 배열을 반환하는 함수.
 	 */
-	function makeLinearAxis (isPlotted)	{
-		model.axis.gene.x = [bio.math.max(model.axis.gene.x), 0];
-
-		if (isPlotted.patient)	{
-			model.axis.sample.y = [
-				bio.math.max(model.axis.patient.y, 
-				bio.math.max(model.axis.sample.y)), 0
+	function makeLinearAxis (type, arr, isPlotted, pat)	{
+		if (type === 'gene')	{
+			return [bio.math.max(arr), 0];
+		} else if (type === 'pq')	{
+			return [
+				0, bio.math.max(arr.map(function (pq)	{
+					return Math.ceil(pq.value);
+				}))
 			];
 		} else {
-			model.axis.sample.y = [
-				bio.math.max(model.axis.sample.y), 0
-			];
+			if (isPlotted && isPlotted.patient)	{
+				return [
+					bio.math.max(
+					bio.math.max(pat), 
+					bio.math.max(arr)), 0
+				];
+			} else {
+				return [bio.math.max(arr), 0];
+			}
 		}
+		// model.axis.gene.x = [bio.math.max(model.axis.gene.x), 0];
+
+		// if (isPlotted.patient)	{
+		// 	model.axis.sample.y = [
+		// 		bio.math.max(model.axis.patient.y, 
+		// 		bio.math.max(model.axis.sample.y)), 0
+		// 	];
+		// } else {
+		// 	model.axis.sample.y = [
+		// 		bio.math.max(model.axis.sample.y), 0
+		// 	];
+		// }
 		
-		model.axis.pq.x = [
-			0, bio.math.max(model.pq.map(function (pq)	{
-				return Math.ceil(pq.value);
-		}))];
+		// model.axis.pq.x = [
+		// 	0, bio.math.max(model.pq.map(function (pq)	{
+		// 		return Math.ceil(pq.value);
+		// }))];
 	};	
 	/*
 		Axis 의 서수 리스트를 반환하는 함수.
@@ -195,19 +232,33 @@ function preprocLandscape ()	{
 			return d.gene;
 		});
 		// Mutation, Sample, Gene, Group, Patient 데이터 생성.
-		iterateMutation(data.mutation_list);
-		iteratePatient(data.patient_list);
-		iterateGroup(data.group_list);
+		model.iterMut = iterateMutation;
+		model.iterPat = iteratePatient;
+		model.iterGroup = iterateGroup;
+		model.byStack = byStack;
+
+		var mut = model.iterMut([
+			{ obj: model.stack.gene, data: 'gene', type: 'type', keyName: 'gene'},
+			{ obj: model.stack.sample, data: 'participant_id', type: 'type', keyName: 'sample'},
+		], data.mutation_list);
+		model.iterPat(data.patient_list);
+		model.iterGroup(data.group_list);
 
 		model.type = Object.keys(model.type);
 		// 전달받은 PQ 선정 값이 없을 경우 기본은 P-value 이다.
 		model.pq = iteratePQ(data.gene_list, data.pq || 'p');
-		model.stack.gene = byStack('gene', model.stack.gene);
-		model.stack.sample = byStack('sample', model.stack.sample);
-		model.stack.patient = byStack('patient', model.stack.patient);
+		model.stack.gene = model.byStack(model.axis.gene.x, 'gene', model.stack.gene).data;
+		model.stack.sample = model.byStack(model.axis.sample.y, 'sample', model.stack.sample).data;
+		model.stack.patient = model.byStack(model.axis.patient.y, 'patient', model.stack.patient).data;
 		// Axis 데이터를 만들어준다.
-		makeLinearAxis(isPlotted);
-		makeOrdinalAxis();
+		model.makeLinearAxis = makeLinearAxis;
+		model.makeOrdinalAxis = makeOrdinalAxis;
+		// gene x, sample y, pq x axis 를 만들어 준다.
+		model.axis.gene.x = model.makeLinearAxis('gene', model.axis.gene.x);
+		model.axis.pq.x = model.makeLinearAxis('pq', model.pq);
+		model.axis.sample.y = model.makeLinearAxis('sample', model.axis.sample.y, isPlotted, model.axis.patient.y);
+		// model.makeLinearAxis(isPlotted);
+		model.makeOrdinalAxis();
 
 		console.log('>>> Preprocess landscape data: ', data);
 		console.log('>>> Preprocess data: ', model);

@@ -27,6 +27,8 @@ function landscape ()	{
 				if (data.type === 'refresh')	{
 					changeAxis({ axis: 'x', data: model.init.axis.x });
 					changeAxis({ axis: 'y', data: model.init.axis.y });
+					console.log(model.init.axis.sampleY)
+					model.data.axis.sample.y = model.init.axis.sampleY;
 
 					return drawLandscape(model.data, 
 					(model.now.width = model.init.width, model.now.width));
@@ -174,6 +176,8 @@ function landscape ()	{
 		이때 gene list 가 Drag end 가 되었을 경우만 변경된다.
 	 */
 	function geneDragMove (d)	{
+		model.now.geneline.isDraggable = true;
+
 		var that = this.parentNode;
 		var nowTranslate = d3.select(that)
 												 .attr('transform')
@@ -183,9 +187,9 @@ function landscape ()	{
 		var nowIdx = model.now.geneline.axis[d].idx,
 				yAxis = Math.max(model.init.geneline.firstYAxis,
 								Math.min((
-									parseFloat(nowTranslate[1]) + d3.event.dy),
+									parseFloat(nowTranslate[1]) + d3.event.y),
 									model.init.geneline.lastYAxis));
-		
+
 		d3.select(that)
 			.attr('transform', 'translate(0, ' + yAxis + ')');
 
@@ -195,7 +199,6 @@ function landscape ()	{
 				tempVal = model.now.geneline.axis[d].value,
 				direction = d3.event.sourceEvent.movementY > -1 ? 
 										1 : -1;
-				
 
 		beforeGene = !beforeGene ? tempGene : beforeGene;
 		nextGene = !nextGene ? tempGene : nextGene;
@@ -208,6 +211,10 @@ function landscape ()	{
 
 			model.now.geneline.axis[targetGene].idx -= direction;
 			model.now.geneline.axis[targetGene].value = tempVal;
+
+			model.data.gene[nowIdx] = 
+			model.data.gene[nowIdx + direction];
+			model.data.gene[nowIdx + direction] = tempGene;
 
 			var siblings = bio.dom().siblings(tthat.parentNode.children),
 					sortedSiblings = [];
@@ -226,10 +233,6 @@ function landscape ()	{
 				.transition()
 				.attr('transform', 'translate(0, ' + 
 					model.now.geneline.axis[targetGene].value + ')');
-
-			model.data.gene[nowIdx] = 
-			model.data.gene[nowIdx + direction];
-			model.data.gene[nowIdx + direction] = tempGene;
 		};
 
 		if ((yAxis > model.now.geneline.axis[nextGene].value) && 
@@ -241,33 +244,34 @@ function landscape ()	{
 	};
 
 	function geneDragEnd (d)	{
-		var type = model.now.exclusivity_opt ? 
-							 model.now.exclusivity_opt : 
-							 model.init.exclusivity_opt;
+		if (model.now.geneline.isDraggable)	{
+			var type = model.now.exclusivity_opt ? 
+								 model.now.exclusivity_opt : 
+								 model.init.exclusivity_opt;
 
-		bio.layout().removeGroupTag([
-			'.landscape_heatmap_svg.heatmap-g-tag',
-			'.landscape_gene_svg.bar-g-tag',
-			'.landscape_gene_svg.right-axis-g-tag'
-		]);
+			bio.layout().removeGroupTag([
+				'.landscape_heatmap_svg.heatmap-g-tag',
+				'.landscape_gene_svg.bar-g-tag',
+				'.landscape_gene_svg.right-axis-g-tag'
+			]);
 
-		model.exclusive.now = bio.landscapeSort().exclusive(
-			model.data.heatmap, model.data.gene, type);
-		
-		changeAxis(model.exclusive.now);
+			model.exclusive.now = bio.landscapeSort().exclusive(
+				model.data.heatmap, model.data.gene, type);
+			
+			changeAxis(model.exclusive.now);
 
-		drawAxis('gene', 'Y');
-		drawBar('pq', model.data.pq, 
-						model.data.axis.pq, ['top', 'left']);
-		drawBar('gene', model.data.stack.gene, 
-						model.data.axis.gene, ['top', 'left']);
-
-		drawHeatmap('heatmap', model.data.heatmap, 
-								model.data.axis.heatmap);
+			drawAxis('gene', 'Y');
+			drawBar('pq', model.data.pq, 
+							model.data.axis.pq, ['top', 'left']);
+			drawBar('gene', model.data.stack.gene, 
+							model.data.axis.gene, ['top', 'left']);
+			drawHeatmap('heatmap', model.data.heatmap, 
+									model.data.axis.heatmap);	
+		}
 	};
 
 	function geneDragStart (evt)	{
-		console.log(d3.event.target)
+		model.now.geneline.isDraggable = false;
 	}
 	/*
 		Landscape 축들을 그려주는 함수.
@@ -297,8 +301,6 @@ function landscape ()	{
 															.on('drag', geneDragMove)
 															.on('end', geneDragEnd);
 
-			var isMoved = false;
-			
 			var axises = bio.axises()[config.direction]({
 				element: svg,
 				domain: data,
@@ -313,59 +315,121 @@ function landscape ()	{
 				.on('mouseout', common.on ? common.on.mouseout : false)
 				.on('mouseover', common.on ? common.on.mouseover : false)
 				.on('click', function (data, idx)	{
-					console.log(d3.event);
-					if (d3.event.altKey)	{
-						var res = config.on ? 
-											config.on.click.call(this, data, idx, model) : false;
-						redraw(res);	
-					} else {
-						var	tempGeneList = [].concat(model.data.gene),
-								geneIdx = tempGeneList.indexOf(data),
-								endPart = tempGeneList.splice(geneIdx + 1),
-								startPart = tempGeneList.splice(0, geneIdx);
+					if (!model.now.geneline.isDraggable)	{
+						if (d3.event.altKey)	{
+							var res = config.on ? 
+												config.on.click.call(this, data, idx, model) : false;
+							redraw(res);	
+						} else {
+							var tempGeneList = [].concat(model.data.gene);
 
-						tempGeneList = startPart.concat(endPart).concat([data]);
+							if (model.now.geneline.axis[data].isGene === 'enable')	{
+								var	geneIdx = tempGeneList.indexOf(data),
+										endPart = tempGeneList.splice(geneIdx + 1),
+										startPart = tempGeneList.splice(0, geneIdx);
 
-						model.data.gene = tempGeneList;
+								tempGeneList = startPart.concat(endPart).concat([data]);
+								// 현재 라인 disable 
+								model.data.gene = tempGeneList;
+								model.now.geneline.axis[data].isGene = 'disable';
+								model.now.mutation_list = 
+								model.now.mutation_list ? 
+								model.now.mutation_list : 
+								model.init.mutation_list;
+								// Disable 된 gene 을 포함하는 sample 을 제거.
+								model.now.mutation_list = 
+								model.now.mutation_list.filter(function (d)	{
+									if (d.gene !== data)	{
+										return d;
+									} else {
+										if (!model.now.removedMutationList[d.gene])	{
+											model.now.removedMutationList[d.gene] = [d];
+										} else {
+											model.now.removedMutationList[d.gene].push(d);
+										}
+									}
+								});
+							} else {
+								var beforeIdx = tempGeneList.indexOf(data),
+										geneIdx = model.now.geneline.axis[data].idx;
 
-						// var type = model.now.exclusivity_opt ? 
-						// 					 model.now.exclusivity_opt : 
-						// 					 model.init.exclusivity_opt;
+								tempGeneList.splice(beforeIdx, 1);
+								tempGeneList.splice(geneIdx, 0, data);
 
-						// bio.layout().removeGroupTag([
-						// 	'.landscape_heatmap_svg.heatmap-g-tag',
-						// 	'.landscape_gene_svg.bar-g-tag',
-						// 	'.landscape_gene_svg.right-axis-g-tag'
-						// ]);
+								model.data.gene = tempGeneList;
 
-						// console.log(model.data.gene);
+								model.now.mutation_list = 
+								model.now.mutation_list.concat(
+									model.now.removedMutationList[data]);
 
-						// model.exclusive.now = bio.landscapeSort().exclusive(model.data.heatmap, model.data.gene, type);
-						
-						// changeAxis(model.exclusive.now);
+								model.now.removedMutationList[data] = undefined;
+								model.now.geneline.axis[data].isGene = 'enable';
+							}
 
-						// drawAxis('gene', 'Y');
-						// drawBar('pq', model.data.pq, 
-						// 				model.data.axis.pq, ['top', 'left']);
-						// drawBar('gene', model.data.stack.gene, 
-						// 				model.data.axis.gene, ['top', 'left']);
+							var changedSampleStack = model.data.iterMut([
+									{ 
+										obj: {}, data: 'participant_id', 
+										type: 'type', keyName: 'sample' 
+									}
+								], model.now.mutation_list);
+								var changeSampleStack = model.data.byStack([], 'sample', changedSampleStack.result.sample);
+								var reloadSampleAxis = model.data.makeLinearAxis(
+									'sample', changeSampleStack.axis)
 
-						// drawHeatmap('heatmap', model.data.heatmap, 
-						// 						model.data.axis.heatmap);
-					}	
-				})
-				.on('mousedown', function ()	{
-					isMoved = true;
-				})
-				.on('mouseup', function ()	{
-					isMoved = false;
-				})
-				.on('mousemove', function (data)	{
-					if (isMoved)	{
-						console.log(d3.event, data);
+								model.data.axis.gene.y = model.data.gene;
+								model.data.axis.sample.y = reloadSampleAxis;
+								model.data.axis.heatmap.y = model.data.gene;
+								model.data.axis.pq.y = model.data.gene;	
+
+							var type = model.now.exclusivity_opt ? 
+												 model.now.exclusivity_opt : 
+												 model.init.exclusivity_opt;
+
+							bio.layout().removeGroupTag([
+								'.landscape_heatmap_svg.heatmap-g-tag',
+								'.landscape_gene_svg.bar-g-tag',
+								'.landscape_gene_svg.right-axis-g-tag',
+								'.landscape_sample_svg.bar-g-tag',
+								'.landscape_axis_sample_svg.left-axis-g-tag'
+							]);
+
+							model.exclusive.now = 
+							bio.landscapeSort()
+								 .exclusive(model.data.heatmap, model.data.gene, type);
+							
+							changeAxis(model.exclusive.now);
+
+							drawAxis('gene', 'Y');
+							drawAxis('sample', 'Y');
+							drawBar('pq', model.data.pq, 
+											model.data.axis.pq, ['top', 'left']);
+							drawBar('gene', model.data.stack.gene, 
+											model.data.axis.gene, ['top', 'left']);
+							drawBar('sample', changeSampleStack.data, 
+								model.data.axis.sample, ['top', 'left']);
+							drawHeatmap('heatmap', model.data.heatmap, 
+													model.data.axis.heatmap);
+
+							bio.iteration.loop(model.now.geneline.axis, 
+							function (k, v)	{
+								if (model.now.geneline.axis[k].isGene === 'enable') {
+									d3.selectAll('#landscape_gene_' + k + '_bar_rect')
+										.style('fill-opacity', '1');
+									d3.selectAll('#landscape_gene_' + k + '_heatmap_rect')
+										.style('fill-opacity', '1');	
+								} else {
+									d3.selectAll('#landscape_gene_' + k + '_bar_rect')
+										.style('fill-opacity', '0.2');
+									d3.selectAll('#landscape_gene_' + k + '_heatmap_rect')
+										.style('fill-opacity', '0.2');
+								}
+							});
+							
+						}
 					}
+						
 				})
-				// .call(geneDrag);
+				.call(geneDrag);
 		});
 	};
 	/*
@@ -622,12 +686,18 @@ function landscape ()	{
 	};
 
 	function drawExclusivityLandscape (type)	{
+		model.init.mutation_list = 
+		model.setting.defaultData.data.mutation_list;
+		// gene 을 enable/disable 할때, disable 한 gene 의 
+		// mutation_list 값을 가지는 객체이다.
+		model.now.removedMutationList = {};
 		// 초기 exclusive 값을 설정한다.
 		model.exclusive.init = bio.landscapeSort().exclusive(
 			model.data.heatmap, model.data.gene, type);
 		// 초기 x, y 축 값 설정. 초기화 동작을 위해서이다.
 		model.init.axis.x = [].concat(model.exclusive.init.data);
 		model.init.axis.y = [].concat(model.data.axis.gene.y);
+		model.init.axis.sampleY = [].concat(model.data.axis.sample.y);
 
 		orderByTypePriority(model.data.type);
 		patientAxis(model.data.axis);
