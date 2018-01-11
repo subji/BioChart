@@ -5944,10 +5944,11 @@ function landscape ()	{
 					model.now.geneline.axis[targetGene].value + ')');
 		};
 
-		if ((yAxis > model.now.geneline.axis[nextGene].value) && 
+		if ((yAxis > model.now.geneline.axis[nextGene].value - 
+								 model.init.geneline.axisHalfHeight) && 
 				tempVal !== model.now.geneline.axis[nextGene].value)	{
 			moveElement(that, direction, nextGene, nowIdx, tempVal, tempGene);
-		} else if ((yAxis < model.now.geneline.axis[beforeGene].value) && tempVal !== model.now.geneline.axis[beforeGene].value)	{
+		} else if ((yAxis < model.now.geneline.axis[beforeGene].value +									 model.init.geneline.axisHalfHeight) && tempVal !== model.now.geneline.axis[beforeGene].value)	{
 			moveElement(that, direction, beforeGene, nowIdx, tempVal, tempGene);
 		}
 	};
@@ -10462,35 +10463,35 @@ var SurvivalTab = (function() {
 //  /*
 //     Landscape
 //   */
- $.ajax({
-    'type': 'POST',
-    'url': '/files/datas',
-    data: {
-     name: 'landscape',
-    },
-    beforeSend: function () {
-      bio.loading().start(document.querySelector('#main'), 900, 600);
-    },
-    success: function (d) {
-      bio.landscape({
-				element: '#main',
-				width: 1600,
-				height: 800,
-				data: {
-					pq: 'p',
-					type: 'LUAD',
-					data: d[0].data,
-					title:d[0].data.name,
-				},
-        plot: {
-          patient: false, // true
-          pq: false, // true
-        },
-			});
+ // $.ajax({
+ //    'type': 'POST',
+ //    'url': '/files/datas',
+ //    data: {
+ //     name: 'landscape',
+ //    },
+ //    beforeSend: function () {
+ //      bio.loading().start(document.querySelector('#main'), 900, 600);
+ //    },
+ //    success: function (d) {
+ //      bio.landscape({
+	// 			element: '#main',
+	// 			width: 1600,
+	// 			height: 800,
+	// 			data: {
+	// 				pq: 'p',
+	// 				type: 'LUAD',
+	// 				data: d[0].data,
+	// 				title:d[0].data.name,
+	// 			},
+ //        plot: {
+ //          patient: false, // true
+ //          pq: false, // true
+ //        },
+	// 		});
 
-      bio.loading().end();
-    },
-  });
+ //      bio.loading().end();
+ //    },
+ //  });
 
 function loading ()	{
 	'use strict';
