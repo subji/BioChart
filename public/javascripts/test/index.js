@@ -44,7 +44,6 @@
  //      bio.loading().start(document.querySelector('#main'), 900, 600);
  //    },
  //    success: function (d) {
- //      console.log(d)
  //      bio.expression({
  //        element: '#main',
  //        width: 900,
