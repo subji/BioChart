@@ -316,119 +316,120 @@ function landscape ()	{
 				.on('mouseout', common.on ? common.on.mouseout : false)
 				.on('mouseover', common.on ? common.on.mouseover : false)
 				.on('click', function (data, idx)	{
-					if (!model.now.geneline.isDraggable)	{
-						if (d3.event.altKey)	{
-							var res = config.on ? 
-												config.on.click.call(this, data, idx, model) : false;
-							redraw(res);	
-						} else {
-							var tempGeneList = [].concat(model.data.gene);
+					if (part === 'gene' && direction === 'Y')	{
+						if (!model.now.geneline.isDraggable)	{
+							if (d3.event.altKey)	{
+								var res = config.on ? 
+													config.on.click.call(this, data, idx, model) : false;
+								redraw(res);	
+							} else {
+								var tempGeneList = [].concat(model.data.gene);
 
-							if (model.now.geneline.axis[data].isGene === 'enable')	{
-								var	geneIdx = tempGeneList.indexOf(data),
-										endPart = tempGeneList.splice(geneIdx + 1),
-										startPart = tempGeneList.splice(0, geneIdx);
+								if (model.now.geneline.axis[data].isGene === 'enable')	{
+									var	geneIdx = tempGeneList.indexOf(data),
+											endPart = tempGeneList.splice(geneIdx + 1),
+											startPart = tempGeneList.splice(0, geneIdx);
 
-								tempGeneList = startPart.concat(endPart).concat([data]);
-								// 현재 라인 disable 
-								model.data.gene = tempGeneList;
-								model.now.geneline.axis[data].isGene = 'disable';
-								model.now.mutation_list = 
-								model.now.mutation_list ? 
-								model.now.mutation_list : 
-								model.init.mutation_list;
-								// Disable 된 gene 을 포함하는 sample 을 제거.
-								model.now.mutation_list = 
-								model.now.mutation_list.filter(function (d)	{
-									if (d.gene !== data)	{
-										return d;
-									} else {
-										if (!model.now.removedMutationList[d.gene])	{
-											model.now.removedMutationList[d.gene] = [d];
+									tempGeneList = startPart.concat(endPart).concat([data]);
+									// 현재 라인 disable 
+									model.data.gene = tempGeneList;
+									model.now.geneline.axis[data].isGene = 'disable';
+									model.now.mutation_list = 
+									model.now.mutation_list ? 
+									model.now.mutation_list : 
+									model.init.mutation_list;
+									// Disable 된 gene 을 포함하는 sample 을 제거.
+									model.now.mutation_list = 
+									model.now.mutation_list.filter(function (d)	{
+										if (d.gene !== data)	{
+											return d;
 										} else {
-											model.now.removedMutationList[d.gene].push(d);
+											if (!model.now.removedMutationList[d.gene])	{
+												model.now.removedMutationList[d.gene] = [d];
+											} else {
+												model.now.removedMutationList[d.gene].push(d);
+											}
 										}
+									});
+								} else {
+									var beforeIdx = tempGeneList.indexOf(data),
+											geneIdx = model.now.geneline.axis[data].idx;
+
+									tempGeneList.splice(beforeIdx, 1);
+									tempGeneList.splice(geneIdx, 0, data);
+
+									model.data.gene = tempGeneList;
+
+									model.now.mutation_list = 
+									model.now.mutation_list.concat(
+										model.now.removedMutationList[data]);
+
+									model.now.removedMutationList[data] = undefined;
+									model.now.geneline.axis[data].isGene = 'enable';
+								}
+
+								var changedSampleStack = model.data.iterMut([
+										{ 
+											obj: {}, data: 'participant_id', 
+											type: 'type', keyName: 'sample' 
+										}
+									], model.now.mutation_list);
+									var changeSampleStack = model.data.byStack([], 'sample', changedSampleStack.result.sample);
+									var reloadSampleAxis = model.data.makeLinearAxis(
+										'sample', changeSampleStack.axis)
+
+									model.data.axis.gene.y = model.data.gene;
+									model.data.axis.sample.y = reloadSampleAxis;
+									model.data.axis.heatmap.y = model.data.gene;
+									model.data.axis.pq.y = model.data.gene;	
+
+								var type = model.now.exclusivity_opt ? 
+													 model.now.exclusivity_opt : 
+													 model.init.exclusivity_opt;
+
+								bio.layout().removeGroupTag([
+									'.landscape_heatmap_svg.heatmap-g-tag',
+									'.landscape_gene_svg.bar-g-tag',
+									'.landscape_gene_svg.right-axis-g-tag',
+									'.landscape_sample_svg.bar-g-tag',
+									'.landscape_axis_sample_svg.left-axis-g-tag'
+								]);
+
+								model.exclusive.now = 
+								bio.landscapeSort()
+									 .exclusive(model.data.heatmap, model.data.gene, type);
+								
+								changeAxis(model.exclusive.now);
+
+								drawAxis('gene', 'Y');
+								drawAxis('sample', 'Y');
+								drawBar('pq', model.data.pq, 
+												model.data.axis.pq, ['top', 'left']);
+								drawBar('gene', model.data.stack.gene, 
+												model.data.axis.gene, ['top', 'left']);
+								drawBar('sample', changeSampleStack.data, 
+									model.data.axis.sample, ['top', 'left']);
+								drawHeatmap('heatmap', model.data.heatmap, 
+														model.data.axis.heatmap);
+
+								bio.iteration.loop(model.now.geneline.axis, 
+								function (k, v)	{
+									if (model.now.geneline.axis[k].isGene === 'enable') {
+										d3.selectAll('#landscape_gene_' + k + '_bar_rect')
+											.style('fill-opacity', '1');
+										d3.selectAll('#landscape_gene_' + k + '_heatmap_rect')
+											.style('fill-opacity', '1');	
+									} else {
+										d3.selectAll('#landscape_gene_' + k + '_bar_rect')
+											.style('fill-opacity', '0.2');
+										d3.selectAll('#landscape_gene_' + k + '_heatmap_rect')
+											.style('fill-opacity', '0.2');
 									}
 								});
-							} else {
-								var beforeIdx = tempGeneList.indexOf(data),
-										geneIdx = model.now.geneline.axis[data].idx;
-
-								tempGeneList.splice(beforeIdx, 1);
-								tempGeneList.splice(geneIdx, 0, data);
-
-								model.data.gene = tempGeneList;
-
-								model.now.mutation_list = 
-								model.now.mutation_list.concat(
-									model.now.removedMutationList[data]);
-
-								model.now.removedMutationList[data] = undefined;
-								model.now.geneline.axis[data].isGene = 'enable';
+								
 							}
-
-							var changedSampleStack = model.data.iterMut([
-									{ 
-										obj: {}, data: 'participant_id', 
-										type: 'type', keyName: 'sample' 
-									}
-								], model.now.mutation_list);
-								var changeSampleStack = model.data.byStack([], 'sample', changedSampleStack.result.sample);
-								var reloadSampleAxis = model.data.makeLinearAxis(
-									'sample', changeSampleStack.axis)
-
-								model.data.axis.gene.y = model.data.gene;
-								model.data.axis.sample.y = reloadSampleAxis;
-								model.data.axis.heatmap.y = model.data.gene;
-								model.data.axis.pq.y = model.data.gene;	
-
-							var type = model.now.exclusivity_opt ? 
-												 model.now.exclusivity_opt : 
-												 model.init.exclusivity_opt;
-
-							bio.layout().removeGroupTag([
-								'.landscape_heatmap_svg.heatmap-g-tag',
-								'.landscape_gene_svg.bar-g-tag',
-								'.landscape_gene_svg.right-axis-g-tag',
-								'.landscape_sample_svg.bar-g-tag',
-								'.landscape_axis_sample_svg.left-axis-g-tag'
-							]);
-
-							model.exclusive.now = 
-							bio.landscapeSort()
-								 .exclusive(model.data.heatmap, model.data.gene, type);
-							
-							changeAxis(model.exclusive.now);
-
-							drawAxis('gene', 'Y');
-							drawAxis('sample', 'Y');
-							drawBar('pq', model.data.pq, 
-											model.data.axis.pq, ['top', 'left']);
-							drawBar('gene', model.data.stack.gene, 
-											model.data.axis.gene, ['top', 'left']);
-							drawBar('sample', changeSampleStack.data, 
-								model.data.axis.sample, ['top', 'left']);
-							drawHeatmap('heatmap', model.data.heatmap, 
-													model.data.axis.heatmap);
-
-							bio.iteration.loop(model.now.geneline.axis, 
-							function (k, v)	{
-								if (model.now.geneline.axis[k].isGene === 'enable') {
-									d3.selectAll('#landscape_gene_' + k + '_bar_rect')
-										.style('fill-opacity', '1');
-									d3.selectAll('#landscape_gene_' + k + '_heatmap_rect')
-										.style('fill-opacity', '1');	
-								} else {
-									d3.selectAll('#landscape_gene_' + k + '_bar_rect')
-										.style('fill-opacity', '0.2');
-									d3.selectAll('#landscape_gene_' + k + '_heatmap_rect')
-										.style('fill-opacity', '0.2');
-								}
-							});
-							
 						}
 					}
-						
 				})
 				.call(geneDrag);
 		});
@@ -706,6 +707,10 @@ function landscape ()	{
 		drawLandscape(model.data, model.init.width);
 	};
 
+	function drawMutationDivisionLine ()	{
+
+	};
+
 	return function (opts)	{
 		model = bio.initialize('landscape');
 		model.isPlotted = opts.plot;
@@ -723,6 +728,7 @@ function landscape ()	{
 		changeExclusivityOption();
 		drawExclusivityLandscape('1');
 		makeGeneLineDataList();
+		drawMutationDivisionLine();
 
 		bio.handler().scroll('#landscape_heatmap', function (e)	{
 			var sample = bio.dom().get('#landscape_sample'),

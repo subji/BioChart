@@ -2679,69 +2679,6 @@ function variantsConfig ()	{
 		};
 	};
 };
-function handler ()	{
-	'use strict';
-
-	var model = {};
-	/*
-		스크롤 이벤트 핸들러.
-	 */
-	function scroll (target, callback)	{
-		bio.dom().get(target)
-			 .addEventListener('scroll', callback, false);
-	};
-	/*
-	 	특정 이벤트 중 이벤트가 바디태그에서는 Disable 하게 만들어주는 함수.
-	 */
-	function preventBodyEvent (ele, events)	{
-		var DOEVENT = false;
-
-		// 사용자가 지정한 DIV 에 마우스 휠을 작동할때는, 바디에 마우스 휠
-		// 이벤트를 막아놓는다.
-		document.body.addEventListener(events, function (e)	{
-			if (DOEVENT)	{
-				if (e.preventDefault) {
-					e.preventDefault();
-				}
-
-				return false;
-			}
-		});
-
-		ele.addEventListener('mouseenter', function (e)	{
-			DOEVENT = true;
-		});
-
-		ele.addEventListener('mouseleave', function (e)	{
-			DOEVENT = false;
-		});
-	};
-	/*
-		x, y 스크롤이 hidden 일 때, 스크롤을 가능하게 해주는 함수.
-	 */
-	function scrollOnHidden (element, callback)	{
-		if (!element)	{
-			throw new Error('No given element');
-		}
-
-		preventBodyEvent(element, 'mousewheel');
-
-		element.addEventListener('mousewheel', function (e)	{
-			element.scrollTop += element.wheelDelta;
-
-			if (callback) {
-				callback.call(element, e);
-			}
-		});
-	};
-
-	return function ()	{
-		return {
-			scroll: scroll,
-			scrollOnHidden: scrollOnHidden,
-		};
-	};
-};
 function axises ()	{
 	'use strict';
 
@@ -4605,6 +4542,69 @@ function triangle ()	{
 		});
 	};
 };
+function handler ()	{
+	'use strict';
+
+	var model = {};
+	/*
+		스크롤 이벤트 핸들러.
+	 */
+	function scroll (target, callback)	{
+		bio.dom().get(target)
+			 .addEventListener('scroll', callback, false);
+	};
+	/*
+	 	특정 이벤트 중 이벤트가 바디태그에서는 Disable 하게 만들어주는 함수.
+	 */
+	function preventBodyEvent (ele, events)	{
+		var DOEVENT = false;
+
+		// 사용자가 지정한 DIV 에 마우스 휠을 작동할때는, 바디에 마우스 휠
+		// 이벤트를 막아놓는다.
+		document.body.addEventListener(events, function (e)	{
+			if (DOEVENT)	{
+				if (e.preventDefault) {
+					e.preventDefault();
+				}
+
+				return false;
+			}
+		});
+
+		ele.addEventListener('mouseenter', function (e)	{
+			DOEVENT = true;
+		});
+
+		ele.addEventListener('mouseleave', function (e)	{
+			DOEVENT = false;
+		});
+	};
+	/*
+		x, y 스크롤이 hidden 일 때, 스크롤을 가능하게 해주는 함수.
+	 */
+	function scrollOnHidden (element, callback)	{
+		if (!element)	{
+			throw new Error('No given element');
+		}
+
+		preventBodyEvent(element, 'mousewheel');
+
+		element.addEventListener('mousewheel', function (e)	{
+			element.scrollTop += element.wheelDelta;
+
+			if (callback) {
+				callback.call(element, e);
+			}
+		});
+	};
+
+	return function ()	{
+		return {
+			scroll: scroll,
+			scrollOnHidden: scrollOnHidden,
+		};
+	};
+};
 function exclusivity ()	{
 	'use strict';
 
@@ -6027,119 +6027,120 @@ function landscape ()	{
 				.on('mouseout', common.on ? common.on.mouseout : false)
 				.on('mouseover', common.on ? common.on.mouseover : false)
 				.on('click', function (data, idx)	{
-					if (!model.now.geneline.isDraggable)	{
-						if (d3.event.altKey)	{
-							var res = config.on ? 
-												config.on.click.call(this, data, idx, model) : false;
-							redraw(res);	
-						} else {
-							var tempGeneList = [].concat(model.data.gene);
+					if (part === 'gene' && direction === 'Y')	{
+						if (!model.now.geneline.isDraggable)	{
+							if (d3.event.altKey)	{
+								var res = config.on ? 
+													config.on.click.call(this, data, idx, model) : false;
+								redraw(res);	
+							} else {
+								var tempGeneList = [].concat(model.data.gene);
 
-							if (model.now.geneline.axis[data].isGene === 'enable')	{
-								var	geneIdx = tempGeneList.indexOf(data),
-										endPart = tempGeneList.splice(geneIdx + 1),
-										startPart = tempGeneList.splice(0, geneIdx);
+								if (model.now.geneline.axis[data].isGene === 'enable')	{
+									var	geneIdx = tempGeneList.indexOf(data),
+											endPart = tempGeneList.splice(geneIdx + 1),
+											startPart = tempGeneList.splice(0, geneIdx);
 
-								tempGeneList = startPart.concat(endPart).concat([data]);
-								// 현재 라인 disable 
-								model.data.gene = tempGeneList;
-								model.now.geneline.axis[data].isGene = 'disable';
-								model.now.mutation_list = 
-								model.now.mutation_list ? 
-								model.now.mutation_list : 
-								model.init.mutation_list;
-								// Disable 된 gene 을 포함하는 sample 을 제거.
-								model.now.mutation_list = 
-								model.now.mutation_list.filter(function (d)	{
-									if (d.gene !== data)	{
-										return d;
-									} else {
-										if (!model.now.removedMutationList[d.gene])	{
-											model.now.removedMutationList[d.gene] = [d];
+									tempGeneList = startPart.concat(endPart).concat([data]);
+									// 현재 라인 disable 
+									model.data.gene = tempGeneList;
+									model.now.geneline.axis[data].isGene = 'disable';
+									model.now.mutation_list = 
+									model.now.mutation_list ? 
+									model.now.mutation_list : 
+									model.init.mutation_list;
+									// Disable 된 gene 을 포함하는 sample 을 제거.
+									model.now.mutation_list = 
+									model.now.mutation_list.filter(function (d)	{
+										if (d.gene !== data)	{
+											return d;
 										} else {
-											model.now.removedMutationList[d.gene].push(d);
+											if (!model.now.removedMutationList[d.gene])	{
+												model.now.removedMutationList[d.gene] = [d];
+											} else {
+												model.now.removedMutationList[d.gene].push(d);
+											}
 										}
+									});
+								} else {
+									var beforeIdx = tempGeneList.indexOf(data),
+											geneIdx = model.now.geneline.axis[data].idx;
+
+									tempGeneList.splice(beforeIdx, 1);
+									tempGeneList.splice(geneIdx, 0, data);
+
+									model.data.gene = tempGeneList;
+
+									model.now.mutation_list = 
+									model.now.mutation_list.concat(
+										model.now.removedMutationList[data]);
+
+									model.now.removedMutationList[data] = undefined;
+									model.now.geneline.axis[data].isGene = 'enable';
+								}
+
+								var changedSampleStack = model.data.iterMut([
+										{ 
+											obj: {}, data: 'participant_id', 
+											type: 'type', keyName: 'sample' 
+										}
+									], model.now.mutation_list);
+									var changeSampleStack = model.data.byStack([], 'sample', changedSampleStack.result.sample);
+									var reloadSampleAxis = model.data.makeLinearAxis(
+										'sample', changeSampleStack.axis)
+
+									model.data.axis.gene.y = model.data.gene;
+									model.data.axis.sample.y = reloadSampleAxis;
+									model.data.axis.heatmap.y = model.data.gene;
+									model.data.axis.pq.y = model.data.gene;	
+
+								var type = model.now.exclusivity_opt ? 
+													 model.now.exclusivity_opt : 
+													 model.init.exclusivity_opt;
+
+								bio.layout().removeGroupTag([
+									'.landscape_heatmap_svg.heatmap-g-tag',
+									'.landscape_gene_svg.bar-g-tag',
+									'.landscape_gene_svg.right-axis-g-tag',
+									'.landscape_sample_svg.bar-g-tag',
+									'.landscape_axis_sample_svg.left-axis-g-tag'
+								]);
+
+								model.exclusive.now = 
+								bio.landscapeSort()
+									 .exclusive(model.data.heatmap, model.data.gene, type);
+								
+								changeAxis(model.exclusive.now);
+
+								drawAxis('gene', 'Y');
+								drawAxis('sample', 'Y');
+								drawBar('pq', model.data.pq, 
+												model.data.axis.pq, ['top', 'left']);
+								drawBar('gene', model.data.stack.gene, 
+												model.data.axis.gene, ['top', 'left']);
+								drawBar('sample', changeSampleStack.data, 
+									model.data.axis.sample, ['top', 'left']);
+								drawHeatmap('heatmap', model.data.heatmap, 
+														model.data.axis.heatmap);
+
+								bio.iteration.loop(model.now.geneline.axis, 
+								function (k, v)	{
+									if (model.now.geneline.axis[k].isGene === 'enable') {
+										d3.selectAll('#landscape_gene_' + k + '_bar_rect')
+											.style('fill-opacity', '1');
+										d3.selectAll('#landscape_gene_' + k + '_heatmap_rect')
+											.style('fill-opacity', '1');	
+									} else {
+										d3.selectAll('#landscape_gene_' + k + '_bar_rect')
+											.style('fill-opacity', '0.2');
+										d3.selectAll('#landscape_gene_' + k + '_heatmap_rect')
+											.style('fill-opacity', '0.2');
 									}
 								});
-							} else {
-								var beforeIdx = tempGeneList.indexOf(data),
-										geneIdx = model.now.geneline.axis[data].idx;
-
-								tempGeneList.splice(beforeIdx, 1);
-								tempGeneList.splice(geneIdx, 0, data);
-
-								model.data.gene = tempGeneList;
-
-								model.now.mutation_list = 
-								model.now.mutation_list.concat(
-									model.now.removedMutationList[data]);
-
-								model.now.removedMutationList[data] = undefined;
-								model.now.geneline.axis[data].isGene = 'enable';
+								
 							}
-
-							var changedSampleStack = model.data.iterMut([
-									{ 
-										obj: {}, data: 'participant_id', 
-										type: 'type', keyName: 'sample' 
-									}
-								], model.now.mutation_list);
-								var changeSampleStack = model.data.byStack([], 'sample', changedSampleStack.result.sample);
-								var reloadSampleAxis = model.data.makeLinearAxis(
-									'sample', changeSampleStack.axis)
-
-								model.data.axis.gene.y = model.data.gene;
-								model.data.axis.sample.y = reloadSampleAxis;
-								model.data.axis.heatmap.y = model.data.gene;
-								model.data.axis.pq.y = model.data.gene;	
-
-							var type = model.now.exclusivity_opt ? 
-												 model.now.exclusivity_opt : 
-												 model.init.exclusivity_opt;
-
-							bio.layout().removeGroupTag([
-								'.landscape_heatmap_svg.heatmap-g-tag',
-								'.landscape_gene_svg.bar-g-tag',
-								'.landscape_gene_svg.right-axis-g-tag',
-								'.landscape_sample_svg.bar-g-tag',
-								'.landscape_axis_sample_svg.left-axis-g-tag'
-							]);
-
-							model.exclusive.now = 
-							bio.landscapeSort()
-								 .exclusive(model.data.heatmap, model.data.gene, type);
-							
-							changeAxis(model.exclusive.now);
-
-							drawAxis('gene', 'Y');
-							drawAxis('sample', 'Y');
-							drawBar('pq', model.data.pq, 
-											model.data.axis.pq, ['top', 'left']);
-							drawBar('gene', model.data.stack.gene, 
-											model.data.axis.gene, ['top', 'left']);
-							drawBar('sample', changeSampleStack.data, 
-								model.data.axis.sample, ['top', 'left']);
-							drawHeatmap('heatmap', model.data.heatmap, 
-													model.data.axis.heatmap);
-
-							bio.iteration.loop(model.now.geneline.axis, 
-							function (k, v)	{
-								if (model.now.geneline.axis[k].isGene === 'enable') {
-									d3.selectAll('#landscape_gene_' + k + '_bar_rect')
-										.style('fill-opacity', '1');
-									d3.selectAll('#landscape_gene_' + k + '_heatmap_rect')
-										.style('fill-opacity', '1');	
-								} else {
-									d3.selectAll('#landscape_gene_' + k + '_bar_rect')
-										.style('fill-opacity', '0.2');
-									d3.selectAll('#landscape_gene_' + k + '_heatmap_rect')
-										.style('fill-opacity', '0.2');
-								}
-							});
-							
 						}
 					}
-						
 				})
 				.call(geneDrag);
 		});
@@ -6417,6 +6418,10 @@ function landscape ()	{
 		drawLandscape(model.data, model.init.width);
 	};
 
+	function drawMutationDivisionLine ()	{
+
+	};
+
 	return function (opts)	{
 		model = bio.initialize('landscape');
 		model.isPlotted = opts.plot;
@@ -6434,6 +6439,7 @@ function landscape ()	{
 		changeExclusivityOption();
 		drawExclusivityLandscape('1');
 		makeGeneLineDataList();
+		drawMutationDivisionLine();
 
 		bio.handler().scroll('#landscape_heatmap', function (e)	{
 			var sample = bio.dom().get('#landscape_sample'),
@@ -8308,6 +8314,104 @@ function preprocVariants ()	{
 		return model;
 	};
 };
+  /*
+    Exclusivity
+   */
+	// $.ajax({
+ //    'type': 'POST',
+ //    'url': '/files/datas',
+ //    data: {
+ //    	name: 'exclusivity',
+ //    },
+ //    beforeSend: function () {
+ //      bio.loading().start(document.querySelector('#main'), 900, 600);
+ //    },
+ //    success: function (d) {
+ //      bio.exclusivity({
+ //        element: '#main',
+ //        width: 900,
+ //        height: 600,
+ //        data: {
+ //          heatmap: d[0],
+ //          network: d[2],
+ //          sample: d[3].data.sample_variants,
+ //          survival: {
+ //            patient: d[4].data,
+ //            types: d[5].data,
+ //          },
+ //          type: 'LUAD',
+ //        }
+ //      });
+
+ //      bio.loading().end();
+ //    },
+ //  });
+
+ /*
+    Expression
+  */
+ // $.ajax({
+ //    'type': 'POST',
+ //    'url': '/files/datas',
+ //    data: {
+ //     name: 'expression',
+ //    },
+ //    beforeSend: function () {
+ //      bio.loading().start(document.querySelector('#main'), 900, 600);
+ //    },
+ //    success: function (d) {
+ //      console.log(d)
+ //      bio.expression({
+ //        element: '#main',
+ //        width: 900,
+ //        height: 600,
+ //        requestData: {
+ //          source: 'GDAC',
+ //          cancer_type: 'luad',
+ //          sample_id: 'SMCLUAD1705230001',
+ //          signature: 'PAM50',
+ //          filter: ':'
+ //        },
+ //        data: d[0].data,
+ //      });
+
+ //      bio.loading().end();
+ //    },
+ //  });
+
+ /*
+    Landscape
+  */
+ $.ajax({
+    'type': 'POST',
+    'url': '/files/datas',
+    data: {
+     name: 'landscape',
+    },
+    beforeSend: function () {
+      bio.loading().start(document.querySelector('#main'), 900, 600);
+    },
+    success: function (d) {
+      bio.landscape({
+				element: '#main',
+				width: 1600,
+				height: 800,
+				data: {
+					pq: 'p',
+					type: 'LUAD',
+					data: d[0].data,
+					title:d[0].data.name,
+				},
+        plot: {
+          patient: false, // true
+          pq: false, // true
+        },
+			});
+
+      bio.loading().end();
+    },
+  });
+
 // /*
 //  * Copyright (c) 2015 Memorial Sloan-Kettering Cancer Center.
 //  *
@@ -10394,106 +10498,6 @@ var SurvivalTab = (function() {
     };
 
 }()); //Close SubvivalTabView (Singular)
-
-// (function ()	{
-// 	'use strict';
-//   /*
-//     Exclusivity
-//    */
-	// $.ajax({
- //    'type': 'POST',
- //    'url': '/files/datas',
- //    data: {
- //    	name: 'exclusivity',
- //    },
- //    beforeSend: function () {
- //      bio.loading().start(document.querySelector('#main'), 900, 600);
- //    },
- //    success: function (d) {
- //      bio.exclusivity({
- //        element: '#main',
- //        width: 900,
- //        height: 600,
- //        data: {
- //          heatmap: d[0],
- //          network: d[2],
- //          sample: d[3].data.sample_variants,
- //          survival: {
- //            patient: d[4].data,
- //            types: d[5].data,
- //          },
- //          type: 'LUAD',
- //        }
- //      });
-
- //      bio.loading().end();
- //    },
- //  });
-
- /*
-    Expression
-  */
- // $.ajax({
- //    'type': 'POST',
- //    'url': '/files/datas',
- //    data: {
- //     name: 'expression',
- //    },
- //    beforeSend: function () {
- //      bio.loading().start(document.querySelector('#main'), 900, 600);
- //    },
- //    success: function (d) {
- //      console.log(d)
- //      bio.expression({
- //        element: '#main',
- //        width: 900,
- //        height: 600,
- //        requestData: {
- //          source: 'GDAC',
- //          cancer_type: 'luad',
- //          sample_id: 'SMCLUAD1705230001',
- //          signature: 'PAM50',
- //          filter: ':'
- //        },
- //        data: d[0].data,
- //      });
-
- //      bio.loading().end();
- //    },
- //  });
-
-//  /*
-//     Landscape
-//   */
- // $.ajax({
- //    'type': 'POST',
- //    'url': '/files/datas',
- //    data: {
- //     name: 'landscape',
- //    },
- //    beforeSend: function () {
- //      bio.loading().start(document.querySelector('#main'), 900, 600);
- //    },
- //    success: function (d) {
- //      bio.landscape({
-	// 			element: '#main',
-	// 			width: 1600,
-	// 			height: 800,
-	// 			data: {
-	// 				pq: 'p',
-	// 				type: 'LUAD',
-	// 				data: d[0].data,
-	// 				title:d[0].data.name,
-	// 			},
- //        plot: {
- //          patient: false, // true
- //          pq: false, // true
- //        },
-	// 		});
-
- //      bio.loading().end();
- //    },
- //  });
 
 function loading ()	{
 	'use strict';
