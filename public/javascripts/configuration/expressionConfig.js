@@ -172,6 +172,9 @@ function expressionConfig ()	{
 			shape: {
 				margin: [0, leftMargin, 0, 20],
 				attr: {
+					id: function (data, idx, that)	{
+						return 'expression_heatmap_rect';
+					},
 					x: function (data, idx, that)	{ return that.scaleX(data.x); },
 					y: function (data, idx, that)	{ return that.scaleY(data.y); },
 					width: function (data, idx, that)	{
@@ -243,6 +246,9 @@ function expressionConfig ()	{
 			shape: {
 				margin: [20, leftMargin + 1, 15, 19],
 				attr: {
+					id: function (data, idx, that)	{
+						return 'expression_bar_plot_rect';
+					},
 					x: function (data, idx, that)	{
 						return that.scaleX(data.x);
 					},

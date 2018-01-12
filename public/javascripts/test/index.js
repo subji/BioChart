@@ -34,64 +34,64 @@
  /*
     Expression
   */
- // $.ajax({
- //    'type': 'POST',
- //    'url': '/files/datas',
- //    data: {
- //     name: 'expression',
- //    },
- //    beforeSend: function () {
- //      bio.loading().start(document.querySelector('#main'), 900, 600);
- //    },
- //    success: function (d) {
- //      console.log(d)
- //      bio.expression({
- //        element: '#main',
- //        width: 900,
- //        height: 600,
- //        requestData: {
- //          source: 'GDAC',
- //          cancer_type: 'luad',
- //          sample_id: 'SMCLUAD1705230001',
- //          signature: 'PAM50',
- //          filter: ':'
- //        },
- //        data: d[0].data,
- //      });
-
- //      bio.loading().end();
- //    },
- //  });
-
- /*
-    Landscape
-  */
  $.ajax({
     'type': 'POST',
     'url': '/files/datas',
     data: {
-     name: 'landscape',
+     name: 'expression',
     },
     beforeSend: function () {
       bio.loading().start(document.querySelector('#main'), 900, 600);
     },
     success: function (d) {
-      bio.landscape({
-				element: '#main',
-				width: 1600,
-				height: 800,
-				data: {
-					pq: 'p',
-					type: 'LUAD',
-					data: d[0].data,
-					title:d[0].data.name,
-				},
-        plot: {
-          patient: false, // true
-          pq: false, // true
+      console.log(d)
+      bio.expression({
+        element: '#main',
+        width: 900,
+        height: 600,
+        requestData: {
+          source: 'GDAC',
+          cancer_type: 'luad',
+          sample_id: 'SMCLUAD1705230001',
+          signature: 'PAM50',
+          filter: ':'
         },
-			});
+        data: d[0].data,
+      });
 
       bio.loading().end();
     },
   });
+
+ /*
+    Landscape
+  */
+ // $.ajax({
+ //    'type': 'POST',
+ //    'url': '/files/datas',
+ //    data: {
+ //     name: 'landscape',
+ //    },
+ //    beforeSend: function () {
+ //      bio.loading().start(document.querySelector('#main'), 900, 600);
+ //    },
+ //    success: function (d) {
+ //      bio.landscape({
+	// 			element: '#main',
+	// 			width: 1600,
+	// 			height: 800,
+	// 			data: {
+	// 				pq: 'p',
+	// 				type: 'LUAD',
+	// 				data: d[0].data,
+	// 				title:d[0].data.name,
+	// 			},
+ //        plot: {
+ //          patient: false, // true
+ //          pq: false, // true
+ //        },
+	// 		});
+
+ //      bio.loading().end();
+ //    },
+ //  });

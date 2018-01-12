@@ -1109,6 +1109,9 @@ function expressionConfig ()	{
 			shape: {
 				margin: [0, leftMargin, 0, 20],
 				attr: {
+					id: function (data, idx, that)	{
+						return 'expression_heatmap_rect';
+					},
 					x: function (data, idx, that)	{ return that.scaleX(data.x); },
 					y: function (data, idx, that)	{ return that.scaleY(data.y); },
 					width: function (data, idx, that)	{
@@ -1180,6 +1183,9 @@ function expressionConfig ()	{
 			shape: {
 				margin: [20, leftMargin + 1, 15, 19],
 				attr: {
+					id: function (data, idx, that)	{
+						return 'expression_bar_plot_rect';
+					},
 					x: function (data, idx, that)	{
 						return that.scaleX(data.x);
 					},
@@ -2676,6 +2682,69 @@ function variantsConfig ()	{
 			needle: needle,
 			radius: radius,
 			patient: patient,
+		};
+	};
+};
+function handler ()	{
+	'use strict';
+
+	var model = {};
+	/*
+		스크롤 이벤트 핸들러.
+	 */
+	function scroll (target, callback)	{
+		bio.dom().get(target)
+			 .addEventListener('scroll', callback, false);
+	};
+	/*
+	 	특정 이벤트 중 이벤트가 바디태그에서는 Disable 하게 만들어주는 함수.
+	 */
+	function preventBodyEvent (ele, events)	{
+		var DOEVENT = false;
+
+		// 사용자가 지정한 DIV 에 마우스 휠을 작동할때는, 바디에 마우스 휠
+		// 이벤트를 막아놓는다.
+		document.body.addEventListener(events, function (e)	{
+			if (DOEVENT)	{
+				if (e.preventDefault) {
+					e.preventDefault();
+				}
+
+				return false;
+			}
+		});
+
+		ele.addEventListener('mouseenter', function (e)	{
+			DOEVENT = true;
+		});
+
+		ele.addEventListener('mouseleave', function (e)	{
+			DOEVENT = false;
+		});
+	};
+	/*
+		x, y 스크롤이 hidden 일 때, 스크롤을 가능하게 해주는 함수.
+	 */
+	function scrollOnHidden (element, callback)	{
+		if (!element)	{
+			throw new Error('No given element');
+		}
+
+		preventBodyEvent(element, 'mousewheel');
+
+		element.addEventListener('mousewheel', function (e)	{
+			element.scrollTop += element.wheelDelta;
+
+			if (callback) {
+				callback.call(element, e);
+			}
+		});
+	};
+
+	return function ()	{
+		return {
+			scroll: scroll,
+			scrollOnHidden: scrollOnHidden,
 		};
 	};
 };
@@ -4542,69 +4611,6 @@ function triangle ()	{
 		});
 	};
 };
-function handler ()	{
-	'use strict';
-
-	var model = {};
-	/*
-		스크롤 이벤트 핸들러.
-	 */
-	function scroll (target, callback)	{
-		bio.dom().get(target)
-			 .addEventListener('scroll', callback, false);
-	};
-	/*
-	 	특정 이벤트 중 이벤트가 바디태그에서는 Disable 하게 만들어주는 함수.
-	 */
-	function preventBodyEvent (ele, events)	{
-		var DOEVENT = false;
-
-		// 사용자가 지정한 DIV 에 마우스 휠을 작동할때는, 바디에 마우스 휠
-		// 이벤트를 막아놓는다.
-		document.body.addEventListener(events, function (e)	{
-			if (DOEVENT)	{
-				if (e.preventDefault) {
-					e.preventDefault();
-				}
-
-				return false;
-			}
-		});
-
-		ele.addEventListener('mouseenter', function (e)	{
-			DOEVENT = true;
-		});
-
-		ele.addEventListener('mouseleave', function (e)	{
-			DOEVENT = false;
-		});
-	};
-	/*
-		x, y 스크롤이 hidden 일 때, 스크롤을 가능하게 해주는 함수.
-	 */
-	function scrollOnHidden (element, callback)	{
-		if (!element)	{
-			throw new Error('No given element');
-		}
-
-		preventBodyEvent(element, 'mousewheel');
-
-		element.addEventListener('mousewheel', function (e)	{
-			element.scrollTop += element.wheelDelta;
-
-			if (callback) {
-				callback.call(element, e);
-			}
-		});
-	};
-
-	return function ()	{
-		return {
-			scroll: scroll,
-			scrollOnHidden: scrollOnHidden,
-		};
-	};
-};
 function exclusivity ()	{
 	'use strict';
 
@@ -5090,7 +5096,7 @@ function expression ()	{
 					barLegend.className += 'active';
 				}
 
-				d3.selectAll('#expression_bar_plot_svg_bar_rect_rect')
+				d3.selectAll('#expression_bar_plot_rect')
 					.style('fill', changeBarColor)
 					.style('stroke', changeBarColor);
 
@@ -5603,7 +5609,7 @@ function expression ()	{
 			}
 			// to blur selected targets.
 			toBlur(
-				d3.selectAll('#expression_bar_plot_svg_bar_rect_rect'),
+				d3.selectAll('#expression_bar_plot_rect'),
 				low, high);
 			toBlur(
 				d3.selectAll('#expression_scatter_plot_svg_scatter_shape_circle'),
@@ -8314,104 +8320,6 @@ function preprocVariants ()	{
 		return model;
 	};
 };
-  /*
-    Exclusivity
-   */
-	// $.ajax({
- //    'type': 'POST',
- //    'url': '/files/datas',
- //    data: {
- //    	name: 'exclusivity',
- //    },
- //    beforeSend: function () {
- //      bio.loading().start(document.querySelector('#main'), 900, 600);
- //    },
- //    success: function (d) {
- //      bio.exclusivity({
- //        element: '#main',
- //        width: 900,
- //        height: 600,
- //        data: {
- //          heatmap: d[0],
- //          network: d[2],
- //          sample: d[3].data.sample_variants,
- //          survival: {
- //            patient: d[4].data,
- //            types: d[5].data,
- //          },
- //          type: 'LUAD',
- //        }
- //      });
-
- //      bio.loading().end();
- //    },
- //  });
-
- /*
-    Expression
-  */
- // $.ajax({
- //    'type': 'POST',
- //    'url': '/files/datas',
- //    data: {
- //     name: 'expression',
- //    },
- //    beforeSend: function () {
- //      bio.loading().start(document.querySelector('#main'), 900, 600);
- //    },
- //    success: function (d) {
- //      console.log(d)
- //      bio.expression({
- //        element: '#main',
- //        width: 900,
- //        height: 600,
- //        requestData: {
- //          source: 'GDAC',
- //          cancer_type: 'luad',
- //          sample_id: 'SMCLUAD1705230001',
- //          signature: 'PAM50',
- //          filter: ':'
- //        },
- //        data: d[0].data,
- //      });
-
- //      bio.loading().end();
- //    },
- //  });
-
- /*
-    Landscape
-  */
- $.ajax({
-    'type': 'POST',
-    'url': '/files/datas',
-    data: {
-     name: 'landscape',
-    },
-    beforeSend: function () {
-      bio.loading().start(document.querySelector('#main'), 900, 600);
-    },
-    success: function (d) {
-      bio.landscape({
-				element: '#main',
-				width: 1600,
-				height: 800,
-				data: {
-					pq: 'p',
-					type: 'LUAD',
-					data: d[0].data,
-					title:d[0].data.name,
-				},
-        plot: {
-          patient: false, // true
-          pq: false, // true
-        },
-			});
-
-      bio.loading().end();
-    },
-  });
-
 // /*
 //  * Copyright (c) 2015 Memorial Sloan-Kettering Cancer Center.
 //  *
@@ -10498,6 +10406,104 @@ var SurvivalTab = (function() {
     };
 
 }()); //Close SubvivalTabView (Singular)
+
+  /*
+    Exclusivity
+   */
+	// $.ajax({
+ //    'type': 'POST',
+ //    'url': '/files/datas',
+ //    data: {
+ //    	name: 'exclusivity',
+ //    },
+ //    beforeSend: function () {
+ //      bio.loading().start(document.querySelector('#main'), 900, 600);
+ //    },
+ //    success: function (d) {
+ //      bio.exclusivity({
+ //        element: '#main',
+ //        width: 900,
+ //        height: 600,
+ //        data: {
+ //          heatmap: d[0],
+ //          network: d[2],
+ //          sample: d[3].data.sample_variants,
+ //          survival: {
+ //            patient: d[4].data,
+ //            types: d[5].data,
+ //          },
+ //          type: 'LUAD',
+ //        }
+ //      });
+
+ //      bio.loading().end();
+ //    },
+ //  });
+
+ /*
+    Expression
+  */
+ $.ajax({
+    'type': 'POST',
+    'url': '/files/datas',
+    data: {
+     name: 'expression',
+    },
+    beforeSend: function () {
+      bio.loading().start(document.querySelector('#main'), 900, 600);
+    },
+    success: function (d) {
+      console.log(d)
+      bio.expression({
+        element: '#main',
+        width: 900,
+        height: 600,
+        requestData: {
+          source: 'GDAC',
+          cancer_type: 'luad',
+          sample_id: 'SMCLUAD1705230001',
+          signature: 'PAM50',
+          filter: ':'
+        },
+        data: d[0].data,
+      });
+
+      bio.loading().end();
+    },
+  });
+
+ /*
+    Landscape
+  */
+ // $.ajax({
+ //    'type': 'POST',
+ //    'url': '/files/datas',
+ //    data: {
+ //     name: 'landscape',
+ //    },
+ //    beforeSend: function () {
+ //      bio.loading().start(document.querySelector('#main'), 900, 600);
+ //    },
+ //    success: function (d) {
+ //      bio.landscape({
+	// 			element: '#main',
+	// 			width: 1600,
+	// 			height: 800,
+	// 			data: {
+	// 				pq: 'p',
+	// 				type: 'LUAD',
+	// 				data: d[0].data,
+	// 				title:d[0].data.name,
+	// 			},
+ //        plot: {
+ //          patient: false, // true
+ //          pq: false, // true
+ //        },
+	// 		});
+
+ //      bio.loading().end();
+ //    },
+ //  });
 
 function loading ()	{
 	'use strict';

@@ -61,7 +61,7 @@ function expression ()	{
 					barLegend.className += 'active';
 				}
 
-				d3.selectAll('#expression_bar_plot_svg_bar_rect_rect')
+				d3.selectAll('#expression_bar_plot_rect')
 					.style('fill', changeBarColor)
 					.style('stroke', changeBarColor);
 
@@ -574,7 +574,7 @@ function expression ()	{
 			}
 			// to blur selected targets.
 			toBlur(
-				d3.selectAll('#expression_bar_plot_svg_bar_rect_rect'),
+				d3.selectAll('#expression_bar_plot_rect'),
 				low, high);
 			toBlur(
 				d3.selectAll('#expression_scatter_plot_svg_scatter_shape_circle'),
