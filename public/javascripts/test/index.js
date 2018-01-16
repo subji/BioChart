@@ -90,7 +90,6 @@
  //          pq: false, // true
  //        },
  //        divisionFunc: function (enable, disable)  {
-
  //        },
 	// 		});
 

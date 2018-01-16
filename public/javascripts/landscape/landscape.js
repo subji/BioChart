@@ -528,8 +528,11 @@ function landscape ()	{
 										disableList = disableList.concat(
 											model.now.geneline.removedMutationObj[k]);
 									});
+
 									var enableSample = uniqueParticipantId(model.now.mutation_list),
-											disableSample = uniqueParticipantId(disableList);
+											disableSample = model.data.axis.sample.x.filter(function (s)	{
+												return enableSample.indexOf(s) < 0;
+											});
 
 									model.divisionFunc(enableSample, disableSample);
 								}
