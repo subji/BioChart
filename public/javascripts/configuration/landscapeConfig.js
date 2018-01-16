@@ -567,7 +567,7 @@ function landscapeConfig ()	{
 					return this.tagName === 'text' ? '#333333' : 
 									bio.boilerPlate.variantInfo[data].color;
 				},
-				fontSize: '11px',
+				fontSize: '8px',
 			},
 			on: {
 				mouseover: function (data, idx, that)	{

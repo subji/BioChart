@@ -136,11 +136,11 @@
 }
 #scale_set_div {
   top: 15%;
-  left: 50%;
-  width: 85%;
+  left: 55%;
+  width: 95%;
   height: 100%;
-  min-width: 85%;
-  max-width: 85%;
+  min-width: 95%;
+  max-width: 95%;
   min-height: 30%;
   max-height: 30%;
   position: relative;
@@ -159,7 +159,7 @@
   border: none;
   outline: none;
   color: #5A6674;
-  font-size: 14px;
+  font-size: 13px;
   appearance: none;
   background: none;
   font-weight: bold;
@@ -185,9 +185,10 @@
   outline: 0;
   height: 100%;
   border: none;
-  margin-top: 40%;
-  line-height: 0px;
+  margin-top: 50%;
   cursor: pointer;
+  line-height: 0px;
+  padding-right: 3px;
   background: rgba(0, 0, 0, 0);
 }
 
@@ -238,7 +239,12 @@ g {
 	margin-top: 5px;
 }
 
+#option_group label {
+	font-size: 10px;
+}
+
 #option_label {
+	font-size: 11px;
 	margin-top: 10px;
 	margin-left: 15px;
 	font-weight: bold;

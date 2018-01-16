@@ -77,7 +77,7 @@
  //    success: function (d) {
  //      bio.landscape({
 	// 			element: '#main',
-	// 			width: 1600,
+	// 			width: 1200,
 	// 			height: 800,
 	// 			data: {
 	// 				pq: 'p',
@@ -88,6 +88,9 @@
  //        plot: {
  //          patient: false, // true
  //          pq: false, // true
+ //        },
+ //        divisionFunc: function (enable, disable)  {
+
  //        },
 	// 		});
 

@@ -96,7 +96,8 @@ function scaleSet ()	{
 					b = document.createElement('button');
 
 			b.className = 'scale-' + btn;		
-			i.className = 'fa fa-' + btn + ' fa-lg';
+			// i.className = 'fa fa-' + btn + ' fa-lg';
+			i.className = 'fa fa-' + btn;
 			b.addEventListener('click', scaleEvent);
 
 			b.appendChild(i);

@@ -108,6 +108,10 @@ $.ajax({
         patient: false, // true
         pq: false, // true
       },
+      // division option
+      divisionFunc: function (enable, disable)  {
+
+        },
     })
     
     bio.loading().end();

@@ -310,7 +310,7 @@ function landscape ()	{
 
 		bio.iteration.loop(model.now.geneline.axis, 
 		function (k, v)	{
-			if (!model.now.geneline.removedMutationList[k])	{
+			if (!model.now.geneline.removedMutationObj[k])	{
 				elementWidth = geneLineDivisionElement(k, 'enable').width;
 			} else {
 				elementWidth = geneLineDivisionElement(k, 'disable').width;
@@ -350,6 +350,21 @@ function landscape ()	{
 				}
 			});
 		}
+	};
+	/*
+		removed 된 쪽과 enable 쪽의 중복이 되지 않는
+		participant - id 리스트를 반환.
+	 */
+	function uniqueParticipantId (list)	{
+		var result = [];
+
+		bio.iteration.loop(list, function (l)	{
+			if (result.indexOf(l.participant_id) < 0)	{
+				result.push(l.participant_id);
+			}
+		});
+
+		return result;
 	};
 	/*
 		Landscape 축들을 그려주는 함수.
@@ -421,10 +436,10 @@ function landscape ()	{
 										if (d.gene !== data)	{
 											return d;
 										} else {
-											if (!model.now.geneline.removedMutationList[d.gene])	{
-												model.now.geneline.removedMutationList[d.gene] = [d];
+											if (!model.now.geneline.removedMutationObj[d.gene])	{
+												model.now.geneline.removedMutationObj[d.gene] = [d];
 											} else {
-												model.now.geneline.removedMutationList[d.gene].push(d);
+												model.now.geneline.removedMutationObj[d.gene].push(d);
 											}
 										}
 									});
@@ -439,9 +454,9 @@ function landscape ()	{
 
 									model.now.mutation_list = 
 									model.now.mutation_list.concat(
-										model.now.geneline.removedMutationList[data]);
+										model.now.geneline.removedMutationObj[data]);
 
-									model.now.geneline.removedMutationList[data] = undefined;
+									model.now.geneline.removedMutationObj[data] = undefined;
 									model.now.geneline.axis[data].isGene = 'enable';
 								}
 
@@ -505,6 +520,19 @@ function landscape ()	{
 								});
 
 								enabledDisabeldMaximumElement(data);
+
+								if (model.divisionFunc)	{
+									var disableList = [];
+
+									bio.iteration.loop(model.now.geneline.removedMutationObj, function (k, v)	{
+										disableList = disableList.concat(
+											model.now.geneline.removedMutationObj[k]);
+									});
+									var enableSample = uniqueParticipantId(model.now.mutation_list),
+											disableSample = uniqueParticipantId(disableList);
+
+									model.divisionFunc(enableSample, disableSample);
+								}
 							}
 						}
 					}
@@ -773,7 +801,7 @@ function landscape ()	{
 		model.now.geneline.disabledDivisionValues = {};
 		// gene 을 enable/disable 할때, disable 한 gene 의 
 		// mutation_list 값을 가지는 객체이다.
-		model.now.geneline.removedMutationList = {};
+		model.now.geneline.removedMutationObj = {};
 	};
 
 	function getGeneLineMaximumElement (gene)	{
@@ -810,6 +838,8 @@ function landscape ()	{
 		model.isPlotted = opts.plot;
 		model.setting = bio.setting('landscape', opts);
 		model.data = model.setting.preprocessData;
+		model.divisionFunc = opts.divisionFunc ? 
+		opts.divisionFunc : null;
 
 		removeGroupTempSVG();
 		// Set landscape title.
