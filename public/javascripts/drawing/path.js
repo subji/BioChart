@@ -30,9 +30,13 @@ function path ()	{
 		bio.rendering().line({
 			element: opts.element,
 			attr: !opts.attr ? null : {
-				id: function (d) { 
-					return (opts.id || that.id || 
-									opts.element.attr('id')) + '_path';
+				id: function (d, i) {
+					return opts.attr.id ? 
+					typeof(opts.attr.id) !== 'function' ?  
+								(opts.id || that.id || 
+								 opts.element.attr('id')) + 
+									'_path' : 
+								 opts.attr.id.call(this, d, i, that) : 0;
 				},
 				d: function (d, i)	{
 					return toLine.call(this, opts, that)(opts.data);
@@ -59,6 +63,13 @@ function path ()	{
 								 opts.style.strokeWidth.call(
 								 	this, d, i, that) : '1px'; 
 				},
+				'stroke-dasharray': function (d, i)	{
+					return opts.style.strokeDash ?
+					typeof(opts.style.strokeDash) !== 'function' ?  
+								 opts.style.strokeDash : 
+								 opts.style.strokeDash.call(
+								 	this, d, i, that) : 'none'; 
+				}
 			},
 		});
 	};

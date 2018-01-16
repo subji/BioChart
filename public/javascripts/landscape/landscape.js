@@ -274,6 +274,83 @@ function landscape ()	{
 	function geneDragStart (evt)	{
 		model.now.geneline.isDraggable = false;
 	}
+
+	function geneLineDivisionElement (gene, what)	{
+		var sortedByMax = getGeneLineMaximumElement(gene),
+				maxElement = d3.select(sortedByMax[0]);
+
+		model.now.geneline[ what + 'dDivisionValues'][gene] = {
+			data: maxElement.datum(),
+			posx: parseFloat(maxElement.attr('x')),
+			elem: maxElement,
+		};
+
+		return {
+			width: parseFloat(maxElement.attr('width')),
+		};
+	};
+
+	function getEnableDisableMax (data)	{
+		var maxValue = 0;
+
+		bio.iteration.loop(data, function (k, v)	{
+			maxValue = maxValue > data[k].posx ? 
+								maxValue : data[k].posx;
+		});
+
+		return maxValue;
+	};
+	/*
+		enable 과 disabled 된 부분을 나눠주는 함수.
+	 */
+	function enabledDisabeldMaximumElement ()	{
+		var enableMax = 0,
+				disableMax = 0,
+				elementWidth = 0;
+
+		bio.iteration.loop(model.now.geneline.axis, 
+		function (k, v)	{
+			if (!model.now.geneline.removedMutationList[k])	{
+				elementWidth = geneLineDivisionElement(k, 'enable').width;
+			} else {
+				elementWidth = geneLineDivisionElement(k, 'disable').width;
+			}
+		});
+
+		enableMax = getEnableDisableMax(model.now.geneline.enabledDivisionValues);
+		disableMax = getEnableDisableMax(model.now.geneline.disabledDivisionValues);
+
+		if (disableMax > enableMax)	{
+			var svg = d3.select('#landscape_heatmap_svg'),
+					g = d3.select('.landscape_heatmap_svg.heatmap-g-tag');
+
+			bio.path({
+				element: g,
+				data: [
+					{ 
+						x: enableMax + elementWidth, 
+						y: 0 
+					},
+					{ 
+						x: enableMax + elementWidth, 
+						y: parseFloat(svg.attr('height')) 
+					}
+				],
+				attr: {
+					id: function (d, idx, that) {
+						return 'landscape_gene_division_path';
+					},
+					x: function (d, idx, that)	{ return d.x; },
+					y: function (d, idx, that)	{ return d.y - 40; },
+				},
+				style:{
+					stroke: '#333333',
+					strokeWidth: '0.5px',
+					strokeDash: '3',
+				}
+			});
+		}
+	};
 	/*
 		Landscape 축들을 그려주는 함수.
 	 */
@@ -344,10 +421,10 @@ function landscape ()	{
 										if (d.gene !== data)	{
 											return d;
 										} else {
-											if (!model.now.removedMutationList[d.gene])	{
-												model.now.removedMutationList[d.gene] = [d];
+											if (!model.now.geneline.removedMutationList[d.gene])	{
+												model.now.geneline.removedMutationList[d.gene] = [d];
 											} else {
-												model.now.removedMutationList[d.gene].push(d);
+												model.now.geneline.removedMutationList[d.gene].push(d);
 											}
 										}
 									});
@@ -362,9 +439,9 @@ function landscape ()	{
 
 									model.now.mutation_list = 
 									model.now.mutation_list.concat(
-										model.now.removedMutationList[data]);
+										model.now.geneline.removedMutationList[data]);
 
-									model.now.removedMutationList[data] = undefined;
+									model.now.geneline.removedMutationList[data] = undefined;
 									model.now.geneline.axis[data].isGene = 'enable';
 								}
 
@@ -412,7 +489,7 @@ function landscape ()	{
 								drawHeatmap('heatmap', model.data.heatmap, 
 														model.data.axis.heatmap);
 
-								bio.iteration.loop(model.now.geneline.axis, 
+								bio.iteration.loop(model.now.geneline.axis,
 								function (k, v)	{
 									if (model.now.geneline.axis[k].isGene === 'enable') {
 										d3.selectAll('#landscape_gene_' + k + '_bar_rect')
@@ -426,7 +503,8 @@ function landscape ()	{
 											.style('fill-opacity', '0.2');
 									}
 								});
-								
+
+								enabledDisabeldMaximumElement(data);
 							}
 						}
 					}
@@ -683,16 +761,36 @@ function landscape ()	{
 
 			geneAxisTermHeight();
 		});
-
+		// 초기의 값중에 가장 큰 값을 저장 해 놓는다.
+		// 이는 나중에 나눔선을 지정할 때, disable 한 gene 의 
+		// 최대 위치가 모든 데이터에서의 최대위치 보다 작을때는
+		// 나눔선을 표시하지 않기 위해서 이다.
+		// model.init.geneline.enabledDivisionValues = {};
 		model.now.geneline = [].concat(model.init.geneline)[0];
+		// mutation 이 존재 하는 영역과 존재하지 않는영역을 
+		// 나누는 값을 저장하는 객체.
+		model.now.geneline.enabledDivisionValues = {};
+		model.now.geneline.disabledDivisionValues = {};
+		// gene 을 enable/disable 할때, disable 한 gene 의 
+		// mutation_list 값을 가지는 객체이다.
+		model.now.geneline.removedMutationList = {};
+	};
+
+	function getGeneLineMaximumElement (gene)	{
+		var target = d3.selectAll('#landscape_gene_' + 
+									gene + '_heatmap_rect').nodes();
+
+		return target.sort(function (a, b)	{
+			var tap = parseFloat(d3.select(a).attr('x')),
+					tbp = parseFloat(d3.select(b).attr('x'));
+
+			return tap < tbp ? 1 : -1;
+		});
 	};
 
 	function drawExclusivityLandscape (type)	{
 		model.init.mutation_list = 
 		model.setting.defaultData.data.mutation_list;
-		// gene 을 enable/disable 할때, disable 한 gene 의 
-		// mutation_list 값을 가지는 객체이다.
-		model.now.removedMutationList = {};
 		// 초기 exclusive 값을 설정한다.
 		model.exclusive.init = bio.landscapeSort().exclusive(
 			model.data.heatmap, model.data.gene, type);
@@ -705,10 +803,6 @@ function landscape ()	{
 		patientAxis(model.data.axis);
 		changeAxis(model.exclusive.init);
 		drawLandscape(model.data, model.init.width);
-	};
-
-	function drawMutationDivisionLine ()	{
-
 	};
 
 	return function (opts)	{
@@ -728,7 +822,6 @@ function landscape ()	{
 		changeExclusivityOption();
 		drawExclusivityLandscape('1');
 		makeGeneLineDataList();
-		drawMutationDivisionLine();
 
 		bio.handler().scroll('#landscape_heatmap', function (e)	{
 			var sample = bio.dom().get('#landscape_sample'),

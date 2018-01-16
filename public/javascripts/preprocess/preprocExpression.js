@@ -186,6 +186,16 @@ function preprocExpression ()	{
 		return most;
 	};
 
+	function typeColorRandomGenerator (subtype)	{
+		// subtype 에 따라 tree 형식으로 색상을 
+		// 생성하는 것이 어떨까?
+		console.log(bio.boilerPlate.clinicalInfo, 
+			subtype)
+		bio.iteration.loop(subtype, function (sub)	{
+			console.log(sub);
+		});
+	};
+
 	return function (data)	{
 		model = {};
 		model = bio.initialize('preprocess').expression;
@@ -215,6 +225,8 @@ function preprocExpression ()	{
 		});
 
 		model.axisMargin = getAxisMargin(model.axis.heatmap.y);
+
+		// typeColorRandomGenerator(model.subtype);
 
 		console.log('>>> Preprocess variants data: ', data);
 		console.log('>>> Preprocess data: ', model);
