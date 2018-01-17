@@ -4,9 +4,16 @@ function expression ()	{
 	var model = {};
 	
 	function drawFuncSelectBox ()	{
+		var funcNames = ['Average'];
+
+		bio.iteration.loop(model.riskFunctions, 
+		function (risk)	{
+			funcNames.push(risk.name);
+		});
+
 		bio.selectBox({
 			fontSize: '14px',
-			items: ['Average'],
+			items: funcNames,
 			viewName: 'function',
 			margin: [3, 3, 0, 0],
 			defaultText: 'Average',
@@ -14,6 +21,7 @@ function expression ()	{
 			className: 'expression-function',
 			clickItem: function (value)	{
 				model.now.function = value;
+
 			},
 		});
 	};
@@ -528,6 +536,48 @@ function expression ()	{
 		});
 	};
 
+	function divideDivisionData (data)	{
+		var low = [], 
+				mid = [], 
+				high = [];
+
+		if (data.low_arr && data.high_arr)	{
+			bio.iteration.loop(model.data.axis.bar.x, 
+			function (xaxis) {
+				if (data.low_arr.indexOf(xaxis) < 0 && 
+						data.high_arr.indexOf(xaxis) < 0)	{
+					mid.push(xaxis);
+				}
+			});
+
+			low = data.low_arr;
+			high = data.high_arr;
+		} else {
+			bio.iteration.loop(data, function (k, v)	{
+				if (data[k] === 'altered')	{
+					high.push(k);
+				} else {
+					low.push(k);
+				}
+			});
+		}
+
+		return { low: low, mid: mid, high: high };
+	};
+	/*
+		division bar 를 움직여서 나오는 데이터를
+		초기 설정 시 받은 함수에 left, mid, right 값으로 반환
+		하는 함수이다.
+	 */
+	function getDivisionData ()	{
+		var data = Object.keys(model.divide).length < 1 ? 
+							model.data.survival.divide : model.divide,
+				division = divideDivisionData(data);
+
+		model.divisionFunc(
+			division.low, division.mid, division.high);
+	};
+
 	function drawDivision (data)	{
 		/*
 			Low, High 별로 환자 배열을 순환.
@@ -627,6 +677,8 @@ function expression ()	{
 							that.axis.indexOf(model.divide.low_sample));
 
 						changeByDrag(model.divide.low_arr, model.divide.high_arr);
+
+						getDivisionData();
 					},
 				},
 				style: divCnf.style,
@@ -642,7 +694,9 @@ function expression ()	{
 	function drawExpression (data, origin)	{
 		drawFuncSelectBox();
 		drawColorMapSelectBox(data.subtype);
-		drawSigSelectBox(origin.signature_list);
+		if (origin.signature_list)	{
+			drawSigSelectBox(origin.signature_list);
+		}
 		drawLegend('color_mapping', model.now.colorSet || null);
 		drawLegend('scatter', ['Alive', 'Dead']);
 		drawColorGradient(data.axis.gradient.x);
@@ -650,22 +704,31 @@ function expression ()	{
 		drawFunctionBar(data, data.axis.bar);
 		drawSurvivalPlot(data);
 		drawScatter(data, data.axis.scatter, model.now.osdfs);
+
 		if (data.patient)	{
 			drawPatient(data);
 		}
+
 		drawDivision(data);
+		getDivisionData();
 	};
 
 	return function (opts)	{
 		model = {};
 		model = bio.initialize('expression');
+		// Risk function 을 추가하는부분.
+		model.riskFunctions = opts.riskFunctions ? 
+		opts.riskFunctions : [];
+		opts.data.riskFunctions = model.riskFunctions;
 		model.setting = bio.setting('expression', opts);
 		model.data = model.setting.preprocessData;
+		model.divisionFunc = opts.divisionFunc ? 
+		opts.divisionFunc : null;
 		// About request configurations.
 		model.requestData = opts.requestData || {};
 		model.requestURL = opts.requestURL || '/rest/expressions';
 		// To initialize signature.
-		model.init.signature = opts.data.signature_list[0].signature;
+		model.init.signature = opts.data.signature_list ? opts.data.signature_list[0].signature : [];
 		// model.now.signature = model.init.signature;
 		model.now.signature = model.requestData.signature;
 		model.init.bar_legend_height = 

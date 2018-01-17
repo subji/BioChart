@@ -61,6 +61,7 @@ function divisionLine ()	{
 			text: bio.objects.clone(opts),
 			shape: bio.objects.clone(opts),
 		};
+
 		model.opts.text.id = model.id + '_division_text';
 		model.opts.text.data = model.division_info;
 		model.opts.text.element = 

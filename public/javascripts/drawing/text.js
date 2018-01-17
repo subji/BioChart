@@ -11,8 +11,14 @@ function text ()	{
 			data: opts.data || null,
 			attr: !opts.attr ? null : {
 				id: function (d) { 
-					return (opts.id || that.id || 
-									opts.element.attr('id')) + '_text';
+					return opts.attr.id ? 
+					typeof(opts.attr.id) !== 'function' ?  
+								(opts.id || that.id || 
+								 opts.element.attr('id')) + 
+									'_text' : 
+								 opts.attr.id.call(this, d, i, that) : (opts.id || that.id || 
+								 opts.element.attr('id')) + 
+									'_text';
 				},
 				x: function (d, i)	{
 					return opts.attr.x ? 

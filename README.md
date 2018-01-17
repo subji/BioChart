@@ -1,4 +1,4 @@
-BioChart 0.0.21
+BioChart 0.0.22
 ==============
 
 > This is a set of charts for Clinical Decision support.
@@ -34,6 +34,30 @@ BioChart 0.0.21
 					filter: "cohort_filter_option",
 				},
 				data: d.data,
+        riskFunctions: [
+          { 
+            name: 'Test', 
+            func: function (data)  {
+              // console.log(data);
+              // sample 별 각 gene 들의 tpm 값이 return
+              // ex) 평균 함수를 적용시켜 놓고자 할때
+              // 아래와 같이 평균을 계산하고 그 평균을
+              // 반환하면 된다.
+              var sum = 0, avg = 0;
+
+              data.forEach(function (d) {
+                sum += d.value;
+              });
+
+              avg = sum / data.length;
+
+              return avg;
+            },
+          }
+        ],
+        divisionFunc: function (left, mid, right) {
+          // console.log(left, mid, right)
+        },
 			});
 
 			bio.loading().end();

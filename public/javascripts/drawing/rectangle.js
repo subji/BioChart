@@ -16,7 +16,9 @@ function rectangle ()	{
 								(opts.id || that.id || 
 								 opts.element.attr('id')) + 
 									'_rect' : 
-								 opts.attr.id.call(this, d, i, that) : 0;
+								 opts.attr.id.call(this, d, i, that) : (opts.id || that.id || 
+								 opts.element.attr('id')) + 
+									'_rect'
 				},
 				x: function (d, i)	{
 					return opts.attr.x ? 

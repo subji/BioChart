@@ -47,7 +47,23 @@ function initialize ()	{
 			func: {
 				default: 'average',
 				now: null,
-				avg: [],
+				data: {},
+				xaxis: {},
+				yaxis: {},
+				bar: {},
+			},
+			riskFuncs: {
+				average: function (data)	{
+					var sum = 0, avg = 0;
+
+					bio.iteration.loop(data, function (d)	{
+						sum += d.value;
+					});
+
+					avg = sum / data.length;
+
+					return avg;
+				},
 			},
 			tpms: [],
 			heatmap: [],

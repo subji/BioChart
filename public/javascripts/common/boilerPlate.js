@@ -10,18 +10,23 @@ function boilerPlate ()	{
 		'Nonsense_mutation': { color: '#EA3B29', order: 2},
 		'Splice_site': { color: '#800080', order: 3},
 		'Translation_start_site': { color: '#AAA8AA', order: 4},
+		'De_novo_start_inframe': { color: '#AAA8AA', order: 4},
+		'De_novo_start_outofframe': { color: '#AAA8AA', order: 4},
 		'Missense_mutation': { color: '#3E87C2', order: 5},
 		'Start_codon_snp': { color: '#3E87C2', order: 5 },
+		'Start_codon_indel': { color: '#3E87C2', order: 5 },
 		'Nonstop_mutation': { color: '#070078', order: 6},
 		'Frame_shift_indel': { color: '#F68D3B', order: 7},
 		'Stop_codon_indel':{ color:  'F68D3B', order: 7},
 		'In_frame_indel': { color: '#F2EE7E', order: 8},
 		'Silent': { color: '#5CB755', order: 9},
 		'Rna': { color: '#FFDF97', order: 10},
+		'Lincrna': { color: '#FFDF97', order: 10},
 		'Intron': { color: '#A9A9A9', order: 11},
 		'5\'utr': { color: '#A9A9A9', order: 11},
 		'3\'utr': { color: '#A9A9A9', order: 11},
 		'Igr': { color: '#A9A9A9', order: 11},
+		'5\'flank': { color: '#A9A9A9', order: 11},
 	};
 
 	model.clinicalInfo = {

@@ -76,64 +76,64 @@ function preprocExpression ()	{
 		model.axis.gradient.y = [''];
 	};
 	/*
-		Function 이 Average 일 때 호출되는 함수.
+		Risk function 별 axis 를 만들어 준다.
 	 */
-	function funcAverage (data)	{
-		bio.iteration.loop(data, function (key, value)	{
-			var sum = 0,
-					avg = 0;
-
-			bio.iteration.loop(value, function (v)	{
-				model.axis.heatmap.y[v.key] = '';
-
-				sum += v.value;
-			});
-
-			avg = sum / value.length;
-
-			model.bar.push({
-				x: key, 
-				value: avg, 
-				info: model.patient_subtype[key]
-			});
-
-			model.func.avg.push(avg);
-		});
-
-		model.func.avg.sorted = 
-		model.func.avg.sort(function (a, b)	{
-			return a > b ? 1 : -1;
-		});
-
-		model.axis.bar.y = [
-			bio.math.min(model.func.avg),
-			bio.math.median(model.func.avg),
-			bio.math.max(model.func.avg)];
-	};
-	/*
-		Function 에 따른 최소, 중간, 최대값을 구한다. 
-	 */
-	function funcMinMedMax (func, data)	{
-		return { average: funcAverage(data) }[func];
-	};
-	/*
-		Average function 으로 데이터를 정렬한다.
-	 */
-	function avgAlign (bars)	{
-		var avg = [].concat(model.func.avg),
+	function makeFuncAxis (funcName, barData, funcData)	{
+		var axis = [].concat(funcData[funcName]),
 				result = [];
 
-		bio.iteration.loop(bars, function (b)	{
-			result[avg.indexOf(b.value)] = b.x;
+		bio.iteration.loop(barData, function (b)	{
+			result[axis.indexOf(b.value)] = b.x;
 		});
 
-		model.axis.heatmap.x = result;
+		model.func.xaxis[funcName] = result;
+		model.func.yaxis[funcName] = [
+			bio.math.min(funcData[funcName]),
+			bio.math.median(funcData[funcName]),
+			bio.math.max(funcData[funcName])
+		];
 	};
 	/*
-		Sample 의 순서를 function 대로 재설정하는 함수.
+		설정된 Risk function 들의 값을 구한다.
 	 */
-	function funcAlignment (func, bars)	{
-		return { average: avgAlign(bars) }[func];
+	function setRiskFunctions (funcName, func, data)	{
+		bio.iteration.loop(data, function (key, value)	{
+			bio.iteration.loop(value, function (v)	{
+				model.axis.heatmap.y[v.key] = '';
+			});
+
+			var res = func(value);
+
+			if (model.func.bar[funcName])	{
+				model.func.bar[funcName].push({
+					x: key, 
+					value: res, 
+					info: model.patient_subtype[key]
+				});
+			} else {
+				model.func.bar[funcName] = [{
+					x: key, 
+					value: res, 
+					info: model.patient_subtype[key]
+				}];
+			}
+
+			if (model.func.data[funcName])	{
+				model.func.data[funcName].push(res);
+			} else {
+				model.func.data[funcName] = [res];
+			}	
+		});
+
+		bio.iteration.loop(model.func.data, 
+		function (k, f)	{
+			model.func.data[k] = 
+			model.func.data[k].sort(function (a, b) {
+				return a > b ? 1 : -1;
+			});
+
+			makeFuncAxis(k, model.func.bar[k], model.func.data);
+		});
 	};
 	/*
 		전체 Cohort 리스트에서 값의 합, 최소 & 최대값을 만든다.
@@ -155,8 +155,20 @@ function preprocExpression ()	{
 		});
 
 		tpmMinMax(model.tpms);
-		funcMinMedMax(func, model.axis.heatmap.x);
-		funcAlignment(func, model.bar);
+
+		bio.iteration.loop(model.riskFuncs, 
+		function (risk)	{
+			setRiskFunctions(risk, model.riskFuncs[risk], 
+				model.axis.heatmap.x);
+		});
+
+		if (!model.func.now || 
+				Object.keys(model.func.now).length < 1)	{
+			model.bar = model.func.bar.average;
+			model.axis.bar.y = model.func.yaxis.average;
+			model.axis.heatmap.x = model.func.xaxis.average;
+			model.func.now = model.func.default;
+		}
 
 		model.axis.heatmap.y = Object.keys(model.axis.heatmap.y);
 		model.axis.scatter.x = model.axis.heatmap.x;
@@ -196,17 +208,22 @@ function preprocExpression ()	{
 		});
 	};
 
+	function addRiskFunctions (funcs)	{
+		bio.iteration.loop(funcs, function (f)	{
+			model.riskFuncs[f.name] = f.func;
+		});
+	};
+
 	return function (data)	{
 		model = {};
 		model = bio.initialize('preprocess').expression;
-
 		model.all_rna_list = [].concat(
 			 data.cohort_rna_list.concat(data.sample_rna_list));
-
 		model.genes = data.gene_list.map(function (gl)	{
 			return gl.hugo_symbol;
 		});
-
+		// Risk function 추가.
+		addRiskFunctions(data.riskFunctions);
 		getMonths(data.patient_list);
 		getSubtype(data.subtype_list);
 		loopCohort(model.all_rna_list);
@@ -225,8 +242,6 @@ function preprocExpression ()	{
 		});
 
 		model.axisMargin = getAxisMargin(model.axis.heatmap.y);
-
-		// typeColorRandomGenerator(model.subtype);
 
 		console.log('>>> Preprocess variants data: ', data);
 		console.log('>>> Preprocess data: ', model);

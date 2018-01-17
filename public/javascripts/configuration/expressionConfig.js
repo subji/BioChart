@@ -1,9 +1,8 @@
 function expressionConfig ()	{
 	'use strict';
 
-	var model = {};
-
-	var colorSet = [
+	var model = {},
+			colorSet = [
 		'#B82647', '#0A8D5E', '#F9D537', '#0B6DB7', '#E3DDCB',
 		'#9F494C', '#CBDD61', '#ED9149', '#89236A', '#D8C8B2',
 		'#CA5E59', '#006494', '#2E674E', '#9A6B31', '#403F95',

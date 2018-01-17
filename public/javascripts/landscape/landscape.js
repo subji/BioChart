@@ -532,7 +532,8 @@ function landscape ()	{
 									var enableSample = uniqueParticipantId(model.now.mutation_list),
 											disableSample = model.data.axis.sample.x.filter(function (s)	{
 												return enableSample.indexOf(s) < 0;
-											});
+											}),
+											otherSample = '';
 
 									model.divisionFunc(enableSample, disableSample);
 								}

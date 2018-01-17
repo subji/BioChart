@@ -11,8 +11,14 @@ function circle ()	{
 			data: opts.data || null,
 			attr: !opts.attr ? null : {
 				id: function (d, i) { 
-					return (opts.id || that.id || 
-									opts.element.attr('id')) + '_circle';
+					return opts.attr.id ? 
+					typeof(opts.attr.id) !== 'function' ?  
+								(opts.id || that.id || 
+								 opts.element.attr('id')) + 
+									'_circle' : 
+								 opts.attr.id.call(this, d, i, that) : (opts.id || that.id || 
+								 opts.element.attr('id')) + 
+									'_circle'
 				},
 				cx: function (d, i)	{
 					return opts.attr.cx ? 

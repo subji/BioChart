@@ -133,7 +133,7 @@ function sizing ()	{
 			landscape_patient_group: { width: w * 0.01, height: h * 0.16 },
 			landscape_group: { width: w * 0.65, height: h * 0.16 },
 			landscape_temp_group: { width: w * 0.1, height: h * 0.16 },
-			landscape_legend: { width: w * 0.1, height: h * 0.64},
+			landscape_legend: { width: w * 0.12, height: h * 0.64},
 			landscape_gene: { width: w * 0.14, height: h * 0.64 },
 			landscape_patient_heatmap: { width: w * 0.01, height: h * 0.64 },
 			landscape_heatmap: { width: w * 0.65, height: h * 0.64 },

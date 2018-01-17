@@ -36,7 +36,9 @@ function path ()	{
 								(opts.id || that.id || 
 								 opts.element.attr('id')) + 
 									'_path' : 
-								 opts.attr.id.call(this, d, i, that) : 0;
+								 opts.attr.id.call(this, d, i, that) : (opts.id || that.id || 
+								 opts.element.attr('id')) + 
+									'_path';
 				},
 				d: function (d, i)	{
 					return toLine.call(this, opts, that)(opts.data);

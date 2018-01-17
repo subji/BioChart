@@ -213,29 +213,71 @@ function preprocLandscape ()	{
 		// }))];
 	};	
 	/*
+		gene 의 mutation 이 가장 높은 값을 가진 
+		순서대로 정렬한다.
+	 */
+	function orderedYAxis (geneStack)	{
+		var obj = {},
+				result = [];
+
+		bio.iteration.loop(geneStack, function (g)	{
+			obj[g.y] = !obj[g.y] ? g.value : 
+									obj[g.y] + g.value;
+		});
+
+		bio.iteration.loop(obj, function (k, v)	{
+			result.push({ gene: k, total: obj[k] });
+		});
+
+		result.sort(function (a, b)	{
+			return a.total < b.total ? 1 : -1;
+		});
+
+		return result.map(function (res)	{
+			return res.gene;
+		});
+	};
+
+	function mergedXAxis ()	{
+		var groupList = model.group.group[0].map(function (g)	{
+			return g.x;
+		});
+
+		model.axis.sample.x = 
+		model.axis.sample.x.concat(groupList);
+	};
+	/*
 		Axis 의 서수 리스트를 반환하는 함수.
 	 */
-	function makeOrdinalAxis ()	{
+	function makeOrdinalAxis (geneStack)	{
+		mergedXAxis();
+
 		model.axis.pq.y = 
 		model.axis.gene.y = 
-		model.axis.heatmap.y = model.gene;
+		// model.axis.heatmap.y = model.gene;
+		model.axis.heatmap.y = orderedYAxis(geneStack);
 		model.axis.heatmap.x = 
 		model.axis.group.x = model.axis.sample.x;
+	};
+
+	function mergedMuationList (data)	{
+		var groupList = data.group_list[0],
+				mutationList = data.mustation_list;
+
+		
 	};
 
 	return function (data, isPlotted)	{
 		model = bio.initialize('preprocess').landscape;
 		// Data 안에 다른 객체가 존재할 경우 그 안을 찾아본다.
 		data = data.gene_list ? data : data.data;
-		// Only Gene list.
-		model.gene = data.gene_list.map(function (d)	{
-			return d.gene;
-		});
 		// Mutation, Sample, Gene, Group, Patient 데이터 생성.
 		model.iterMut = iterateMutation;
 		model.iterPat = iteratePatient;
 		model.iterGroup = iterateGroup;
 		model.byStack = byStack;
+
+		mergedMuationList(data);
 
 		var mut = model.iterMut([
 			{ obj: model.stack.gene, data: 'gene', type: 'type', keyName: 'gene'},
@@ -258,7 +300,9 @@ function preprocLandscape ()	{
 		model.axis.pq.x = model.makeLinearAxis('pq', model.pq);
 		model.axis.sample.y = model.makeLinearAxis('sample', model.axis.sample.y, isPlotted, model.axis.patient.y);
 		// model.makeLinearAxis(isPlotted);
-		model.makeOrdinalAxis();
+		model.makeOrdinalAxis(model.stack.gene);
+		// Only Gene list.
+		model.gene = [].concat(model.axis.gene.y);
 
 		console.log('>>> Preprocess landscape data: ', data);
 		console.log('>>> Preprocess data: ', model);

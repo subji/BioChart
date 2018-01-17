@@ -36,6 +36,7 @@
 		loading: loading(),
 		tooltip: tooltip(),
 		selectBox: selectBox(),
+		colorGenerator: colorGenerator(),
 		// >>> Drawing.
 		bar: bar(),
 		text: text(),
