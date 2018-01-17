@@ -260,12 +260,12 @@ function preprocLandscape ()	{
 		model.axis.group.x = model.axis.sample.x;
 	};
 
-	function mergedMuationList (data)	{
-		var groupList = data.group_list[0],
-				mutationList = data.mustation_list;
+	// function mergedMuationList (data)	{
+	// 	var groupList = data.group_list[0],
+	// 			mutationList = data.mustation_list;
 
 		
-	};
+	// };
 
 	return function (data, isPlotted)	{
 		model = bio.initialize('preprocess').landscape;
@@ -277,7 +277,7 @@ function preprocLandscape ()	{
 		model.iterGroup = iterateGroup;
 		model.byStack = byStack;
 
-		mergedMuationList(data);
+		// mergedMuationList(data);
 
 		var mut = model.iterMut([
 			{ obj: model.stack.gene, data: 'gene', type: 'type', keyName: 'gene'},

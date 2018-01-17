@@ -533,9 +533,21 @@ function landscape ()	{
 											disableSample = model.data.axis.sample.x.filter(function (s)	{
 												return enableSample.indexOf(s) < 0;
 											}),
-											otherSample = '';
+											otherSample = model.data.group.group[0].map(function (g)	{
+												return g.x;
+											});
 
-									model.divisionFunc(enableSample, disableSample);
+									otherSample = otherSample.filter(function (o)	{
+										if (enableSample.indexOf(o) < 0 && 
+												disableSample.indexOf(o) < 0)	{
+											return o;
+										}
+									});
+
+									otherSample = !otherSample ? [] : otherSample;
+
+									model.divisionFunc(
+										enableSample, disableSample, otherSample);
 								}
 							}
 						}
