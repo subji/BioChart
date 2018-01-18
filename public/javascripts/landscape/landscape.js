@@ -184,11 +184,16 @@ function landscape ()	{
 												 .replace(/translate\(|\)/ig, '')
 												 .split(',');
 		
-		var nowIdx = model.now.geneline.axis[d].idx,
+		var nowIdx = model.data.gene.indexOf(d),
 				yAxis = Math.max(model.init.geneline.firstYAxis,
 								Math.min((
 									parseFloat(nowTranslate[1]) + d3.event.y),
 									model.init.geneline.lastYAxis));
+		// disable 된 gene line 은 드래그를 막는다.
+		if (model.now.geneline.axis[d].isGene === 
+				'disable')	{
+			return false;			
+		}
 
 		d3.select(that)
 			.attr('transform', 'translate(0, ' + yAxis + ')');
@@ -196,50 +201,46 @@ function landscape ()	{
 		var beforeGene = model.data.gene[nowIdx - 1],
 				nextGene = model.data.gene[nowIdx + 1],
 				tempGene = model.data.gene[nowIdx],
+				tempParent = this.parentNode,
 				tempVal = model.now.geneline.axis[d].value,
-				direction = d3.event.sourceEvent.movementY > -1 ? 
-										1 : -1;
+				direction = d3.event.sourceEvent.movementY > -1 ? 1 : -1;
 
 		beforeGene = !beforeGene ? tempGene : beforeGene;
 		nextGene = !nextGene ? tempGene : nextGene;
 
 		function moveElement(tthat, direction, targetGene, nowIdx, tempVal, tempGene)	{
-			model.now.geneline.axis[d].idx += direction;
+			if (model.now.geneline.axis[targetGene].isGene === 'disable')	{
+				return false;
+			}
 
+			model.now.geneline.axis[d].idx += direction;
 			model.now.geneline.axis[d].value = 
 			model.now.geneline.axis[targetGene].value;
 
 			model.now.geneline.axis[targetGene].idx -= direction;
 			model.now.geneline.axis[targetGene].value = tempVal;
 
-			model.data.gene[nowIdx] = 
-			model.data.gene[nowIdx + direction];
-			model.data.gene[nowIdx + direction] = tempGene;
-
-			var siblings = bio.dom().siblings(tthat.parentNode.children),
-					sortedSiblings = [];
-
-			bio.iteration.loop(siblings, function (s, i)	{
-				var gene = s.innerHTML.substring(
-										s.innerHTML.indexOf('>') + 1, 
-										s.innerHTML.lastIndexOf('<'));
-
-				sortedSiblings[model.data.gene.indexOf(gene)] = s;
-			});
-
-			d3.select(sortedSiblings[model.now.geneline.axis[targetGene].idx])
+			d3.select(model.now.geneline.sortedSiblings[
+								model.data.gene.indexOf(targetGene)])
 				.attr('transform', 'translate(0, ' + 
 					model.now.geneline.axis[d].value + ')')
 				.transition()
 				.attr('transform', 'translate(0, ' + 
 					model.now.geneline.axis[targetGene].value + ')');
+
+			model.data.gene[nowIdx] = 
+			model.data.gene[nowIdx + direction];
+			model.data.gene[nowIdx + direction] = tempGene;
+
+			model.now.geneline.sortedSiblings[nowIdx] = 
+			model.now.geneline.sortedSiblings[nowIdx + direction];
+			model.now.geneline.sortedSiblings[nowIdx + direction] = tempParent;
 		};
 
-		if ((yAxis > model.now.geneline.axis[nextGene].value - 
-								 model.init.geneline.axisHalfHeight) && 
+		if ((yAxis > model.now.geneline.axis[nextGene].value - model.init.geneline.axisHalfHeight) && 
 				tempVal !== model.now.geneline.axis[nextGene].value)	{
 			moveElement(that, direction, nextGene, nowIdx, tempVal, tempGene);
-		} else if ((yAxis < model.now.geneline.axis[beforeGene].value +									 model.init.geneline.axisHalfHeight) && tempVal !== model.now.geneline.axis[beforeGene].value)	{
+		} else if ((yAxis < model.now.geneline.axis[beforeGene].value + model.init.geneline.axisHalfHeight) && tempVal !== model.now.geneline.axis[beforeGene].value)	{
 			moveElement(that, direction, beforeGene, nowIdx, tempVal, tempGene);
 		}
 	};
@@ -261,6 +262,10 @@ function landscape ()	{
 			
 			changeAxis(model.exclusive.now);
 
+			model.data.axis.gene.y = model.data.gene;
+			model.data.axis.heatmap.y = model.data.gene;
+			model.data.axis.pq.y = model.data.gene;
+
 			drawAxis('gene', 'Y');
 			drawBar('pq', model.data.pq, 
 							model.data.axis.pq, ['top', 'left']);
@@ -269,6 +274,7 @@ function landscape ()	{
 			drawHeatmap('heatmap', model.data.heatmap, 
 									model.data.axis.heatmap);	
 
+			genelineSortedSiblings();
 			enableDisableBlur();
 			drawDivisionPath();
 		}
@@ -305,22 +311,24 @@ function landscape ()	{
 	};
 
 	function drawDivisionPath ()	{
-		bio.path({
-			element: d3.select('.landscape_heatmap_svg.heatmap-g-tag'),
-			data: model.now.divisionPathData.data,
-			attr: {
-				id: function (d, idx, that) {
-					return 'landscape_gene_division_path';
+		if (model.now.divisionPathData)	{
+			bio.path({
+				element: d3.select('.landscape_heatmap_svg.heatmap-g-tag'),
+				data: model.now.divisionPathData.data,
+				attr: {
+					id: function (d, idx, that) {
+						return 'landscape_gene_division_path';
+					},
+					x: function (d, idx, that)	{ return d.x; },
+					y: function (d, idx, that)	{ return d.y - 40; },
 				},
-				x: function (d, idx, that)	{ return d.x; },
-				y: function (d, idx, that)	{ return d.y - 40; },
-			},
-			style:{
-				stroke: '#333333',
-				strokeWidth: '0.5px',
-				strokeDash: '3',
-			}
-		});
+				style:{
+					stroke: '#333333',
+					strokeWidth: '0.5px',
+					strokeDash: '3',
+				}
+			});
+		}
 	};
 	/*
 		enable 과 disabled 된 부분을 나눠주는 함수.
@@ -432,6 +440,7 @@ function landscape ()	{
 				.on('mouseout', common.on ? common.on.mouseout : false)
 				.on('mouseover', common.on ? common.on.mouseover : false)
 				.on('click', function (data, idx)	{
+					console.log('click');
 					if (part === 'gene' && direction === 'Y')	{
 						if (!model.now.geneline.isDraggable)	{
 							if (d3.event.altKey)	{
@@ -455,6 +464,8 @@ function landscape ()	{
 									model.now.mutation_list : 
 									model.init.mutation_list;
 									// Disable 된 gene 을 포함하는 sample 을 제거.
+									// 지금은 mutation_list 만 제거하지만
+									// 나중에는 patient_list 도 제거해야 한다.
 									model.now.mutation_list = 
 									model.now.mutation_list.filter(function (d)	{
 										if (d.gene !== data)	{
@@ -467,6 +478,11 @@ function landscape ()	{
 											}
 										}
 									});
+									// disable 된 group 태그를 svg 하위 
+									// 항목에서 제거해야 한다.
+									model.now.geneline.sortedSiblings.push(model.now.geneline.sortedSiblings.splice(geneIdx, 1)[0]);
+
+									nowGeneLineValue();
 								} else {
 									var beforeIdx = tempGeneList.indexOf(data),
 											geneIdx = model.now.geneline.axis[data].idx;
@@ -482,6 +498,11 @@ function landscape ()	{
 
 									model.now.geneline.removedMutationObj[data] = undefined;
 									model.now.geneline.axis[data].isGene = 'enable';
+									// disable 된 geneline tag 를 
+									// 원 위치 시켜 놓는다.
+									model.now.geneline.sortedSiblings.splice(geneIdx, 0, model.now.geneline.sortedSiblings.splice(beforeIdx, 1)[0]);
+
+									nowGeneLineValue();
 								}
 								// click event 에서 disable/enable 한다
 								var changedSampleStack = model.data.iterMut([
@@ -776,6 +797,43 @@ function landscape ()	{
 		model.init.geneline.lastYAxis = lastIdxVal;
 	};
 	/*
+		geneline 의 siblings 들을 각각 인덱스에 맞게
+		정렬해주는 함수.
+	 */
+	function genelineSortedSiblings ()	{
+		var tags = document.querySelector('.landscape_gene_svg.right-axis-g-tag'),
+				siblings = bio.dom().siblings(tags.children),
+					sortedSiblings = [];
+
+			bio.iteration.loop(siblings, function (s, i)	{
+				var gene = s.innerHTML.substring(
+										s.innerHTML.indexOf('>') + 1, 
+										s.innerHTML.lastIndexOf('<'));
+
+				sortedSiblings[model.data.gene.indexOf(gene)] = s;
+			});
+
+		model.now.geneline.sortedSiblings = 
+		sortedSiblings;
+	};
+	/*
+		enable/disable 및 기타 gene_list 가 변경 될 때,
+		그에 맞는 translate 값으로 변경 시켜 준다.
+	 */
+	function nowGeneLineValue ()	{
+		bio.iteration.loop(model.data.gene, function (g, i)	{
+			var group = 
+					d3.select('.landscape_gene_svg.right-axis-g-tag')
+						.selectAll('g').nodes()[i],
+					value = parseFloat(d3.select(group)
+															 .attr('transform')
+															 .replace(/translate\(|\)/ig, '')
+															 .split(',')[1]);
+
+			model.now.geneline.axis[g].value = value;		
+		});
+	};
+	/*
 		각 gene 별 y 의 값들을 저장해놓는 데이터를 만든다.
 		이 데이터는 gene 의 위치가 변경되거나 enable/disable 되었을때,
 		사용된다.
@@ -829,6 +887,8 @@ function landscape ()	{
 		// gene 을 enable/disable 할때, disable 한 gene 의 
 		// mutation_list 값을 가지는 객체이다.
 		model.now.geneline.removedMutationObj = {};
+
+		genelineSortedSiblings();
 	};
 
 	function getGeneLineMaximumElement (gene)	{
