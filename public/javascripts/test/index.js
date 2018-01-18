@@ -102,7 +102,7 @@
           pq: false, // true
         },
         divisionFunc: function (enable, disable, others)  {
-          console.log(enable, disable, others);
+          // console.log(enable, disable, others);
         },
 			});
 

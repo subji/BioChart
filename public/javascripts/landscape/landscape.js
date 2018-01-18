@@ -268,6 +268,9 @@ function landscape ()	{
 							model.data.axis.gene, ['top', 'left']);
 			drawHeatmap('heatmap', model.data.heatmap, 
 									model.data.axis.heatmap);	
+
+			enableDisableBlur();
+			drawDivisionPath();
 		}
 	};
 
@@ -300,6 +303,25 @@ function landscape ()	{
 
 		return maxValue;
 	};
+
+	function drawDivisionPath ()	{
+		bio.path({
+			element: d3.select('.landscape_heatmap_svg.heatmap-g-tag'),
+			data: model.now.divisionPathData.data,
+			attr: {
+				id: function (d, idx, that) {
+					return 'landscape_gene_division_path';
+				},
+				x: function (d, idx, that)	{ return d.x; },
+				y: function (d, idx, that)	{ return d.y - 40; },
+			},
+			style:{
+				stroke: '#333333',
+				strokeWidth: '0.5px',
+				strokeDash: '3',
+			}
+		});
+	};
 	/*
 		enable 과 disabled 된 부분을 나눠주는 함수.
 	 */
@@ -321,36 +343,38 @@ function landscape ()	{
 		disableMax = getEnableDisableMax(model.now.geneline.disabledDivisionValues);
 
 		if (disableMax > enableMax)	{
-			var svg = d3.select('#landscape_heatmap_svg'),
-					g = d3.select('.landscape_heatmap_svg.heatmap-g-tag');
-
-			bio.path({
-				element: g,
+			var svg = d3.select('#landscape_heatmap_svg');
+			// 나중에 새로 그리기 위해 추가 한다.
+			model.now.divisionPathData = {
 				data: [
-					{ 
-						x: enableMax + elementWidth, 
-						y: 0 
-					},
+					{ x: enableMax + elementWidth, y: 0 },
 					{ 
 						x: enableMax + elementWidth, 
 						y: parseFloat(svg.attr('height')) 
 					}
-				],
-				attr: {
-					id: function (d, idx, that) {
-						return 'landscape_gene_division_path';
-					},
-					x: function (d, idx, that)	{ return d.x; },
-					y: function (d, idx, that)	{ return d.y - 40; },
-				},
-				style:{
-					stroke: '#333333',
-					strokeWidth: '0.5px',
-					strokeDash: '3',
-				}
-			});
+				]
+			};
+
+			drawDivisionPath();
 		}
 	};
+
+	function enableDisableBlur ()	{
+		bio.iteration.loop(model.now.geneline.axis,
+			function (k, v)	{
+				if (model.now.geneline.axis[k].isGene === 'enable') {
+					d3.selectAll('#landscape_gene_' + k + '_bar_rect')
+						.style('fill-opacity', '1');
+					d3.selectAll('#landscape_gene_' + k + '_heatmap_rect')
+						.style('fill-opacity', '1');	
+				} else {
+					d3.selectAll('#landscape_gene_' + k + '_bar_rect')
+						.style('fill-opacity', '0.2');
+					d3.selectAll('#landscape_gene_' + k + '_heatmap_rect')
+						.style('fill-opacity', '0.2');
+				}
+			});
+	}
 	/*
 		removed 된 쪽과 enable 쪽의 중복이 되지 않는
 		participant - id 리스트를 반환.
@@ -459,7 +483,7 @@ function landscape ()	{
 									model.now.geneline.removedMutationObj[data] = undefined;
 									model.now.geneline.axis[data].isGene = 'enable';
 								}
-
+								// click event 에서 disable/enable 한다
 								var changedSampleStack = model.data.iterMut([
 										{ 
 											obj: {}, data: 'participant_id', 
@@ -504,23 +528,10 @@ function landscape ()	{
 								drawHeatmap('heatmap', model.data.heatmap, 
 														model.data.axis.heatmap);
 
-								bio.iteration.loop(model.now.geneline.axis,
-								function (k, v)	{
-									if (model.now.geneline.axis[k].isGene === 'enable') {
-										d3.selectAll('#landscape_gene_' + k + '_bar_rect')
-											.style('fill-opacity', '1');
-										d3.selectAll('#landscape_gene_' + k + '_heatmap_rect')
-											.style('fill-opacity', '1');	
-									} else {
-										d3.selectAll('#landscape_gene_' + k + '_bar_rect')
-											.style('fill-opacity', '0.2');
-										d3.selectAll('#landscape_gene_' + k + '_heatmap_rect')
-											.style('fill-opacity', '0.2');
-									}
-								});
+								enableDisableBlur();
 
 								enabledDisabeldMaximumElement(data);
-
+								// 나눔선을 기준으로 enable/disable/others 로 나눠준다.
 								if (model.divisionFunc)	{
 									var disableList = [];
 

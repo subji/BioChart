@@ -123,20 +123,20 @@ function sizing ()	{
 	// Chart 별 영역의 크기 설정 및 ID List 생성.
 	model.chart.landscape = function (ele, w, h, group, isPlotted)	{
 		var id = {
-			landscape_temp_sample: { width: w * 0.1, height: h * 0.15 },
+			landscape_temp_sample: { width: w * 0.12, height: h * 0.15 },
 			landscape_axis_sample: { width: w * 0.14, height: h * 0.15 },
 			landscape_patient_sample: { width: w * 0.01, height: h * 0.15 },
-			landscape_sample: { width: w * 0.65, height: h * 0.15 },
+			landscape_sample: { width: w * 0.63, height: h * 0.15 },
 			landscape_scale_option: { width: w * 0.1, height: h * 0.15 },
-			landscape_option: { width: w * 0.1, height: h * 0.16 },
+			landscape_option: { width: w * 0.12, height: h * 0.16 },
 			landscape_axis_group: { width: w * 0.14, height: h * 0.15 },
 			landscape_patient_group: { width: w * 0.01, height: h * 0.16 },
-			landscape_group: { width: w * 0.65, height: h * 0.16 },
+			landscape_group: { width: w * 0.63, height: h * 0.16 },
 			landscape_temp_group: { width: w * 0.1, height: h * 0.16 },
 			landscape_legend: { width: w * 0.12, height: h * 0.64},
 			landscape_gene: { width: w * 0.14, height: h * 0.64 },
 			landscape_patient_heatmap: { width: w * 0.01, height: h * 0.64 },
-			landscape_heatmap: { width: w * 0.65, height: h * 0.64 },
+			landscape_heatmap: { width: w * 0.63, height: h * 0.64 },
 			landscape_pq: { width: w * 0.1, height: h * 0.64 },
 		};
 
