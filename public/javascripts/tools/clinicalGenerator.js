@@ -4,14 +4,28 @@ function clinicalGenerator ()	{
 	var model = {},
 			naColor = '#D6E2E3';
 
-	function colorGenerator (colors)	{
+	function colorGenerator (colors, times)	{
+		var result = [];
+
+		for (var i = 0; i < times; i++)	{
+			if (result.length === 0 && i === 0)	{
+				result.push(d3.rgb(colors))
+			} else {
+				var tempRGB = result[i - 1],
+						tempR = tempRGB.r;
+
+				tempRGB.r = tempRGB.g;
+				tempRGB.g = tempRGB.b;
+				tempRGB.b = tempR;
+			}
+		}
 		console.log(d3.rgb(colors).toString(16))
 	};
 
 	function setStartColors (clinicalLength)	{
 		var start = '#04CDA4';
 
-		colorGenerator(start);
+		colorGenerator(start, clinicalLength);
 	};
 	/*
 		Clinical 의 색상을 지정해주는 함수.
