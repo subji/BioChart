@@ -44,7 +44,33 @@ function expression ()	{
 				// drawHeatmap(model.data, model.data.axis.heatmap, model.data.axis.gradient.x);
 				drawFunctionBar(model.data, model.data.axis.bar);
 				drawScatter(model.data, model.data.axis.scatter, model.now.osdfs);
-				drawDivision(model.data);
+				// var axis = [].concat(that.axis);
+
+				// model.divide.low_sample = 
+				// that.invert(that.position.now.low);
+				// model.divide.high_sample = 
+				// that.invert(that.position.now.high);
+
+				// model.divide.high_arr = axis.splice(
+				// 	that.axis.indexOf(model.divide.high_sample), 
+				// 	axis.length - 1);
+				// model.divide.low_arr = axis.splice(0, 
+				// 	that.axis.indexOf(model.divide.low_sample));
+				
+				var nowStd = model.data.func.yaxis[value][1],
+						nowLow = [],
+						nowHigh = [];
+
+				bio.iteration.loop(model.data.func.data[value], function (d)	{
+					if (d > nowStd)	{
+						nowHigh.push(d);
+					} else {
+						nowLow.push(d);
+					}
+				});
+
+				drawDivision(model.data, 
+					[nowLow, nowHigh]);
 			},
 		});
 	};
@@ -144,16 +170,6 @@ function expression ()	{
 							 document.querySelector('#expression_contents')]);
 
 						bio.layout().removeGroupTag();
-						// To be delete.
-						// if (model.now.signature.indexOf('50') > -1)	{
-						// 	selectedData = d.data.data_pam50.data;
-						// } else if (model.now.signature.indexOf('1') > -1)	{
-						// 	selectedData = d.data.data_sig1.data;
-						// }	else if (model.now.signature.indexOf('2') > -1)	{
-						// 	selectedData = d.data.data_sig2.data;
-						// }	else if (model.now.signature.indexOf('3') > -1)	{
-						// 	selectedData = d.data.data_sig3.data;
-						// }
 
 						bio.expression({
 							element: model.setting.targetedElement.id,
@@ -601,7 +617,10 @@ function expression ()	{
 			division.low, division.mid, division.high);
 	};
 
-	function drawDivision (data)	{
+	function drawDivision (data, lowHigh)	{
+		if (lowHigh)	{
+			changeByDrag(lowHigh[0], lowHigh[1]);
+		}
 		/*
 			Low, High 별로 환자 배열을 순환.
 		 */

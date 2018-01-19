@@ -5121,7 +5121,33 @@ function expression ()	{
 				// drawHeatmap(model.data, model.data.axis.heatmap, model.data.axis.gradient.x);
 				drawFunctionBar(model.data, model.data.axis.bar);
 				drawScatter(model.data, model.data.axis.scatter, model.now.osdfs);
-				drawDivision(model.data);
+				// var axis = [].concat(that.axis);
+
+				// model.divide.low_sample = 
+				// that.invert(that.position.now.low);
+				// model.divide.high_sample = 
+				// that.invert(that.position.now.high);
+
+				// model.divide.high_arr = axis.splice(
+				// 	that.axis.indexOf(model.divide.high_sample), 
+				// 	axis.length - 1);
+				// model.divide.low_arr = axis.splice(0, 
+				// 	that.axis.indexOf(model.divide.low_sample));
+				
+				var nowStd = model.data.func.yaxis[value][1],
+						nowLow = [],
+						nowHigh = [];
+
+				bio.iteration.loop(model.data.func.data[value], function (d)	{
+					if (d > nowStd)	{
+						nowHigh.push(d);
+					} else {
+						nowLow.push(d);
+					}
+				});
+
+				drawDivision(model.data, 
+					[nowLow, nowHigh]);
 			},
 		});
 	};
@@ -5221,16 +5247,6 @@ function expression ()	{
 							 document.querySelector('#expression_contents')]);
 
 						bio.layout().removeGroupTag();
-						// To be delete.
-						// if (model.now.signature.indexOf('50') > -1)	{
-						// 	selectedData = d.data.data_pam50.data;
-						// } else if (model.now.signature.indexOf('1') > -1)	{
-						// 	selectedData = d.data.data_sig1.data;
-						// }	else if (model.now.signature.indexOf('2') > -1)	{
-						// 	selectedData = d.data.data_sig2.data;
-						// }	else if (model.now.signature.indexOf('3') > -1)	{
-						// 	selectedData = d.data.data_sig3.data;
-						// }
 
 						bio.expression({
 							element: model.setting.targetedElement.id,
@@ -5678,7 +5694,10 @@ function expression ()	{
 			division.low, division.mid, division.high);
 	};
 
-	function drawDivision (data)	{
+	function drawDivision (data, lowHigh)	{
+		if (lowHigh)	{
+			changeByDrag(lowHigh[0], lowHigh[1]);
+		}
 		/*
 			Low, High 별로 환자 배열을 순환.
 		 */
@@ -8272,16 +8291,6 @@ function preprocExpression ()	{
 		});
 
 		return most;
-	};
-
-	function typeColorRandomGenerator (subtype)	{
-		// subtype 에 따라 tree 형식으로 색상을 
-		// 생성하는 것이 어떨까?
-		console.log(bio.boilerPlate.clinicalInfo, 
-			subtype)
-		bio.iteration.loop(subtype, function (sub)	{
-			console.log(sub);
-		});
 	};
 
 	function addRiskFunctions (funcs)	{
@@ -11005,28 +11014,68 @@ var SurvivalTab = (function() {
 function clinicalGenerator ()	{
 	'use strict';
 
-	var model = {};
+	var model = {},
+			naColor = '#D6E2E3';
+
+	function colorGenerator (colors)	{
+		console.log(d3.rgb(colors).toString(16))
+	};
+
+	function setStartColors (clinicalLength)	{
+		var start = '#04CDA4';
+
+		colorGenerator(start);
+	};
 	/*
 		Clinical 의 색상을 지정해주는 함수.
 		이는 Clinical 의 개수와 상관없이 일정하게 
 		색상을 정해준다.
 	 */
-	function colors ()	{
-		
+	function colors (clinicals)	{
+		var startColors = setStartColors(
+									Object.keys(clinicals).length);
+
+		bio.iteration.loop(clinicals, 
+		function (clinical, values)	{
+			console.log(clinical, values);
+		});
 	};
 
-	function orders ()	{
+	function orders (clinicals)	{
+		bio.iteration.loop(clinicals, 
+		function (clinical, values)	{
+			if (values.indexOf('NA') > -1)	{
+				values.push(
+				values.splice(
+				values.indexOf('NA'), 1)[0]);
+			}
 
+			bio.iteration.loop(values, 
+			function (v, i)	{
+				if (!model[v])	{
+					model[v] = { order: i + 1 };
+				}
+			});
+		});
 	};
 
 	function landscapeDataToArr (data)	{
 		var clinicals = {};
 
-		bio.iteration.loop(data, function (gp)	{
-			// clinicals[gp]
-			console.log(gp);
+		bio.iteration.loop(data, function (group)	{
+			bio.iteration.loop(group, function (gp)	{
+				if (clinicals[gp.y])	{
+					if (clinicals[gp.y].indexOf(gp.value) < 0)	{
+						clinicals[gp.y].push(gp.value)
+					}
+				} else {
+					clinicals[gp.y] = [gp.value];
+				}
+			});
 		});
-		// return null;
+
+		orders(clinicals);
+		colors(clinicals);
 	};
 
 	function expressionDataToArr (data)	{

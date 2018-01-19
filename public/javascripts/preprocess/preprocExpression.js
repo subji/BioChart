@@ -213,16 +213,6 @@ function preprocExpression ()	{
 		return most;
 	};
 
-	function typeColorRandomGenerator (subtype)	{
-		// subtype 에 따라 tree 형식으로 색상을 
-		// 생성하는 것이 어떨까?
-		console.log(bio.boilerPlate.clinicalInfo, 
-			subtype)
-		bio.iteration.loop(subtype, function (sub)	{
-			console.log(sub);
-		});
-	};
-
 	function addRiskFunctions (funcs)	{
 		bio.iteration.loop(funcs, function (f)	{
 			model.riskFuncs[f.name.toLowerCase()] = f.func;
