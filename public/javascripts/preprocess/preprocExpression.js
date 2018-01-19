@@ -92,6 +92,10 @@ function preprocExpression ()	{
 			bio.math.median(funcData[funcName]),
 			bio.math.max(funcData[funcName])
 		];
+
+		bio.iteration.loop(barData, function (b)	{
+			b.y = model.func.yaxis[funcName][1];
+		});
 	};
 	/*
 		설정된 Risk function 들의 값을 구한다.
@@ -210,7 +214,7 @@ function preprocExpression ()	{
 
 	function addRiskFunctions (funcs)	{
 		bio.iteration.loop(funcs, function (f)	{
-			model.riskFuncs[f.name] = f.func;
+			model.riskFuncs[f.name.toLowerCase()] = f.func;
 		});
 	};
 

@@ -38,6 +38,15 @@ BioChart 0.0.22
           { 
             name: 'Test', 
             func: function (data)  {
+              // data 는 
+              // [
+                  {
+                    key: gene name,
+                    value: tpm value, 
+                  },
+                  ...
+                 ]
+              // 넘어온다.
               // console.log(data);
               // sample 별 각 gene 들의 tpm 값이 return
               // ex) 평균 함수를 적용시켜 놓고자 할때

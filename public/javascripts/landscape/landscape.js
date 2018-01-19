@@ -416,6 +416,9 @@ function landscape ()	{
 			// 맞은 값을 가져온다.
 			if (part === 'group')	{
 				bio.iteration.loop(data, function (g)	{
+					// id 가 / 가 들어간 경우 '' 처리를 하므로
+					// / 가 들어간 데이터는 처리가 되지 않는다.
+					console.log(id, g, id.indexOf(g[0].removeWhiteSpace()) > -1);
 					if (id.indexOf(g[0].removeWhiteSpace()) > -1)	{
 						data = g;
 					}

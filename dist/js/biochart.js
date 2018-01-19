@@ -1,3 +1,1900 @@
+function axises ()	{
+	'use strict';
+
+	var model = {
+		axises: {},
+	};
+	/*
+		D3 v3 과 v4 에서 axis 코드 차이가 있으므로 아래 함수에서
+		구분지어 줬다.
+	 */
+	model.byD3v = function (scale, orient, opts)	{
+		var axis = (bio.dependencies.version.d3v4() ? 
+							 d3['axis' + orient.pronoun()](scale) : 
+							 d3.svg.axis().scale(scale).orient(orient)).ticks(5);
+		// TickValues 가 존재할 경우 적용.
+		if (opts && opts.tickValues)	{
+			axis.tickValues(opts.tickValues);
+		} else if (opts && opts.ticks)	{
+			axis.ticks(opts.ticks);
+		}
+
+		return axis;
+	};
+	/*
+		초기 세팅 함수.
+	 */
+	function setting (type, opts)	{
+		var position = [opts.top || 0, opts.left || 0],
+				group = bio.rendering().addGroup(
+				opts.element, position[0], position[1], type + '-axis');
+
+		return {
+			group: group,
+			position: position,
+			margin: bio.sizing.setMargin(opts.margin),
+			scale: bio.scales().get(opts.domain, opts.range),
+		};
+	};
+	/*
+		Path, Line, Text 중 제외시킬 부분을 받아
+		Axis 에서 제외한다.
+	 */
+	function exclude (group, item)	{
+		if (typeof(item) !== 'string')	{
+			throw new Error ('2nd Parameter type is not a string');
+		} else if (!item)	{
+			return group;
+		}
+
+		return group.selectAll(item).remove(), group; 
+	};
+	/*
+		최종 반환 함수.
+	 */
+	function returnGroup (setting, opts, direction)	{
+		var set = model.byD3v(setting.scale, direction, opts);
+
+		if (opts.tickValues)	{
+
+		}
+
+		return opts.exclude ? 
+			exclude(setting.group.call(set), opts.exclude) : 
+			 				setting.group.call(set);
+	};
+	/*
+		Data structure: {
+			element: 'SVG Element',
+			top: 'Top of axis',
+			left: 'Left of axis',
+			domain: 'Axis's domain data',
+			range: 'Axis's range data',
+			margin: 'Margin for axis',
+			exclude: 'Path, Line, Text' or '', ...,
+		}
+	 */
+	model.top = function (opts)	{
+		return returnGroup(setting('top', opts), opts, 'top');
+	};
+
+	model.left = function (opts)	{
+		return returnGroup(setting('left', opts), opts, 'left');
+	};
+
+	model.bottom = function (opts)	{
+		return returnGroup(setting('bottom', opts), opts, 'bottom');
+	};
+
+	model.right = function (opts)	{
+		return returnGroup(setting('right', opts), opts, 'right');
+	};
+
+	return function ()	{
+		return model;
+	};
+};
+function bar ()	{
+	'use strict';
+
+	var model = {};
+	/*
+		Range 값을 구해주는 함수.
+	 */
+	function range (size, m1, m2, start)	{
+		return start === 'left' || start === 'top' ? 
+					[m1, size - m2]: [size - m2, m1];
+	};
+
+	return function (opts, that)	{
+		model = bio.objects.clone(that || {});
+		model = bio.sizing.chart.default(model, opts);
+
+		model.copyX = [].concat(opts.xaxis);
+		model.copyY = [].concat(opts.yaxis);
+		model.startTo = opts.startTo || ['top', 'left'];
+		model.rangeX = range(model.width, model.margin.left, 
+												 model.margin.right, model.startTo[1]);
+		model.rangeY = range(model.height, model.margin.top, 
+												 model.margin.bottom, model.startTo[0]);
+		model.scaleX = bio.scales().get(model.copyX, model.rangeX);
+		model.scaleY = bio.scales().get(model.copyY, model.rangeY);
+
+		model.group = bio.rendering().addGroup(
+										opts.element, 0, 0, 'bar');
+
+		model.opts = bio.objects.clone(opts);
+		model.opts.id = model.id + '_bar_rect';
+		model.opts.element = 
+		model.group.selectAll('.' + model.id + '_bar_rect')
+
+		bio.rectangle(model.opts, model);
+	};
+};
+function circle ()	{
+	'use strict';
+
+	var model = {};
+
+	return function (opts, that)	{
+		that = that || {};
+
+		bio.rendering().circle({
+			element: opts.element,
+			data: opts.data || null,
+			attr: !opts.attr ? null : {
+				id: function (d, i) { 
+					return opts.attr.id ? 
+					typeof(opts.attr.id) !== 'function' ?  
+								(opts.id || that.id || 
+								 opts.element.attr('id')) + 
+									'_circle' : 
+								 opts.attr.id.call(this, d, i, that) : (opts.id || that.id || 
+								 opts.element.attr('id')) + 
+									'_circle'
+				},
+				cx: function (d, i)	{
+					return opts.attr.cx ? 
+					typeof(opts.attr.cx) !== 'function' ?  
+								 opts.attr.cx : 
+								 opts.attr.cx.call(this, d, i, that) : 0;
+				},
+				cy: function (d, i)	{
+					return opts.attr.cy ? 
+					typeof(opts.attr.cy) !== 'function' ?  
+								 opts.attr.cy : 
+								 opts.attr.cy.call(this, d, i, that) : 0;
+				},
+				r: function (d, i)	{
+					return opts.attr.r ? 
+					typeof(opts.attr.r) !== 'function' ?  
+								 opts.attr.r : 
+								 opts.attr.r.call(this, d, i, that) : 0;
+				},
+			},
+			style: !opts.style ? null : {
+				'fill': function (d, i) { 
+					return opts.style.fill ? 
+					typeof(opts.style.fill) !== 'function' ?  
+								 opts.style.fill : opts.style.fill.call(
+								 	this, d, i, that) : '#000000'; 
+				},
+				'fill-opacity': function (d, i)	{
+					return opts.style.fillOpacity ? 
+					typeof(opts.style.fillOpacity) !== 'function' ?  
+								 opts.style.fillOpacity : 
+								 opts.style.fillOpacity.call(
+								 	this, d, i, that) : 1; 
+				},
+				'stroke': function (d, i) { 
+					return opts.style.stroke ? 
+					typeof(opts.style.stroke) !== 'function' ?  
+								 opts.style.stroke : 
+								 opts.style.stroke.call(
+								 	this, d, i, that) : 'none'; 
+				},
+				'stroke-width': function (d, i) { 
+					return opts.style.strokeWidth ?
+					typeof(opts.style.strokeWidth) !== 'function' ?  
+								 opts.style.strokeWidth : 
+								 opts.style.strokeWidth.call(
+								 	this, d, i, that) : '0px'; 
+				},
+				'filter': function (d, i)	{
+					return opts.style.filter ?
+					typeof(opts.style.filter) !== 'function' ?  
+								 opts.style.filter : 
+								 opts.style.filter.call(
+								 	this, d, i, that) : false; 
+				},
+				'cursor': function (d, i)	{
+					return opts.style.cursor ?
+					typeof(opts.style.cursor) !== 'function' ?  
+								 opts.style.cursor : 
+								 opts.style.cursor.call(
+								 	this, d, i, that) : false; 
+				},
+			},
+			on: !opts.on ? null : {
+				click: function (d, i)	{
+					opts.on.click ? 
+					opts.on.click.call(this, d, i, that) : false;
+				},
+				mouseover: function (d, i)	{
+					opts.on.mouseover ? 
+					opts.on.mouseover.call(this, d, i, that) : false;
+				},
+				mouseout: function (d, i)	{
+					opts.on.mouseout ? 
+					opts.on.mouseout.call(this, d, i, that) : false;
+				},
+			},
+		});
+	};
+};
+function divisionLine ()	{
+	'use strict';
+
+	var model = {};
+
+	return function (opts, that)	{
+		model = bio.objects.clone(that || {});
+		model = bio.sizing.chart.default(model, opts);
+		model.position = { now: {}, init: {} };
+		model.isMarker = typeof(opts.isMarker) === 'undefined' ? true : opts.isMarker;
+		opts.pathElement = 
+		bio.objects.getType(opts.pathElement) !== 'Array' ? 
+		[opts.pathElement] : opts.pathElement;
+		model.division_data = opts.data;
+		model.division_info = opts.info || [
+			{ 
+				additional: 0, color: '#000000', direction: null, 
+				text: 'Low', textWidth: 10,
+			},
+			{ 
+				additional: 0, color: '#FFFFFF', direction: null, 
+				text: 'High', textWidth: 10,
+			}
+		];
+
+		bio.iteration.loop(model.division_info, function (di)	{
+			di.textWidth = bio.drawing().textSize.width(
+			di.text.replace(' ', 'a'), opts.style.fontSize || '10px');
+		});
+
+		model.axis = [].concat(opts.axis);
+		model.range = [model.margin.left, model.width - 
+										model.margin.right];
+		model.scale = bio.scales().get(model.axis, model.range);
+		model.invert = bio.scales().invert(model.scale);
+
+		if (that.data.bar)	{
+			bio.iteration.loop(that.data.bar, function (bar)	{
+				if (bar.value === opts.idxes[0])	{
+					model.division_info[0].start = model.scale(bar.x);
+				} else if (bar.value === opts.idxes[1])	{	
+					model.division_info[0].end = model.scale(bar.x);
+					model.division_info[1].start = model.scale(bar.x);
+				} else if (bar.value === opts.idxes[2])	{
+					model.division_info[1].end = model.scale(bar.x);
+				}
+			});
+		} else if (model.now.geneset)	{
+			model.division_info[0].start = model.scale(model.axis[0]);
+			model.division_info[0].end = model.scale(opts.idxes);
+			model.division_info[1].start = model.scale(opts.idxes);
+			model.division_info[1].end = 
+			model.scale(model.axis.length - 1);
+		}
+
+		model.shapeGroup = bio.rendering().addGroup(
+												opts.element, 0, 0, 'division-shape');
+		model.textGroup = bio.rendering().addGroup(
+												opts.element, 0, 0, 'division-text');
+		model.opts = {
+			text: bio.objects.clone(opts),
+			shape: bio.objects.clone(opts),
+		};
+
+		model.opts.text.id = model.id + '_division_text';
+		model.opts.text.data = model.division_info;
+		model.opts.text.element = 
+		model.textGroup.selectAll(
+			'#' + model.id + '_division_text');
+		model.opts.shape.id = model.id + '_division_shape';
+		model.opts.shape.data = model.division_info;
+		model.opts.shape.element = 
+		model.shapeGroup.selectAll(
+			'#' + model.id + '_division_shape');
+
+		bio.text(model.opts.text, model);
+		bio.rectangle(model.opts.shape, model);
+
+		bio.iteration.loop(opts.pathElement, function (path, i)	{
+			var shape_key = 'shape_' + i,
+					path_key = 'path_' + i,
+					cp1 = bio.objects.clone(model.division_info[i]),
+					cp2 = bio.objects.clone(model.division_info[i]),
+					markers = [cp1, cp2];
+
+			cp1.path_x = model.division_info[0].end;
+			cp2.path_x = model.division_info[0].end;
+			cp1.path_y = i === 0 ? 10 : 0;
+			cp2.path_y = i === 0 ? 
+			path.attr('height') : path.attr('height') - 18;
+
+			model.opts[path_key] = bio.objects.clone(opts);
+			model.opts[path_key].id = 
+			model.id + '_division_path_' + i;
+			model.opts[path_key].data = markers;
+			model.opts[path_key].element = 
+			bio.rendering().addGroup(path, 0, 0, 'division-path-' + i);
+
+			model.opts[shape_key] = bio.objects.clone(opts);
+			model.opts[shape_key].id = 
+			model.id + '_division_shape_' + i;
+			model.opts[shape_key].data = [markers[i]];
+			model.opts[shape_key].element = 
+			bio.rendering().addGroup(path, 0, 0, 'division-shape-' + i)
+				 .selectAll('#' + model.id + '_division_shape_' + i);
+			if (model.isMarker)	{
+				bio.triangle({
+					element: model.opts[shape_key].element,
+					data: model.opts[shape_key].data,
+					attr: model.opts[shape_key].attr,
+					style: model.opts[shape_key].style,
+					call: model.opts[shape_key].call,
+				}, model);
+			}
+
+			bio.path({
+				element: model.opts[path_key].element,
+				data: model.opts[path_key].data,
+				attr: model.opts[path_key].attr,
+				style: {
+					stroke: '#333333',
+					strokeWidth: '0.5px',
+				},
+			}, model);
+		});
+	};
+};
+function drawing ()	{
+	'use strict';
+
+	var model = { textSize: {} };
+	/*
+		Text 가로 길이 구하는 함수.
+	 */
+	function textWidth (text)	{
+		return text.getBoundingClientRect().width.toFixed();
+	};
+	/*
+		Text 세로 길이 구하는 함수.
+	 */
+	function textHeight (text, block)	{
+		// var result = {};
+
+  //   block.style.verticalAlign = 'baseline';
+  //   result.ascent = block.offsetTop - text.offsetTop;
+  //   block.style.verticalAlign = 'bottom';
+  //   result.height = block.offsetTop - text.offsetTop;
+  //   result.descent = result.height - result.ascent;
+
+    return text.getBoundingClientRect().height.toFixed();
+    // return block.offsetTop - text.offsetTop - 2;
+	  // return result.height - 2;
+	};
+	/*
+		Text 의 가로, 세로 길이를 구해주는 중립 함수.
+	 */
+	function getTextSize (type, txt, font)	{
+		var text = document.createElement('span'),
+				block = document.createElement('div'),
+				div = document.createElement('div');
+
+		if (type === 'width') {
+			font = font.split(' ');
+		} else {
+			txt = txt.split(' ');
+		}
+
+		div.id = 'get_text_' + type;
+
+		text.style.fontSize = type === 'width' ? font[0] : txt[0];
+		text.style.fontWeight = type === 'width' ? font[1] : txt[1];
+		text.innerHTML = type === 'width' ? txt : 'Hg';
+
+		block.style.display = 'inline-block';
+		block.style.width = '1px';
+		block.style.height = '0px';
+
+		div.appendChild(text);
+		div.appendChild(block);
+
+		document.body.appendChild(div);
+
+		try {
+			var result = text.getBoundingClientRect()[type].toFixed();
+			// var result = type === 'width' ? 
+			// 		textWidth(text) : textHeight(text, block);
+		} finally {
+			document.body.removeChild(
+    		document.getElementById('get_text_' + type));
+		}
+
+    return parseFloat(result);
+	};
+	/*
+		문자열의 가로 길이를 반환하는 함수.
+	 */
+	model.textSize.width = function (txt, font)	{
+		return getTextSize('width', txt, font);
+	};
+	/*
+		Text 배열에서 가장 길이가 긴 문자열과 그 길이를 반환한다.
+	 */
+	model.mostWidth = function (txts, font)	{
+		var result = [];
+
+		bio.iteration.loop(txts, function (txt)	{
+			result.push({
+				text: txt,
+				value: model.textSize.width(txt, font)
+			});
+		});
+
+		// 내림차순 정렬 후 가장 큰 값 (0번째 값) 을 반환한다.
+		return result.sort(function (a, b)	{
+			return a.value < b.value ? 1 : -1;
+		})[0];
+	};
+	/*
+		문자열의 세로 길이를 반환하는 함수.
+	 */
+	model.textSize.height = function (font)	{
+		return getTextSize('height', font);
+	};
+	/*
+		전달 된 가로, 세로길이에 맞춰 font 의 크기를 정해주는 함수.
+	 */
+	model.fitText = function (txt, width, height, font)	{
+		var num = 10,	// default 10px.
+				fontStr =  num + 'px ' + (font || 'normal'); 
+
+		while (model.textSize.height(fontStr) < height && 
+					model.textSize.width(txt, fontStr) < width)	{
+		
+			fontStr = (num += 1, num) + 'px ' + font;
+		}
+
+		return (num - 1) + 'px';
+	};
+	/*
+		영역안에서 문자열이 넘어갈 경우 그 부분을 제거 해준다.
+	 */
+	model.textOverflow = function (txt, font, width, padding)	{
+		var result = '';
+		
+		padding = padding || 5;
+
+		if (model.textSize.width(txt, font) < width - padding)	{
+			return txt;
+		}
+
+		bio.iteration.loop(txt.split(''), function (t)	{
+			var txtWidth = model.textSize.width(result += t, font);
+
+			if (txtWidth > width - padding)	{
+				result = result.substring(0, result.length - 2);
+
+				return;
+			}
+		});
+
+		return result;
+	};
+	/*
+		현재 노드의 SVG 엘리먼트를 가져온다.
+	 */
+	model.getParentSVG = function (node)	{
+		if (node.parentElement.tagName === 'svg')	{
+			return node.parentElement;
+		} 
+
+		return model.getParentSVG(node.parentElement);
+	};
+	/*
+		Legend 그룹의 자식노드들을 반환한다.
+	 */
+	model.nthChild = function (classify, idx)	{
+		return d3.select(classify).node().children[idx];
+	};
+	/*
+		Source 엘리먼트에서 destination 엘리먼트를 찾는 함수.
+	 */
+	model.findDom = function (source, destination)	{
+		if (source.children < 1)	{
+			throw new Error('There are no any child elements');
+		}
+
+		var sourceList = Array.prototype.slice.call(source.children),
+				result = null;
+
+		bio.iteration.loop(sourceList, function (child)	{
+			if (child.tagName === destination.toUpperCase() || 
+		'.' + child.className === destination || 
+		'#' + child.id === destination)	{
+				result = child;
+
+				return;
+			} 
+		});
+
+		return result;
+	};
+	/*
+		Slide down 애니메이션 구현 함수.
+	 */
+	model.slideDown = function (target)	{
+		var init = target.style.height ? 
+				parseFloat(target.style.height) : 
+				target.getBoundingClientRect().height,
+				height = 0;
+
+		target.style.height = 0 + 'px';
+
+		var interval = setInterval(function ()	{
+			height += 1;
+			target.style.height = height + 'px';
+
+			if (height === init)	{
+				clearInterval(interval);
+			}
+		}, 5);
+	};
+
+	/*
+		Slide down 애니메이션 구현 함수.
+	 */
+	model.slideUp = function (target)	{
+		var init = target.style.height ? 
+				parseFloat(target.style.height) : 
+				target.getBoundingClientRect().height,
+				height = parseFloat(target.style.height);
+
+		var interval = setInterval(function ()	{
+			height -= 1;
+			target.style.height = height + 'px';
+
+			if (height === 0)	{
+				clearInterval(interval);
+
+				target.style.height = init + 'px'
+				target.style.display = 'none';
+			}
+		}, 5);
+	};
+	/*
+		Client 에 존재하는 또는 서버에 있는 SVG 파일을 읽어와
+		Callback 또는 SVG 를 반환하는 함수.
+	 */
+	model.importSVG = function (url, callback)	{
+		var result = null;
+
+		d3.xml(url).mimeType('image/svg+xml')
+			.get(function (err, xml)	{
+				if (err) throw err;
+
+				return callback ? callback(xml) : result = xml;		
+			});
+
+		return result;
+	};
+
+	model.nodes = function (selection)	{
+		var result = [];
+
+		selection.each(function (d)	{
+			result.push(this)
+		});
+
+		return result;
+	}
+
+	return function ()	{
+		return model;
+	};
+};
+function heat ()	{
+	'use strict';
+
+	var model = {};
+	/*
+		중복 처리 된 데이터들을 다시 재 가공 시켜주는 함수.
+	 */
+	function makeNoneDuplicateData (values)	{
+		bio.iteration.loop(values, function (key, value)	{
+			bio.iteration.loop(model.mutationType, function (m)	{
+				if (value[m][0])	{
+					model.duplicate.push({
+						x: value.x,
+						y: value.y,
+						value: value[m][0],
+						info: value[m].splice(1),
+					});
+				}
+			});
+		});
+
+		return model.duplicate;
+	};
+	/*
+		같은 위치에서 중복된 데이터가 여러개일 경우
+		가장 우선순위가 높은 것을 제외하고는 객체로 만들어 저장한다.
+	 */
+	function removeDuplicate (data)	{
+		bio.iteration.loop(data, function (d)	{
+			var key = d.x + d.y,
+					prio = bio.landscapeConfig().byCase(d.value);
+
+			model.value[key] ? 
+			bio.boilerPlate.variantInfo[model.value[key][prio][0]] > 
+			bio.boilerPlate.variantInfo[d.value] ? 
+			model.value[key][prio].unshift(d.value) : 
+			model.value[key][prio].push(d.value) : 
+		 (model.value[key] = { cnv: [], var: [], x: d.x, y: d.y }, 
+		 	model.value[key][prio].push(d.value));
+		});
+
+		return makeNoneDuplicateData(model.value);
+	};
+
+	return function (opts, that)	{
+		model = bio.objects.clone(that || {});
+		model = bio.sizing.chart.default(model, opts);
+		
+		model.copyX = [].concat(opts.xaxis);
+		model.copyY = [].concat(opts.yaxis);
+		model.rangeX = [model.margin.left, 
+			model.width - model.margin.right];
+		model.rangeY = [model.margin.top, 
+			model.height - model.margin.bottom];
+		model.scaleX = bio.scales().get(model.copyX, model.rangeX);
+		model.scaleY = bio.scales().get(model.copyY, model.rangeY);
+
+		model.group = bio.rendering().addGroup(
+										opts.element, 0, 0, 'heatmap');
+
+		model.opts = bio.objects.clone(opts);
+		model.opts.data = model.duplicate ? 
+			removeDuplicate(model.opts.data) : model.opts.data;
+		model.opts.id = model.id + '_heatmap_rect';
+		model.opts.element = 
+		model.group.selectAll('.' + model.id + '_heatmap_rect');
+
+		bio.rectangle(model.opts, model);
+	};
+};
+function legend ()	{
+	'use strict';
+
+	var model = {};
+
+	return function (opts, that)	{
+		model = bio.objects.clone(that || {});
+		model = bio.sizing.chart.default(model, opts);
+		model.legendData = opts.data;
+
+		model.padding = opts.padding || 5;
+		model.fontSize = opts.style.font || '10px';
+		model.fontWidth = bio.drawing().mostWidth(
+												model.legendData, model.fontSize);
+		model.fontHeight = bio.drawing()
+				 .textSize.height(model.fontSize);
+		model.shapeWidth = model.width - 
+	 (model.margin.left + model.margin.right + 
+	 	model.fontWidth.value);
+
+		model.shapeGroup = bio.rendering().addGroup(
+												opts.element, model.margin.top, 
+												model.margin.left, 'legend-shape');
+		model.textGroup = bio.rendering().addGroup(
+												opts.element, model.margin.top, 
+												model.margin.left, 'legend-text');
+
+		model.opts = {
+			text: bio.objects.clone(opts),
+			shape: bio.objects.clone(opts),
+		};
+		model.opts.text.id = model.id + '_legend_text';
+		model.opts.text.element = 
+		model.textGroup.selectAll('#' + model.id + '_legend_text');
+		model.opts.shape.id = model.id + '_legend_shape';
+		model.opts.shape.element = 
+		model.shapeGroup.selectAll('#' + model.id + '_legend_shape');
+
+		if (opts.attr && opts.attr.width)	{
+			bio.rectangle(model.opts.shape, model);
+		} else if (opts.attr && opts.attr.r)	{
+			bio.circle(model.opts.shape, model);
+		} else if (opts.attr && opts.attr.points)	{
+			bio.triangle(model.opts.shape, model);
+		}
+
+		bio.text(model.opts.text, model);
+
+		var div = opts.element.node().parentNode,
+				bcr = model.textGroup.node().getBoundingClientRect();
+		// Legend div 를 type 수에 맞는 세로 길이로 재 설정한다.
+		div.style.height = bcr.height + 
+		model.margin.top + model.padding + 'px';
+		// 왼쪽에 바짝 붙은 div 를 조금 떨어뜨리기 위한 코드.
+		div.style.width = model.width - 5 + 'px';
+	};
+};
+function needle ()	{
+	'use strict';
+
+	var model = {};
+	/*
+		Range 값을 구해주는 함수.
+	 */
+	function range (size, m1, m2, start)	{
+		return start === 'left' || start === 'top' ? 
+					[m1, size - m2] : [size - m2, m1];
+	};
+
+	return function (opts, that)	{
+		model = bio.objects.clone(that || {});
+		model = bio.sizing.chart.default(model, opts);
+
+		model.copyX = [].concat(opts.xaxis);
+		model.copyY = [].concat(opts.yaxis);
+		model.rangeX = [model.margin.left, 
+			model.width - model.margin.right];
+		model.rangeY = [model.height - model.margin.bottom, 
+										model.margin.top];
+		model.scaleX = bio.scales().get(model.copyX, model.rangeX);
+		model.scaleY = bio.scales().get(model.copyY, model.rangeY);
+
+		model.lineGroup = bio.rendering().addGroup(
+										opts.element, 0, 0, 'needle-line');
+		model.shapeGroup = bio.rendering().addGroup(
+										opts.element, 0, 0, 'needle-shape');
+
+		model.opts = {
+			line: bio.objects.clone(opts),
+			shape: bio.objects.clone(opts),
+		};
+		model.opts.line.element = model.lineGroup;
+		model.opts.shape.data = opts.shapeData;
+		model.opts.shape.element = 
+		model.shapeGroup.selectAll('#' + model.id + '_needle_shape');
+
+		bio.iteration.loop(opts.lineData, function (ld)	{
+			model.opts.line.data = ld.value;		
+
+			bio.path(model.opts.line, model);
+		});
+
+		bio.circle(model.opts.shape, model);
+	};
+};
+function network ()	{
+	'use strict';
+
+	var model = {};
+	/*
+		Version 3/4 에 따라서 force 함수가 변경되었다.
+	 */
+	function v3 (nodes, links)	{
+		return d3.layout.force()
+										.nodes(nodes)
+										.links(links)
+										.charge(-300)
+										.linkDistance(150);
+	};
+
+	function v4 (nodes, links)	{
+		return d3.forceSimulation(nodes) 
+      			 .force('charge',
+      			 	d3.forceManyBody().strength(function (d, i)	{
+      			 		return d.group ? 
+      			 		-300 - (600 * (d.radius / 100)) : 
+      			 		-300 - (600 * (d.radius / 100));
+      			 	}))
+      			 .force('link', 
+      			 	d3.forceLink(links)
+      			 		.id(function(d) { return d.text; })
+      			 		.distance(function (d)	{
+      			 			return d.source.group && d.target.group ? 
+      			 						90 - (90 * (d.source.radius / 100)) : 
+      			 						d.isOne === 1 ? 
+      			 						10 + (1050 * (d.source.radius / 100)) : 
+      			 						190 - (190 * (d.source.radius / 100));
+      			 		})) 
+      			 .force('x', d3.forceX(function (d)	{
+      			 		return d.group ? model.width / 2.1 : 
+      			 			model.width - model.width * (d.index / 10);
+      			 }))
+      			 .force('y', d3.forceY(function (d)	{
+      			 		return d.group ? model.height / 2.5 : 
+      			 										 model.height * 0.95;
+      			 }));
+	};
+
+	function buildArea (className, top, left, width, height)	{
+		var g = bio.rendering().addGroup(
+						model.element, 0, 0, className);
+
+		bio.rectangle({
+			id: className,
+			element: g,
+			attr: {
+				rx: 2, 
+				ry: 2, 
+				y: top,
+				x: left, 
+				width: width, 
+				height: height,
+			},
+			style: {
+				strokeWidth: 2,
+				fill: '#FFFFFF',
+				stroke: '#333333',
+				filter: 'url("#drop_shadow")',
+				fillOpacity: function (d)	{
+					return className === 'compound' ? 1 : 0.3;
+				},
+			},
+		}, model);
+	};
+
+	function writeInfo (text, top, left)	{
+		var g = bio.rendering().addGroup(
+						model.element, 0, 0, 'network-info');
+
+		bio.text({
+			element: g,
+			text: text,
+			id: 'network_info',
+			attr: { x: left, y: top },
+			style: { fontSize: '16px', fontWeight: 'bold' },
+		});
+	};
+
+	return function (opts, that)	{
+		model = bio.objects.clone(that || {});
+		model = bio.sizing.chart.default(model, opts);
+		model.bcr = model.element.node().getBoundingClientRect();
+		model.network_data = opts.data;
+		model.arrow_width = 5;
+
+		var compound = null,
+				nodes = [],
+				links = [];
+		// Compound, Nodes, Links 분류 작업.
+		bio.iteration.loop(model.network_data, function (net)	{
+			net.type === 'compound' ? compound = net : 
+			net.type === 'node' ? nodes.push(net) : links.push(net);
+		});
+		// Member 는 그룹으로 분류.
+		bio.iteration.loop(nodes, function (node)	{
+			if (compound.members.indexOf(node.text) > -1)	{
+				node.group = 1;
+			}
+			// 노드의 위치 고정 및 반지름 크기 설정.
+			// node.fixed = true;
+			node.radius = (bio.drawing().textSize
+							.width(node.text, '12px') + 10) / 2;
+		});
+		// 여러개의 노드가 오직 하나의 선을 가지며 그 선은 오로지
+		// 그룹 밖의 노드로 향할때.
+		var linkIsOne = {};
+
+		bio.iteration.loop(links, function (link)	{
+			linkIsOne[link.target] = true;
+		});
+
+		bio.iteration.loop(links, function (link)	{
+			link.isOne = Object.keys(linkIsOne).length;
+		});
+		// Grouping, Information 영역 설정 및 Line 의 marker 설정.
+		bio.rendering().dropShadow(
+					model.element.append('svg:defs'), 1, -0.1, 1);
+		bio.rendering().marker({
+			id: 'id',
+			data: links,
+			color: 'linecolor',
+			width: model.arrow_width,
+			height: model.arrow_width,
+			svg: model.element.append('svg:defs'),
+		});
+		buildArea('infomation', model.height * 0.05, 10, 
+					model.width - 20, model.height * 0.1);
+		buildArea('compound', model.height * 0.15, 10, 
+				model.width - 20, model.height * 0.54);
+		writeInfo(compound.text, 
+			model.height * 0.105, model.width / 2 - 
+			bio.drawing().textSize.width(compound.text, '16px') / 2);
+		// Force layout 생성.
+		var force = bio.dependencies.version.d3v4() ? 
+								v4(nodes, links) : v3(nodes, links);
+		// Animation 없이 draw.
+		for (var i = 0, n = 
+			Math.ceil(Math.log(force.alphaMin()) /
+			Math.log(1 - force.alphaDecay())); i < n; ++i) {
+	    force.tick();
+	  }
+	  // Link 와 Node 의 그룹 태그 생성.
+		var linkLayer = bio.rendering().addGroup(
+					model.element, 0, 0, 'link-layer'),
+				nodeLayer = bio.rendering().addGroup(
+					model.element, 0, 0, 'node-layer');
+
+		var link = linkLayer.selectAll('.link')
+												.data(links).enter()
+												.append('svg:path')
+												.attr('class', 'link')
+												.attr('marker-end', function (d)	{
+													return 'url("#marker_' + d.id + '")';
+												})
+												.style('fill', '#FFFFFF')
+												.style('fill-opacity', 0.1)
+												.style('stroke', function (d)	{
+													return d.linecolor;
+												})
+												.style('stroke-width', 1.5)
+												.style('stroke-dasharray', function (d)	{
+													return d.style === 'Dashed' ? '3, 3' : 'none';
+												});
+
+		var node = nodeLayer.selectAll('.node')
+												.data(nodes)
+												.enter().append('g')
+												.attr('class',' node');
+
+		node.append('circle')
+				.attr('r', function (d)	{
+					return (bio.drawing().textSize
+										 .width(d.text, '12px') + 10) / 2;
+				})
+				.attr('fill', function (d)	{ return d.bgcolor; })
+				.attr('stroke', '#333333')
+				.attr('stroke-width', 1);
+
+		node.append('text')
+				.attr('dx', 0)
+				.attr('dy', 5)
+				.attr('text-anchor', 'middle')
+				.style('font-size', '12px')
+				.style('font-weight', 'bold')
+				.text(function (d)	{ return d.text; });
+		// Force.tick() 함수로 호출되는 함수.
+		var ticked = force.on('tick', function ()	{
+			node.attr('transform', function (d, i)	{
+				d.x = d.group ? d.x : model.width / 2.5;
+				d.y = d.group ? d.y : model.height * 0.78;
+			});
+
+			link.attr('d', function (d)	{
+				// 타겟 원의 테두리로 화살표가 닿게끔 하는 코드.
+				var dx = d.target.x - d.source.x,
+						dy = d.target.y - d.source.y,
+						dr = Math.sqrt(dx * dx + dy * dy);
+
+				var offsetX = dx * (d.target.radius + 
+											model.arrow_width) / dr,
+						offsetY = dy * (d.target.radius + 
+											model.arrow_width) / dr;
+
+				return 'M' + d.source.x + ',' + d.source.y + 
+							 'A' + dr + ',' + dr + ' 0 0,1 ' + 
+          					(d.target.x - offsetX) + ',' + 
+          					(d.target.y - offsetY);
+			});
+
+			node.attr('transform', function (d)	{
+				return 'translate(' + d.x + ',' + d.y + ')';
+			});
+		});
+	};
+};
+function path ()	{
+	'use strict';
+
+	var model = {};
+	/*
+		D3 Line 함수.
+	 */
+	function toLine (opts, that)	{
+		var target = this;
+
+		return (bio.dependencies.version.d3v4() ? 
+						d3.line() : d3.svg.line())
+							.x(function (d, i)	{
+								return opts.attr.x ? 
+								typeof(opts.attr.x) !== 'function' ?  
+									 		 opts.attr.x : 
+									 		 opts.attr.x.call(target, d, i, that) : 0; 
+							})	
+							.y(function (d, i)	{
+								return opts.attr.y ? 
+								typeof(opts.attr.y) !== 'function' ?  
+											 opts.attr.y : 
+											 opts.attr.y.call(target, d, i, that) : 0; 
+							});
+	};
+
+	return function (opts, that)	{
+		that = that || {};
+
+		bio.rendering().line({
+			element: opts.element,
+			attr: !opts.attr ? null : {
+				id: function (d, i) {
+					return opts.attr.id ? 
+					typeof(opts.attr.id) !== 'function' ?  
+								(opts.id || that.id || 
+								 opts.element.attr('id')) + 
+									'_path' : 
+								 opts.attr.id.call(this, d, i, that) : (opts.id || that.id || 
+								 opts.element.attr('id')) + 
+									'_path';
+				},
+				d: function (d, i)	{
+					return toLine.call(this, opts, that)(opts.data);
+				},
+			},
+			style: !opts.style ? null : {
+				'fill': function (d, i) { 
+					return opts.style.fill ? 
+					typeof(opts.style.fill) !== 'function' ?  
+								 opts.style.fill : opts.style.fill.call(
+								 	this, d, i, that) : '#A8A8A8'; 
+				},
+				'stroke': function (d, i) { 
+					return opts.style.stroke ? 
+					typeof(opts.style.stroke) !== 'function' ?  
+								 opts.style.stroke : 
+								 opts.style.stroke.call(
+								 	this, d, i, that) : '#A8A8A8'; 
+				},
+				'stroke-width': function (d, i) { 
+					return opts.style.strokeWidth ?
+					typeof(opts.style.strokeWidth) !== 'function' ?  
+								 opts.style.strokeWidth : 
+								 opts.style.strokeWidth.call(
+								 	this, d, i, that) : '1px'; 
+				},
+				'stroke-dasharray': function (d, i)	{
+					return opts.style.strokeDash ?
+					typeof(opts.style.strokeDash) !== 'function' ?  
+								 opts.style.strokeDash : 
+								 opts.style.strokeDash.call(
+								 	this, d, i, that) : 'none'; 
+				}
+			},
+		});
+	};
+};
+function rectangle ()	{
+	'use strict';
+
+	var model = {};
+
+	return function (opts, that)	{
+		that = that || {};
+
+		return bio.rendering().rect({
+			element: opts.element,
+			data: opts.data || null,
+			attr: !opts.attr ? null : {
+				id: function (d, i) {
+					return opts.attr.id ? 
+					typeof(opts.attr.id) !== 'function' ?  
+								(opts.id || that.id || 
+								 opts.element.attr('id')) + 
+									'_rect' : 
+								 opts.attr.id.call(this, d, i, that) : (opts.id || that.id || 
+								 opts.element.attr('id')) + 
+									'_rect'
+				},
+				x: function (d, i)	{
+					return opts.attr.x ? 
+					typeof(opts.attr.x) !== 'function' ?  
+								 opts.attr.x : 
+								 opts.attr.x.call(this, d, i, that) : 0;
+				},
+				y: function (d, i)	{
+					return opts.attr.y ? 
+					typeof(opts.attr.y) !== 'function' ?  
+								 opts.attr.y : 
+								 opts.attr.y.call(this, d, i, that) : 0;
+				},
+				rx: function (d, i)	{
+					return opts.attr.rx ? 
+					typeof(opts.attr.rx) !== 'function' ?  
+								 opts.attr.rx : 
+								 opts.attr.rx.call(this, d, i, that) : 0;
+				},
+				ry: function (d, i)	{
+					return opts.attr.ry ? 
+					typeof(opts.attr.ry) !== 'function' ?  
+								 opts.attr.ry : 
+								 opts.attr.ry.call(this, d, i, that) : 0;
+				},
+				width: function (d, i)	{
+					return opts.attr.width ? 
+					typeof(opts.attr.width) !== 'function' ?  
+								 opts.attr.width : 
+								 opts.attr.width.call(this, d, i, that) < 0 ? 
+								 Math.abs(opts.attr.width.call(this, d, i, that)) : 
+								 opts.attr.width.call(this, d, i, that) : 1;
+				},
+				height: function (d, i)	{
+					return opts.attr.height ? 
+					typeof(opts.attr.height) !== 'function' ?  
+								 opts.attr.height : 
+								 opts.attr.height.call(this, d, i, that) < 0 ? 
+								 Math.abs(opts.attr.height.call(this, d, i, that)) : 
+								 opts.attr.height.call(this, d, i, that) : 1;
+				},
+			},
+			style: !opts.style ? null : {
+				'fill': function (d, i) { 
+					return opts.style.fill ? 
+					typeof(opts.style.fill) !== 'function' ?  
+								 opts.style.fill : opts.style.fill.call(
+								 	this, d, i, that) : '#000000'; 
+				},
+				'fill-opacity': function (d, i) { 
+					return opts.style.fillOpacity ? 
+					typeof(opts.style.fillOpacity) !== 'function' ?  
+								 opts.style.fillOpacity : 
+								 opts.style.fillOpacity.call(
+								 	this, d, i, that) : 'none'; 
+				},
+				'stroke': function (d, i) { 
+					return opts.style.stroke ? 
+					typeof(opts.style.stroke) !== 'function' ?  
+								 opts.style.stroke : 
+								 opts.style.stroke.call(
+								 	this, d, i, that) : 'none'; 
+				},
+				'stroke-width': function (d, i) { 
+					return opts.style.strokeWidth ?
+					typeof(opts.style.strokeWidth) !== 'function' ?  
+								 opts.style.strokeWidth : 
+								 opts.style.strokeWidth.call(
+								 	this, d, i, that) : '0px'; 
+				},
+				'filter': function (d, i)	{
+					return opts.style.filter ?
+					typeof(opts.style.filter) !== 'function' ?  
+								 opts.style.filter : 
+								 opts.style.filter.call(
+								 	this, d, i, that) : false; 
+				},
+				'cursor': function (d, i)	{
+					return opts.style.cursor ?
+					typeof(opts.style.cursor) !== 'function' ?  
+								 opts.style.cursor : 
+								 opts.style.cursor.call(
+								 	this, d, i, that) : false; 
+				},
+			},
+			on: !opts.on ? null : {
+				click: function (d, i)	{
+					opts.on.click ? 
+					opts.on.click.call(this, d, i, that) : false;
+				},
+				mouseover: function (d, i)	{
+					opts.on.mouseover ? 
+					opts.on.mouseover.call(this, d, i, that) : false;
+				},
+				mouseout: function (d, i)	{
+					opts.on.mouseout ? 
+					opts.on.mouseout.call(this, d, i, that) : false;
+				},
+			},
+			call: !opts.call ? null : {
+				start: function (d, i)	{
+					opts.call.start ? 
+					opts.call.start.call(this, d, i, that) : false;
+				},
+				drag: function (d, i)	{
+					opts.call.drag ? 
+					opts.call.drag.call(this, d, i, that) : false;
+				},
+				end: function (d, i)	{
+					opts.call.end ? 
+					opts.call.end.call(this, d, i, that) : false;
+				},
+			},
+		});
+	};
+};
+function rendering ()	{
+	'use strict';
+
+	var model = {};
+	/*
+		SVG 태그를 만들어 삽입해주는 함수.
+	 */
+	model.createSVG = function (element, width, height)	{
+		var dom = bio.dom().get(element),
+				classify = dom.id ? '#' + dom.id : 
+						 '.' + dom.className,
+				w = width || parseFloat(dom.style.width),
+				h = height || parseFloat(dom.style.height);
+
+		return d3.select(classify).append('svg')
+						 .attr('id', dom.id + '_svg')
+						 .attr('width', w)
+						 .attr('height', h);
+	};
+	/*
+		SVG 에 group 태그를 추가하는 함수.
+	 */
+	model.addGroup = function (svg, top, left, classify)	{
+		svg = bio.dependencies.version.d3v4() ? svg : svg[0][0];
+		svg = bio.objects.getType(svg) === 'Array' || 
+					bio.objects.getType(svg) === 'Object' ? 
+					svg : d3.select(svg);
+
+		classify = classify || '';
+
+		var id = svg.attr('id'),
+				isExist = d3.selectAll('.' + id + 
+															 '.' + classify + '-g-tag');
+
+		return (isExist.node() ? isExist : svg).append('g')
+			 		.attr('class', id + ' ' + classify + '-g-tag')
+			 		.attr('transform', 
+			 			'translate(' + left + ', ' + top + ')');
+	};
+	/*
+		Attribute 를 적용한다.
+	 */
+	function setAttributes (shape, attrs)	{
+		if (!attrs) { return false; }
+
+		bio.iteration.loop(attrs, function (name, value)	{
+			shape.attr(name, value);
+		});
+	};
+	/*
+		Style 을 적용한다.
+	 */
+	function setStyles (shape, styles)	{
+		if (!styles) { return false; }
+
+		bio.iteration.loop(styles, function (name, value)	{
+			shape.style(name, value);
+		});
+	};
+	/*
+		Event 를 적용한다.
+	 */
+	function setEvents (shape, events)	{
+		if (!events) { return false; }
+
+		bio.iteration.loop(events, function (name, value)	{
+			shape.on(name, value);
+		});
+	};
+	/*
+		Drag 를 적용한다.
+	 */
+	function setDrag (shape, drags)	{
+		if (!drags) { return false; }
+
+		var drag = bio.dependencies.version.d3v4() ? 
+				d3.drag() : d3.behavior.drag().origin(Object);
+
+		bio.iteration.loop(drags, function (name, value)	{
+			name = bio.dependencies.version.d3v4() ? 
+						 name : name !== 'drag' ? 'drag' + name : name;
+
+			drag.on(name, value);
+		});
+
+		shape.call(drag);
+	};
+	/*
+		Text 를 적용한다.
+	 */
+	function setText (shape, text)	{
+		shape.text(text);
+	};
+	/*
+		Attribute, Style, Event 등을 등록해주는 함수.
+	 */
+	function defineShapeConfig (shape)	{
+		if (!this.element)	{
+			throw new Error ('Not defined SVG Element');
+		}
+
+		var s = !this.data ? this.element.append(shape) : 
+						 this.element.data(this.data).enter().append(shape);
+
+		this.text ? setText(s, this.text) : false;
+
+		setAttributes(s, this.attr);
+		setStyles(s, this.style);
+		setEvents(s, this.on);
+		setDrag(s, this.call);
+
+		return s;
+	};
+	/*
+		Rectangle 함수.
+	 */
+	model.rect = function (configs)	{
+		return defineShapeConfig.call(configs, 'rect');
+	};
+	/*
+		Circle 함수.
+	 */
+	model.circle = function (configs)	{
+		return defineShapeConfig.call(configs, 'circle');
+	};
+	/*
+		Triangle 함수.
+	 */
+	model.triangle = function (configs)	{
+		return defineShapeConfig.call(configs, 'polygon');
+	};
+	/*
+		Triangle 을 만드는데 필요한 문자열을 생성해주는 함수.
+	 */
+	model.triangleStr = function (x, y, len, direction)	{
+		var sign = direction === 'left' || 
+							 direction === 'bottom' ? -1 : 1,
+				x1, y1, x2, y2;
+
+		if (direction === 'left' || direction === 'right')	{
+			x1 = (len * sign);
+			y1 = (len / 2 * -1);
+			x2 = x1;
+			y2 = len / 2;
+		} else {
+			x1 = (len / 2 * -1);
+			y1 = (len * sign);
+			x2 = len / 2;
+			y2 = y1;
+		}
+
+		return x + ',' + y + 
+		' ' + (x + x1) + ',' + (y + y1) + 
+		' ' + (x + x2) + ',' + (y + y2) + 
+		 ' ' + x + ',' + y;
+	};
+	/*
+		Text 함수.
+	 */
+	model.text = function (configs)	{
+		return defineShapeConfig.call(configs, 'text');
+	};
+	/*
+		Line 함수.
+	 */
+	model.line = function (configs)	{
+		var path = configs.element.append('path');
+
+		setAttributes(path, configs.attr);
+		setStyles(path, configs.style);
+
+		return path;
+	};
+	/*
+		CSS3 의 box-shadow 기능을 사용하기 위해 svg 에서 제공되는
+		drop shadow filter 를 사용한다.
+	 */
+	model.dropShadow = function (svg, std, dx, dy)	{
+		var defs = svg.append('defs'),
+				filter = defs.append('filter')
+										 .attr('id', 'drop_shadow');
+
+		filter.append('feGaussianBlur')
+					.attr('in', 'SourceAlpha')
+					.attr('stdDeviation', std || 3)
+					.attr('result', 'blur');
+
+		filter.append('feOffset')
+					.attr('in', 'blur')
+					.attr('dx', dx || 2)
+					.attr('dy', dy || 2)
+					.attr('result', 'offsetBlur');
+
+		var feMerge = filter.append('feMerge');
+
+		feMerge.append('feMergeNode')
+					 .attr('in', 'offsetBlur');
+		feMerge.append('feMergeNode')
+					 .attr('in', 'SourceGraphic');
+	};
+	/*
+		Network, Tree 의 path 에 사용될 Arrow 를 그려주는 함수.
+	 */
+	model.marker = function (opts)	{
+		opts.svg.selectAll('marker')
+	     	.data(opts.data || [''])      
+	  	 	.enter().append('svg:marker')
+	     	.attr('id', function (d)	{
+	     		return opts.id ? 'marker_' + d[opts.id] : 'marker';
+	     	})
+	     	.attr('viewBox', '0 -5 10 10')
+	     	.attr('refX', 5)
+	     	.attr('refY', 0)
+	     	.attr('markerWidth', opts.width || 5)
+	     	.attr('markerHeight', opts.height || 5)
+	     	.attr('orient', 'auto')
+	     	.append('svg:path')
+	     	.attr('d', 'M0,-5L10,0L0,5')
+	     	.attr('fill', function (d)	{
+	     		return opts.color ? d[opts.color] : '#333333'; 
+	     	});
+	};
+	/*
+		파라미터 색상의 num 만큼의 opacity 가 적용된 색상을 반환한다.
+	 */
+	model.opacity = function (color, num)	{
+		var rgba = d3.rgb(color);
+				rgba.opacity = num || 0.3;
+
+		return rgba;
+	};
+	/*
+		D3V4 에서는 d3.transform 함수가 제거되었다.
+		그러므로 아래와 같이 코드를 사용하여 구현하였다.
+	 */
+	model.translation = function (transform)	{
+		var g = document.createElementNS(
+						'http://www.w3.org/2000/svg', 'g');
+
+		g.setAttributeNS(null, 'transform', transform);
+
+		var matrix = g.transform.baseVal.consolidate().matrix;
+		
+		return {
+			scale: [matrix.a, matrix.d],
+			translate: [matrix.e, matrix.f],
+			rotate: matrix.b,
+			skew: matrix.c,
+		};
+	};
+
+	return function ()	{
+		return model;
+	};
+};
+function scales ()	{
+	'use strict';
+
+	var model = {};
+	/*
+		Ordinal scale 반환.
+	 */
+	model.ordinal = function (domain, range)	{
+		return bio.dependencies.version.d3v4() ? 
+					 d3.scaleBand().domain(domain).range(range) : 
+					 d3.scale.ordinal().domain(domain).rangeBands(range);
+	};
+	/*
+	 	Linear scale 반환.
+	 */
+	model.linear = function (domain, range)	{
+		return bio.dependencies.version.d3v4() ? 
+					 d3.scaleLinear().domain(domain).range(range) : 
+					 d3.scale.linear().domain(domain).range(range);
+	};
+	/*
+		Domain 데이터에서 첫번째 값이 정수일 경우
+		이는 Linear 데이터로 분류하고 그 외에는 Ordinal 로 분류한다. 
+	 */
+	function scaleType (domain)	{
+		return bio.objects.getType(domain[0]) === 'Number' ? 
+					 'linear' : 'ordinal';
+	};
+	/*
+		Ordinal/ Linear 스케일을 반환하는 함수.
+	 */
+	model.get = function (domain, range)	{
+		return model[scaleType(domain)](domain, range);
+	};
+	/*
+		반전된 Scale 을 반환하는 함수.
+	 */
+	model.invert = function (scale)	{
+		var domain = scale.domain(),
+				range = scale.range();
+
+		var sc = scaleType(domain) === 'linear' ? 
+				bio.dependencies.version.d3v4() ? 
+				d3.scaleLinear() : d3.scale.linear() : 
+				bio.dependencies.version.d3v4() ? 
+				d3.scaleQuantize() : d3.scale.quantize();
+
+		return sc.domain(range).range(domain);
+	};
+	/*
+		Scale bandWidth 값을 반환한다.
+	 */
+	model.band = function (scale)	{
+		return bio.dependencies.version.d3v4() ? 
+					scale.bandwidth() : scale.rangeBand();
+	};	
+
+	return function ()	{
+		return model;
+	};
+};
+function scatter ()	{
+	'use strict';
+
+	var model = {};
+
+	return function (opts, that)	{
+		model = bio.objects.clone(that || {});
+		model = bio.sizing.chart.default(model, opts);
+		model.scatter_data = opts.data;
+		
+		model.copyX = [].concat(opts.xaxis);
+		model.copyY = [].concat(opts.yaxis);
+		model.rangeX = [model.margin.left, 
+			model.width - model.margin.right];
+		model.rangeY = [model.margin.top, 
+			model.height - model.margin.bottom];
+		model.scaleX = bio.scales().get(model.copyX, model.rangeX);
+		model.scaleY = bio.scales().get(model.copyY, model.rangeY);
+
+		model.group = bio.rendering().addGroup(
+										opts.element, 0, 0, 'scatter');
+
+		model.opts = bio.objects.clone(opts);
+		model.opts.data = model.scatter_data;
+		model.opts.id = model.id + '_scatter_shape';
+		model.opts.element = 
+		model.group.selectAll('#' + model.id + '_scatter_shape');
+
+		bio.circle(model.opts, model);
+	};
+};
+function survival ()	{
+	'use strict';
+
+	var model = {};
+	/*
+		Survival data (id, months, status) 반환 함수.
+	 */
+	function getSurvivalData (data)	{
+		var month = {os: [], dfs: []},
+				pure = {os: [], dfs: []},
+				all = {os: [], dfs: []};
+
+		function forPatient (id, month, status, array)	{
+			var obj = {};
+
+			obj[id] = {
+				case_id: id,
+				months: month,
+				status: status,
+			};
+
+			array.push(obj);
+		};
+
+		bio.iteration.loop(data, function (d)	{
+			if (d)	{
+				var osm = (d.os_days / 30),
+						dfsm = (d.dfs_days / 30);
+
+				month.os.push(osm);
+				month.dfs.push(dfsm);
+
+				if (!(osm == null || d.os_status == null))	{
+					forPatient(d.participant_id, osm, d.os_status, pure.os);
+				}
+
+				if (!(dfsm == null || d.dfs_status == null))	{
+					forPatient(d.participant_id, dfsm, d.dfs_status, pure.dfs);
+				}
+
+				forPatient(d.participant_id, osm, d.os_status, all.os);
+				forPatient(d.participant_id, dfsm, d.dfs_status, all.dfs);
+			}
+		});
+
+		return { month: month, pure: pure, all: all };
+	};
+	/*
+		Tab 의 input 을 만드는 함수.
+	 */
+	function tabInput (id, idx)	{
+		var input = document.createElement('input');
+
+		input.id = id + '_survival';
+		input.name = 'tabs';
+		input.type = 'radio';
+		input.checked = idx === 0 ? true : false;
+
+		return input;
+	};
+	/*
+		Tab 의 제목을 그린다.
+	 */
+	function tabLabel (id, name)	{
+		var label = document.createElement('label');
+
+		label.htmlFor = id + '_survival';
+		label.innerHTML = name;
+
+		return label;
+	};
+	/*
+		선택 된 Tab 의 내용이 들어갈 div 를 만든다.
+	 */
+	function tabContent (id, content)	{
+		var div = document.createElement('div');
+
+		return div.id = id, div;
+	};
+	/*
+		Survival tab ui 만드는 함수.
+	 */
+	function makeTab (element, tabs)	{
+		document.querySelector(element).innerHTML = '';
+
+		var div = document.querySelector(element);
+
+		for (var i = 0, l = tabs.length; i < l; i++)	{
+			var name = tabs[i],
+					id = tabs[i].toLowerCase();
+
+			div.appendChild(tabInput(id, i));
+			div.appendChild(tabLabel(id, name));
+		}
+
+		for (var i = 0, l = tabs.length; i < l; i++)	{
+			var area = tabContent(tabs[i].toLowerCase());
+
+			area.appendChild(
+				tabContent(tabs[i].toLowerCase() + '_survival_curve'));
+			area.appendChild(
+				tabContent(tabs[i].toLowerCase() + '_stat_table'))
+			div.appendChild(area);
+		}
+	};
+
+	return function (opts)	{
+		model.survival_data = getSurvivalData(opts.data);
+
+		makeTab(opts.element, ['OS', 'DFS']);
+
+		SurvivalTab.init(opts.division, model.survival_data.pure);
+
+		return model;
+	};
+};
+function text ()	{
+	'use strict';
+
+	var model = {};
+
+	return function (opts, that)	{
+		that = that || {};
+
+		bio.rendering().text({
+			element: opts.element,
+			data: opts.data || null,
+			attr: !opts.attr ? null : {
+				id: function (d) { 
+					return opts.attr.id ? 
+					typeof(opts.attr.id) !== 'function' ?  
+								(opts.id || that.id || 
+								 opts.element.attr('id')) + 
+									'_text' : 
+								 opts.attr.id.call(this, d, i, that) : (opts.id || that.id || 
+								 opts.element.attr('id')) + 
+									'_text';
+				},
+				x: function (d, i)	{
+					return opts.attr.x ? 
+					typeof(opts.attr.x) !== 'function' ?  
+								 opts.attr.x : 
+								 opts.attr.x.call(this, d, i, that) : 0;
+				},
+				y: function (d, i)	{
+					return opts.attr.y ? 
+					typeof(opts.attr.y) !== 'function' ?  
+								 opts.attr.y : 
+								 opts.attr.y.call(this, d, i, that) : 0;
+				},
+				// title: function (d, i)	{
+				// 	return opts.attr.title ? 
+				// 	typeof(opts.attr.title) !== 'function' ?  
+				// 				 opts.attr.title : 
+				// 				 opts.attr.title.call(this, d, i, that) : 0;
+				// },
+			},
+			style: !opts.style ? null : {
+				'fill': function (d, i)	{
+					return opts.style.fill ?
+					typeof(opts.style.fill) !== 'function' ?  
+								 opts.style.fill : 
+								 opts.style.fill.call(
+								 	this, d, i, that) : '#000000';
+				},
+				'font-size': function (d, i)	{
+					return opts.style.fontSize ? 
+					typeof(opts.style.fontSize) !== 'function' ?  
+								 opts.style.fontSize : 
+								 opts.style.fontSize.call(
+								 	this, d, i, that) : '10px';
+				},
+				'font-family': function (d, i) { 
+					return opts.style.fontFamily ? 
+					typeof(opts.style.fontFamily) !== 'function' ?  
+								 opts.style.fontFamily : 
+								 opts.style.fontFamily.call(
+								 	this, d, i, that) : 'Arial'; 
+				},
+				'font-weight': function (d, i) {
+					return opts.style.fontWeight ? 
+					typeof(opts.style.fontWeight) !== 'function' ?  
+								 opts.style.fontWeight : 
+								 opts.style.fontWeight.call(
+								 	this, d, i, that) : 'normal';
+				},
+				'alignment-baseline': function (d, i)	{
+					return opts.style.alignmentBaseline ? 
+					typeof(opts.style.alignmentBaseline) !== 'function' ?  
+								 opts.style.alignmentBaseline : 
+								 opts.style.alignmentBaseline.call(
+								 	this, d, i, that) : 'middle';
+				},
+				'cursor': function (d, i)	{
+					return opts.style.cursor ?
+					typeof(opts.style.cursor) !== 'function' ?  
+								 opts.style.cursor : 
+								 opts.style.cursor.call(
+								 	this, d, i, that) : false; 
+				},
+				'stroke': function (d, i)	{
+					return opts.style.stroke ?
+					typeof(opts.style.stroke) !== 'function' ?  
+								 opts.style.stroke : 
+								 opts.style.stroke.call(
+								 	this, d, i, that) : false; 
+				},
+				'stroke-width': function (d, i)	{
+					return opts.style.strokeWidth ?
+					typeof(opts.style.strokeWidth) !== 'function' ?  
+								 opts.style.strokeWidth : 
+								 opts.style.strokeWidth.call(
+								 	this, d, i, that) : false; 
+				},	
+			},
+			on: !opts.on ? null : {
+				click: function (d, i)	{
+					opts.on.click ? 
+					opts.on.click.call(this, d, i, that) : false;
+				},
+				mouseover: function (d, i)	{
+					opts.on.mouseover ? 
+					opts.on.mouseover.call(this, d, i, that) : false;
+				},
+				mouseout: function (d, i)	{
+					opts.on.mouseout ? 
+					opts.on.mouseout.call(this, d, i, that) : false;
+				},
+			},
+			text: function (d, i)	{ 
+				return opts.text ? typeof(opts.text) !== 'function' ?  
+							 opts.text : opts.text.call(this, d, i, that) : '';
+			},
+		});
+	};
+};
+function triangle ()	{
+	'use strict';
+
+	var model = {};
+
+	return function (opts, that)	{
+		that = that || {};
+
+		bio.rendering().triangle({
+			element: opts.element,
+			data: opts.data || null,
+			attr: !opts.attr ? null : {
+				id: function (d) { 
+					return opts.attr.id ? 
+					typeof(opts.attr.id) !== 'function' ?  
+								(opts.id || that.id || 
+								 opts.element.attr('id')) + 
+									'_triangle' : 
+								 opts.attr.id.call(this, d, i, that) : (opts.id || that.id || 
+								 opts.element.attr('id')) + 
+									'_triangle';
+				},
+				points: function (d, i)	{
+					return opts.attr.points ? 
+					typeof(opts.attr.points) !== 'function' ?  
+								 opts.attr.points : 
+								 opts.attr.points.call(this, d, i, that) : 0;
+				},
+			},
+			style: !opts.style ? null : {
+				'fill': function (d, i) { 
+					return opts.style.fill ? 
+					typeof(opts.style.fill) !== 'function' ?  
+								 opts.style.fill : opts.style.fill.call(
+								 	this, d, i, that) : '#000000'; 
+				},
+				'stroke': function (d, i) { 
+					return opts.style.stroke ? 
+					typeof(opts.style.stroke) !== 'function' ?  
+								 opts.style.stroke : 
+								 opts.style.stroke.call(
+								 	this, d, i, that) : 'none'; 
+				},
+				'stroke-width': function (d, i) { 
+					return opts.style.strokeWidth ?
+					typeof(opts.style.strokeWidth) !== 'function' ?  
+								 opts.style.strokeWidth : 
+								 opts.style.strokeWidth.call(
+								 	this, d, i, that) : '0px'; 
+				},
+				'filter': function (d, i)	{
+					return opts.style.filter ?
+					typeof(opts.style.filter) !== 'function' ?  
+								 opts.style.filter : 
+								 opts.style.filter.call(
+								 	this, d, i, that) : false; 
+				},
+				'cursor': function (d, i)	{
+					return opts.style.cursor ?
+					typeof(opts.style.cursor) !== 'function' ?  
+								 opts.style.cursor : 
+								 opts.style.cursor.call(
+								 	this, d, i, that) : false; 
+				},
+			},
+			on: !opts.on ? null : {
+				click: function (d, i)	{
+					opts.on.click ? 
+					opts.on.click.call(this, d, i, that) : false;
+				},
+				mouseover: function (d, i)	{
+					opts.on.mouseover ? 
+					opts.on.mouseover.call(this, d, i, that) : false;
+				},
+				mouseout: function (d, i)	{
+					opts.on.mouseout ? 
+					opts.on.mouseout.call(this, d, i, that) : false;
+				},
+			},
+			call: !opts.call ? null : {
+				start: function (d, i)	{
+					opts.call.start ? 
+					opts.call.start.call(this, d, i, that) : false;
+				},
+				drag: function (d, i)	{
+					opts.call.drag ? 
+					opts.call.drag.call(this, d, i, that) : false;
+				},
+				end: function (d, i)	{
+					opts.call.end ? 
+					opts.call.end.call(this, d, i, that) : false;
+				},
+			},
+		});
+	};
+};
 function boilerPlate ()	{
 	'use strict';
 
@@ -494,20 +2391,20 @@ function sizing ()	{
 	// Chart 별 영역의 크기 설정 및 ID List 생성.
 	model.chart.landscape = function (ele, w, h, group, isPlotted)	{
 		var id = {
-			landscape_temp_sample: { width: w * 0.1, height: h * 0.15 },
+			landscape_temp_sample: { width: w * 0.12, height: h * 0.15 },
 			landscape_axis_sample: { width: w * 0.14, height: h * 0.15 },
 			landscape_patient_sample: { width: w * 0.01, height: h * 0.15 },
-			landscape_sample: { width: w * 0.65, height: h * 0.15 },
+			landscape_sample: { width: w * 0.63, height: h * 0.15 },
 			landscape_scale_option: { width: w * 0.1, height: h * 0.15 },
-			landscape_option: { width: w * 0.1, height: h * 0.16 },
+			landscape_option: { width: w * 0.12, height: h * 0.16 },
 			landscape_axis_group: { width: w * 0.14, height: h * 0.15 },
 			landscape_patient_group: { width: w * 0.01, height: h * 0.16 },
-			landscape_group: { width: w * 0.65, height: h * 0.16 },
+			landscape_group: { width: w * 0.63, height: h * 0.16 },
 			landscape_temp_group: { width: w * 0.1, height: h * 0.16 },
 			landscape_legend: { width: w * 0.12, height: h * 0.64},
 			landscape_gene: { width: w * 0.14, height: h * 0.64 },
 			landscape_patient_heatmap: { width: w * 0.01, height: h * 0.64 },
-			landscape_heatmap: { width: w * 0.65, height: h * 0.64 },
+			landscape_heatmap: { width: w * 0.63, height: h * 0.64 },
 			landscape_pq: { width: w * 0.1, height: h * 0.64 },
 		};
 
@@ -607,6 +2504,69 @@ function sizing ()	{
 	};
 
 	return model;
+};
+function handler ()	{
+	'use strict';
+
+	var model = {};
+	/*
+		스크롤 이벤트 핸들러.
+	 */
+	function scroll (target, callback)	{
+		bio.dom().get(target)
+			 .addEventListener('scroll', callback, false);
+	};
+	/*
+	 	특정 이벤트 중 이벤트가 바디태그에서는 Disable 하게 만들어주는 함수.
+	 */
+	function preventBodyEvent (ele, events)	{
+		var DOEVENT = false;
+
+		// 사용자가 지정한 DIV 에 마우스 휠을 작동할때는, 바디에 마우스 휠
+		// 이벤트를 막아놓는다.
+		document.body.addEventListener(events, function (e)	{
+			if (DOEVENT)	{
+				if (e.preventDefault) {
+					e.preventDefault();
+				}
+
+				return false;
+			}
+		});
+
+		ele.addEventListener('mouseenter', function (e)	{
+			DOEVENT = true;
+		});
+
+		ele.addEventListener('mouseleave', function (e)	{
+			DOEVENT = false;
+		});
+	};
+	/*
+		x, y 스크롤이 hidden 일 때, 스크롤을 가능하게 해주는 함수.
+	 */
+	function scrollOnHidden (element, callback)	{
+		if (!element)	{
+			throw new Error('No given element');
+		}
+
+		preventBodyEvent(element, 'mousewheel');
+
+		element.addEventListener('mousewheel', function (e)	{
+			element.scrollTop += element.wheelDelta;
+
+			if (callback) {
+				callback.call(element, e);
+			}
+		});
+	};
+
+	return function ()	{
+		return {
+			scroll: scroll,
+			scrollOnHidden: scrollOnHidden,
+		};
+	};
 };
 function commonConfig ()	{
 	'use strict';
@@ -2691,1966 +4651,6 @@ function variantsConfig ()	{
 		};
 	};
 };
-function axises ()	{
-	'use strict';
-
-	var model = {
-		axises: {},
-	};
-	/*
-		D3 v3 과 v4 에서 axis 코드 차이가 있으므로 아래 함수에서
-		구분지어 줬다.
-	 */
-	model.byD3v = function (scale, orient, opts)	{
-		var axis = (bio.dependencies.version.d3v4() ? 
-							 d3['axis' + orient.pronoun()](scale) : 
-							 d3.svg.axis().scale(scale).orient(orient)).ticks(5);
-		// TickValues 가 존재할 경우 적용.
-		if (opts && opts.tickValues)	{
-			axis.tickValues(opts.tickValues);
-		} else if (opts && opts.ticks)	{
-			axis.ticks(opts.ticks);
-		}
-
-		return axis;
-	};
-	/*
-		초기 세팅 함수.
-	 */
-	function setting (type, opts)	{
-		var position = [opts.top || 0, opts.left || 0],
-				group = bio.rendering().addGroup(
-				opts.element, position[0], position[1], type + '-axis');
-
-		return {
-			group: group,
-			position: position,
-			margin: bio.sizing.setMargin(opts.margin),
-			scale: bio.scales().get(opts.domain, opts.range),
-		};
-	};
-	/*
-		Path, Line, Text 중 제외시킬 부분을 받아
-		Axis 에서 제외한다.
-	 */
-	function exclude (group, item)	{
-		if (typeof(item) !== 'string')	{
-			throw new Error ('2nd Parameter type is not a string');
-		} else if (!item)	{
-			return group;
-		}
-
-		return group.selectAll(item).remove(), group; 
-	};
-	/*
-		최종 반환 함수.
-	 */
-	function returnGroup (setting, opts, direction)	{
-		var set = model.byD3v(setting.scale, direction, opts);
-
-		if (opts.tickValues)	{
-
-		}
-
-		return opts.exclude ? 
-			exclude(setting.group.call(set), opts.exclude) : 
-			 				setting.group.call(set);
-	};
-	/*
-		Data structure: {
-			element: 'SVG Element',
-			top: 'Top of axis',
-			left: 'Left of axis',
-			domain: 'Axis's domain data',
-			range: 'Axis's range data',
-			margin: 'Margin for axis',
-			exclude: 'Path, Line, Text' or '', ...,
-		}
-	 */
-	model.top = function (opts)	{
-		return returnGroup(setting('top', opts), opts, 'top');
-	};
-
-	model.left = function (opts)	{
-		return returnGroup(setting('left', opts), opts, 'left');
-	};
-
-	model.bottom = function (opts)	{
-		return returnGroup(setting('bottom', opts), opts, 'bottom');
-	};
-
-	model.right = function (opts)	{
-		return returnGroup(setting('right', opts), opts, 'right');
-	};
-
-	return function ()	{
-		return model;
-	};
-};
-function bar ()	{
-	'use strict';
-
-	var model = {};
-	/*
-		Range 값을 구해주는 함수.
-	 */
-	function range (size, m1, m2, start)	{
-		return start === 'left' || start === 'top' ? 
-					[m1, size - m2]: [size - m2, m1];
-	};
-
-	return function (opts, that)	{
-		model = bio.objects.clone(that || {});
-		model = bio.sizing.chart.default(model, opts);
-
-		model.copyX = [].concat(opts.xaxis);
-		model.copyY = [].concat(opts.yaxis);
-		model.startTo = opts.startTo || ['top', 'left'];
-		model.rangeX = range(model.width, model.margin.left, 
-												 model.margin.right, model.startTo[1]);
-		model.rangeY = range(model.height, model.margin.top, 
-												 model.margin.bottom, model.startTo[0]);
-		model.scaleX = bio.scales().get(model.copyX, model.rangeX);
-		model.scaleY = bio.scales().get(model.copyY, model.rangeY);
-
-		model.group = bio.rendering().addGroup(
-										opts.element, 0, 0, 'bar');
-
-		model.opts = bio.objects.clone(opts);
-		model.opts.id = model.id + '_bar_rect';
-		model.opts.element = 
-		model.group.selectAll('.' + model.id + '_bar_rect')
-
-		bio.rectangle(model.opts, model);
-	};
-};
-function circle ()	{
-	'use strict';
-
-	var model = {};
-
-	return function (opts, that)	{
-		that = that || {};
-
-		bio.rendering().circle({
-			element: opts.element,
-			data: opts.data || null,
-			attr: !opts.attr ? null : {
-				id: function (d, i) { 
-					return opts.attr.id ? 
-					typeof(opts.attr.id) !== 'function' ?  
-								(opts.id || that.id || 
-								 opts.element.attr('id')) + 
-									'_circle' : 
-								 opts.attr.id.call(this, d, i, that) : (opts.id || that.id || 
-								 opts.element.attr('id')) + 
-									'_circle'
-				},
-				cx: function (d, i)	{
-					return opts.attr.cx ? 
-					typeof(opts.attr.cx) !== 'function' ?  
-								 opts.attr.cx : 
-								 opts.attr.cx.call(this, d, i, that) : 0;
-				},
-				cy: function (d, i)	{
-					return opts.attr.cy ? 
-					typeof(opts.attr.cy) !== 'function' ?  
-								 opts.attr.cy : 
-								 opts.attr.cy.call(this, d, i, that) : 0;
-				},
-				r: function (d, i)	{
-					return opts.attr.r ? 
-					typeof(opts.attr.r) !== 'function' ?  
-								 opts.attr.r : 
-								 opts.attr.r.call(this, d, i, that) : 0;
-				},
-			},
-			style: !opts.style ? null : {
-				'fill': function (d, i) { 
-					return opts.style.fill ? 
-					typeof(opts.style.fill) !== 'function' ?  
-								 opts.style.fill : opts.style.fill.call(
-								 	this, d, i, that) : '#000000'; 
-				},
-				'fill-opacity': function (d, i)	{
-					return opts.style.fillOpacity ? 
-					typeof(opts.style.fillOpacity) !== 'function' ?  
-								 opts.style.fillOpacity : 
-								 opts.style.fillOpacity.call(
-								 	this, d, i, that) : 1; 
-				},
-				'stroke': function (d, i) { 
-					return opts.style.stroke ? 
-					typeof(opts.style.stroke) !== 'function' ?  
-								 opts.style.stroke : 
-								 opts.style.stroke.call(
-								 	this, d, i, that) : 'none'; 
-				},
-				'stroke-width': function (d, i) { 
-					return opts.style.strokeWidth ?
-					typeof(opts.style.strokeWidth) !== 'function' ?  
-								 opts.style.strokeWidth : 
-								 opts.style.strokeWidth.call(
-								 	this, d, i, that) : '0px'; 
-				},
-				'filter': function (d, i)	{
-					return opts.style.filter ?
-					typeof(opts.style.filter) !== 'function' ?  
-								 opts.style.filter : 
-								 opts.style.filter.call(
-								 	this, d, i, that) : false; 
-				},
-				'cursor': function (d, i)	{
-					return opts.style.cursor ?
-					typeof(opts.style.cursor) !== 'function' ?  
-								 opts.style.cursor : 
-								 opts.style.cursor.call(
-								 	this, d, i, that) : false; 
-				},
-			},
-			on: !opts.on ? null : {
-				click: function (d, i)	{
-					opts.on.click ? 
-					opts.on.click.call(this, d, i, that) : false;
-				},
-				mouseover: function (d, i)	{
-					opts.on.mouseover ? 
-					opts.on.mouseover.call(this, d, i, that) : false;
-				},
-				mouseout: function (d, i)	{
-					opts.on.mouseout ? 
-					opts.on.mouseout.call(this, d, i, that) : false;
-				},
-			},
-		});
-	};
-};
-function divisionLine ()	{
-	'use strict';
-
-	var model = {};
-
-	return function (opts, that)	{
-		model = bio.objects.clone(that || {});
-		model = bio.sizing.chart.default(model, opts);
-		model.position = { now: {}, init: {} };
-		model.isMarker = typeof(opts.isMarker) === 'undefined' ? true : opts.isMarker;
-		opts.pathElement = 
-		bio.objects.getType(opts.pathElement) !== 'Array' ? 
-		[opts.pathElement] : opts.pathElement;
-		model.division_data = opts.data;
-		model.division_info = opts.info || [
-			{ 
-				additional: 0, color: '#000000', direction: null, 
-				text: 'Low', textWidth: 10,
-			},
-			{ 
-				additional: 0, color: '#FFFFFF', direction: null, 
-				text: 'High', textWidth: 10,
-			}
-		];
-
-		bio.iteration.loop(model.division_info, function (di)	{
-			di.textWidth = bio.drawing().textSize.width(
-			di.text.replace(' ', 'a'), opts.style.fontSize || '10px');
-		});
-
-		model.axis = [].concat(opts.axis);
-		model.range = [model.margin.left, model.width - 
-										model.margin.right];
-		model.scale = bio.scales().get(model.axis, model.range);
-		model.invert = bio.scales().invert(model.scale);
-
-		if (that.data.bar)	{
-			bio.iteration.loop(that.data.bar, function (bar)	{
-				if (bar.value === opts.idxes[0])	{
-					model.division_info[0].start = model.scale(bar.x);
-				} else if (bar.value === opts.idxes[1])	{	
-					model.division_info[0].end = model.scale(bar.x);
-					model.division_info[1].start = model.scale(bar.x);
-				} else if (bar.value === opts.idxes[2])	{
-					model.division_info[1].end = model.scale(bar.x);
-				}
-			});
-		} else if (model.now.geneset)	{
-			model.division_info[0].start = model.scale(model.axis[0]);
-			model.division_info[0].end = model.scale(opts.idxes);
-			model.division_info[1].start = model.scale(opts.idxes);
-			model.division_info[1].end = 
-			model.scale(model.axis.length - 1);
-		}
-
-		model.shapeGroup = bio.rendering().addGroup(
-												opts.element, 0, 0, 'division-shape');
-		model.textGroup = bio.rendering().addGroup(
-												opts.element, 0, 0, 'division-text');
-		model.opts = {
-			text: bio.objects.clone(opts),
-			shape: bio.objects.clone(opts),
-		};
-
-		model.opts.text.id = model.id + '_division_text';
-		model.opts.text.data = model.division_info;
-		model.opts.text.element = 
-		model.textGroup.selectAll(
-			'#' + model.id + '_division_text');
-		model.opts.shape.id = model.id + '_division_shape';
-		model.opts.shape.data = model.division_info;
-		model.opts.shape.element = 
-		model.shapeGroup.selectAll(
-			'#' + model.id + '_division_shape');
-
-		bio.text(model.opts.text, model);
-		bio.rectangle(model.opts.shape, model);
-
-		bio.iteration.loop(opts.pathElement, function (path, i)	{
-			var shape_key = 'shape_' + i,
-					path_key = 'path_' + i,
-					cp1 = bio.objects.clone(model.division_info[i]),
-					cp2 = bio.objects.clone(model.division_info[i]),
-					markers = [cp1, cp2];
-
-			cp1.path_x = model.division_info[0].end;
-			cp2.path_x = model.division_info[0].end;
-			cp1.path_y = i === 0 ? 10 : 0;
-			cp2.path_y = i === 0 ? 
-			path.attr('height') : path.attr('height') - 18;
-
-			model.opts[path_key] = bio.objects.clone(opts);
-			model.opts[path_key].id = 
-			model.id + '_division_path_' + i;
-			model.opts[path_key].data = markers;
-			model.opts[path_key].element = 
-			bio.rendering().addGroup(path, 0, 0, 'division-path-' + i);
-
-			model.opts[shape_key] = bio.objects.clone(opts);
-			model.opts[shape_key].id = 
-			model.id + '_division_shape_' + i;
-			model.opts[shape_key].data = [markers[i]];
-			model.opts[shape_key].element = 
-			bio.rendering().addGroup(path, 0, 0, 'division-shape-' + i)
-				 .selectAll('#' + model.id + '_division_shape_' + i);
-			if (model.isMarker)	{
-				bio.triangle({
-					element: model.opts[shape_key].element,
-					data: model.opts[shape_key].data,
-					attr: model.opts[shape_key].attr,
-					style: model.opts[shape_key].style,
-					call: model.opts[shape_key].call,
-				}, model);
-			}
-
-			bio.path({
-				element: model.opts[path_key].element,
-				data: model.opts[path_key].data,
-				attr: model.opts[path_key].attr,
-				style: {
-					stroke: '#333333',
-					strokeWidth: '0.5px',
-				},
-			}, model);
-		});
-	};
-};
-function drawing ()	{
-	'use strict';
-
-	var model = { textSize: {} };
-	/*
-		Text 가로 길이 구하는 함수.
-	 */
-	function textWidth (text)	{
-		return text.getBoundingClientRect().width.toFixed();
-	};
-	/*
-		Text 세로 길이 구하는 함수.
-	 */
-	function textHeight (text, block)	{
-		// var result = {};
-
-  //   block.style.verticalAlign = 'baseline';
-  //   result.ascent = block.offsetTop - text.offsetTop;
-  //   block.style.verticalAlign = 'bottom';
-  //   result.height = block.offsetTop - text.offsetTop;
-  //   result.descent = result.height - result.ascent;
-
-    return text.getBoundingClientRect().height.toFixed();
-    // return block.offsetTop - text.offsetTop - 2;
-	  // return result.height - 2;
-	};
-	/*
-		Text 의 가로, 세로 길이를 구해주는 중립 함수.
-	 */
-	function getTextSize (type, txt, font)	{
-		var text = document.createElement('span'),
-				block = document.createElement('div'),
-				div = document.createElement('div');
-
-		if (type === 'width') {
-			font = font.split(' ');
-		} else {
-			txt = txt.split(' ');
-		}
-
-		div.id = 'get_text_' + type;
-
-		text.style.fontSize = type === 'width' ? font[0] : txt[0];
-		text.style.fontWeight = type === 'width' ? font[1] : txt[1];
-		text.innerHTML = type === 'width' ? txt : 'Hg';
-
-		block.style.display = 'inline-block';
-		block.style.width = '1px';
-		block.style.height = '0px';
-
-		div.appendChild(text);
-		div.appendChild(block);
-
-		document.body.appendChild(div);
-
-		try {
-			var result = text.getBoundingClientRect()[type].toFixed();
-			// var result = type === 'width' ? 
-			// 		textWidth(text) : textHeight(text, block);
-		} finally {
-			document.body.removeChild(
-    		document.getElementById('get_text_' + type));
-		}
-
-    return parseFloat(result);
-	};
-	/*
-		문자열의 가로 길이를 반환하는 함수.
-	 */
-	model.textSize.width = function (txt, font)	{
-		return getTextSize('width', txt, font);
-	};
-	/*
-		Text 배열에서 가장 길이가 긴 문자열과 그 길이를 반환한다.
-	 */
-	model.mostWidth = function (txts, font)	{
-		var result = [];
-
-		bio.iteration.loop(txts, function (txt)	{
-			result.push({
-				text: txt,
-				value: model.textSize.width(txt, font)
-			});
-		});
-
-		// 내림차순 정렬 후 가장 큰 값 (0번째 값) 을 반환한다.
-		return result.sort(function (a, b)	{
-			return a.value < b.value ? 1 : -1;
-		})[0];
-	};
-	/*
-		문자열의 세로 길이를 반환하는 함수.
-	 */
-	model.textSize.height = function (font)	{
-		return getTextSize('height', font);
-	};
-	/*
-		전달 된 가로, 세로길이에 맞춰 font 의 크기를 정해주는 함수.
-	 */
-	model.fitText = function (txt, width, height, font)	{
-		var num = 10,	// default 10px.
-				fontStr =  num + 'px ' + (font || 'normal'); 
-
-		while (model.textSize.height(fontStr) < height && 
-					model.textSize.width(txt, fontStr) < width)	{
-		
-			fontStr = (num += 1, num) + 'px ' + font;
-		}
-
-		return (num - 1) + 'px';
-	};
-	/*
-		영역안에서 문자열이 넘어갈 경우 그 부분을 제거 해준다.
-	 */
-	model.textOverflow = function (txt, font, width, padding)	{
-		var result = '';
-		
-		padding = padding || 5;
-
-		if (model.textSize.width(txt, font) < width - padding)	{
-			return txt;
-		}
-
-		bio.iteration.loop(txt.split(''), function (t)	{
-			var txtWidth = model.textSize.width(result += t, font);
-
-			if (txtWidth > width - padding)	{
-				result = result.substring(0, result.length - 2);
-
-				return;
-			}
-		});
-
-		return result;
-	};
-	/*
-		현재 노드의 SVG 엘리먼트를 가져온다.
-	 */
-	model.getParentSVG = function (node)	{
-		if (node.parentElement.tagName === 'svg')	{
-			return node.parentElement;
-		} 
-
-		return model.getParentSVG(node.parentElement);
-	};
-	/*
-		Legend 그룹의 자식노드들을 반환한다.
-	 */
-	model.nthChild = function (classify, idx)	{
-		return d3.select(classify).node().children[idx];
-	};
-	/*
-		Source 엘리먼트에서 destination 엘리먼트를 찾는 함수.
-	 */
-	model.findDom = function (source, destination)	{
-		if (source.children < 1)	{
-			throw new Error('There are no any child elements');
-		}
-
-		var sourceList = Array.prototype.slice.call(source.children),
-				result = null;
-
-		bio.iteration.loop(sourceList, function (child)	{
-			if (child.tagName === destination.toUpperCase() || 
-		'.' + child.className === destination || 
-		'#' + child.id === destination)	{
-				result = child;
-
-				return;
-			} 
-		});
-
-		return result;
-	};
-	/*
-		Slide down 애니메이션 구현 함수.
-	 */
-	model.slideDown = function (target)	{
-		var init = target.style.height ? 
-				parseFloat(target.style.height) : 
-				target.getBoundingClientRect().height,
-				height = 0;
-
-		target.style.height = 0 + 'px';
-
-		var interval = setInterval(function ()	{
-			height += 1;
-			target.style.height = height + 'px';
-
-			if (height === init)	{
-				clearInterval(interval);
-			}
-		}, 5);
-	};
-
-	/*
-		Slide down 애니메이션 구현 함수.
-	 */
-	model.slideUp = function (target)	{
-		var init = target.style.height ? 
-				parseFloat(target.style.height) : 
-				target.getBoundingClientRect().height,
-				height = parseFloat(target.style.height);
-
-		var interval = setInterval(function ()	{
-			height -= 1;
-			target.style.height = height + 'px';
-
-			if (height === 0)	{
-				clearInterval(interval);
-
-				target.style.height = init + 'px'
-				target.style.display = 'none';
-			}
-		}, 5);
-	};
-	/*
-		Client 에 존재하는 또는 서버에 있는 SVG 파일을 읽어와
-		Callback 또는 SVG 를 반환하는 함수.
-	 */
-	model.importSVG = function (url, callback)	{
-		var result = null;
-
-		d3.xml(url).mimeType('image/svg+xml')
-			.get(function (err, xml)	{
-				if (err) throw err;
-
-				return callback ? callback(xml) : result = xml;		
-			});
-
-		return result;
-	};
-
-	model.nodes = function (selection)	{
-		var result = [];
-
-		selection.each(function (d)	{
-			result.push(this)
-		});
-
-		return result;
-	}
-
-	return function ()	{
-		return model;
-	};
-};
-function heat ()	{
-	'use strict';
-
-	var model = {};
-	/*
-		중복 처리 된 데이터들을 다시 재 가공 시켜주는 함수.
-	 */
-	function makeNoneDuplicateData (values)	{
-		bio.iteration.loop(values, function (key, value)	{
-			bio.iteration.loop(model.mutationType, function (m)	{
-				if (value[m][0])	{
-					model.duplicate.push({
-						x: value.x,
-						y: value.y,
-						value: value[m][0],
-						info: value[m].splice(1),
-					});
-				}
-			});
-		});
-
-		return model.duplicate;
-	};
-	/*
-		같은 위치에서 중복된 데이터가 여러개일 경우
-		가장 우선순위가 높은 것을 제외하고는 객체로 만들어 저장한다.
-	 */
-	function removeDuplicate (data)	{
-		bio.iteration.loop(data, function (d)	{
-			var key = d.x + d.y,
-					prio = bio.landscapeConfig().byCase(d.value);
-
-			model.value[key] ? 
-			bio.boilerPlate.variantInfo[model.value[key][prio][0]] > 
-			bio.boilerPlate.variantInfo[d.value] ? 
-			model.value[key][prio].unshift(d.value) : 
-			model.value[key][prio].push(d.value) : 
-		 (model.value[key] = { cnv: [], var: [], x: d.x, y: d.y }, 
-		 	model.value[key][prio].push(d.value));
-		});
-
-		return makeNoneDuplicateData(model.value);
-	};
-
-	return function (opts, that)	{
-		model = bio.objects.clone(that || {});
-		model = bio.sizing.chart.default(model, opts);
-		
-		model.copyX = [].concat(opts.xaxis);
-		model.copyY = [].concat(opts.yaxis);
-		model.rangeX = [model.margin.left, 
-			model.width - model.margin.right];
-		model.rangeY = [model.margin.top, 
-			model.height - model.margin.bottom];
-		model.scaleX = bio.scales().get(model.copyX, model.rangeX);
-		model.scaleY = bio.scales().get(model.copyY, model.rangeY);
-
-		model.group = bio.rendering().addGroup(
-										opts.element, 0, 0, 'heatmap');
-
-		model.opts = bio.objects.clone(opts);
-		model.opts.data = model.duplicate ? 
-			removeDuplicate(model.opts.data) : model.opts.data;
-		model.opts.id = model.id + '_heatmap_rect';
-		model.opts.element = 
-		model.group.selectAll('.' + model.id + '_heatmap_rect');
-
-		bio.rectangle(model.opts, model);
-	};
-};
-function legend ()	{
-	'use strict';
-
-	var model = {};
-
-	return function (opts, that)	{
-		model = bio.objects.clone(that || {});
-		model = bio.sizing.chart.default(model, opts);
-		model.legendData = opts.data;
-
-		model.padding = opts.padding || 5;
-		model.fontSize = opts.style.font || '10px';
-		model.fontWidth = bio.drawing().mostWidth(
-												model.legendData, model.fontSize);
-		model.fontHeight = bio.drawing()
-				 .textSize.height(model.fontSize);
-		model.shapeWidth = model.width - 
-	 (model.margin.left + model.margin.right + 
-	 	model.fontWidth.value);
-
-		model.shapeGroup = bio.rendering().addGroup(
-												opts.element, model.margin.top, 
-												model.margin.left, 'legend-shape');
-		model.textGroup = bio.rendering().addGroup(
-												opts.element, model.margin.top, 
-												model.margin.left, 'legend-text');
-
-		model.opts = {
-			text: bio.objects.clone(opts),
-			shape: bio.objects.clone(opts),
-		};
-		model.opts.text.id = model.id + '_legend_text';
-		model.opts.text.element = 
-		model.textGroup.selectAll('#' + model.id + '_legend_text');
-		model.opts.shape.id = model.id + '_legend_shape';
-		model.opts.shape.element = 
-		model.shapeGroup.selectAll('#' + model.id + '_legend_shape');
-
-		if (opts.attr && opts.attr.width)	{
-			bio.rectangle(model.opts.shape, model);
-		} else if (opts.attr && opts.attr.r)	{
-			bio.circle(model.opts.shape, model);
-		} else if (opts.attr && opts.attr.points)	{
-			bio.triangle(model.opts.shape, model);
-		}
-
-		bio.text(model.opts.text, model);
-
-		var div = opts.element.node().parentNode,
-				bcr = model.textGroup.node().getBoundingClientRect();
-		// Legend div 를 type 수에 맞는 세로 길이로 재 설정한다.
-		div.style.height = bcr.height + 
-		model.margin.top + model.padding + 'px';
-		// 왼쪽에 바짝 붙은 div 를 조금 떨어뜨리기 위한 코드.
-		div.style.width = model.width - 5 + 'px';
-	};
-};
-function needle ()	{
-	'use strict';
-
-	var model = {};
-	/*
-		Range 값을 구해주는 함수.
-	 */
-	function range (size, m1, m2, start)	{
-		return start === 'left' || start === 'top' ? 
-					[m1, size - m2] : [size - m2, m1];
-	};
-
-	return function (opts, that)	{
-		model = bio.objects.clone(that || {});
-		model = bio.sizing.chart.default(model, opts);
-
-		model.copyX = [].concat(opts.xaxis);
-		model.copyY = [].concat(opts.yaxis);
-		model.rangeX = [model.margin.left, 
-			model.width - model.margin.right];
-		model.rangeY = [model.height - model.margin.bottom, 
-										model.margin.top];
-		model.scaleX = bio.scales().get(model.copyX, model.rangeX);
-		model.scaleY = bio.scales().get(model.copyY, model.rangeY);
-
-		model.lineGroup = bio.rendering().addGroup(
-										opts.element, 0, 0, 'needle-line');
-		model.shapeGroup = bio.rendering().addGroup(
-										opts.element, 0, 0, 'needle-shape');
-
-		model.opts = {
-			line: bio.objects.clone(opts),
-			shape: bio.objects.clone(opts),
-		};
-		model.opts.line.element = model.lineGroup;
-		model.opts.shape.data = opts.shapeData;
-		model.opts.shape.element = 
-		model.shapeGroup.selectAll('#' + model.id + '_needle_shape');
-
-		bio.iteration.loop(opts.lineData, function (ld)	{
-			model.opts.line.data = ld.value;		
-
-			bio.path(model.opts.line, model);
-		});
-
-		bio.circle(model.opts.shape, model);
-	};
-};
-function network ()	{
-	'use strict';
-
-	var model = {};
-	/*
-		Version 3/4 에 따라서 force 함수가 변경되었다.
-	 */
-	function v3 (nodes, links)	{
-		return d3.layout.force()
-										.nodes(nodes)
-										.links(links)
-										.charge(-300)
-										.linkDistance(150);
-	};
-
-	function v4 (nodes, links)	{
-		return d3.forceSimulation(nodes) 
-      			 .force('charge',
-      			 	d3.forceManyBody().strength(function (d, i)	{
-      			 		return d.group ? 
-      			 		-300 - (600 * (d.radius / 100)) : 
-      			 		-300 - (600 * (d.radius / 100));
-      			 	}))
-      			 .force('link', 
-      			 	d3.forceLink(links)
-      			 		.id(function(d) { return d.text; })
-      			 		.distance(function (d)	{
-      			 			return d.source.group && d.target.group ? 
-      			 						90 - (90 * (d.source.radius / 100)) : 
-      			 						d.isOne === 1 ? 
-      			 						10 + (1050 * (d.source.radius / 100)) : 
-      			 						190 - (190 * (d.source.radius / 100));
-      			 		})) 
-      			 .force('x', d3.forceX(function (d)	{
-      			 		return d.group ? model.width / 2.1 : 
-      			 			model.width - model.width * (d.index / 10);
-      			 }))
-      			 .force('y', d3.forceY(function (d)	{
-      			 		return d.group ? model.height / 2.5 : 
-      			 										 model.height * 0.95;
-      			 }));
-	};
-
-	function buildArea (className, top, left, width, height)	{
-		var g = bio.rendering().addGroup(
-						model.element, 0, 0, className);
-
-		bio.rectangle({
-			id: className,
-			element: g,
-			attr: {
-				rx: 2, 
-				ry: 2, 
-				y: top,
-				x: left, 
-				width: width, 
-				height: height,
-			},
-			style: {
-				strokeWidth: 2,
-				fill: '#FFFFFF',
-				stroke: '#333333',
-				filter: 'url("#drop_shadow")',
-				fillOpacity: function (d)	{
-					return className === 'compound' ? 1 : 0.3;
-				},
-			},
-		}, model);
-	};
-
-	function writeInfo (text, top, left)	{
-		var g = bio.rendering().addGroup(
-						model.element, 0, 0, 'network-info');
-
-		bio.text({
-			element: g,
-			text: text,
-			id: 'network_info',
-			attr: { x: left, y: top },
-			style: { fontSize: '16px', fontWeight: 'bold' },
-		});
-	};
-
-	return function (opts, that)	{
-		model = bio.objects.clone(that || {});
-		model = bio.sizing.chart.default(model, opts);
-		model.bcr = model.element.node().getBoundingClientRect();
-		model.network_data = opts.data;
-		model.arrow_width = 5;
-
-		var compound = null,
-				nodes = [],
-				links = [];
-		// Compound, Nodes, Links 분류 작업.
-		bio.iteration.loop(model.network_data, function (net)	{
-			net.type === 'compound' ? compound = net : 
-			net.type === 'node' ? nodes.push(net) : links.push(net);
-		});
-		// Member 는 그룹으로 분류.
-		bio.iteration.loop(nodes, function (node)	{
-			if (compound.members.indexOf(node.text) > -1)	{
-				node.group = 1;
-			}
-			// 노드의 위치 고정 및 반지름 크기 설정.
-			// node.fixed = true;
-			node.radius = (bio.drawing().textSize
-							.width(node.text, '12px') + 10) / 2;
-		});
-		// 여러개의 노드가 오직 하나의 선을 가지며 그 선은 오로지
-		// 그룹 밖의 노드로 향할때.
-		var linkIsOne = {};
-
-		bio.iteration.loop(links, function (link)	{
-			linkIsOne[link.target] = true;
-		});
-
-		bio.iteration.loop(links, function (link)	{
-			link.isOne = Object.keys(linkIsOne).length;
-		});
-		// Grouping, Information 영역 설정 및 Line 의 marker 설정.
-		bio.rendering().dropShadow(
-					model.element.append('svg:defs'), 1, -0.1, 1);
-		bio.rendering().marker({
-			id: 'id',
-			data: links,
-			color: 'linecolor',
-			width: model.arrow_width,
-			height: model.arrow_width,
-			svg: model.element.append('svg:defs'),
-		});
-		buildArea('infomation', model.height * 0.05, 10, 
-					model.width - 20, model.height * 0.1);
-		buildArea('compound', model.height * 0.15, 10, 
-				model.width - 20, model.height * 0.54);
-		writeInfo(compound.text, 
-			model.height * 0.105, model.width / 2 - 
-			bio.drawing().textSize.width(compound.text, '16px') / 2);
-		// Force layout 생성.
-		var force = bio.dependencies.version.d3v4() ? 
-								v4(nodes, links) : v3(nodes, links);
-		// Animation 없이 draw.
-		for (var i = 0, n = 
-			Math.ceil(Math.log(force.alphaMin()) /
-			Math.log(1 - force.alphaDecay())); i < n; ++i) {
-	    force.tick();
-	  }
-	  // Link 와 Node 의 그룹 태그 생성.
-		var linkLayer = bio.rendering().addGroup(
-					model.element, 0, 0, 'link-layer'),
-				nodeLayer = bio.rendering().addGroup(
-					model.element, 0, 0, 'node-layer');
-
-		var link = linkLayer.selectAll('.link')
-												.data(links).enter()
-												.append('svg:path')
-												.attr('class', 'link')
-												.attr('marker-end', function (d)	{
-													return 'url("#marker_' + d.id + '")';
-												})
-												.style('fill', '#FFFFFF')
-												.style('fill-opacity', 0.1)
-												.style('stroke', function (d)	{
-													return d.linecolor;
-												})
-												.style('stroke-width', 1.5)
-												.style('stroke-dasharray', function (d)	{
-													return d.style === 'Dashed' ? '3, 3' : 'none';
-												});
-
-		var node = nodeLayer.selectAll('.node')
-												.data(nodes)
-												.enter().append('g')
-												.attr('class',' node');
-
-		node.append('circle')
-				.attr('r', function (d)	{
-					return (bio.drawing().textSize
-										 .width(d.text, '12px') + 10) / 2;
-				})
-				.attr('fill', function (d)	{ return d.bgcolor; })
-				.attr('stroke', '#333333')
-				.attr('stroke-width', 1);
-
-		node.append('text')
-				.attr('dx', 0)
-				.attr('dy', 5)
-				.attr('text-anchor', 'middle')
-				.style('font-size', '12px')
-				.style('font-weight', 'bold')
-				.text(function (d)	{ return d.text; });
-		// Force.tick() 함수로 호출되는 함수.
-		var ticked = force.on('tick', function ()	{
-			node.attr('transform', function (d, i)	{
-				d.x = d.group ? d.x : model.width / 2.5;
-				d.y = d.group ? d.y : model.height * 0.78;
-			});
-
-			link.attr('d', function (d)	{
-				// 타겟 원의 테두리로 화살표가 닿게끔 하는 코드.
-				var dx = d.target.x - d.source.x,
-						dy = d.target.y - d.source.y,
-						dr = Math.sqrt(dx * dx + dy * dy);
-
-				var offsetX = dx * (d.target.radius + 
-											model.arrow_width) / dr,
-						offsetY = dy * (d.target.radius + 
-											model.arrow_width) / dr;
-
-				return 'M' + d.source.x + ',' + d.source.y + 
-							 'A' + dr + ',' + dr + ' 0 0,1 ' + 
-          					(d.target.x - offsetX) + ',' + 
-          					(d.target.y - offsetY);
-			});
-
-			node.attr('transform', function (d)	{
-				return 'translate(' + d.x + ',' + d.y + ')';
-			});
-		});
-	};
-};
-function path ()	{
-	'use strict';
-
-	var model = {};
-	/*
-		D3 Line 함수.
-	 */
-	function toLine (opts, that)	{
-		var target = this;
-
-		return (bio.dependencies.version.d3v4() ? 
-						d3.line() : d3.svg.line())
-							.x(function (d, i)	{
-								return opts.attr.x ? 
-								typeof(opts.attr.x) !== 'function' ?  
-									 		 opts.attr.x : 
-									 		 opts.attr.x.call(target, d, i, that) : 0; 
-							})	
-							.y(function (d, i)	{
-								return opts.attr.y ? 
-								typeof(opts.attr.y) !== 'function' ?  
-											 opts.attr.y : 
-											 opts.attr.y.call(target, d, i, that) : 0; 
-							});
-	};
-
-	return function (opts, that)	{
-		that = that || {};
-
-		bio.rendering().line({
-			element: opts.element,
-			attr: !opts.attr ? null : {
-				id: function (d, i) {
-					return opts.attr.id ? 
-					typeof(opts.attr.id) !== 'function' ?  
-								(opts.id || that.id || 
-								 opts.element.attr('id')) + 
-									'_path' : 
-								 opts.attr.id.call(this, d, i, that) : (opts.id || that.id || 
-								 opts.element.attr('id')) + 
-									'_path';
-				},
-				d: function (d, i)	{
-					return toLine.call(this, opts, that)(opts.data);
-				},
-			},
-			style: !opts.style ? null : {
-				'fill': function (d, i) { 
-					return opts.style.fill ? 
-					typeof(opts.style.fill) !== 'function' ?  
-								 opts.style.fill : opts.style.fill.call(
-								 	this, d, i, that) : '#A8A8A8'; 
-				},
-				'stroke': function (d, i) { 
-					return opts.style.stroke ? 
-					typeof(opts.style.stroke) !== 'function' ?  
-								 opts.style.stroke : 
-								 opts.style.stroke.call(
-								 	this, d, i, that) : '#A8A8A8'; 
-				},
-				'stroke-width': function (d, i) { 
-					return opts.style.strokeWidth ?
-					typeof(opts.style.strokeWidth) !== 'function' ?  
-								 opts.style.strokeWidth : 
-								 opts.style.strokeWidth.call(
-								 	this, d, i, that) : '1px'; 
-				},
-				'stroke-dasharray': function (d, i)	{
-					return opts.style.strokeDash ?
-					typeof(opts.style.strokeDash) !== 'function' ?  
-								 opts.style.strokeDash : 
-								 opts.style.strokeDash.call(
-								 	this, d, i, that) : 'none'; 
-				}
-			},
-		});
-	};
-};
-function rectangle ()	{
-	'use strict';
-
-	var model = {};
-
-	return function (opts, that)	{
-		that = that || {};
-
-		return bio.rendering().rect({
-			element: opts.element,
-			data: opts.data || null,
-			attr: !opts.attr ? null : {
-				id: function (d, i) {
-					return opts.attr.id ? 
-					typeof(opts.attr.id) !== 'function' ?  
-								(opts.id || that.id || 
-								 opts.element.attr('id')) + 
-									'_rect' : 
-								 opts.attr.id.call(this, d, i, that) : (opts.id || that.id || 
-								 opts.element.attr('id')) + 
-									'_rect'
-				},
-				x: function (d, i)	{
-					return opts.attr.x ? 
-					typeof(opts.attr.x) !== 'function' ?  
-								 opts.attr.x : 
-								 opts.attr.x.call(this, d, i, that) : 0;
-				},
-				y: function (d, i)	{
-					return opts.attr.y ? 
-					typeof(opts.attr.y) !== 'function' ?  
-								 opts.attr.y : 
-								 opts.attr.y.call(this, d, i, that) : 0;
-				},
-				rx: function (d, i)	{
-					return opts.attr.rx ? 
-					typeof(opts.attr.rx) !== 'function' ?  
-								 opts.attr.rx : 
-								 opts.attr.rx.call(this, d, i, that) : 0;
-				},
-				ry: function (d, i)	{
-					return opts.attr.ry ? 
-					typeof(opts.attr.ry) !== 'function' ?  
-								 opts.attr.ry : 
-								 opts.attr.ry.call(this, d, i, that) : 0;
-				},
-				width: function (d, i)	{
-					return opts.attr.width ? 
-					typeof(opts.attr.width) !== 'function' ?  
-								 opts.attr.width : 
-								 opts.attr.width.call(this, d, i, that) < 0 ? 
-								 Math.abs(opts.attr.width.call(this, d, i, that)) : 
-								 opts.attr.width.call(this, d, i, that) : 1;
-				},
-				height: function (d, i)	{
-					return opts.attr.height ? 
-					typeof(opts.attr.height) !== 'function' ?  
-								 opts.attr.height : 
-								 opts.attr.height.call(this, d, i, that) < 0 ? 
-								 Math.abs(opts.attr.height.call(this, d, i, that)) : 
-								 opts.attr.height.call(this, d, i, that) : 1;
-				},
-			},
-			style: !opts.style ? null : {
-				'fill': function (d, i) { 
-					return opts.style.fill ? 
-					typeof(opts.style.fill) !== 'function' ?  
-								 opts.style.fill : opts.style.fill.call(
-								 	this, d, i, that) : '#000000'; 
-				},
-				'fill-opacity': function (d, i) { 
-					return opts.style.fillOpacity ? 
-					typeof(opts.style.fillOpacity) !== 'function' ?  
-								 opts.style.fillOpacity : 
-								 opts.style.fillOpacity.call(
-								 	this, d, i, that) : 'none'; 
-				},
-				'stroke': function (d, i) { 
-					return opts.style.stroke ? 
-					typeof(opts.style.stroke) !== 'function' ?  
-								 opts.style.stroke : 
-								 opts.style.stroke.call(
-								 	this, d, i, that) : 'none'; 
-				},
-				'stroke-width': function (d, i) { 
-					return opts.style.strokeWidth ?
-					typeof(opts.style.strokeWidth) !== 'function' ?  
-								 opts.style.strokeWidth : 
-								 opts.style.strokeWidth.call(
-								 	this, d, i, that) : '0px'; 
-				},
-				'filter': function (d, i)	{
-					return opts.style.filter ?
-					typeof(opts.style.filter) !== 'function' ?  
-								 opts.style.filter : 
-								 opts.style.filter.call(
-								 	this, d, i, that) : false; 
-				},
-				'cursor': function (d, i)	{
-					return opts.style.cursor ?
-					typeof(opts.style.cursor) !== 'function' ?  
-								 opts.style.cursor : 
-								 opts.style.cursor.call(
-								 	this, d, i, that) : false; 
-				},
-			},
-			on: !opts.on ? null : {
-				click: function (d, i)	{
-					opts.on.click ? 
-					opts.on.click.call(this, d, i, that) : false;
-				},
-				mouseover: function (d, i)	{
-					opts.on.mouseover ? 
-					opts.on.mouseover.call(this, d, i, that) : false;
-				},
-				mouseout: function (d, i)	{
-					opts.on.mouseout ? 
-					opts.on.mouseout.call(this, d, i, that) : false;
-				},
-			},
-			call: !opts.call ? null : {
-				start: function (d, i)	{
-					opts.call.start ? 
-					opts.call.start.call(this, d, i, that) : false;
-				},
-				drag: function (d, i)	{
-					opts.call.drag ? 
-					opts.call.drag.call(this, d, i, that) : false;
-				},
-				end: function (d, i)	{
-					opts.call.end ? 
-					opts.call.end.call(this, d, i, that) : false;
-				},
-			},
-		});
-	};
-};
-function rendering ()	{
-	'use strict';
-
-	var model = {};
-	/*
-		SVG 태그를 만들어 삽입해주는 함수.
-	 */
-	model.createSVG = function (element, width, height)	{
-		var dom = bio.dom().get(element),
-				classify = dom.id ? '#' + dom.id : 
-						 '.' + dom.className,
-				w = width || parseFloat(dom.style.width),
-				h = height || parseFloat(dom.style.height);
-
-		return d3.select(classify).append('svg')
-						 .attr('id', dom.id + '_svg')
-						 .attr('width', w)
-						 .attr('height', h);
-	};
-	/*
-		SVG 에 group 태그를 추가하는 함수.
-	 */
-	model.addGroup = function (svg, top, left, classify)	{
-		svg = bio.dependencies.version.d3v4() ? svg : svg[0][0];
-		svg = bio.objects.getType(svg) === 'Array' || 
-					bio.objects.getType(svg) === 'Object' ? 
-					svg : d3.select(svg);
-
-		classify = classify || '';
-
-		var id = svg.attr('id'),
-				isExist = d3.selectAll('.' + id + 
-															 '.' + classify + '-g-tag');
-
-		return (isExist.node() ? isExist : svg).append('g')
-			 		.attr('class', id + ' ' + classify + '-g-tag')
-			 		.attr('transform', 
-			 			'translate(' + left + ', ' + top + ')');
-	};
-	/*
-		Attribute 를 적용한다.
-	 */
-	function setAttributes (shape, attrs)	{
-		if (!attrs) { return false; }
-
-		bio.iteration.loop(attrs, function (name, value)	{
-			shape.attr(name, value);
-		});
-	};
-	/*
-		Style 을 적용한다.
-	 */
-	function setStyles (shape, styles)	{
-		if (!styles) { return false; }
-
-		bio.iteration.loop(styles, function (name, value)	{
-			shape.style(name, value);
-		});
-	};
-	/*
-		Event 를 적용한다.
-	 */
-	function setEvents (shape, events)	{
-		if (!events) { return false; }
-
-		bio.iteration.loop(events, function (name, value)	{
-			shape.on(name, value);
-		});
-	};
-	/*
-		Drag 를 적용한다.
-	 */
-	function setDrag (shape, drags)	{
-		if (!drags) { return false; }
-
-		var drag = bio.dependencies.version.d3v4() ? 
-				d3.drag() : d3.behavior.drag().origin(Object);
-
-		bio.iteration.loop(drags, function (name, value)	{
-			name = bio.dependencies.version.d3v4() ? 
-						 name : name !== 'drag' ? 'drag' + name : name;
-
-			drag.on(name, value);
-		});
-
-		shape.call(drag);
-	};
-	/*
-		Text 를 적용한다.
-	 */
-	function setText (shape, text)	{
-		shape.text(text);
-	};
-	/*
-		Attribute, Style, Event 등을 등록해주는 함수.
-	 */
-	function defineShapeConfig (shape)	{
-		if (!this.element)	{
-			throw new Error ('Not defined SVG Element');
-		}
-
-		var s = !this.data ? this.element.append(shape) : 
-						 this.element.data(this.data).enter().append(shape);
-
-		this.text ? setText(s, this.text) : false;
-
-		setAttributes(s, this.attr);
-		setStyles(s, this.style);
-		setEvents(s, this.on);
-		setDrag(s, this.call);
-
-		return s;
-	};
-	/*
-		Rectangle 함수.
-	 */
-	model.rect = function (configs)	{
-		return defineShapeConfig.call(configs, 'rect');
-	};
-	/*
-		Circle 함수.
-	 */
-	model.circle = function (configs)	{
-		return defineShapeConfig.call(configs, 'circle');
-	};
-	/*
-		Triangle 함수.
-	 */
-	model.triangle = function (configs)	{
-		return defineShapeConfig.call(configs, 'polygon');
-	};
-	/*
-		Triangle 을 만드는데 필요한 문자열을 생성해주는 함수.
-	 */
-	model.triangleStr = function (x, y, len, direction)	{
-		var sign = direction === 'left' || 
-							 direction === 'bottom' ? -1 : 1,
-				x1, y1, x2, y2;
-
-		if (direction === 'left' || direction === 'right')	{
-			x1 = (len * sign);
-			y1 = (len / 2 * -1);
-			x2 = x1;
-			y2 = len / 2;
-		} else {
-			x1 = (len / 2 * -1);
-			y1 = (len * sign);
-			x2 = len / 2;
-			y2 = y1;
-		}
-
-		return x + ',' + y + 
-		' ' + (x + x1) + ',' + (y + y1) + 
-		' ' + (x + x2) + ',' + (y + y2) + 
-		 ' ' + x + ',' + y;
-	};
-	/*
-		Text 함수.
-	 */
-	model.text = function (configs)	{
-		return defineShapeConfig.call(configs, 'text');
-	};
-	/*
-		Line 함수.
-	 */
-	model.line = function (configs)	{
-		var path = configs.element.append('path');
-
-		setAttributes(path, configs.attr);
-		setStyles(path, configs.style);
-
-		return path;
-	};
-	/*
-		CSS3 의 box-shadow 기능을 사용하기 위해 svg 에서 제공되는
-		drop shadow filter 를 사용한다.
-	 */
-	model.dropShadow = function (svg, std, dx, dy)	{
-		var defs = svg.append('defs'),
-				filter = defs.append('filter')
-										 .attr('id', 'drop_shadow');
-
-		filter.append('feGaussianBlur')
-					.attr('in', 'SourceAlpha')
-					.attr('stdDeviation', std || 3)
-					.attr('result', 'blur');
-
-		filter.append('feOffset')
-					.attr('in', 'blur')
-					.attr('dx', dx || 2)
-					.attr('dy', dy || 2)
-					.attr('result', 'offsetBlur');
-
-		var feMerge = filter.append('feMerge');
-
-		feMerge.append('feMergeNode')
-					 .attr('in', 'offsetBlur');
-		feMerge.append('feMergeNode')
-					 .attr('in', 'SourceGraphic');
-	};
-	/*
-		Network, Tree 의 path 에 사용될 Arrow 를 그려주는 함수.
-	 */
-	model.marker = function (opts)	{
-		opts.svg.selectAll('marker')
-	     	.data(opts.data || [''])      
-	  	 	.enter().append('svg:marker')
-	     	.attr('id', function (d)	{
-	     		return opts.id ? 'marker_' + d[opts.id] : 'marker';
-	     	})
-	     	.attr('viewBox', '0 -5 10 10')
-	     	.attr('refX', 5)
-	     	.attr('refY', 0)
-	     	.attr('markerWidth', opts.width || 5)
-	     	.attr('markerHeight', opts.height || 5)
-	     	.attr('orient', 'auto')
-	     	.append('svg:path')
-	     	.attr('d', 'M0,-5L10,0L0,5')
-	     	.attr('fill', function (d)	{
-	     		return opts.color ? d[opts.color] : '#333333'; 
-	     	});
-	};
-	/*
-		파라미터 색상의 num 만큼의 opacity 가 적용된 색상을 반환한다.
-	 */
-	model.opacity = function (color, num)	{
-		var rgba = d3.rgb(color);
-				rgba.opacity = num || 0.3;
-
-		return rgba;
-	};
-	/*
-		D3V4 에서는 d3.transform 함수가 제거되었다.
-		그러므로 아래와 같이 코드를 사용하여 구현하였다.
-	 */
-	model.translation = function (transform)	{
-		var g = document.createElementNS(
-						'http://www.w3.org/2000/svg', 'g');
-
-		g.setAttributeNS(null, 'transform', transform);
-
-		var matrix = g.transform.baseVal.consolidate().matrix;
-		
-		return {
-			scale: [matrix.a, matrix.d],
-			translate: [matrix.e, matrix.f],
-			rotate: matrix.b,
-			skew: matrix.c,
-		};
-	};
-
-	return function ()	{
-		return model;
-	};
-};
-function scales ()	{
-	'use strict';
-
-	var model = {};
-	/*
-		Ordinal scale 반환.
-	 */
-	model.ordinal = function (domain, range)	{
-		return bio.dependencies.version.d3v4() ? 
-					 d3.scaleBand().domain(domain).range(range) : 
-					 d3.scale.ordinal().domain(domain).rangeBands(range);
-	};
-	/*
-	 	Linear scale 반환.
-	 */
-	model.linear = function (domain, range)	{
-		return bio.dependencies.version.d3v4() ? 
-					 d3.scaleLinear().domain(domain).range(range) : 
-					 d3.scale.linear().domain(domain).range(range);
-	};
-	/*
-		Domain 데이터에서 첫번째 값이 정수일 경우
-		이는 Linear 데이터로 분류하고 그 외에는 Ordinal 로 분류한다. 
-	 */
-	function scaleType (domain)	{
-		return bio.objects.getType(domain[0]) === 'Number' ? 
-					 'linear' : 'ordinal';
-	};
-	/*
-		Ordinal/ Linear 스케일을 반환하는 함수.
-	 */
-	model.get = function (domain, range)	{
-		return model[scaleType(domain)](domain, range);
-	};
-	/*
-		반전된 Scale 을 반환하는 함수.
-	 */
-	model.invert = function (scale)	{
-		var domain = scale.domain(),
-				range = scale.range();
-
-		var sc = scaleType(domain) === 'linear' ? 
-				bio.dependencies.version.d3v4() ? 
-				d3.scaleLinear() : d3.scale.linear() : 
-				bio.dependencies.version.d3v4() ? 
-				d3.scaleQuantize() : d3.scale.quantize();
-
-		return sc.domain(range).range(domain);
-	};
-	/*
-		Scale bandWidth 값을 반환한다.
-	 */
-	model.band = function (scale)	{
-		return bio.dependencies.version.d3v4() ? 
-					scale.bandwidth() : scale.rangeBand();
-	};	
-
-	return function ()	{
-		return model;
-	};
-};
-function scatter ()	{
-	'use strict';
-
-	var model = {};
-
-	return function (opts, that)	{
-		model = bio.objects.clone(that || {});
-		model = bio.sizing.chart.default(model, opts);
-		model.scatter_data = opts.data;
-		
-		model.copyX = [].concat(opts.xaxis);
-		model.copyY = [].concat(opts.yaxis);
-		model.rangeX = [model.margin.left, 
-			model.width - model.margin.right];
-		model.rangeY = [model.margin.top, 
-			model.height - model.margin.bottom];
-		model.scaleX = bio.scales().get(model.copyX, model.rangeX);
-		model.scaleY = bio.scales().get(model.copyY, model.rangeY);
-
-		model.group = bio.rendering().addGroup(
-										opts.element, 0, 0, 'scatter');
-
-		model.opts = bio.objects.clone(opts);
-		model.opts.data = model.scatter_data;
-		model.opts.id = model.id + '_scatter_shape';
-		model.opts.element = 
-		model.group.selectAll('#' + model.id + '_scatter_shape');
-
-		bio.circle(model.opts, model);
-	};
-};
-function survival ()	{
-	'use strict';
-
-	var model = {};
-	/*
-		Survival data (id, months, status) 반환 함수.
-	 */
-	function getSurvivalData (data)	{
-		var month = {os: [], dfs: []},
-				pure = {os: [], dfs: []},
-				all = {os: [], dfs: []};
-
-		function forPatient (id, month, status, array)	{
-			var obj = {};
-
-			obj[id] = {
-				case_id: id,
-				months: month,
-				status: status,
-			};
-
-			array.push(obj);
-		};
-
-		bio.iteration.loop(data, function (d)	{
-			if (d)	{
-				var osm = (d.os_days / 30),
-						dfsm = (d.dfs_days / 30);
-
-				month.os.push(osm);
-				month.dfs.push(dfsm);
-
-				if (!(osm == null || d.os_status == null))	{
-					forPatient(d.participant_id, osm, d.os_status, pure.os);
-				}
-
-				if (!(dfsm == null || d.dfs_status == null))	{
-					forPatient(d.participant_id, dfsm, d.dfs_status, pure.dfs);
-				}
-
-				forPatient(d.participant_id, osm, d.os_status, all.os);
-				forPatient(d.participant_id, dfsm, d.dfs_status, all.dfs);
-			}
-		});
-
-		return { month: month, pure: pure, all: all };
-	};
-	/*
-		Tab 의 input 을 만드는 함수.
-	 */
-	function tabInput (id, idx)	{
-		var input = document.createElement('input');
-
-		input.id = id + '_survival';
-		input.name = 'tabs';
-		input.type = 'radio';
-		input.checked = idx === 0 ? true : false;
-
-		return input;
-	};
-	/*
-		Tab 의 제목을 그린다.
-	 */
-	function tabLabel (id, name)	{
-		var label = document.createElement('label');
-
-		label.htmlFor = id + '_survival';
-		label.innerHTML = name;
-
-		return label;
-	};
-	/*
-		선택 된 Tab 의 내용이 들어갈 div 를 만든다.
-	 */
-	function tabContent (id, content)	{
-		var div = document.createElement('div');
-
-		return div.id = id, div;
-	};
-	/*
-		Survival tab ui 만드는 함수.
-	 */
-	function makeTab (element, tabs)	{
-		document.querySelector(element).innerHTML = '';
-
-		var div = document.querySelector(element);
-
-		for (var i = 0, l = tabs.length; i < l; i++)	{
-			var name = tabs[i],
-					id = tabs[i].toLowerCase();
-
-			div.appendChild(tabInput(id, i));
-			div.appendChild(tabLabel(id, name));
-		}
-
-		for (var i = 0, l = tabs.length; i < l; i++)	{
-			var area = tabContent(tabs[i].toLowerCase());
-
-			area.appendChild(
-				tabContent(tabs[i].toLowerCase() + '_survival_curve'));
-			area.appendChild(
-				tabContent(tabs[i].toLowerCase() + '_stat_table'))
-			div.appendChild(area);
-		}
-	};
-
-	return function (opts)	{
-		model.survival_data = getSurvivalData(opts.data);
-
-		makeTab(opts.element, ['OS', 'DFS']);
-
-		SurvivalTab.init(opts.division, model.survival_data.pure);
-
-		return model;
-	};
-};
-function text ()	{
-	'use strict';
-
-	var model = {};
-
-	return function (opts, that)	{
-		that = that || {};
-
-		bio.rendering().text({
-			element: opts.element,
-			data: opts.data || null,
-			attr: !opts.attr ? null : {
-				id: function (d) { 
-					return opts.attr.id ? 
-					typeof(opts.attr.id) !== 'function' ?  
-								(opts.id || that.id || 
-								 opts.element.attr('id')) + 
-									'_text' : 
-								 opts.attr.id.call(this, d, i, that) : (opts.id || that.id || 
-								 opts.element.attr('id')) + 
-									'_text';
-				},
-				x: function (d, i)	{
-					return opts.attr.x ? 
-					typeof(opts.attr.x) !== 'function' ?  
-								 opts.attr.x : 
-								 opts.attr.x.call(this, d, i, that) : 0;
-				},
-				y: function (d, i)	{
-					return opts.attr.y ? 
-					typeof(opts.attr.y) !== 'function' ?  
-								 opts.attr.y : 
-								 opts.attr.y.call(this, d, i, that) : 0;
-				},
-				// title: function (d, i)	{
-				// 	return opts.attr.title ? 
-				// 	typeof(opts.attr.title) !== 'function' ?  
-				// 				 opts.attr.title : 
-				// 				 opts.attr.title.call(this, d, i, that) : 0;
-				// },
-			},
-			style: !opts.style ? null : {
-				'fill': function (d, i)	{
-					return opts.style.fill ?
-					typeof(opts.style.fill) !== 'function' ?  
-								 opts.style.fill : 
-								 opts.style.fill.call(
-								 	this, d, i, that) : '#000000';
-				},
-				'font-size': function (d, i)	{
-					return opts.style.fontSize ? 
-					typeof(opts.style.fontSize) !== 'function' ?  
-								 opts.style.fontSize : 
-								 opts.style.fontSize.call(
-								 	this, d, i, that) : '10px';
-				},
-				'font-family': function (d, i) { 
-					return opts.style.fontFamily ? 
-					typeof(opts.style.fontFamily) !== 'function' ?  
-								 opts.style.fontFamily : 
-								 opts.style.fontFamily.call(
-								 	this, d, i, that) : 'Arial'; 
-				},
-				'font-weight': function (d, i) {
-					return opts.style.fontWeight ? 
-					typeof(opts.style.fontWeight) !== 'function' ?  
-								 opts.style.fontWeight : 
-								 opts.style.fontWeight.call(
-								 	this, d, i, that) : 'normal';
-				},
-				'alignment-baseline': function (d, i)	{
-					return opts.style.alignmentBaseline ? 
-					typeof(opts.style.alignmentBaseline) !== 'function' ?  
-								 opts.style.alignmentBaseline : 
-								 opts.style.alignmentBaseline.call(
-								 	this, d, i, that) : 'middle';
-				},
-				'cursor': function (d, i)	{
-					return opts.style.cursor ?
-					typeof(opts.style.cursor) !== 'function' ?  
-								 opts.style.cursor : 
-								 opts.style.cursor.call(
-								 	this, d, i, that) : false; 
-				},
-				'stroke': function (d, i)	{
-					return opts.style.stroke ?
-					typeof(opts.style.stroke) !== 'function' ?  
-								 opts.style.stroke : 
-								 opts.style.stroke.call(
-								 	this, d, i, that) : false; 
-				},
-				'stroke-width': function (d, i)	{
-					return opts.style.strokeWidth ?
-					typeof(opts.style.strokeWidth) !== 'function' ?  
-								 opts.style.strokeWidth : 
-								 opts.style.strokeWidth.call(
-								 	this, d, i, that) : false; 
-				},	
-			},
-			on: !opts.on ? null : {
-				click: function (d, i)	{
-					opts.on.click ? 
-					opts.on.click.call(this, d, i, that) : false;
-				},
-				mouseover: function (d, i)	{
-					opts.on.mouseover ? 
-					opts.on.mouseover.call(this, d, i, that) : false;
-				},
-				mouseout: function (d, i)	{
-					opts.on.mouseout ? 
-					opts.on.mouseout.call(this, d, i, that) : false;
-				},
-			},
-			text: function (d, i)	{ 
-				return opts.text ? typeof(opts.text) !== 'function' ?  
-							 opts.text : opts.text.call(this, d, i, that) : '';
-			},
-		});
-	};
-};
-function triangle ()	{
-	'use strict';
-
-	var model = {};
-
-	return function (opts, that)	{
-		that = that || {};
-
-		bio.rendering().triangle({
-			element: opts.element,
-			data: opts.data || null,
-			attr: !opts.attr ? null : {
-				id: function (d) { 
-					return opts.attr.id ? 
-					typeof(opts.attr.id) !== 'function' ?  
-								(opts.id || that.id || 
-								 opts.element.attr('id')) + 
-									'_triangle' : 
-								 opts.attr.id.call(this, d, i, that) : (opts.id || that.id || 
-								 opts.element.attr('id')) + 
-									'_triangle';
-				},
-				points: function (d, i)	{
-					return opts.attr.points ? 
-					typeof(opts.attr.points) !== 'function' ?  
-								 opts.attr.points : 
-								 opts.attr.points.call(this, d, i, that) : 0;
-				},
-			},
-			style: !opts.style ? null : {
-				'fill': function (d, i) { 
-					return opts.style.fill ? 
-					typeof(opts.style.fill) !== 'function' ?  
-								 opts.style.fill : opts.style.fill.call(
-								 	this, d, i, that) : '#000000'; 
-				},
-				'stroke': function (d, i) { 
-					return opts.style.stroke ? 
-					typeof(opts.style.stroke) !== 'function' ?  
-								 opts.style.stroke : 
-								 opts.style.stroke.call(
-								 	this, d, i, that) : 'none'; 
-				},
-				'stroke-width': function (d, i) { 
-					return opts.style.strokeWidth ?
-					typeof(opts.style.strokeWidth) !== 'function' ?  
-								 opts.style.strokeWidth : 
-								 opts.style.strokeWidth.call(
-								 	this, d, i, that) : '0px'; 
-				},
-				'filter': function (d, i)	{
-					return opts.style.filter ?
-					typeof(opts.style.filter) !== 'function' ?  
-								 opts.style.filter : 
-								 opts.style.filter.call(
-								 	this, d, i, that) : false; 
-				},
-				'cursor': function (d, i)	{
-					return opts.style.cursor ?
-					typeof(opts.style.cursor) !== 'function' ?  
-								 opts.style.cursor : 
-								 opts.style.cursor.call(
-								 	this, d, i, that) : false; 
-				},
-			},
-			on: !opts.on ? null : {
-				click: function (d, i)	{
-					opts.on.click ? 
-					opts.on.click.call(this, d, i, that) : false;
-				},
-				mouseover: function (d, i)	{
-					opts.on.mouseover ? 
-					opts.on.mouseover.call(this, d, i, that) : false;
-				},
-				mouseout: function (d, i)	{
-					opts.on.mouseout ? 
-					opts.on.mouseout.call(this, d, i, that) : false;
-				},
-			},
-			call: !opts.call ? null : {
-				start: function (d, i)	{
-					opts.call.start ? 
-					opts.call.start.call(this, d, i, that) : false;
-				},
-				drag: function (d, i)	{
-					opts.call.drag ? 
-					opts.call.drag.call(this, d, i, that) : false;
-				},
-				end: function (d, i)	{
-					opts.call.end ? 
-					opts.call.end.call(this, d, i, that) : false;
-				},
-			},
-		});
-	};
-};
-function handler ()	{
-	'use strict';
-
-	var model = {};
-	/*
-		스크롤 이벤트 핸들러.
-	 */
-	function scroll (target, callback)	{
-		bio.dom().get(target)
-			 .addEventListener('scroll', callback, false);
-	};
-	/*
-	 	특정 이벤트 중 이벤트가 바디태그에서는 Disable 하게 만들어주는 함수.
-	 */
-	function preventBodyEvent (ele, events)	{
-		var DOEVENT = false;
-
-		// 사용자가 지정한 DIV 에 마우스 휠을 작동할때는, 바디에 마우스 휠
-		// 이벤트를 막아놓는다.
-		document.body.addEventListener(events, function (e)	{
-			if (DOEVENT)	{
-				if (e.preventDefault) {
-					e.preventDefault();
-				}
-
-				return false;
-			}
-		});
-
-		ele.addEventListener('mouseenter', function (e)	{
-			DOEVENT = true;
-		});
-
-		ele.addEventListener('mouseleave', function (e)	{
-			DOEVENT = false;
-		});
-	};
-	/*
-		x, y 스크롤이 hidden 일 때, 스크롤을 가능하게 해주는 함수.
-	 */
-	function scrollOnHidden (element, callback)	{
-		if (!element)	{
-			throw new Error('No given element');
-		}
-
-		preventBodyEvent(element, 'mousewheel');
-
-		element.addEventListener('mousewheel', function (e)	{
-			element.scrollTop += element.wheelDelta;
-
-			if (callback) {
-				callback.call(element, e);
-			}
-		});
-	};
-
-	return function ()	{
-		return {
-			scroll: scroll,
-			scrollOnHidden: scrollOnHidden,
-		};
-	};
-};
 function exclusivity ()	{
 	'use strict';
 
@@ -5096,7 +5096,30 @@ function expression ()	{
 			className: 'expression-function',
 			clickItem: function (value)	{
 				model.now.function = value;
+				model.data.bar = model.data.func.bar[value];
+				model.data.axis.bar.x = 
+				model.data.func.xaxis[value];
+				model.data.axis.bar.y = 
+				model.data.func.yaxis[value];
+				model.data.axis.scatter.x = 
+				model.data.func.xaxis[value];
+				model.data.axis.heatmap.x = 
+				model.data.func.xaxis[value];
 
+				bio.layout().removeGroupTag([
+					'.expression_bar_plot_svg.bar-g-tag',
+					'.expression_bar_plot_svg.left-axis-g-tag',
+					'.expression_bar_plot_svg.division-path-0-g-tag',
+					'.expression_bar_plot_svg.division-shape-0-g-tag',
+					'.expression_scatter_plot_svg.scatter-g-tag',
+					'.expression_scatter_plot_svg.left-axis-g-tag',
+					'.expression_scatter_plot_svg.division-path-1-g-tag',
+					'.expression_scatter_plot_svg.division-shape-1-g-tag'
+				]);
+				// drawHeatmap(model.data, model.data.axis.heatmap, model.data.axis.gradient.x);
+				drawFunctionBar(model.data, model.data.axis.bar);
+				drawScatter(model.data, model.data.axis.scatter, model.now.osdfs);
+				drawDivision(model.data);
 			},
 		});
 	};
@@ -5339,7 +5362,7 @@ function expression ()	{
 			var config = bio.expressionConfig(),
 					shapeCnf = config.bar('shape', data.axisMargin),
 					axisCnf = config.bar('axis', data.axisMargin);
-
+					
 			bio.bar({
 				element: svg,
 				xaxis: axis.x,
@@ -6004,11 +6027,16 @@ function landscape ()	{
 												 .replace(/translate\(|\)/ig, '')
 												 .split(',');
 		
-		var nowIdx = model.now.geneline.axis[d].idx,
+		var nowIdx = model.data.gene.indexOf(d),
 				yAxis = Math.max(model.init.geneline.firstYAxis,
 								Math.min((
 									parseFloat(nowTranslate[1]) + d3.event.y),
 									model.init.geneline.lastYAxis));
+		// disable 된 gene line 은 드래그를 막는다.
+		if (model.now.geneline.axis[d].isGene === 
+				'disable')	{
+			return false;			
+		}
 
 		d3.select(that)
 			.attr('transform', 'translate(0, ' + yAxis + ')');
@@ -6016,50 +6044,46 @@ function landscape ()	{
 		var beforeGene = model.data.gene[nowIdx - 1],
 				nextGene = model.data.gene[nowIdx + 1],
 				tempGene = model.data.gene[nowIdx],
+				tempParent = this.parentNode,
 				tempVal = model.now.geneline.axis[d].value,
-				direction = d3.event.sourceEvent.movementY > -1 ? 
-										1 : -1;
+				direction = d3.event.sourceEvent.movementY > -1 ? 1 : -1;
 
 		beforeGene = !beforeGene ? tempGene : beforeGene;
 		nextGene = !nextGene ? tempGene : nextGene;
 
 		function moveElement(tthat, direction, targetGene, nowIdx, tempVal, tempGene)	{
-			model.now.geneline.axis[d].idx += direction;
+			if (model.now.geneline.axis[targetGene].isGene === 'disable')	{
+				return false;
+			}
 
+			model.now.geneline.axis[d].idx += direction;
 			model.now.geneline.axis[d].value = 
 			model.now.geneline.axis[targetGene].value;
 
 			model.now.geneline.axis[targetGene].idx -= direction;
 			model.now.geneline.axis[targetGene].value = tempVal;
 
-			model.data.gene[nowIdx] = 
-			model.data.gene[nowIdx + direction];
-			model.data.gene[nowIdx + direction] = tempGene;
-
-			var siblings = bio.dom().siblings(tthat.parentNode.children),
-					sortedSiblings = [];
-
-			bio.iteration.loop(siblings, function (s, i)	{
-				var gene = s.innerHTML.substring(
-										s.innerHTML.indexOf('>') + 1, 
-										s.innerHTML.lastIndexOf('<'));
-
-				sortedSiblings[model.data.gene.indexOf(gene)] = s;
-			});
-
-			d3.select(sortedSiblings[model.now.geneline.axis[targetGene].idx])
+			d3.select(model.now.geneline.sortedSiblings[
+								model.data.gene.indexOf(targetGene)])
 				.attr('transform', 'translate(0, ' + 
 					model.now.geneline.axis[d].value + ')')
 				.transition()
 				.attr('transform', 'translate(0, ' + 
 					model.now.geneline.axis[targetGene].value + ')');
+
+			model.data.gene[nowIdx] = 
+			model.data.gene[nowIdx + direction];
+			model.data.gene[nowIdx + direction] = tempGene;
+
+			model.now.geneline.sortedSiblings[nowIdx] = 
+			model.now.geneline.sortedSiblings[nowIdx + direction];
+			model.now.geneline.sortedSiblings[nowIdx + direction] = tempParent;
 		};
 
-		if ((yAxis > model.now.geneline.axis[nextGene].value - 
-								 model.init.geneline.axisHalfHeight) && 
+		if ((yAxis > model.now.geneline.axis[nextGene].value - model.init.geneline.axisHalfHeight) && 
 				tempVal !== model.now.geneline.axis[nextGene].value)	{
 			moveElement(that, direction, nextGene, nowIdx, tempVal, tempGene);
-		} else if ((yAxis < model.now.geneline.axis[beforeGene].value +									 model.init.geneline.axisHalfHeight) && tempVal !== model.now.geneline.axis[beforeGene].value)	{
+		} else if ((yAxis < model.now.geneline.axis[beforeGene].value + model.init.geneline.axisHalfHeight) && tempVal !== model.now.geneline.axis[beforeGene].value)	{
 			moveElement(that, direction, beforeGene, nowIdx, tempVal, tempGene);
 		}
 	};
@@ -6081,6 +6105,10 @@ function landscape ()	{
 			
 			changeAxis(model.exclusive.now);
 
+			model.data.axis.gene.y = model.data.gene;
+			model.data.axis.heatmap.y = model.data.gene;
+			model.data.axis.pq.y = model.data.gene;
+
 			drawAxis('gene', 'Y');
 			drawBar('pq', model.data.pq, 
 							model.data.axis.pq, ['top', 'left']);
@@ -6088,6 +6116,10 @@ function landscape ()	{
 							model.data.axis.gene, ['top', 'left']);
 			drawHeatmap('heatmap', model.data.heatmap, 
 									model.data.axis.heatmap);	
+
+			genelineSortedSiblings();
+			enableDisableBlur();
+			drawDivisionPath();
 		}
 	};
 
@@ -6120,6 +6152,27 @@ function landscape ()	{
 
 		return maxValue;
 	};
+
+	function drawDivisionPath ()	{
+		if (model.now.divisionPathData)	{
+			bio.path({
+				element: d3.select('.landscape_heatmap_svg.heatmap-g-tag'),
+				data: model.now.divisionPathData.data,
+				attr: {
+					id: function (d, idx, that) {
+						return 'landscape_gene_division_path';
+					},
+					x: function (d, idx, that)	{ return d.x; },
+					y: function (d, idx, that)	{ return d.y - 40; },
+				},
+				style:{
+					stroke: '#333333',
+					strokeWidth: '0.5px',
+					strokeDash: '3',
+				}
+			});
+		}
+	};
 	/*
 		enable 과 disabled 된 부분을 나눠주는 함수.
 	 */
@@ -6141,36 +6194,38 @@ function landscape ()	{
 		disableMax = getEnableDisableMax(model.now.geneline.disabledDivisionValues);
 
 		if (disableMax > enableMax)	{
-			var svg = d3.select('#landscape_heatmap_svg'),
-					g = d3.select('.landscape_heatmap_svg.heatmap-g-tag');
-
-			bio.path({
-				element: g,
+			var svg = d3.select('#landscape_heatmap_svg');
+			// 나중에 새로 그리기 위해 추가 한다.
+			model.now.divisionPathData = {
 				data: [
-					{ 
-						x: enableMax + elementWidth, 
-						y: 0 
-					},
+					{ x: enableMax + elementWidth, y: 0 },
 					{ 
 						x: enableMax + elementWidth, 
 						y: parseFloat(svg.attr('height')) 
 					}
-				],
-				attr: {
-					id: function (d, idx, that) {
-						return 'landscape_gene_division_path';
-					},
-					x: function (d, idx, that)	{ return d.x; },
-					y: function (d, idx, that)	{ return d.y - 40; },
-				},
-				style:{
-					stroke: '#333333',
-					strokeWidth: '0.5px',
-					strokeDash: '3',
-				}
-			});
+				]
+			};
+
+			drawDivisionPath();
 		}
 	};
+
+	function enableDisableBlur ()	{
+		bio.iteration.loop(model.now.geneline.axis,
+			function (k, v)	{
+				if (model.now.geneline.axis[k].isGene === 'enable') {
+					d3.selectAll('#landscape_gene_' + k + '_bar_rect')
+						.style('fill-opacity', '1');
+					d3.selectAll('#landscape_gene_' + k + '_heatmap_rect')
+						.style('fill-opacity', '1');	
+				} else {
+					d3.selectAll('#landscape_gene_' + k + '_bar_rect')
+						.style('fill-opacity', '0.2');
+					d3.selectAll('#landscape_gene_' + k + '_heatmap_rect')
+						.style('fill-opacity', '0.2');
+				}
+			});
+	}
 	/*
 		removed 된 쪽과 enable 쪽의 중복이 되지 않는
 		participant - id 리스트를 반환.
@@ -6204,6 +6259,9 @@ function landscape ()	{
 			// 맞은 값을 가져온다.
 			if (part === 'group')	{
 				bio.iteration.loop(data, function (g)	{
+					// id 가 / 가 들어간 경우 '' 처리를 하므로
+					// / 가 들어간 데이터는 처리가 되지 않는다.
+					console.log(id, g, id.indexOf(g[0].removeWhiteSpace()) > -1);
 					if (id.indexOf(g[0].removeWhiteSpace()) > -1)	{
 						data = g;
 					}
@@ -6228,6 +6286,7 @@ function landscape ()	{
 				.on('mouseout', common.on ? common.on.mouseout : false)
 				.on('mouseover', common.on ? common.on.mouseover : false)
 				.on('click', function (data, idx)	{
+					console.log('click');
 					if (part === 'gene' && direction === 'Y')	{
 						if (!model.now.geneline.isDraggable)	{
 							if (d3.event.altKey)	{
@@ -6251,6 +6310,8 @@ function landscape ()	{
 									model.now.mutation_list : 
 									model.init.mutation_list;
 									// Disable 된 gene 을 포함하는 sample 을 제거.
+									// 지금은 mutation_list 만 제거하지만
+									// 나중에는 patient_list 도 제거해야 한다.
 									model.now.mutation_list = 
 									model.now.mutation_list.filter(function (d)	{
 										if (d.gene !== data)	{
@@ -6263,6 +6324,11 @@ function landscape ()	{
 											}
 										}
 									});
+									// disable 된 group 태그를 svg 하위 
+									// 항목에서 제거해야 한다.
+									model.now.geneline.sortedSiblings.push(model.now.geneline.sortedSiblings.splice(geneIdx, 1)[0]);
+
+									nowGeneLineValue();
 								} else {
 									var beforeIdx = tempGeneList.indexOf(data),
 											geneIdx = model.now.geneline.axis[data].idx;
@@ -6278,8 +6344,13 @@ function landscape ()	{
 
 									model.now.geneline.removedMutationObj[data] = undefined;
 									model.now.geneline.axis[data].isGene = 'enable';
-								}
+									// disable 된 geneline tag 를 
+									// 원 위치 시켜 놓는다.
+									model.now.geneline.sortedSiblings.splice(geneIdx, 0, model.now.geneline.sortedSiblings.splice(beforeIdx, 1)[0]);
 
+									nowGeneLineValue();
+								}
+								// click event 에서 disable/enable 한다
 								var changedSampleStack = model.data.iterMut([
 										{ 
 											obj: {}, data: 'participant_id', 
@@ -6324,23 +6395,10 @@ function landscape ()	{
 								drawHeatmap('heatmap', model.data.heatmap, 
 														model.data.axis.heatmap);
 
-								bio.iteration.loop(model.now.geneline.axis,
-								function (k, v)	{
-									if (model.now.geneline.axis[k].isGene === 'enable') {
-										d3.selectAll('#landscape_gene_' + k + '_bar_rect')
-											.style('fill-opacity', '1');
-										d3.selectAll('#landscape_gene_' + k + '_heatmap_rect')
-											.style('fill-opacity', '1');	
-									} else {
-										d3.selectAll('#landscape_gene_' + k + '_bar_rect')
-											.style('fill-opacity', '0.2');
-										d3.selectAll('#landscape_gene_' + k + '_heatmap_rect')
-											.style('fill-opacity', '0.2');
-									}
-								});
+								enableDisableBlur();
 
 								enabledDisabeldMaximumElement(data);
-
+								// 나눔선을 기준으로 enable/disable/others 로 나눠준다.
 								if (model.divisionFunc)	{
 									var disableList = [];
 
@@ -6353,9 +6411,21 @@ function landscape ()	{
 											disableSample = model.data.axis.sample.x.filter(function (s)	{
 												return enableSample.indexOf(s) < 0;
 											}),
-											otherSample = '';
+											otherSample = model.data.group.group[0].map(function (g)	{
+												return g.x;
+											});
 
-									model.divisionFunc(enableSample, disableSample);
+									otherSample = otherSample.filter(function (o)	{
+										if (enableSample.indexOf(o) < 0 && 
+												disableSample.indexOf(o) < 0)	{
+											return o;
+										}
+									});
+
+									otherSample = !otherSample ? [] : otherSample;
+
+									model.divisionFunc(
+										enableSample, disableSample, otherSample);
 								}
 							}
 						}
@@ -6573,6 +6643,43 @@ function landscape ()	{
 		model.init.geneline.lastYAxis = lastIdxVal;
 	};
 	/*
+		geneline 의 siblings 들을 각각 인덱스에 맞게
+		정렬해주는 함수.
+	 */
+	function genelineSortedSiblings ()	{
+		var tags = document.querySelector('.landscape_gene_svg.right-axis-g-tag'),
+				siblings = bio.dom().siblings(tags.children),
+					sortedSiblings = [];
+
+			bio.iteration.loop(siblings, function (s, i)	{
+				var gene = s.innerHTML.substring(
+										s.innerHTML.indexOf('>') + 1, 
+										s.innerHTML.lastIndexOf('<'));
+
+				sortedSiblings[model.data.gene.indexOf(gene)] = s;
+			});
+
+		model.now.geneline.sortedSiblings = 
+		sortedSiblings;
+	};
+	/*
+		enable/disable 및 기타 gene_list 가 변경 될 때,
+		그에 맞는 translate 값으로 변경 시켜 준다.
+	 */
+	function nowGeneLineValue ()	{
+		bio.iteration.loop(model.data.gene, function (g, i)	{
+			var group = 
+					d3.select('.landscape_gene_svg.right-axis-g-tag')
+						.selectAll('g').nodes()[i],
+					value = parseFloat(d3.select(group)
+															 .attr('transform')
+															 .replace(/translate\(|\)/ig, '')
+															 .split(',')[1]);
+
+			model.now.geneline.axis[g].value = value;		
+		});
+	};
+	/*
 		각 gene 별 y 의 값들을 저장해놓는 데이터를 만든다.
 		이 데이터는 gene 의 위치가 변경되거나 enable/disable 되었을때,
 		사용된다.
@@ -6626,6 +6733,8 @@ function landscape ()	{
 		// gene 을 enable/disable 할때, disable 한 gene 의 
 		// mutation_list 값을 가지는 객체이다.
 		model.now.geneline.removedMutationObj = {};
+
+		genelineSortedSiblings();
 	};
 
 	function getGeneLineMaximumElement (gene)	{
@@ -8020,6 +8129,10 @@ function preprocExpression ()	{
 			bio.math.median(funcData[funcName]),
 			bio.math.max(funcData[funcName])
 		];
+
+		bio.iteration.loop(barData, function (b)	{
+			b.y = model.func.yaxis[funcName][1];
+		});
 	};
 	/*
 		설정된 Risk function 들의 값을 구한다.
@@ -8138,7 +8251,7 @@ function preprocExpression ()	{
 
 	function addRiskFunctions (funcs)	{
 		bio.iteration.loop(funcs, function (f)	{
-			model.riskFuncs[f.name] = f.func;
+			model.riskFuncs[f.name.toLowerCase()] = f.func;
 		});
 	};
 
@@ -8439,12 +8552,12 @@ function preprocLandscape ()	{
 		model.axis.group.x = model.axis.sample.x;
 	};
 
-	function mergedMuationList (data)	{
-		var groupList = data.group_list[0],
-				mutationList = data.mustation_list;
+	// function mergedMuationList (data)	{
+	// 	var groupList = data.group_list[0],
+	// 			mutationList = data.mustation_list;
 
 		
-	};
+	// };
 
 	return function (data, isPlotted)	{
 		model = bio.initialize('preprocess').landscape;
@@ -8456,7 +8569,7 @@ function preprocLandscape ()	{
 		model.iterGroup = iterateGroup;
 		model.byStack = byStack;
 
-		mergedMuationList(data);
+		// mergedMuationList(data);
 
 		var mut = model.iterMut([
 			{ obj: model.stack.gene, data: 'gene', type: 'type', keyName: 'gene'},
@@ -10789,7 +10902,16 @@ var SurvivalTab = (function() {
  //          { 
  //            name: 'Test', 
  //            func: function (data)  {
- //              console.log(data);
+ //              // console.log(data);
+ //              var sum = 0, avg = 0;
+
+ //              data.forEach(function (d) {
+ //                sum += d.value;
+ //              });
+
+ //              avg = sum / data.length;
+
+ //              return avg;
  //            },
  //          }
  //        ],
@@ -10829,7 +10951,8 @@ var SurvivalTab = (function() {
  //          patient: false, // true
  //          pq: false, // true
  //        },
- //        divisionFunc: function (enable, disable)  {
+ //        divisionFunc: function (enable, disable, others)  {
+ //          // console.log(enable, disable, others);
  //        },
 	// 		});
 
@@ -10837,8 +10960,294 @@ var SurvivalTab = (function() {
  //    },
  //  });
 
+function dependencies ()	{
+	'use strict';
+	// Dependencies 의 기능을 모아둔 Model 객체.
+	var model = {
+		version: {},	// Dependencies library 의 버전관련 객체.
+	};
+	/*
+		현재 적용 된 D3JS 의 버전이 
+		4 버전이면 true,
+		3 버전이면 false 를 반환하는 함수.
+	 */
+	model.version.d3v4 = function ()	{
+		// D3JS 가 존재하지 않을 경우 에러를 발생시킨다.
+		if (!d3)	{
+			throw new Error ('D3JS is not found');
+		}
+		// d3.version 의 0 번째 Index 가 '3' 일 경우 현재 D3JS
+		// 의 버전은 3 버전이다.
+		return d3.version.indexOf('3') === 0 ? false : true;
+	};
+	// Dependencies 객체의 기능을 모아둔 Model 객체를 반환한다.
+	return model;
+};
+function dom ()	{
+	'use strict';
+
+	var model = {};
+	/*
+		'#ID', '.Class' 중 존재하는 엘리먼트를 반환하는 함수.
+	 */
+	model.get = function (ele)	{
+		if (typeof(ele) === 'object')	{
+			return ele;
+		}
+
+		var classify = ['#', '.'],
+				classifyName = ele.removeSymbol(),
+				result = null;
+
+		bio.iteration.loop(classify, function (symbol)	{
+			var name = symbol + classifyName,
+					dom = document.querySelector(name);
+
+			if (dom)	{
+				result = dom;
+			}
+		});
+
+		return result;
+	};
+
+	model.remove = function (element, childs)	{
+		if (bio.objects.getType(element).indexOf('HTML') < 0)	{
+			throw new Error('Not a dom element');
+		}
+
+		bio.iteration.loop(childs, function (child)	{
+			element.removeChild(child);
+		});
+	};
+	/*
+		Element 파라미터 하위 Element 들을 
+		모두 제거하는 함수.
+	 */
+	model.removeAll = function (element)	{
+		if (bio.objects.getType(element).indexOf('HTML') < 0)	{
+			throw new Error('Not a dom element');
+		}
+
+	 	while (element.firstChild)	{
+	 		element.removeChild(element.firstChild);
+	 	}
+	};
+
+	model.siblings = function (child)	{
+		var siblingList = [];
+
+		for (var n = child.length - 1; n >= 0; n--)	{
+			siblingList.push(child[n]);
+		}
+
+		return siblingList;
+	};
+
+	return function ()	{
+		return model;
+	};
+};
+function iteration ()	{
+	'use strict';
+
+	var model = {};
+	/*
+		객체, 리스트를 반복하는 함수.
+		결과 값은 콜백함수의 파라미터로 전달 된다.
+	 */
+	model.loop = function (data, callback)	{
+		if (typeof(data) !== 'object')	{
+			throw new Error ('This is not Object or Array');
+		}
+
+		if (bio.objects.getType(data) === 'Array')	{
+			for (var i = 0, l = data.length; i < l; i++)	{
+				callback.call(this, data[i], i);
+			}
+		} else {
+			for (var key in data)	{
+				callback.call(this, key, data[key]);
+			}
+		}
+	};
+	// >>> About Array. 
+	/*
+		주어진 길이 만큼 주어진 값으로 리스트를 채워넣고 반환하는 함수.
+	 */
+	Array.prototype.fill = function (len, value)	{
+		for (var i = 0; i < len; i++)	{
+			this.push(value);
+		}
+
+		return this;
+	};
+
+	return model;
+};
+function math ()	{
+	'use strict';
+
+	var model = {};
+	/*
+		Number sequence 리스트에서 중간값의 위치를 반환한다.
+	 */
+	model.medianIndex = function (seqList)	{
+		var len = seqList.length;
+		// 홀수일 경우 1을 더한 후 2로 나누고 짝수는 그냥 2로 나눈다.
+		return len % 2 === 1 ? (len + 1) / 2 : len / 2;
+	};
+	/*
+		Number sequence 리스트에서 중간값을 반환한다.
+	 */
+	model.median = function (seqList)	{
+		var list = bio.objects.clone(seqList);
+		// 혹시라도 정렬이 안되어있을 경우를 고려하여 정렬한다.
+		return list.sort(function (a, b)	{
+						 return a > b ? 1 : -1;
+					 })[model.medianIndex(list)];
+	};
+	/*
+		두 수 혹은 숫자 리스트에서 가장 작은 값을 반환한다.
+	 */
+	model.min = function (v1, v2)	{
+		return arguments.length < 2 ? 
+					 Math.min.apply(null, v1) : 
+					 Math.min.call(null, v1, v2);
+	};
+	/*
+		두 수 혹은 숫자 리스트에서 가장 큰 값을 반환한다.
+	 */
+	model.max = function (v1, v2)	{
+		return arguments.length < 2 ? 
+					 Math.max.apply(null, v1) : 
+					 Math.max.call(null, v1, v2);
+	};
+	/*
+		Start 부터 End 까지의 범위내의 랜덤 값을 반환하는 함수.
+	 */
+	model.random = function (start, end)	{
+		start = start || 0;
+		end = end || 1;
+
+		return Math.floor(Math.random() * end) + start;
+	};
+
+	return model;
+};
+function objects ()	{
+	'use strict';
+
+	var model = {};
+	/*
+		Object 의 Type 을 문자열로 반환하는 함수.
+		Ex) 'SSS' -> 'String'.
+	 */
+	model.getType = function (obj)	{
+		var str = Object.prototype
+										.toString.call(obj);
+
+		return str.substring(
+					 str.indexOf(' ') + 1, 
+					 str.indexOf(']'));
+	};
+	/*
+		객체를 복사 (완전복사) 하여 반환하는 함수.
+	 */
+	model.clone = function (obj)	{
+		if (typeof(obj) !== 'object')	{
+			return obj;
+		} else {
+			if (model.getType(obj) === 'Array')	{
+				return new Array().concat(obj);
+			} else {
+				var copy = {};
+
+				bio.iteration.loop(obj, function (key, value)	{
+					if (obj.hasOwnProperty(key))	{
+						copy[key] = model.clone(obj[key]);
+					}
+				});
+
+				return copy;
+			}
+		}
+	};
+	/*
+		객체의 키를 값으로 찾아주는 함수.
+	 */
+	model.getKey = function (obj, value)	{
+		var keys = Object.keys(obj),
+				values = Object.values(obj);
+
+		return keys[values.indexOf(value)];
+	};
+
+	return model;
+}
+/*
+	String 객체의 prototype 으로 붙일 기능들을
+	모아둔 객체.
+ */
+function strings ()	{
+	'use strict';
+
+	String.prototype.matchAll = function (regex)	{
+		var matched = [], found;
+
+		while (found = regex.exec(this))	{
+			matched.push(found[0]);
+		}
+
+		return matched;
+	};
+	/*
+		String 을 대명사 표기법 형태로 바꿔 반환하는 함수.
+	 */
+	String.prototype.pronoun = function ()	{
+		return this[0].toUpperCase() + 
+					 this.substring(1).toLowerCase();
+	};
+	/*
+		문자열에 포함된 공백들을 지워주는 함수.
+	 */
+	String.prototype.removeWhiteSpace = function ()	{
+		return this.replace(/\s/ig, '');
+	};
+	/*
+		문자열에 포함된 특수문자들을 지워주는 함수.
+	 */
+	String.prototype.removeSymbol = function ()	{
+		return this.replace(/\W/ig, '');
+	}
+	/*
+		문자열에서 사용자지정위치의 문자를 다른 문자로 대치해주는 함수.
+		String 객체의 프로토타입으로 지정하였다.
+	 */
+	String.prototype.replaceAt = function (idx, rep)	{
+		// substring !== substr 
+		// substring 은 start 부터 end 까지,
+		// substr 은 start 부터 num 개를 자른다.
+		return this.substring(0, idx) + rep + 
+					 this.substring(idx + 1);
+	};
+	/*
+		파라미터 값을 문자열내에서 모두 바꿔준다.
+	 */
+	String.prototype.replaceAll = function (target, change)	{
+		return this.replace(new RegExp(target, 'ig'), change);
+	};
+};
 function colorGenerator ()	{
 	'use strict';
+	/*
+		Clinical 의 색상을 지정해주는 함수.
+		이는 Clinical 의 개수와 상관없이 일정하게 
+		색상을 정해준다.
+	 */
+	function ClinicalColors ()	{
+		
+	};
 
 	return function ()	{
 		return null;
@@ -11462,284 +11871,6 @@ function tooltip ()	{
 				tooltipDiv.innerHTML = contents;
 
 		return show(tooltipDiv, target, parent);
-	};
-};
-function dependencies ()	{
-	'use strict';
-	// Dependencies 의 기능을 모아둔 Model 객체.
-	var model = {
-		version: {},	// Dependencies library 의 버전관련 객체.
-	};
-	/*
-		현재 적용 된 D3JS 의 버전이 
-		4 버전이면 true,
-		3 버전이면 false 를 반환하는 함수.
-	 */
-	model.version.d3v4 = function ()	{
-		// D3JS 가 존재하지 않을 경우 에러를 발생시킨다.
-		if (!d3)	{
-			throw new Error ('D3JS is not found');
-		}
-		// d3.version 의 0 번째 Index 가 '3' 일 경우 현재 D3JS
-		// 의 버전은 3 버전이다.
-		return d3.version.indexOf('3') === 0 ? false : true;
-	};
-	// Dependencies 객체의 기능을 모아둔 Model 객체를 반환한다.
-	return model;
-};
-function dom ()	{
-	'use strict';
-
-	var model = {};
-	/*
-		'#ID', '.Class' 중 존재하는 엘리먼트를 반환하는 함수.
-	 */
-	model.get = function (ele)	{
-		if (typeof(ele) === 'object')	{
-			return ele;
-		}
-
-		var classify = ['#', '.'],
-				classifyName = ele.removeSymbol(),
-				result = null;
-
-		bio.iteration.loop(classify, function (symbol)	{
-			var name = symbol + classifyName,
-					dom = document.querySelector(name);
-
-			if (dom)	{
-				result = dom;
-			}
-		});
-
-		return result;
-	};
-
-	model.remove = function (element, childs)	{
-		if (bio.objects.getType(element).indexOf('HTML') < 0)	{
-			throw new Error('Not a dom element');
-		}
-
-		bio.iteration.loop(childs, function (child)	{
-			element.removeChild(child);
-		});
-	};
-	/*
-		Element 파라미터 하위 Element 들을 
-		모두 제거하는 함수.
-	 */
-	model.removeAll = function (element)	{
-		if (bio.objects.getType(element).indexOf('HTML') < 0)	{
-			throw new Error('Not a dom element');
-		}
-
-	 	while (element.firstChild)	{
-	 		element.removeChild(element.firstChild);
-	 	}
-	};
-
-	model.siblings = function (child)	{
-		var siblingList = [];
-
-		for (var n = child.length - 1; n >= 0; n--)	{
-			siblingList.push(child[n]);
-		}
-
-		return siblingList;
-	};
-
-	return function ()	{
-		return model;
-	};
-};
-function iteration ()	{
-	'use strict';
-
-	var model = {};
-	/*
-		객체, 리스트를 반복하는 함수.
-		결과 값은 콜백함수의 파라미터로 전달 된다.
-	 */
-	model.loop = function (data, callback)	{
-		if (typeof(data) !== 'object')	{
-			throw new Error ('This is not Object or Array');
-		}
-
-		if (bio.objects.getType(data) === 'Array')	{
-			for (var i = 0, l = data.length; i < l; i++)	{
-				callback.call(this, data[i], i);
-			}
-		} else {
-			for (var key in data)	{
-				callback.call(this, key, data[key]);
-			}
-		}
-	};
-	// >>> About Array. 
-	/*
-		주어진 길이 만큼 주어진 값으로 리스트를 채워넣고 반환하는 함수.
-	 */
-	Array.prototype.fill = function (len, value)	{
-		for (var i = 0; i < len; i++)	{
-			this.push(value);
-		}
-
-		return this;
-	};
-
-	return model;
-};
-function math ()	{
-	'use strict';
-
-	var model = {};
-	/*
-		Number sequence 리스트에서 중간값의 위치를 반환한다.
-	 */
-	model.medianIndex = function (seqList)	{
-		var len = seqList.length;
-		// 홀수일 경우 1을 더한 후 2로 나누고 짝수는 그냥 2로 나눈다.
-		return len % 2 === 1 ? (len + 1) / 2 : len / 2;
-	};
-	/*
-		Number sequence 리스트에서 중간값을 반환한다.
-	 */
-	model.median = function (seqList)	{
-		var list = bio.objects.clone(seqList);
-		// 혹시라도 정렬이 안되어있을 경우를 고려하여 정렬한다.
-		return list.sort(function (a, b)	{
-						 return a > b ? 1 : -1;
-					 })[model.medianIndex(list)];
-	};
-	/*
-		두 수 혹은 숫자 리스트에서 가장 작은 값을 반환한다.
-	 */
-	model.min = function (v1, v2)	{
-		return arguments.length < 2 ? 
-					 Math.min.apply(null, v1) : 
-					 Math.min.call(null, v1, v2);
-	};
-	/*
-		두 수 혹은 숫자 리스트에서 가장 큰 값을 반환한다.
-	 */
-	model.max = function (v1, v2)	{
-		return arguments.length < 2 ? 
-					 Math.max.apply(null, v1) : 
-					 Math.max.call(null, v1, v2);
-	};
-	/*
-		Start 부터 End 까지의 범위내의 랜덤 값을 반환하는 함수.
-	 */
-	model.random = function (start, end)	{
-		start = start || 0;
-		end = end || 1;
-
-		return Math.floor(Math.random() * end) + start;
-	};
-
-	return model;
-};
-function objects ()	{
-	'use strict';
-
-	var model = {};
-	/*
-		Object 의 Type 을 문자열로 반환하는 함수.
-		Ex) 'SSS' -> 'String'.
-	 */
-	model.getType = function (obj)	{
-		var str = Object.prototype
-										.toString.call(obj);
-
-		return str.substring(
-					 str.indexOf(' ') + 1, 
-					 str.indexOf(']'));
-	};
-	/*
-		객체를 복사 (완전복사) 하여 반환하는 함수.
-	 */
-	model.clone = function (obj)	{
-		if (typeof(obj) !== 'object')	{
-			return obj;
-		} else {
-			if (model.getType(obj) === 'Array')	{
-				return new Array().concat(obj);
-			} else {
-				var copy = {};
-
-				bio.iteration.loop(obj, function (key, value)	{
-					if (obj.hasOwnProperty(key))	{
-						copy[key] = model.clone(obj[key]);
-					}
-				});
-
-				return copy;
-			}
-		}
-	};
-	/*
-		객체의 키를 값으로 찾아주는 함수.
-	 */
-	model.getKey = function (obj, value)	{
-		var keys = Object.keys(obj),
-				values = Object.values(obj);
-
-		return keys[values.indexOf(value)];
-	};
-
-	return model;
-}
-/*
-	String 객체의 prototype 으로 붙일 기능들을
-	모아둔 객체.
- */
-function strings ()	{
-	'use strict';
-
-	String.prototype.matchAll = function (regex)	{
-		var matched = [], found;
-
-		while (found = regex.exec(this))	{
-			matched.push(found[0]);
-		}
-
-		return matched;
-	};
-	/*
-		String 을 대명사 표기법 형태로 바꿔 반환하는 함수.
-	 */
-	String.prototype.pronoun = function ()	{
-		return this[0].toUpperCase() + 
-					 this.substring(1).toLowerCase();
-	};
-	/*
-		문자열에 포함된 공백들을 지워주는 함수.
-	 */
-	String.prototype.removeWhiteSpace = function ()	{
-		return this.replace(/\s/ig, '');
-	};
-	/*
-		문자열에 포함된 특수문자들을 지워주는 함수.
-	 */
-	String.prototype.removeSymbol = function ()	{
-		return this.replace(/\W/ig, '');
-	}
-	/*
-		문자열에서 사용자지정위치의 문자를 다른 문자로 대치해주는 함수.
-		String 객체의 프로토타입으로 지정하였다.
-	 */
-	String.prototype.replaceAt = function (idx, rep)	{
-		// substring !== substr 
-		// substring 은 start 부터 end 까지,
-		// substr 은 start 부터 num 개를 자른다.
-		return this.substring(0, idx) + rep + 
-					 this.substring(idx + 1);
-	};
-	/*
-		파라미터 값을 문자열내에서 모두 바꿔준다.
-	 */
-	String.prototype.replaceAll = function (target, change)	{
-		return this.replace(new RegExp(target, 'ig'), change);
 	};
 };
 function variants ()	{

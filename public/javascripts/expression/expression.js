@@ -21,7 +21,30 @@ function expression ()	{
 			className: 'expression-function',
 			clickItem: function (value)	{
 				model.now.function = value;
+				model.data.bar = model.data.func.bar[value];
+				model.data.axis.bar.x = 
+				model.data.func.xaxis[value];
+				model.data.axis.bar.y = 
+				model.data.func.yaxis[value];
+				model.data.axis.scatter.x = 
+				model.data.func.xaxis[value];
+				model.data.axis.heatmap.x = 
+				model.data.func.xaxis[value];
 
+				bio.layout().removeGroupTag([
+					'.expression_bar_plot_svg.bar-g-tag',
+					'.expression_bar_plot_svg.left-axis-g-tag',
+					'.expression_bar_plot_svg.division-path-0-g-tag',
+					'.expression_bar_plot_svg.division-shape-0-g-tag',
+					'.expression_scatter_plot_svg.scatter-g-tag',
+					'.expression_scatter_plot_svg.left-axis-g-tag',
+					'.expression_scatter_plot_svg.division-path-1-g-tag',
+					'.expression_scatter_plot_svg.division-shape-1-g-tag'
+				]);
+				// drawHeatmap(model.data, model.data.axis.heatmap, model.data.axis.gradient.x);
+				drawFunctionBar(model.data, model.data.axis.bar);
+				drawScatter(model.data, model.data.axis.scatter, model.now.osdfs);
+				drawDivision(model.data);
 			},
 		});
 	};
@@ -264,7 +287,7 @@ function expression ()	{
 			var config = bio.expressionConfig(),
 					shapeCnf = config.bar('shape', data.axisMargin),
 					axisCnf = config.bar('axis', data.axisMargin);
-
+					
 			bio.bar({
 				element: svg,
 				xaxis: axis.x,
