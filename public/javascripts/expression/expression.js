@@ -57,20 +57,7 @@ function expression ()	{
 				// model.divide.low_arr = axis.splice(0, 
 				// 	that.axis.indexOf(model.divide.low_sample));
 				
-				var nowStd = model.data.func.yaxis[value][1],
-						nowLow = [],
-						nowHigh = [];
-
-				bio.iteration.loop(model.data.func.data[value], function (d)	{
-					if (d > nowStd)	{
-						nowHigh.push(d);
-					} else {
-						nowLow.push(d);
-					}
-				});
-
-				drawDivision(model.data, 
-					[nowLow, nowHigh]);
+				drawSurvivalPlot(model.data);
 			},
 		});
 	};
@@ -617,10 +604,7 @@ function expression ()	{
 			division.low, division.mid, division.high);
 	};
 
-	function drawDivision (data, lowHigh)	{
-		if (lowHigh)	{
-			changeByDrag(lowHigh[0], lowHigh[1]);
-		}
+	function drawDivision (data)	{
 		/*
 			Low, High 별로 환자 배열을 순환.
 		 */
