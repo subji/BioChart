@@ -287,7 +287,7 @@ function expression ()	{
 			var config = bio.expressionConfig(),
 					shapeCnf = config.bar('shape', data.axisMargin),
 					axisCnf = config.bar('axis', data.axisMargin);
-					
+
 			bio.bar({
 				element: svg,
 				xaxis: axis.x,
@@ -747,6 +747,8 @@ function expression ()	{
 		model.data = model.setting.preprocessData;
 		model.divisionFunc = opts.divisionFunc ? 
 		opts.divisionFunc : null;
+
+		bio.clinicalGenerator(model.data.subtype, 'expression');
 		// About request configurations.
 		model.requestData = opts.requestData || {};
 		model.requestURL = opts.requestURL || '/rest/expressions';

@@ -38,29 +38,29 @@ BioChart 0.0.22
           { 
             name: 'Test', 
             func: function (data)  {
-              // data 는 
-              // [
-                  {
-                    key: gene name,
-                    value: tpm value, 
-                  },
-                  ...
-                 ]
-              // 넘어온다.
-              // console.log(data);
-              // sample 별 각 gene 들의 tpm 값이 return
-              // ex) 평균 함수를 적용시켜 놓고자 할때
-              // 아래와 같이 평균을 계산하고 그 평균을
-              // 반환하면 된다.
-              var sum = 0, avg = 0;
+              input data : 
+              [
+               {
+                pid: participant id
+                values: [
+                         {
+                          gene: name,
+                          tpm: value, 
+                         },
+                         ...
+                        ]
+               },
+               ...
+              ]
 
-              data.forEach(function (d) {
-                sum += d.value;
-              });
-
-              avg = sum / data.length;
-
-              return avg;
+              output data : 
+              [
+               {
+                pid: participant id,
+                score: calculated value,
+               },
+               ...
+              ]
             },
           }
         ],

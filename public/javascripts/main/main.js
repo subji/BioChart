@@ -36,7 +36,7 @@
 		loading: loading(),
 		tooltip: tooltip(),
 		selectBox: selectBox(),
-		colorGenerator: colorGenerator(),
+		clinicalGenerator: clinicalGenerator(),
 		// >>> Drawing.
 		bar: bar(),
 		text: text(),

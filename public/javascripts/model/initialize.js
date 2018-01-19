@@ -54,15 +54,24 @@ function initialize ()	{
 			},
 			riskFuncs: {
 				average: function (data)	{
-					var sum = 0, avg = 0;
+					var result = [];
 
-					bio.iteration.loop(data, function (d)	{
-						sum += d.value;
+					bio.iteration.loop(data, 
+					function (d)	{
+						var sum = 0, avg = 0;
+
+						bio.iteration.loop(d.values, 
+						function (v)	{
+							sum += v.tpm;
+						});
+
+						result.push({
+							pid: d.pid,
+							score: sum / d.values.length
+						});
 					});
-
-					avg = sum / data.length;
-
-					return avg;
+					
+					return result;
 				},
 			},
 			tpms: [],

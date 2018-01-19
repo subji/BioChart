@@ -28,6 +28,8 @@ function boilerPlate ()	{
 		'Igr': { color: '#A9A9A9', order: 11},
 		'5\'flank': { color: '#A9A9A9', order: 11},
 	};
+	// Clinical 관련 색상 및 순서 정의 객체.
+	model.clinicalData = {};
 
 	model.clinicalInfo = {
 		// Group.

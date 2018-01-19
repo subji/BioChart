@@ -34,54 +34,61 @@
  /*
     Expression
   */
- // $.ajax({
- //    'type': 'POST',
- //    'url': '/files/datas',
- //    data: {
- //     name: 'expression',
- //    },
- //    beforeSend: function () {
- //      // bio.loading().start(document.querySelector('#main'), 900, 600);
- //    },
- //    success: function (d) {
- //      bio.expression({
- //        element: '#main',
- //        width: 900,
- //        height: 600,
- //        requestData: {
- //          source: 'GDAC',
- //          cancer_type: 'luad',
- //          sample_id: 'SMCLUAD1705230001',
- //          // signature: 'PAM50',
- //          signature: '180117',
- //          filter: ':'
- //        },
- //        data: d[0].data,
- //        riskFunctions: [
- //          { 
- //            name: 'Test', 
- //            func: function (data)  {
- //              // console.log(data);
- //              var sum = 0, avg = 0;
+ $.ajax({
+    'type': 'POST',
+    'url': '/files/datas',
+    data: {
+     name: 'expression',
+    },
+    beforeSend: function () {
+      // bio.loading().start(document.querySelector('#main'), 900, 600);
+    },
+    success: function (d) {
+      bio.expression({
+        element: '#main',
+        width: 900,
+        height: 600,
+        requestData: {
+          source: 'GDAC',
+          cancer_type: 'luad',
+          sample_id: 'SMCLUAD1705230001',
+          // signature: 'PAM50',
+          signature: '180117',
+          filter: ':'
+        },
+        data: d[0].data,
+        riskFunctions: [
+          { 
+            name: 'Test', 
+            func: function (data)  {
+              var result = [];
 
- //              data.forEach(function (d) {
- //                sum += d.value;
- //              });
+              data.forEach(function (d) {
+                var sum = 0, avg = 0;
 
- //              avg = sum / data.length;
+                bio.iteration.loop(d.values, 
+                function (v)  {
+                  sum += v.tpm;
+                });
 
- //              return avg;
- //            },
- //          }
- //        ],
- //        divisionFunc: function (left, mid, right) {
- //          // console.log(left, mid, right)
- //        },
- //      });
+                result.push({
+                  pid: d.pid,
+                  score: sum / d.values.length
+                });
+              });
+              
+              return result;
+            },
+          }
+        ],
+        divisionFunc: function (left, mid, right) {
+          // console.log(left, mid, right)
+        },
+      });
 
- //      // bio.loading().end();
- //    },
- //  });
+      // bio.loading().end();
+    },
+  });
 
  /*
     Landscape

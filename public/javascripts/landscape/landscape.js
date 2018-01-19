@@ -418,16 +418,18 @@ function landscape ()	{
 				bio.iteration.loop(data, function (g)	{
 					// id 가 / 가 들어간 경우 '' 처리를 하므로
 					// / 가 들어간 데이터는 처리가 되지 않는다.
-					console.log(id, g, id.indexOf(g[0].removeWhiteSpace()) > -1);
-					if (id.indexOf(g[0].removeWhiteSpace()) > -1)	{
+					// / 가 들어간 Clinical 에도 적용되게 하였다.
+					if (id.indexOf(g[0].removeWhiteSpace()
+														 .replace('/', '')) > -1)	{
 						data = g;
 					}
 				});
 			} 
 
-			var geneDrag = d3.drag().on('start', geneDragStart)
-															.on('drag', geneDragMove)
-															.on('end', geneDragEnd);
+			var geneDrag = d3.drag()
+											 .on('start', geneDragStart)
+											 .on('drag', geneDragMove)
+											 .on('end', geneDragEnd);
 
 			var axises = bio.axises()[config.direction]({
 				element: svg,
@@ -443,7 +445,13 @@ function landscape ()	{
 				.on('mouseout', common.on ? common.on.mouseout : false)
 				.on('mouseover', common.on ? common.on.mouseover : false)
 				.on('click', function (data, idx)	{
-					console.log('click');
+					console.log(part, direction)
+					if (part === 'group' && direction === 'Y')	{
+						var res = config.on ? 
+											config.on.click.call(this, data, idx, model) : false;
+						redraw(res);
+					}
+
 					if (part === 'gene' && direction === 'Y')	{
 						if (!model.now.geneline.isDraggable)	{
 							if (d3.event.altKey)	{
@@ -692,7 +700,8 @@ function landscape ()	{
 			patientHeatmap: { id: 't_h', config: 'heatmap' },
 		};
 
-		bio.layout().get(model.setting.svgs, [parts[part].id + add], 
+		bio.layout().get(model.setting.svgs, 
+		[parts[part].id + add.replace('/', '')], // group 명 중에 / 가 들어간 이름이 있을 경우에 표시가 안된다.  
 		function (id, svg)	{
 			var config = bio.landscapeConfig()
 											.heatmap(parts[part].config),
@@ -930,6 +939,8 @@ function landscape ()	{
 		model.data = model.setting.preprocessData;
 		model.divisionFunc = opts.divisionFunc ? 
 		opts.divisionFunc : null;
+
+		bio.clinicalGenerator(model.data.group.group, 'landscape');
 
 		removeGroupTempSVG();
 		// Set landscape title.

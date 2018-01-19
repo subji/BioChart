@@ -101,31 +101,42 @@ function preprocExpression ()	{
 		설정된 Risk function 들의 값을 구한다.
 	 */
 	function setRiskFunctions (funcName, func, data)	{
+		var funcData = [];
+
 		bio.iteration.loop(data, function (key, value)	{
 			bio.iteration.loop(value, function (v)	{
 				model.axis.heatmap.y[v.key] = '';
 			});
 
-			var res = func(value);
+			funcData.push({
+				pid: key,
+				values: value.map(function (v)	{
+					return { gene: v.key, tpm: v.value };
+				})
+			});
+		});
 
+		var result = func(funcData);
+
+		bio.iteration.loop(result, function (res)	{
 			if (model.func.bar[funcName])	{
 				model.func.bar[funcName].push({
-					x: key, 
-					value: res, 
-					info: model.patient_subtype[key]
+					x: res.pid, 
+					value: res.score, 
+					info: model.patient_subtype[res.pid]
 				});
 			} else {
 				model.func.bar[funcName] = [{
-					x: key, 
-					value: res, 
-					info: model.patient_subtype[key]
+					x: res.pid, 
+					value: res.score, 
+					info: model.patient_subtype[res.pid]
 				}];
 			}
 
 			if (model.func.data[funcName])	{
-				model.func.data[funcName].push(res);
+				model.func.data[funcName].push(res.score);
 			} else {
-				model.func.data[funcName] = [res];
+				model.func.data[funcName] = [res.score];
 			}	
 		});
 
