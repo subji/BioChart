@@ -43,21 +43,9 @@ function expression ()	{
 				]);
 				// drawHeatmap(model.data, model.data.axis.heatmap, model.data.axis.gradient.x);
 				drawFunctionBar(model.data, model.data.axis.bar);
-				drawScatter(model.data, model.data.axis.scatter, model.now.osdfs);
-				// var axis = [].concat(that.axis);
-
-				// model.divide.low_sample = 
-				// that.invert(that.position.now.low);
-				// model.divide.high_sample = 
-				// that.invert(that.position.now.high);
-
-				// model.divide.high_arr = axis.splice(
-				// 	that.axis.indexOf(model.divide.high_sample), 
-				// 	axis.length - 1);
-				// model.divide.low_arr = axis.splice(0, 
-				// 	that.axis.indexOf(model.divide.low_sample));
-				
+				drawScatter(model.data, model.data.axis.scatter, model.now.osdfs);				
 				drawSurvivalPlot(model.data);
+				drawDivision(model.data);
 			},
 		});
 	};
@@ -604,7 +592,7 @@ function expression ()	{
 			division.low, division.mid, division.high);
 	};
 
-	function drawDivision (data)	{
+	function drawDivision (data, lowHigh)	{
 		/*
 			Low, High 별로 환자 배열을 순환.
 		 */
