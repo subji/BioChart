@@ -4,41 +4,31 @@ function clinicalGenerator ()	{
 	var model = {},
 			naColor = '#D6E2E3';
 
-	function colorGenerator (colors, times)	{
-		var result = [];
+	function getRandomColor ()	{
+		var letters = '0123456789ABCDEF',
+				color = '#';
 
-		for (var i = 0; i < times; i++)	{
-			if (result.length === 0 && i === 0)	{
-				result.push(d3.rgb(colors))
-			} else {
-				var tempRGB = result[i - 1],
-						tempR = tempRGB.r;
-
-				tempRGB.r = tempRGB.g;
-				tempRGB.g = tempRGB.b;
-				tempRGB.b = tempR;
-			}
+		for (var i = 0; i < 6; i++)	{
+			color += letters[Math.floor(Math.random() * 16)];
 		}
-		console.log(d3.rgb(colors).toString(16))
-	};
 
-	function setStartColors (clinicalLength)	{
-		var start = '#04CDA4';
-
-		colorGenerator(start, clinicalLength);
-	};
+		return color;
+	}
 	/*
 		Clinical 의 색상을 지정해주는 함수.
 		이는 Clinical 의 개수와 상관없이 일정하게 
 		색상을 정해준다.
 	 */
 	function colors (clinicals)	{
-		var startColors = setStartColors(
-									Object.keys(clinicals).length);
-
 		bio.iteration.loop(clinicals, 
 		function (clinical, values)	{
-			console.log(clinical, values);
+			bio.iteration.loop(values, function (val)	{
+				if (val !== 'NA')	{
+					model[val].color = '#333333';
+				} else {
+					model[val].color = naColor;
+				}
+			});
 		});
 	};
 
@@ -60,18 +50,22 @@ function clinicalGenerator ()	{
 		});
 	};
 
+	function setClinicals (obj, key, val)	{
+		if (obj[key])	{
+			if (obj[key].indexOf(val) < 0)	{
+				obj[key].push(val)
+			}
+		} else {
+			obj[key] = [val];
+		}
+	};
+
 	function landscapeDataToArr (data)	{
 		var clinicals = {};
 
 		bio.iteration.loop(data, function (group)	{
 			bio.iteration.loop(group, function (gp)	{
-				if (clinicals[gp.y])	{
-					if (clinicals[gp.y].indexOf(gp.value) < 0)	{
-						clinicals[gp.y].push(gp.value)
-					}
-				} else {
-					clinicals[gp.y] = [gp.value];
-				}
+				setClinicals(clinicals, gp.y, gp.value);
 			});
 		});
 
@@ -80,7 +74,16 @@ function clinicalGenerator ()	{
 	};
 
 	function expressionDataToArr (data)	{
-		return null;
+		var clinicals = {};
+
+		bio.iteration.loop(data, function (d)	{
+			bio.iteration.loop(d.value, function (val)	{
+				setClinicals(clinicals, d.key, val);
+			});
+		});
+		
+		orders(clinicals);
+		colors(clinicals);
 	};
 
 	function toArrClinicalData (clinicalData, chart)	{
@@ -91,14 +94,13 @@ function clinicalGenerator ()	{
 		} else if (chart === 'expression')	{
 			expressionDataToArr(clinicalData);
 		}
-
-
 	};
 
 	return function (clinicalData, chart)	{
-		console.log(clinicalData, chart)
-		toArrClinicalData(clinicalData, chart);
+		model = {};
 
-		return null;
+		toArrClinicalData(clinicalData, chart);
+		
+		bio.boilerPlate.clinicalInfo = model;
 	};
 };

@@ -15,6 +15,25 @@ function landscape ()	{
 		init.height = parseFloat(def.style.height);
 	};
 	/*
+		enable/disable, refresh 등의 작업을 할 때, sample 의
+		데이터와 축이 변경되게 하는 함수이다.
+	 */
+	function changeSampleStack (mutationList)	{
+		var changedSampleStack = model.data.iterMut([
+			{ 
+				obj: {}, data: 'participant_id', 
+				type: 'type', keyName: 'sample' 
+			}
+		], mutationList);
+		var changeSampleStack = model.data.byStack([], 'sample', 
+					changedSampleStack.result.sample),
+				reloadSampleAxis = model.data.makeLinearAxis(
+					'sample', changeSampleStack.axis);
+
+		model.data.axis.sample.y = reloadSampleAxis;
+		model.data.stack.sample = changeSampleStack.data;
+	};
+	/*
 		Landscape scale option group 을 그리는 함수.
 	 */
 	function drawScaleSet (setting)	{
@@ -27,8 +46,9 @@ function landscape ()	{
 				if (data.type === 'refresh')	{
 					changeAxis({ axis: 'x', data: model.init.axis.x });
 					changeAxis({ axis: 'y', data: model.init.axis.y });
-					console.log(model.init.axis.sampleY)
-					model.data.axis.sample.y = model.init.axis.sampleY;
+					changeSampleStack(model.init.mutation_list);
+
+					
 
 					return drawLandscape(model.data, 
 					(model.now.width = model.init.width, model.now.width));
@@ -304,7 +324,7 @@ function landscape ()	{
 
 		bio.iteration.loop(data, function (k, v)	{
 			maxValue = maxValue > data[k].posx ? 
-								maxValue : data[k].posx;
+								 maxValue : data[k].posx;
 		});
 
 		return maxValue;
@@ -445,11 +465,22 @@ function landscape ()	{
 				.on('mouseout', common.on ? common.on.mouseout : false)
 				.on('mouseover', common.on ? common.on.mouseover : false)
 				.on('click', function (data, idx)	{
-					console.log(part, direction)
 					if (part === 'group' && direction === 'Y')	{
 						var res = config.on ? 
 											config.on.click.call(this, data, idx, model) : false;
-						redraw(res);
+
+						console.log(res);
+						console.log(model.now, model.now.group.group);
+
+						// redraw(res);
+
+						if (!res)	{ return false;}
+
+						model = res.model;
+						
+						bio.layout().removeGroupTag();
+						changeAxis(res.sorted);
+						drawLandscape(model.data, model.now.width);	
 					}
 
 					if (part === 'gene' && direction === 'Y')	{
@@ -458,6 +489,8 @@ function landscape ()	{
 								var res = config.on ? 
 													config.on.click.call(this, data, idx, model) : false;
 								redraw(res);	
+								enableDisableBlur();
+								enabledDisabeldMaximumElement(data);
 							} else {
 								var tempGeneList = [].concat(model.data.gene);
 
@@ -470,10 +503,9 @@ function landscape ()	{
 									// 현재 라인 disable 
 									model.data.gene = tempGeneList;
 									model.now.geneline.axis[data].isGene = 'disable';
-									model.now.mutation_list = 
-									model.now.mutation_list ? 
-									model.now.mutation_list : 
-									model.init.mutation_list;
+
+									model.now.mutation_list = model.now.mutation_list ? 
+									model.now.mutation_list : model.init.mutation_list;
 									// Disable 된 gene 을 포함하는 sample 을 제거.
 									// 지금은 mutation_list 만 제거하지만
 									// 나중에는 patient_list 도 제거해야 한다.
@@ -491,7 +523,8 @@ function landscape ()	{
 									});
 									// disable 된 group 태그를 svg 하위 
 									// 항목에서 제거해야 한다.
-									model.now.geneline.sortedSiblings.push(model.now.geneline.sortedSiblings.splice(geneIdx, 1)[0]);
+									model.now.geneline.sortedSiblings.push(
+									model.now.geneline.sortedSiblings.splice(geneIdx, 1)[0]);
 
 									nowGeneLineValue();
 								} else {
@@ -509,59 +542,31 @@ function landscape ()	{
 
 									model.now.geneline.removedMutationObj[data] = undefined;
 									model.now.geneline.axis[data].isGene = 'enable';
-									// disable 된 geneline tag 를 
-									// 원 위치 시켜 놓는다.
-									model.now.geneline.sortedSiblings.splice(geneIdx, 0, model.now.geneline.sortedSiblings.splice(beforeIdx, 1)[0]);
+									// disable 된 geneline tag 를 원 위치 시켜 놓는다.
+									model.now.geneline.sortedSiblings.splice(geneIdx, 0, 
+										model.now.geneline.sortedSiblings.splice(beforeIdx, 1)[0]);
 
 									nowGeneLineValue();
 								}
-								// click event 에서 disable/enable 한다
-								var changedSampleStack = model.data.iterMut([
-										{ 
-											obj: {}, data: 'participant_id', 
-											type: 'type', keyName: 'sample' 
-										}
-									], model.now.mutation_list);
-									var changeSampleStack = model.data.byStack([], 'sample', changedSampleStack.result.sample);
-									var reloadSampleAxis = model.data.makeLinearAxis(
-										'sample', changeSampleStack.axis)
 
-									model.data.axis.gene.y = model.data.gene;
-									model.data.axis.sample.y = reloadSampleAxis;
-									model.data.axis.heatmap.y = model.data.gene;
-									model.data.axis.pq.y = model.data.gene;	
+								model.data.axis.gene.y = model.data.gene;
+								model.data.axis.heatmap.y = model.data.gene;
+								model.data.axis.pq.y = model.data.gene;	
 
 								var type = model.now.exclusivity_opt ? 
 													 model.now.exclusivity_opt : 
 													 model.init.exclusivity_opt;
 
-								bio.layout().removeGroupTag([
-									'.landscape_heatmap_svg.heatmap-g-tag',
-									'.landscape_gene_svg.bar-g-tag',
-									'.landscape_gene_svg.right-axis-g-tag',
-									'.landscape_sample_svg.bar-g-tag',
-									'.landscape_axis_sample_svg.left-axis-g-tag'
-								]);
+								bio.layout().removeGroupTag();
 
 								model.exclusive.now = 
 								bio.landscapeSort()
 									 .exclusive(model.data.heatmap, model.data.gene, type);
 								
+								changeSampleStack(model.now.mutation_list);
 								changeAxis(model.exclusive.now);
-
-								drawAxis('gene', 'Y');
-								drawAxis('sample', 'Y');
-								drawBar('pq', model.data.pq, 
-												model.data.axis.pq, ['top', 'left']);
-								drawBar('gene', model.data.stack.gene, 
-												model.data.axis.gene, ['top', 'left']);
-								drawBar('sample', changeSampleStack.data, 
-									model.data.axis.sample, ['top', 'left']);
-								drawHeatmap('heatmap', model.data.heatmap, 
-														model.data.axis.heatmap);
-
+								drawLandscape(model.data, model.now.width);
 								enableDisableBlur();
-
 								enabledDisabeldMaximumElement(data);
 								// 나눔선을 기준으로 enable/disable/others 로 나눠준다.
 								if (model.divisionFunc)	{
