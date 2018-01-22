@@ -48,7 +48,18 @@ function landscape ()	{
 					changeAxis({ axis: 'y', data: model.init.axis.y });
 					changeSampleStack(model.init.mutation_list);
 
-					
+					model.data.gene = model.init.axis.y;
+
+					bio.iteration.loop(model.init.geneline.axis, function (key, value)	{
+						value.isGene = 'enable';
+					});
+
+					model.now.geneline.axis = 
+					bio.objects.clone(model.init.geneline.axis);
+					model.now.geneline.sortedSiblings = 
+					model.init.geneline.sortedSiblings;
+
+					console.log(model);
 
 					return drawLandscape(model.data, 
 					(model.now.width = model.init.width, model.now.width));
@@ -822,6 +833,8 @@ function landscape ()	{
 				siblings = bio.dom().siblings(tags.children),
 					sortedSiblings = [];
 
+		model.init.geneline.sortedSiblings = siblings;
+
 			bio.iteration.loop(siblings, function (s, i)	{
 				var gene = s.innerHTML.substring(
 										s.innerHTML.indexOf('>') + 1, 
@@ -896,7 +909,7 @@ function landscape ()	{
 		// 최대 위치가 모든 데이터에서의 최대위치 보다 작을때는
 		// 나눔선을 표시하지 않기 위해서 이다.
 		// model.init.geneline.enabledDivisionValues = {};
-		model.now.geneline = [].concat(model.init.geneline)[0];
+		model.now.geneline = bio.objects.clone(model.init.geneline);
 		// mutation 이 존재 하는 영역과 존재하지 않는영역을 
 		// 나누는 값을 저장하는 객체.
 		model.now.geneline.enabledDivisionValues = {};
