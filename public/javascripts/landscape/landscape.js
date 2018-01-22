@@ -59,8 +59,6 @@ function landscape ()	{
 					model.now.geneline.sortedSiblings = 
 					model.init.geneline.sortedSiblings;
 
-					console.log(model);
-
 					return drawLandscape(model.data, 
 					(model.now.width = model.init.width, model.now.width));
 				} 
@@ -268,10 +266,13 @@ function landscape ()	{
 			model.now.geneline.sortedSiblings[nowIdx + direction] = tempParent;
 		};
 
-		if ((yAxis > model.now.geneline.axis[nextGene].value - model.init.geneline.axisHalfHeight) && 
+		if ((yAxis > model.now.geneline.axis[nextGene].value - 
+								 model.init.geneline.axisHalfHeight) && 
 				tempVal !== model.now.geneline.axis[nextGene].value)	{
 			moveElement(that, direction, nextGene, nowIdx, tempVal, tempGene);
-		} else if ((yAxis < model.now.geneline.axis[beforeGene].value + model.init.geneline.axisHalfHeight) && tempVal !== model.now.geneline.axis[beforeGene].value)	{
+		} else if ((yAxis < model.now.geneline.axis[beforeGene].value + 
+												model.init.geneline.axisHalfHeight) && 
+						tempVal !== model.now.geneline.axis[beforeGene].value)	{
 			moveElement(that, direction, beforeGene, nowIdx, tempVal, tempGene);
 		}
 	};
@@ -478,10 +479,25 @@ function landscape ()	{
 				.on('click', function (data, idx)	{
 					if (part === 'group' && direction === 'Y')	{
 						var res = config.on ? 
-											config.on.click.call(this, data, idx, model) : false;
+											config.on.click.call(this, data, idx, model) : false,
+								result = [];
 
 						console.log(res);
 						console.log(model.now, model.now.group.group);
+
+						bio.iteration.loop(model.now.group.group, function (group)	{
+							var temp = [];
+
+							bio.iteration.loop(group, function (gp)	{
+								if (res.sorted.data.indexOf(gp.x) > -1)	{
+									temp.push(gp.x);
+								}
+							});
+
+							result.push(temp);
+						});	
+
+						console.log(result);
 
 						// redraw(res);
 
