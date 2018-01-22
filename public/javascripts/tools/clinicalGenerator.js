@@ -22,9 +22,21 @@ function clinicalGenerator ()	{
 	function colors (clinicals)	{
 		bio.iteration.loop(clinicals, 
 		function (clinical, values)	{
+			var i = 0;
 			bio.iteration.loop(values, function (val)	{
 				if (val !== 'NA')	{
-					model[val].color = '#333333';
+					var result = '#';
+
+					i = val.length < i ? i - val.length : i;
+
+					for (var len = i + 3; i < len; i++)	{
+						if (val.length <= i)	{
+							result += val.charCodeAt(i - val.length).toString(16);
+						} else {
+							result += val.charCodeAt(i).toString(16);
+						}
+					}
+					model[val].color = result;
 				} else {
 					model[val].color = naColor;
 				}
@@ -100,7 +112,7 @@ function clinicalGenerator ()	{
 		model = {};
 
 		toArrClinicalData(clinicalData, chart);
-		
+
 		bio.boilerPlate.clinicalInfo = model;
 	};
 };

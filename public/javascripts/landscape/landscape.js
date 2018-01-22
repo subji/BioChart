@@ -508,6 +508,7 @@ function landscape ()	{
 						bio.layout().removeGroupTag();
 						changeAxis(res.sorted);
 						drawLandscape(model.data, model.now.width);	
+						enableDisableBlur();
 					}
 
 					if (part === 'gene' && direction === 'Y')	{
@@ -515,6 +516,7 @@ function landscape ()	{
 							if (d3.event.altKey)	{
 								var res = config.on ? 
 													config.on.click.call(this, data, idx, model) : false;
+
 								redraw(res);	
 								enableDisableBlur();
 								enabledDisabeldMaximumElement(data);
@@ -589,7 +591,7 @@ function landscape ()	{
 								model.exclusive.now = 
 								bio.landscapeSort()
 									 .exclusive(model.data.heatmap, model.data.gene, type);
-								
+
 								changeSampleStack(model.now.mutation_list);
 								changeAxis(model.exclusive.now);
 								drawLandscape(model.data, model.now.width);

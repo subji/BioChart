@@ -28,9 +28,9 @@ function setting ()	{
 		Layout 의 ID 목록 데이터를 만들어주는 함수.
 		여기서 각각의 Layout 의 크기도 설정해준다.
 	 */
-	function setLayoutIdData (chart, element, width, height, add, isPlotted)	{
+	function setLayoutIdData (chart, element, width, height, add, isPlotted, geneList)	{
 		model.ids = 
-		bio.sizing.chart[chart](element, width, height, add, isPlotted);
+		bio.sizing.chart[chart](element, width, height, add, isPlotted, geneList);
 
 		return model.ids;
 	};
@@ -60,7 +60,8 @@ function setting ()	{
 									chart,
 									model.dom, 
 									model.size.width, 
-									model.size.height, groupLayout, isPlotted),
+									model.size.height, groupLayout, isPlotted,
+									opts.data.data.gene_list),
 			svgs: setSVGElement(chart, model.ids, isPlotted),
 		};
 	};

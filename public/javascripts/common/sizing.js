@@ -121,7 +121,16 @@ function sizing ()	{
 		return id;
 	};
 	// Chart 별 영역의 크기 설정 및 ID List 생성.
-	model.chart.landscape = function (ele, w, h, group, isPlotted)	{
+	model.chart.landscape = function (ele, w, h, group, isPlotted, geneList)	{
+		var geneLenght = geneList.length,
+				stdSign = geneLenght > 40 ? 1 : -1,
+				stdGeneHeight = 0.01,
+				stdContentsHeight = 0.0095;
+		// Gene list 의 개수에 따라 크기를 지정.
+		var geneHeight = h * (0.64 + (geneLenght * stdGeneHeight * stdSign)),
+				contHeight = (0.95 + (geneLenght * stdContentsHeight * stdSign));
+				contHeight = contHeight < 0.61 ? h * 0.6 : h * contHeight;
+
 		var id = {
 			landscape_temp_sample: { width: w * 0.12, height: h * 0.15 },
 			landscape_axis_sample: { width: w * 0.14, height: h * 0.15 },
@@ -133,11 +142,11 @@ function sizing ()	{
 			landscape_patient_group: { width: w * 0.01, height: h * 0.16 },
 			landscape_group: { width: w * 0.63, height: h * 0.16 },
 			landscape_temp_group: { width: w * 0.1, height: h * 0.16 },
-			landscape_legend: { width: w * 0.12, height: h * 0.64},
-			landscape_gene: { width: w * 0.14, height: h * 0.64 },
-			landscape_patient_heatmap: { width: w * 0.01, height: h * 0.64 },
-			landscape_heatmap: { width: w * 0.63, height: h * 0.64 },
-			landscape_pq: { width: w * 0.1, height: h * 0.64 },
+			landscape_legend: { width: w * 0.12, height: geneHeight},
+			landscape_gene: { width: w * 0.14, height: geneHeight },
+			landscape_patient_heatmap: { width: w * 0.01, height: geneHeight },
+			landscape_heatmap: { width: w * 0.63, height: geneHeight },
+			landscape_pq: { width: w * 0.1, height: geneHeight },
 		};
 
 		var divs = makeDivide('landscape', ele, w, h, 0.05);
@@ -146,7 +155,7 @@ function sizing ()	{
 				gc = landGroupLayout(group, {}, w, h, 'group'),
 				gp = landGroupLayout(group, {}, w, h, 'patient');
 
-		makeLayout.call(setSize(divs.contents, w, h * 0.95), id);
+		makeLayout.call(setSize(divs.contents, w, contHeight), id);
 		makeLayout.call(bio.dom().get('#landscape_group'), gc);
 		makeLayout.call(bio.dom().get('#landscape_axis_group'), ga);
 		makeLayout.call(bio.dom().get('#landscape_patient_group'), gp)

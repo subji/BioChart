@@ -494,8 +494,6 @@ function landscapeConfig ()	{
 				},
 				style: {
 					fill: function (data, idx, that)	{
-						// console.log(data.value);
-						return '#333333';
 						return bio.boilerPlate
 											.clinicalInfo[data.value].color;
 					},
