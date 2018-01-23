@@ -188,14 +188,16 @@ function landscape ()	{
 	/*
 		Click 이벤트로 변경된 정렬대로 다시 그려주는 함수.
 	 */
-	function redraw (result)	{
+	function redraw (result, mutationList)	{
 		if (!result)	{ return false;}
 
 		model = result.model;
 		
 		bio.layout().removeGroupTag();
 		changeAxis(result.sorted);
-		drawLandscape(model.data, model.now.width);	
+		drawLandscape(model.data, model.now.width);
+		enableDisableBlur();
+		enabledDisabeldMaximumElement(mutationList);	
 	};
 	/*
 		Drag 와 Drag end 에서 모두 사용되는 함수.
@@ -316,91 +318,119 @@ function landscape ()	{
 		model.now.geneline.isDraggable = false;
 	}
 
-	function geneLineDivisionElement (gene, what)	{
-		var sortedByMax = getGeneLineMaximumElement(gene),
-				maxElement = d3.select(sortedByMax[0]);
-
-		model.now.geneline[ what + 'dDivisionValues'][gene] = {
-			data: maxElement.datum(),
-			posx: parseFloat(maxElement.attr('x')),
-			elem: maxElement,
-		};
-
-		return {
-			width: parseFloat(maxElement.attr('width')),
-		};
-	};
-
-	function getEnableDisableMax (data)	{
-		var maxValue = 0;
-
-		bio.iteration.loop(data, function (k, v)	{
-			maxValue = maxValue > data[k].posx ? 
-								 maxValue : data[k].posx;
-		});
-
-		return maxValue;
-	};
-
 	function drawDivisionPath ()	{
 		if (model.now.divisionPathData)	{
-			bio.path({
-				element: d3.select('.landscape_heatmap_svg.heatmap-g-tag'),
-				data: model.now.divisionPathData.data,
-				attr: {
-					id: function (d, idx, that) {
-						return 'landscape_gene_division_path';
+			bio.iteration.loop(model.now.divisionPathData.data, 
+			function (dd)	{
+				bio.path({
+					element: d3.select('.landscape_heatmap_svg.heatmap-g-tag'),
+					data: dd,
+					attr: {
+						id: function (d, idx, that) {
+							return 'landscape_gene_division_path';
+						},
+						x: function (d, idx, that)	{ return d.x; },
+						y: function (d, idx, that)	{ return d.y - 40; },
 					},
-					x: function (d, idx, that)	{ return d.x; },
-					y: function (d, idx, that)	{ return d.y - 40; },
-				},
-				style:{
-					stroke: '#333333',
-					strokeWidth: '0.5px',
-					strokeDash: '3',
-				}
+					style:{
+						stroke: '#333333',
+						strokeWidth: '0.5px',
+						strokeDash: '3',
+					}
+				});
 			});
+		}
+	};
+
+	function getDivisionLineLocation (list)	{
+		var divX = 0,
+				maximum = 0,
+				divWidth = 0,
+				divisionLineElement = undefined;
+
+		bio.iteration.loop(list, function (l)	{
+			var idx = model.data.axis.heatmap.x.indexOf(
+									l.participant_id);
+			
+			maximum = maximum > idx ? maximum : idx;
+		});
+
+		divisionLineElement = model.data.axis.heatmap.x[maximum];
+
+		d3.selectAll('#landscape_heatmap_svg rect')
+			.datum(function (d)	{
+				if (d.x === divisionLineElement)	{
+					var that = d3.select(this);
+
+					divX = parseFloat(that.attr('x'));
+					divWidth = parseFloat(that.attr('width'));
+				}
+
+				return d;
+			});
+
+		return {
+			maximum: maximum,
+			divPosx: divX + divWidth,
+			element: divisionLineElement,
+		};
+	};
+
+	function drawDivisionLineForDisableEnable (ml)	{	
+		if (model.now.mutation_list)	{
+			return ml ? getDivisionLineLocation(ml) : 
+									getDivisionLineLocation(
+									model.now.mutation_list);
+		} else {
+			return undefined;
 		}
 	};
 	/*
 		enable 과 disabled 된 부분을 나눠주는 함수.
 	 */
-	function enabledDisabeldMaximumElement ()	{
-		var enableMax = 0,
-				disableMax = 0,
-				elementWidth = 0;
+	function enabledDisabeldMaximumElement (mutationList)	{
+		var loc = [],
+				svg = d3.select('#landscape_heatmap_svg');
 
-		bio.iteration.loop(model.now.geneline.axis, 
-		function (k, v)	{
-			if (!model.now.geneline.removedMutationObj[k])	{
-				elementWidth = geneLineDivisionElement(k, 'enable').width;
-			} else {
-				elementWidth = geneLineDivisionElement(k, 'disable').width;
+		if (mutationList)	{
+			bio.iteration.loop(mutationList, function (ml)	{
+				loc.push(drawDivisionLineForDisableEnable(ml));
+			});
+		} else {
+			if (!drawDivisionLineForDisableEnable())	{
+				return false;
 			}
+			
+			loc.push(drawDivisionLineForDisableEnable());
+		}
+
+		model.now.divisionPathData = { data: [] };
+
+		bio.iteration.loop(loc, function (l)	{
+			model.now.divisionPathData.data.push([
+				{ x: l.divPosx, y: 0 },
+				{ x: l.divPosx, y: parseFloat(svg.attr('height'))}
+			]);
 		});
 
-		enableMax = getEnableDisableMax(model.now.geneline.enabledDivisionValues);
-		disableMax = getEnableDisableMax(model.now.geneline.disabledDivisionValues);
+		if (mutationList)	{
+			var isDrawLine = 0;
 
-		if (disableMax > enableMax)	{
-			var svg = d3.select('#landscape_heatmap_svg');
-			// 나중에 새로 그리기 위해 추가 한다.
-			model.now.divisionPathData = {
-				data: [
-					{ x: enableMax + elementWidth, y: 0 },
-					{ 
-						x: enableMax + elementWidth, 
-						y: parseFloat(svg.attr('height')) 
-					}
-				]
-			};
+			bio.iteration.loop(mutationList, function (ml)	{
+				isDrawLine += ml.length;
+			});
 
+			if (isDrawLine !== model.init.mutation_list.length)	{
+				drawDivisionPath();
+			}
+		} else {
 			drawDivisionPath();
 		}
 	};
 
 	function enableDisableBlur ()	{
-		bio.iteration.loop(model.now.geneline.axis,
+		if (model.now.geneline.axis)	{
+			bio.iteration.loop(model.now.geneline.axis,
 			function (k, v)	{
 				if (model.now.geneline.axis[k].isGene === 'enable') {
 					d3.selectAll('#landscape_gene_' + k + '_bar_rect')
@@ -414,6 +444,7 @@ function landscape ()	{
 						.style('fill-opacity', '0.2');
 				}
 			});
+		}
 	}
 	/*
 		removed 된 쪽과 enable 쪽의 중복이 되지 않는
@@ -480,35 +511,52 @@ function landscape ()	{
 					if (part === 'group' && direction === 'Y')	{
 						var res = config.on ? 
 											config.on.click.call(this, data, idx, model) : false,
-								result = [];
-
-						console.log(res);
-						console.log(model.now, model.now.group.group);
-
-						bio.iteration.loop(model.now.group.group, function (group)	{
+								groupList = [],
+								mutationList = [];
+						// x 축에 속하는 그룹 id 만 가져온다.
+						bio.iteration.loop(model.now.group.group, 
+						function (group)	{
 							var temp = [];
 
-							bio.iteration.loop(group, function (gp)	{
+							group.filter(function (gp)	{
 								if (res.sorted.data.indexOf(gp.x) > -1)	{
-									temp.push(gp.x);
+									temp[res.sorted.data.indexOf(gp.x)] = (gp.x);
 								}
 							});
 
-							result.push(temp);
+							groupList.push(temp.filter(function (tgp)	{
+								return tgp;
+							}));
 						});	
+						// Group 별 enable / disable 된 mutation list 를 만든다.
+						bio.iteration.loop(groupList, function (gl)	{
+							var temp = [];
 
-						console.log(result);
+							bio.iteration.loop(model.now.mutation_list || 
+															 	 model.init.mutation_list, 
+							function (ml)	{
+								if (gl.indexOf(ml.participant_id) > -1)	{
+									if (Object.keys(
+										model.now.geneline.removedMutationObj).length > 0)	{
+										bio.iteration.loop(model.now.geneline.removedMutationObj, 
+										function (key, value)	{
+											if (ml.gene !== key)	{
+												temp.push(ml);
+											}
+										});
+									} else {
+										temp.push(ml);
+									}
+								}
+							});
+							
+							mutationList.push(temp);
+						});
 
-						// redraw(res);
-
-						if (!res)	{ return false;}
-
-						model = res.model;
+						model.now.geneline.groupList = groupList;
+						model.now.geneline.mutationList = mutationList;
 						
-						bio.layout().removeGroupTag();
-						changeAxis(res.sorted);
-						drawLandscape(model.data, model.now.width);	
-						enableDisableBlur();
+						redraw(res, mutationList);
 					}
 
 					if (part === 'gene' && direction === 'Y')	{
@@ -517,9 +565,9 @@ function landscape ()	{
 								var res = config.on ? 
 													config.on.click.call(this, data, idx, model) : false;
 
-								redraw(res);	
-								enableDisableBlur();
-								enabledDisabeldMaximumElement(data);
+								model.now.geneline.mutationList = undefined;
+
+								redraw(res);
 							} else {
 								var tempGeneList = [].concat(model.data.gene);
 
@@ -544,9 +592,13 @@ function landscape ()	{
 											return d;
 										} else {
 											if (!model.now.geneline.removedMutationObj[d.gene])	{
-												model.now.geneline.removedMutationObj[d.gene] = [d];
+												model.now.geneline.removedMutationObj[d.gene] = [d.participant_id];
 											} else {
-												model.now.geneline.removedMutationObj[d.gene].push(d);
+												if (model.now.geneline.removedMutationObj[d.gene]
+																 .indexOf(d.participant_id) < 0)	{
+													model.now.geneline.removedMutationObj[d.gene]
+															 .push(d.participant_id);
+												} 
 											}
 										}
 									});
@@ -592,11 +644,13 @@ function landscape ()	{
 								bio.landscapeSort()
 									 .exclusive(model.data.heatmap, model.data.gene, type);
 
+								// console.log(model.now.geneline.groupList);
+
 								changeSampleStack(model.now.mutation_list);
 								changeAxis(model.exclusive.now);
 								drawLandscape(model.data, model.now.width);
 								enableDisableBlur();
-								enabledDisabeldMaximumElement(data);
+								enabledDisabeldMaximumElement();
 								// 나눔선을 기준으로 enable/disable/others 로 나눠준다.
 								if (model.divisionFunc)	{
 									var disableList = [];
@@ -939,18 +993,6 @@ function landscape ()	{
 		genelineSortedSiblings();
 	};
 
-	function getGeneLineMaximumElement (gene)	{
-		var target = d3.selectAll('#landscape_gene_' + 
-									gene + '_heatmap_rect').nodes();
-
-		return target.sort(function (a, b)	{
-			var tap = parseFloat(d3.select(a).attr('x')),
-					tbp = parseFloat(d3.select(b).attr('x'));
-
-			return tap < tbp ? 1 : -1;
-		});
-	};
-
 	function drawExclusivityLandscape (type)	{
 		model.init.mutation_list = 
 		model.setting.defaultData.data.mutation_list;
@@ -966,6 +1008,10 @@ function landscape ()	{
 		patientAxis(model.data.axis);
 		changeAxis(model.exclusive.init);
 		drawLandscape(model.data, model.init.width);
+		enableDisableBlur();
+		enabledDisabeldMaximumElement(
+			model.now.geneline.mutationList || 
+			model.now.mutation_list);
 	};
 
 	return function (opts)	{
