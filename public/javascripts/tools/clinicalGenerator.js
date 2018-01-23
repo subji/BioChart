@@ -23,19 +23,21 @@ function clinicalGenerator ()	{
 		bio.iteration.loop(clinicals, 
 		function (clinical, values)	{
 			var i = 0;
-			bio.iteration.loop(values, function (val)	{
-				if (val !== 'NA')	{
-					var result = '#';
 
-					i = val.length < i ? i - val.length : i;
+			bio.iteration.loop(values, function (val, idx)	{
+				var result = '#';
+
+				if (val !== 'NA')	{
+
+					i = i > val.length ? i - val.length : i;
 
 					for (var len = i + 3; i < len; i++)	{
-						if (val.length <= i)	{
-							result += val.charCodeAt(i - val.length).toString(16);
-						} else {
-							result += val.charCodeAt(i).toString(16);
-						}
+						var first = i.toString(16),
+								secnd = val.charCodeAt(i).toString(16).split('')[1];
+
+						result += (secnd + first);
 					}
+
 					model[val].color = result;
 				} else {
 					model[val].color = naColor;
