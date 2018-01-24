@@ -256,7 +256,7 @@ function landscapeSort ()	{
 		var temp = {},
 				result = [],
 				idx = 0;
-				
+
 		bio.iteration.loop(data, function (d)	{
 			if (!temp[d.x])	{
 				temp[d.x] = true;

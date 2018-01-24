@@ -1,4 +1,4 @@
-BioChart 0.0.22
+BioChart 0.0.23
 ==============
 
 > This is a set of charts for Clinical Decision support.
