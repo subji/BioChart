@@ -25,13 +25,13 @@ function landscape ()	{
 				type: 'type', keyName: 'sample' 
 			}
 		], mutationList);
-		var changeSampleStack = model.data.byStack([], 'sample', 
+		var changeSampleStacks = model.data.byStack([], 'sample', 
 					changedSampleStack.result.sample),
 				reloadSampleAxis = model.data.makeLinearAxis(
-					'sample', changeSampleStack.axis);
+					'sample', changeSampleStacks.axis);
 
 		model.data.axis.sample.y = reloadSampleAxis;
-		model.data.stack.sample = changeSampleStack.data;
+		model.data.stack.sample = changeSampleStacks.data;
 	};
 	/*
 		Landscape scale option group 을 그리는 함수.
@@ -58,6 +58,8 @@ function landscape ()	{
 					bio.objects.clone(model.init.geneline.axis);
 					model.now.geneline.sortedSiblings = 
 					model.init.geneline.sortedSiblings;
+
+					bio.layout().removeGroupTag();
 
 					return drawLandscape(model.data, 
 					(model.now.width = model.init.width, model.now.width));
@@ -196,8 +198,12 @@ function landscape ()	{
 		bio.layout().removeGroupTag();
 		changeAxis(result.sorted);
 		drawLandscape(model.data, model.now.width);
-		enableDisableBlur();
-		enabledDisabeldMaximumElement(mutationList);	
+
+		if (Object.keys(
+			model.now.geneline.removedMutationObj).length > 0)	{
+			enableDisableBlur();
+			enabledDisabeldMaximumElement(mutationList);	
+		}
 	};
 	/*
 		Drag 와 Drag end 에서 모두 사용되는 함수.
@@ -512,7 +518,8 @@ function landscape ()	{
 						var res = config.on ? 
 											config.on.click.call(this, data, idx, model) : false,
 								groupList = [],
-								mutationList = [];
+								mutationList = [],
+								isRemovable = false;
 						// x 축에 속하는 그룹 id 만 가져온다.
 						bio.iteration.loop(model.now.group.group, 
 						function (group)	{
@@ -528,6 +535,7 @@ function landscape ()	{
 								return tgp;
 							}));
 						});	
+
 						// Group 별 enable / disable 된 mutation list 를 만든다.
 						bio.iteration.loop(groupList, function (gl)	{
 							var temp = [];
@@ -543,20 +551,24 @@ function landscape ()	{
 											if (ml.gene !== key)	{
 												temp.push(ml);
 											}
+
+											if (value)	{
+												isRemovable = true;
+											}
 										});
 									} else {
 										temp.push(ml);
 									}
 								}
 							});
-							
-							mutationList.push(temp);
+
+							mutationList.push(temp);	
 						});
 
 						model.now.geneline.groupList = groupList;
 						model.now.geneline.mutationList = mutationList;
-						
-						redraw(res, mutationList);
+
+						redraw(res, isRemovable ? mutationList : undefined);
 					}
 
 					if (part === 'gene' && direction === 'Y')	{
@@ -569,7 +581,8 @@ function landscape ()	{
 
 								redraw(res);
 							} else {
-								var tempGeneList = [].concat(model.data.gene);
+								var tempGeneList = [].concat(model.data.gene),
+										isGroupMutationList = undefined;
 
 								if (model.now.geneline.axis[data].isGene === 'enable')	{
 									var	geneIdx = tempGeneList.indexOf(data),
@@ -600,12 +613,38 @@ function landscape ()	{
 															 .push(d.participant_id);
 												} 
 											}
+
+											if (!model.now.geneline.removedMutationArr[d.gene])	{
+												model.now.geneline.removedMutationArr[d.gene] = [d];
+											} else {
+												if (model.now.geneline.removedMutationArr[d.gene]
+																 .indexOf(d.participant_id) < 0)	{
+													model.now.geneline.removedMutationArr[d.gene].push(d);
+												}
+											}
 										}
 									});
 									// disable 된 group 태그를 svg 하위 
 									// 항목에서 제거해야 한다.
 									model.now.geneline.sortedSiblings.push(
 									model.now.geneline.sortedSiblings.splice(geneIdx, 1)[0]);
+
+
+									if (model.now.geneline.mutationList)	{
+											model.now.geneline.mutationList = 
+											model.now.geneline.mutationList.map(
+											function (ml)	{
+												ml = ml.filter(function (mlData)	{
+													if (mlData.gene !== data)	{
+														return mlData;
+													}
+												});
+
+												return ml;
+											});
+									} 
+									console.log(model.now.geneline.mutationList);
+									isGroupMutationList = model.now.geneline.mutationList;
 
 									nowGeneLineValue();
 								} else {
@@ -619,9 +658,11 @@ function landscape ()	{
 
 									model.now.mutation_list = 
 									model.now.mutation_list.concat(
-										model.now.geneline.removedMutationObj[data]);
+										model.now.geneline.removedMutationArr[data]);
 
 									model.now.geneline.removedMutationObj[data] = undefined;
+									model.now.geneline.removedMutationArr[data] = undefined;
+									isGroupMutationList = undefined;
 									model.now.geneline.axis[data].isGene = 'enable';
 									// disable 된 geneline tag 를 원 위치 시켜 놓는다.
 									model.now.geneline.sortedSiblings.splice(geneIdx, 0, 
@@ -643,14 +684,24 @@ function landscape ()	{
 								model.exclusive.now = 
 								bio.landscapeSort()
 									 .exclusive(model.data.heatmap, model.data.gene, type);
-
-								// console.log(model.now.geneline.groupList);
-
 								changeSampleStack(model.now.mutation_list);
-								changeAxis(model.exclusive.now);
+								// Group 별로 정렬된 상태에서 enable / disable 을 할때,
+								// Group 정렬을 유지한다.
+								if (model.now.geneline.groupList)	{
+									var groups = [];
+
+									bio.iteration.loop(model.now.geneline.groupList, 
+									function (gl)	{
+										groups = groups.concat(gl);
+									});
+
+									changeAxis({ axis: 'x', data: groups });
+								} else {
+									changeAxis(model.exclusive.now);
+								}
 								drawLandscape(model.data, model.now.width);
 								enableDisableBlur();
-								enabledDisabeldMaximumElement();
+								enabledDisabeldMaximumElement(isGroupMutationList);
 								// 나눔선을 기준으로 enable/disable/others 로 나눠준다.
 								if (model.divisionFunc)	{
 									var disableList = [];
@@ -989,6 +1040,7 @@ function landscape ()	{
 		// gene 을 enable/disable 할때, disable 한 gene 의 
 		// mutation_list 값을 가지는 객체이다.
 		model.now.geneline.removedMutationObj = {};
+		model.now.geneline.removedMutationArr = {};
 
 		genelineSortedSiblings();
 	};
@@ -1004,14 +1056,33 @@ function landscape ()	{
 		model.init.axis.y = [].concat(model.data.axis.gene.y);
 		model.init.axis.sampleY = [].concat(model.data.axis.sample.y);
 
+		bio.layout().removeGroupTag();
+
 		orderByTypePriority(model.data.type);
 		patientAxis(model.data.axis);
-		changeAxis(model.exclusive.init);
+
+		if (model.now.geneline.groupList)	{
+			var groups = [];
+
+			bio.iteration.loop(model.now.geneline.groupList, 
+			function (gl)	{
+				console.log(gl);
+				groups = groups.concat(gl);
+			});
+			// console.log(groups);
+			changeAxis({ axis: 'x', data: groups });
+		} else {
+			changeAxis(model.exclusive.now || 
+								 model.exclusive.init);	
+		}
+
+		// changeAxis(model.exclusive.now || 
+		// 						 model.exclusive.init);
+		
 		drawLandscape(model.data, model.init.width);
 		enableDisableBlur();
-		enabledDisabeldMaximumElement(
-			model.now.geneline.mutationList || 
-			model.now.mutation_list);
+		// enabledDisabeldMaximumElement(
+		// 	model.now.geneline.mutationList || undefined);
 	};
 
 	return function (opts)	{

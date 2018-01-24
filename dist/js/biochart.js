@@ -29,141 +29,141 @@ function boilerPlate ()	{
 		'5\'flank': { color: '#A9A9A9', order: 11},
 	};
 	// Clinical 관련 색상 및 순서 정의 객체.
-	model.clinicalData = {};
+	model.clinicalInfo = {};
 
-	model.clinicalInfo = {
-		// Group.
-		// Vital Status of Group.
-		'alive': { color: '#04CDA4', order: 1 },
-		'dead': { color: '#C50E36', order: 2 },
-		// Gender of Group.
-		'female':{ color:  'E0A4E5', order: 1 },
-		'male': { color: '#0F67B6', order: 2 },
-		// Race of Group.
-		'american indian or alaska native': { color: '#38120B', order: 1 },
-		'asian': { color: '#CB771F', order: 2 },
-		'black or african american': { color: '#302F24', order: 3 },
-		'white': { color: '#9CB1CE', order: 4 },
-		// Ethnicity of Group.
-		'hispanic or latino': { color: '#B8642F', order: 1 },
-		'not hispanic or latino': { color: '#55C53E', order: 2 },
-		// Histological Type of LUAD Group.
-		'lung acinar adenocarcinoma': { color: '#716190', order: 1 },
-		'lung adenocarcinoma mixed subtype': { color: '#5154DE', order: 2 },
-		'lung adenocarcinoma- not otherwise specified (nos)': { color: '#8E9A7E', order: 3 },
-		'lung bronchioloalveolar carcinoma mucinous': { color: '#2F91DE', order: 4 },
-		'lung bronchioloalveolar carcinoma nonmucinous': { color: '#ED6EBD', order: 5 },
-		'lung clear cell adenocarcinoma': { color: '#1C8D7A', order: 6 },
-		'lung micropapillary adenocarcinoma': { color: '#B2EE86', order: 7 },
-		'lung mucinous adenocarcinoma': { color: '#785E54', order: 8 },
-		'lung papillary adenocarcinoma': { color: '#69B4C4', order: 9 },
-		'lung signet ring adenocarcinoma': { color: '#C1386E', order: 10 },
-		'lung solid pattern predominant adenocarcinoma': { color: '#D7A355', order: 11 },
-		'mucinous (colloid) carcinoma': { color: '#243833', order: 12 },
-		// Histological Type of GBM Group
-		'glioblastoma multiforme (gbm)': { color: '#716190', order: 1 },
-		'treated primary gbm': { color: '#5154DE', order: 2 },
-		'untreated primary (de novo) gbm': { color: '#8E9A7E', order: 3 },
-		// Histological Type of BRCA Group
-		'infiltrating carcinoma nos': { color: '#716190', order: 1 },
-		'infiltrating ductal carcinoma': { color: '#5154DE', order: 2 },
-		'infiltrating lobular carcinoma': { color: '#8E9A7E', order: 3 },
-		'medullary carcinoma': { color: '#2F91DE', order: 4 },
-		'metaplastic carcinoma': { color: '#ED6EBD', order: 5 },
-		'mixed histology (please specify)': { color: '#1C8D7A', order: 6 },
-		'mucinous carcinoma': { color: '#B2EE86', order: 7 },
-		'other, specify': { color: '#785E54', order: 8 },
-		// Anatomic Neoplasm Subdivision of Group.
-		'bronchial': { color: '#F9E3B9', order: 1 },
-		'l-lower': { color: '#FBA2A3', order: 2 },
-		'l-upper': { color: '#0CA3C7', order: 3 },
-		'other (please specify)': { color: '#D3A16C', order: 4 },
-		'r-lower': { color: '#388A4E', order: 5 },
-		'r-middle': { color: '#D61E43', order: 6 },
-		'r-upper': { color: '#B81BCC', order: 7 },
-		// Other Dx of Group.
-		'no': { color: '#D73A64', order: 1 },
-		'yes': { color: '#1990AA', order: 2 },
-		'yes, history of prior malignancy': { color: '#3BDB11', order: 3 },
-		'yes, history of synchronous/bilateral malignancy': { color: '#803F11', order: 4 },
-		// History of Neoadjuvant Treatment of Group.
-		'no': { color: '#D73A64', order: 1 },
-		'yes': { color: '#1990AA', order: 2 },
-		// Radiation Therapy of Group.
-		'no': { color: '#D73A64', order: 1 },
-		'yes': { color: '#1990AA', order: 2 },
-		// Pathologic T of Group.
-		't1': { color: '#060CDB', order: 1 },
-		't1a': { color: '#696DE9', order: 2 },
-		't1b': { color: '#CDCEF7', order: 3 },
-		't2': { color: '#F6251D', order: 4 },
-		't2a': { color: '#F96D69', order: 5 },
-		't2b': { color: '#FDCECD', order: 6 },
-		't3': { color: '#1AEB42', order: 7 },
-		't4': { color: '#EBBD34', order: 8 },
-		'tx': { color: '#9943DE', order: 9 },
-		// Pathologic N of Group.
-		'n0': { color: '#DC5B35', order: 1 },
-		'n1': { color: '#217C1F', order: 2 },
-		'n2': { color: '#18A6F3', order: 3 },
-		'n3': { color: '#EA68C3', order: 4 },
-		'nx': { color: '#F4E831', order: 5 },
-		// Pathologic M of Group.
-		'm0': { color: '#F0820D', order: 1 },
-		'm1': { color: '#C45A43', order: 2 },
-		'm1a': { color: '#A523C2', order: 3 },
-		'm1b': { color: '#C97BDA', order: 4 },
-		'mx': { color: '#EDD3F2', order: 5 },
-		// Pathologic Stage of Group.
-		'stage i': { color: '#01C606', order: 1 },
-		'stage ia': { color: '#018404', order: 2 },
-		'stage ib': { color: '#002C01', order: 3 },
-		'stage ii': { color: '#0E22C3', order: 4 },
-		'stage iia': { color: '#08136C', order: 5 },
-		'stage iib': { color: '#040B41', order: 6 },
-		'stage iiia': { color: '#BB0C2E', order: 7 },
-		'stage iiib': { color: '#75081D', order: 8 },
-		'stage iv': { color: '#F0CA53', order: 9 },
-		// Residual Tumor of Group.
-		'r0': { color: '#DB8EC0', order: 1 },
-		'r1': { color: '#FFD046', order: 2 },
-		'r2': { color: '#495C50', order: 3 },
-		'rx': { color: '#0E5F8A', order: 4 },
-		// EGFR Mutation Result.
-		'exon 19 deletion': { color: '#4A312A', order: 1 },
-		'l858r': { color: '#74C04C', order: 2 },
-		'l861q': { color: '#FBED09', order: 3 },
-		'other': { color: '#C91DAB', order: 4 },
-		't790m': { color: '#2C517B', order: 5 },
-		// KRAS Mutation Result.
-		'g12a': { color: '#DED0D1', order: 1 },
-		'g12c': { color: '#AE8A8E', order: 2 },
-		'g12d': { color: '#5D161D', order: 3 },
-		'g12s': { color: '#410F14', order: 4 },
-		'g12v': { color: '#25080B', order: 5 },
-		'other': { color: '#C91DAB', order: 6 },
-		// Primary Therapy Outcome Success.
-		// Treatment outcome of primary therapy.
-		// Followup Treatment Success.
-		'complete remission/response': { color: '#BDED73', order: 1 },
-		'partial remission/response': { color: '#8649F3', order: 2 },
-		'progressive disease': { color: '#C1746B', order: 3 },
-		'stable disease': { color: '#CD4C2A', order: 4 },
-		// Tobacco Smoking History.
-		'Lifelong Non-Smoker': { color: '#C4B5BB', order: 1 },
-		'Current Smoker': { color: '#896C78', order: 2 },
-		'Current Reformed Smoker for > 15 yrs': { color: '#3B0A1E', order: 3 },
-		'Current Reformed Smoker for < or = 15 yrs': { color: '#2F0818', order: 4 },
-		'Current Reformed Smoker, Duration Not Specified': { color: '#17040C', order: 5 },
-		'NA': { color: '#D6E2E3', order: 6 },
-		// ER Status
-		// PR Status
-		// HER2/neu Status
-		'equivocal': { color: '#C4B5BB', order: 1 },
-		'indeterminate': { color: '#896C78', order: 2 },
-		'negative': { color: '#3B0A1E', order: 3 },
-		'positive': { color: '#CD4C2A', order: 4 },
-	};
+	// model.clinicalInfo = {
+	// 	// Group.
+	// 	// Vital Status of Group.
+	// 	'alive': { color: '#04CDA4', order: 1 },
+	// 	'dead': { color: '#C50E36', order: 2 },
+	// 	// Gender of Group.
+	// 	'female':{ color:  'E0A4E5', order: 1 },
+	// 	'male': { color: '#0F67B6', order: 2 },
+	// 	// Race of Group.
+	// 	'american indian or alaska native': { color: '#38120B', order: 1 },
+	// 	'asian': { color: '#CB771F', order: 2 },
+	// 	'black or african american': { color: '#302F24', order: 3 },
+	// 	'white': { color: '#9CB1CE', order: 4 },
+	// 	// Ethnicity of Group.
+	// 	'hispanic or latino': { color: '#B8642F', order: 1 },
+	// 	'not hispanic or latino': { color: '#55C53E', order: 2 },
+	// 	// Histological Type of LUAD Group.
+	// 	'lung acinar adenocarcinoma': { color: '#716190', order: 1 },
+	// 	'lung adenocarcinoma mixed subtype': { color: '#5154DE', order: 2 },
+	// 	'lung adenocarcinoma- not otherwise specified (nos)': { color: '#8E9A7E', order: 3 },
+	// 	'lung bronchioloalveolar carcinoma mucinous': { color: '#2F91DE', order: 4 },
+	// 	'lung bronchioloalveolar carcinoma nonmucinous': { color: '#ED6EBD', order: 5 },
+	// 	'lung clear cell adenocarcinoma': { color: '#1C8D7A', order: 6 },
+	// 	'lung micropapillary adenocarcinoma': { color: '#B2EE86', order: 7 },
+	// 	'lung mucinous adenocarcinoma': { color: '#785E54', order: 8 },
+	// 	'lung papillary adenocarcinoma': { color: '#69B4C4', order: 9 },
+	// 	'lung signet ring adenocarcinoma': { color: '#C1386E', order: 10 },
+	// 	'lung solid pattern predominant adenocarcinoma': { color: '#D7A355', order: 11 },
+	// 	'mucinous (colloid) carcinoma': { color: '#243833', order: 12 },
+	// 	// Histological Type of GBM Group
+	// 	'glioblastoma multiforme (gbm)': { color: '#716190', order: 1 },
+	// 	'treated primary gbm': { color: '#5154DE', order: 2 },
+	// 	'untreated primary (de novo) gbm': { color: '#8E9A7E', order: 3 },
+	// 	// Histological Type of BRCA Group
+	// 	'infiltrating carcinoma nos': { color: '#716190', order: 1 },
+	// 	'infiltrating ductal carcinoma': { color: '#5154DE', order: 2 },
+	// 	'infiltrating lobular carcinoma': { color: '#8E9A7E', order: 3 },
+	// 	'medullary carcinoma': { color: '#2F91DE', order: 4 },
+	// 	'metaplastic carcinoma': { color: '#ED6EBD', order: 5 },
+	// 	'mixed histology (please specify)': { color: '#1C8D7A', order: 6 },
+	// 	'mucinous carcinoma': { color: '#B2EE86', order: 7 },
+	// 	'other, specify': { color: '#785E54', order: 8 },
+	// 	// Anatomic Neoplasm Subdivision of Group.
+	// 	'bronchial': { color: '#F9E3B9', order: 1 },
+	// 	'l-lower': { color: '#FBA2A3', order: 2 },
+	// 	'l-upper': { color: '#0CA3C7', order: 3 },
+	// 	'other (please specify)': { color: '#D3A16C', order: 4 },
+	// 	'r-lower': { color: '#388A4E', order: 5 },
+	// 	'r-middle': { color: '#D61E43', order: 6 },
+	// 	'r-upper': { color: '#B81BCC', order: 7 },
+	// 	// Other Dx of Group.
+	// 	'no': { color: '#D73A64', order: 1 },
+	// 	'yes': { color: '#1990AA', order: 2 },
+	// 	'yes, history of prior malignancy': { color: '#3BDB11', order: 3 },
+	// 	'yes, history of synchronous/bilateral malignancy': { color: '#803F11', order: 4 },
+	// 	// History of Neoadjuvant Treatment of Group.
+	// 	'no': { color: '#D73A64', order: 1 },
+	// 	'yes': { color: '#1990AA', order: 2 },
+	// 	// Radiation Therapy of Group.
+	// 	'no': { color: '#D73A64', order: 1 },
+	// 	'yes': { color: '#1990AA', order: 2 },
+	// 	// Pathologic T of Group.
+	// 	't1': { color: '#060CDB', order: 1 },
+	// 	't1a': { color: '#696DE9', order: 2 },
+	// 	't1b': { color: '#CDCEF7', order: 3 },
+	// 	't2': { color: '#F6251D', order: 4 },
+	// 	't2a': { color: '#F96D69', order: 5 },
+	// 	't2b': { color: '#FDCECD', order: 6 },
+	// 	't3': { color: '#1AEB42', order: 7 },
+	// 	't4': { color: '#EBBD34', order: 8 },
+	// 	'tx': { color: '#9943DE', order: 9 },
+	// 	// Pathologic N of Group.
+	// 	'n0': { color: '#DC5B35', order: 1 },
+	// 	'n1': { color: '#217C1F', order: 2 },
+	// 	'n2': { color: '#18A6F3', order: 3 },
+	// 	'n3': { color: '#EA68C3', order: 4 },
+	// 	'nx': { color: '#F4E831', order: 5 },
+	// 	// Pathologic M of Group.
+	// 	'm0': { color: '#F0820D', order: 1 },
+	// 	'm1': { color: '#C45A43', order: 2 },
+	// 	'm1a': { color: '#A523C2', order: 3 },
+	// 	'm1b': { color: '#C97BDA', order: 4 },
+	// 	'mx': { color: '#EDD3F2', order: 5 },
+	// 	// Pathologic Stage of Group.
+	// 	'stage i': { color: '#01C606', order: 1 },
+	// 	'stage ia': { color: '#018404', order: 2 },
+	// 	'stage ib': { color: '#002C01', order: 3 },
+	// 	'stage ii': { color: '#0E22C3', order: 4 },
+	// 	'stage iia': { color: '#08136C', order: 5 },
+	// 	'stage iib': { color: '#040B41', order: 6 },
+	// 	'stage iiia': { color: '#BB0C2E', order: 7 },
+	// 	'stage iiib': { color: '#75081D', order: 8 },
+	// 	'stage iv': { color: '#F0CA53', order: 9 },
+	// 	// Residual Tumor of Group.
+	// 	'r0': { color: '#DB8EC0', order: 1 },
+	// 	'r1': { color: '#FFD046', order: 2 },
+	// 	'r2': { color: '#495C50', order: 3 },
+	// 	'rx': { color: '#0E5F8A', order: 4 },
+	// 	// EGFR Mutation Result.
+	// 	'exon 19 deletion': { color: '#4A312A', order: 1 },
+	// 	'l858r': { color: '#74C04C', order: 2 },
+	// 	'l861q': { color: '#FBED09', order: 3 },
+	// 	'other': { color: '#C91DAB', order: 4 },
+	// 	't790m': { color: '#2C517B', order: 5 },
+	// 	// KRAS Mutation Result.
+	// 	'g12a': { color: '#DED0D1', order: 1 },
+	// 	'g12c': { color: '#AE8A8E', order: 2 },
+	// 	'g12d': { color: '#5D161D', order: 3 },
+	// 	'g12s': { color: '#410F14', order: 4 },
+	// 	'g12v': { color: '#25080B', order: 5 },
+	// 	'other': { color: '#C91DAB', order: 6 },
+	// 	// Primary Therapy Outcome Success.
+	// 	// Treatment outcome of primary therapy.
+	// 	// Followup Treatment Success.
+	// 	'complete remission/response': { color: '#BDED73', order: 1 },
+	// 	'partial remission/response': { color: '#8649F3', order: 2 },
+	// 	'progressive disease': { color: '#C1746B', order: 3 },
+	// 	'stable disease': { color: '#CD4C2A', order: 4 },
+	// 	// Tobacco Smoking History.
+	// 	'Lifelong Non-Smoker': { color: '#C4B5BB', order: 1 },
+	// 	'Current Smoker': { color: '#896C78', order: 2 },
+	// 	'Current Reformed Smoker for > 15 yrs': { color: '#3B0A1E', order: 3 },
+	// 	'Current Reformed Smoker for < or = 15 yrs': { color: '#2F0818', order: 4 },
+	// 	'Current Reformed Smoker, Duration Not Specified': { color: '#17040C', order: 5 },
+	// 	'NA': { color: '#D6E2E3', order: 6 },
+	// 	// ER Status
+	// 	// PR Status
+	// 	// HER2/neu Status
+	// 	'equivocal': { color: '#C4B5BB', order: 1 },
+	// 	'indeterminate': { color: '#896C78', order: 2 },
+	// 	'negative': { color: '#3B0A1E', order: 3 },
+	// 	'positive': { color: '#CD4C2A', order: 4 },
+	// };
 
 	model.exclusivityInfo = {
 		'Amplification': '#FFBDE0',
@@ -334,9 +334,9 @@ function setting ()	{
 		Layout 의 ID 목록 데이터를 만들어주는 함수.
 		여기서 각각의 Layout 의 크기도 설정해준다.
 	 */
-	function setLayoutIdData (chart, element, width, height, add, isPlotted)	{
+	function setLayoutIdData (chart, element, width, height, add, isPlotted, geneList)	{
 		model.ids = 
-		bio.sizing.chart[chart](element, width, height, add, isPlotted);
+		bio.sizing.chart[chart](element, width, height, add, isPlotted, geneList);
 
 		return model.ids;
 	};
@@ -366,7 +366,8 @@ function setting ()	{
 									chart,
 									model.dom, 
 									model.size.width, 
-									model.size.height, groupLayout, isPlotted),
+									model.size.height, groupLayout, isPlotted,
+									opts.data.data.gene_list),
 			svgs: setSVGElement(chart, model.ids, isPlotted),
 		};
 	};
@@ -494,7 +495,16 @@ function sizing ()	{
 		return id;
 	};
 	// Chart 별 영역의 크기 설정 및 ID List 생성.
-	model.chart.landscape = function (ele, w, h, group, isPlotted)	{
+	model.chart.landscape = function (ele, w, h, group, isPlotted, geneList)	{
+		var geneLenght = geneList.length,
+				stdSign = geneLenght > 40 ? 1 : -1,
+				stdGeneHeight = 0.01,
+				stdContentsHeight = 0.0095;
+		// Gene list 의 개수에 따라 크기를 지정.
+		var geneHeight = h * (0.64 + (geneLenght * stdGeneHeight * stdSign)),
+				contHeight = (0.95 + (geneLenght * stdContentsHeight * stdSign));
+				contHeight = contHeight < 0.61 ? h * 0.6 : h * contHeight;
+
 		var id = {
 			landscape_temp_sample: { width: w * 0.12, height: h * 0.15 },
 			landscape_axis_sample: { width: w * 0.14, height: h * 0.15 },
@@ -506,11 +516,11 @@ function sizing ()	{
 			landscape_patient_group: { width: w * 0.01, height: h * 0.16 },
 			landscape_group: { width: w * 0.63, height: h * 0.16 },
 			landscape_temp_group: { width: w * 0.1, height: h * 0.16 },
-			landscape_legend: { width: w * 0.12, height: h * 0.64},
-			landscape_gene: { width: w * 0.14, height: h * 0.64 },
-			landscape_patient_heatmap: { width: w * 0.01, height: h * 0.64 },
-			landscape_heatmap: { width: w * 0.63, height: h * 0.64 },
-			landscape_pq: { width: w * 0.1, height: h * 0.64 },
+			landscape_legend: { width: w * 0.12, height: geneHeight},
+			landscape_gene: { width: w * 0.14, height: geneHeight },
+			landscape_patient_heatmap: { width: w * 0.01, height: geneHeight },
+			landscape_heatmap: { width: w * 0.63, height: geneHeight },
+			landscape_pq: { width: w * 0.1, height: geneHeight },
 		};
 
 		var divs = makeDivide('landscape', ele, w, h, 0.05);
@@ -519,7 +529,7 @@ function sizing ()	{
 				gc = landGroupLayout(group, {}, w, h, 'group'),
 				gp = landGroupLayout(group, {}, w, h, 'patient');
 
-		makeLayout.call(setSize(divs.contents, w, h * 0.95), id);
+		makeLayout.call(setSize(divs.contents, w, contHeight), id);
 		makeLayout.call(bio.dom().get('#landscape_group'), gc);
 		makeLayout.call(bio.dom().get('#landscape_axis_group'), ga);
 		makeLayout.call(bio.dom().get('#landscape_patient_group'), gp)
@@ -609,6 +619,2087 @@ function sizing ()	{
 	};
 
 	return model;
+};
+function commonConfig ()	{
+	'use strict';
+
+	var model = {};
+	/*
+		Ins & del => Indel 과 같은 통합 표기법 형태로
+		Type 을 변경해주는 함수.
+	 */
+	model.typeFormat = function (type)	{
+		return type.replace(
+					/(_ins|_del)$/ig, '_indel').pronoun();
+	};
+
+	return function ()	{
+		return model;
+	};
+};
+function exclusivityConfig ()	{
+	'use strict';
+
+	var model = {};
+	/*
+		여러 Variant 로 이루어진 값을 분해하는 함수.
+	 */
+	function separate (value)	{
+		// 0th element 는 배경, 1st element 는 실제 엘리먼트가 되어야 한다.
+		return value === 'B' ? ['A', 'M'] : 
+					 value === 'E' ? ['D', 'M'] : 
+					 value === 'M' ? ['.', 'M'] : [value];
+	};
+	/*
+		Mutation case 을 Exclusivity 용으로 전환.
+	 */
+	function byCase (value, name)	{
+		if (value === 'var')	{
+			return 'Mutation';
+		} else {
+			if (name.toUpperCase().indexOf('AMP') > -1)	{
+				return 'Amplipication';
+			} else {
+				return 'Deletion';
+			}
+		}
+	};
+
+	function abbreviation (name)	{
+		return name === 'Amplification' ? 'A' : 
+					 name === 'Homozygous_deletion' ? 'D' : 'M';
+	};
+
+	function symbol (name)	{
+		return {
+			'Amplification': 'A',
+			'Deletion': 'D',
+			'Mutation': 'M',
+			'None': '.',
+		}[name];
+	};
+
+	function name (abbreviation)	{
+		return {
+			'A': 'Amplification',
+			'D': 'Deletion',
+			'M': 'Mutation',
+			'.': 'None',
+		}[abbreviation];
+	};
+	// To be delete. 알파뱃 순으로 정렬가능하기때문에.
+	function priority (value)	{
+		return { 
+			'Amplification': 0, 
+			'Deletion': 1, 
+			'Mutation': 2, 
+			'None': 3 
+		}[value];
+	};
+
+	function sample (type, leftMargin, svg)	{
+		var tempWidth = null;
+
+		return {
+			legend: {
+				attr: {
+					x: function (data, idx, that)	{
+						var width = tempWidth ? tempWidth : 0,
+								forSize = data.text.replace(' ', 'H');
+						// To be modify
+						tempWidth = tempWidth ? tempWidth + 
+						bio.drawing().textSize.width(forSize, '14px') : 
+						bio.drawing().textSize.width(forSize, '14px') + 5;
+
+						return leftMargin + width;
+					},
+					y: function (data, idx, that)	{
+						return data.text === '**' ? 18 : 15;
+					},
+				},
+				style: {
+					fill: function (data, idx, that)	{
+						return data.color;
+					},
+					fontSize: function (data, idx, that)	{
+						// To be modify.
+						return data.text === '**' ? '16px' : '14px';
+					},
+				},
+				text: function (data, idx, that)	{ return data.text; },
+			},
+			division: {
+				attr: {
+					x: function (data, idx, that)	{
+						// To be modify.
+						var width = bio.drawing().textSize.width(
+													data.text, '18px');
+
+						return data.color === '#00AC52' ? 
+									 svg.attr('width') - (10 + width) : leftMargin;
+					},
+					y: function (data, idx, that)	{
+						return svg.attr('height') * 0.05;
+					},
+				},
+				style: {
+					fill: function (data, idx, that)	{
+						return data.color;
+					},
+					// To be modify
+					fontSize: '18px',
+				},
+				text: function (data, idx, that)	{ 
+					if (data.text === '**')	{ return data.text; }
+				},
+			},
+		}[type];
+	};
+
+	function legend (leftMargin)	{
+		var shape = '.exclusivity_legend_svg.legend-shape-g-tag',
+				texts = '.exclusivity_legend_svg.legend-text-g-tag';
+
+		return {
+			margin: [0, leftMargin, 0, 0],
+			attr: {
+				x: function (data, idx, that)	{
+					return this.tagName === 'text' ? 
+								 idx * (that.fontWidth.value * 1.3) + 5 : 
+								 idx * (that.fontWidth.value * 1.3);
+				},
+				y: function (data, idx, that)	{
+					return this.tagName === 'text' ? 
+								 that.height * 0.8 / 2 + that.height * 0.2 : 
+								 data.indexOf('Mutation') > -1 ? 
+								 that.height * 0.2 + that.height * 0.8 / 4.5 : 
+								 that.height * 0.2;
+				},
+				width: 2.5,
+				height: function (data, idx, that)	{
+					return data === 'Mutation' ? 
+								 that.height * 0.8 / 2 : that.height * 0.8;
+				},
+			},
+			style: {
+				fill: function (data, idx, that)	{
+					return this.tagName === 'text' ? '#333333' : 
+								 bio.boilerPlate.exclusivityInfo[data]
+				},
+				fontSize: '11px',
+			},
+			on: {
+				mouseover: function (data, idx, that)	{
+					var nIdx = that.legendData.indexOf(data),
+							rect = bio.drawing().nthChild(shape, nIdx),
+							text = bio.drawing().nthChild(texts, nIdx),
+							rgba = bio.rendering().opacity(
+										 bio.boilerPlate
+										 	  .exclusivityInfo[data], 0.3);
+
+					d3.select(rect).transition(10)
+												 .style('fill', rgba);
+					d3.select(text).style('font-weight', 'bold');
+				},
+				mouseout: function (data, idx, that)	{
+					var nIdx = that.legendData.indexOf(data),
+							rect = bio.drawing().nthChild(shape, nIdx),
+							text = bio.drawing().nthChild(texts, nIdx);
+
+					d3.select(rect).transition(10)
+												 .style('fill', bio.boilerPlate
+												 	.exclusivityInfo[data]);
+					d3.select(text).style('font-weight', 'normal');
+				},
+			},
+			text: function (data, idx, that)	{ return data; },
+		};
+	};
+
+	function network ()	{
+		return {
+
+		};
+	};
+
+	function heatmap (type, svg, leftMargin)	{
+		var height = svg.attr('height');
+
+		return {
+			shape: {
+				margin: [height * 0.2, leftMargin, 0, 10],
+				attr: {
+					x: function (data, idx, that)	{
+						return that.scaleX(data.x);
+					},
+					y: function (data, idx, that)	{
+						return data.value === 'Mutation' ? 
+									 that.scaleY(data.y) + 
+									 bio.scales().band(that.scaleY) / 3 : 
+									 that.scaleY(data.y);
+					},
+					width: function (data, idx, that)	{
+						return bio.scales().band(that.scaleX);
+					},
+					height: function (data, idx, that)	{
+						return data.value === 'Mutation' ? 
+									 bio.scales().band(that.scaleY) / 3 : 
+									 bio.scales().band(that.scaleY);
+					},
+				},
+				style: {
+					fill: function (data, idx, that)	{
+						return bio.boilerPlate.exclusivityInfo[data.value];
+					},
+				},
+			},
+			axis: {
+				margin: [height * 0.2, leftMargin, 0, 10],
+				range: [height * 0.2, height],
+			},
+		}[type];
+	};
+
+	function survival ()	{
+		return {
+			attr: {
+				x: function (data, idx, that)	{
+					var bcr = d3.select('.legend').node()
+											.getBoundingClientRect();
+
+					return bcr.width;
+				},
+				y: function (data, idx, that)	{
+					var bcr = d3.select('.legend text').node()
+											.getBoundingClientRect();
+
+					return bcr.height / 3;
+				},
+			},
+			style: {
+				fill: function (data, idx, that)	{
+					var color = null;
+
+					bio.iteration.loop(that.data.sample.isAltered, 
+					function (a)	{
+						if (a.text === data.text)	{
+							color = data.color;
+						}
+					});
+
+					return color ? color : 'none';
+				},
+				fontSize: '25px',
+			},
+			text: function (data, idx, that)	{ return '**'; },
+		};
+	};
+
+	function division (leftMargin)	{
+		return {
+			margin: [20, leftMargin, 0, 9],
+			attr: {
+				x: function (data, idx, that)	{
+					return this.tagName === 'text' ? 
+								 data.text.indexOf('Un') > -1 ? 
+								 data.end - data.textWidth - that.margin.right : 
+								 data.start + that.margin.right: 
+								 this.tagName === 'path' ? 
+								 data.path_x : data.start;
+				},
+				y: function (data, idx, that)	{
+					return this.tagName === 'text' ? 
+								 that.height * 0.05 + that.margin.top : 
+								 this.tagName === 'path' ? idx === 0 ? 
+								 that.margin.top : data.path_y : 
+								 that.margin.top;
+				},
+				width: function (data, idx, that)	{
+					return data.end - data.start;
+				},
+				height: function (data, idx, that)	{
+					return that.height * 0.1;
+				},
+			},
+			style: {
+				fill: function (data, idx, that)	{
+					return this.tagName === 'text' ? 
+								 '#FFFFFF' : data.color;	
+				},
+				stroke: function (data, idx, that)	{
+					return this.tagName === 'path' ? '#333333' : 'none';	
+				},
+				fontSize: '11px',
+			},
+			text: function (data, idx, that)	{ return data.text; },
+		};
+	};
+
+	return function ()	{
+		return {
+			name: name,
+			symbol: symbol,
+			byCase: byCase,
+			legend: legend,
+			sample: sample,
+			network: network,
+			heatmap: heatmap,
+			survival: survival,
+			separate: separate,
+			priority: priority,
+			division: division,
+			abbreviation: abbreviation,
+		};
+	};
+};
+function expressionConfig ()	{
+	'use strict';
+
+	var model = {},
+			colorSet = [
+		'#B82647', '#0A8D5E', '#F9D537', '#0B6DB7', '#E3DDCB',
+		'#9F494C', '#CBDD61', '#ED9149', '#89236A', '#D8C8B2',
+		'#CA5E59', '#006494', '#2E674E', '#9A6B31', '#403F95',
+		'#616264', '#E2A6B4', '#5AC6D0', '#733E7F', '#45436C'
+	];
+	/*
+		parameter 로 svg 가 존재하면 가로, 세로 값을 반환.
+	 */
+	function isSVG (svg)	{	
+		return {
+			width: svg ? svg.attr('width') : 0,
+			height: svg ? svg.attr('height') : 0,
+		};
+	}
+
+	function legend (type)	{
+		var r = '.expression_bar_legend_svg.legend-shape-g-tag',
+				t1 = '.expression_bar_legend_svg.legend-text-g-tag',
+				c = '.expression_scatter_legend_svg.legend-shape-g-tag',
+				t2 = '.expression_scatter_legend_svg.legend-text-g-tag';
+
+		return {
+			color_mapping: {
+				margin: [10, 15, 0, 0],
+				attr: {
+					x: function (data, idx, that)	{
+						return this.tagName === 'text' ? 
+									 that.margin.left : 0;
+					},
+					y: function (data, idx, that)	{
+						return this.tagName === 'text' ? idx * that.fontHeight + 
+									 that.fontHeight / 2 - 1.5 : idx * that.fontHeight;
+					},
+					width: 8,
+					height: 8,
+				},
+				style: {
+					fill: function (data, idx, that)	{
+						return this.tagName === 'text' ? '#333333' : 
+									 data === 'NA' ? '#A4AAA7' : colorSet[idx];
+					},
+					fontSize: '11px',
+				},
+				on: {
+					mouseover: function (data, idx, that)	{
+						var nIdx = that.legendData.indexOf(data),
+								rect = bio.drawing().nthChild(r, nIdx),
+								text = bio.drawing().nthChild(t1, nIdx),
+								rgba = bio.rendering().opacity(
+											 data === 'NA' ? '#A4AAA7' : 
+											 colorSet[idx], 0.3);
+
+						d3.select(rect).transition(10).style('fill', rgba);
+						d3.select(text).style('font-weight', 'bold');
+					},
+					mouseout: function (data, idx, that)	{
+						var nIdx = that.legendData.indexOf(data),
+								rect = bio.drawing().nthChild(r, nIdx),
+								text = bio.drawing().nthChild(t1, nIdx);
+
+						d3.select(rect).transition(10)
+													 .style('fill', data === 'NA' ? 
+													 	'#A4AAA7' : colorSet[idx]);
+						d3.select(text).style('font-weight', 'normal');
+					},
+				},
+				text: function (data, idx, that)	{ 
+					return bio.drawing().textOverflow(
+							data, '11px', that.width * 0.75); 
+				},
+			},
+			scatter: {
+				margin: [15, 15, 20, 15],
+				attr: {
+					cx: 0,
+					cy: function (data, idx, that)	{
+						return idx * (that.fontHeight + 3);
+					},
+					r: 5,
+					x: function (data, idx, that)	{ return that.margin.left; },
+					y: function (data, idx, that)	{
+						return idx * (that.fontHeight + 3) + 1;
+					},
+				},
+				style: {
+					fill: function (data, idx, that)	{
+						return data === 'Alive' ? '#5D5DD8' : '#D86561';
+					},
+					fontSize: '11px',
+				},
+				on: {
+					mouseover: function (data, idx, that)	{
+						var nIdx = that.legendData.indexOf(data),
+								rect = bio.drawing().nthChild(c, nIdx),
+								text = bio.drawing().nthChild(t2, nIdx),
+								rgba = bio.rendering().opacity(
+											 data === 'Alive' ? 
+											 '#5D5DD8' : '#D86561', 0.3);
+
+						d3.select(rect).transition(10)
+													 .style('fill', rgba);
+						d3.select(text).style('font-weight', 'bold');
+					},
+					mouseout: function (data, idx, that)	{
+						var nIdx = that.legendData.indexOf(data),
+								rect = bio.drawing().nthChild(c, nIdx),
+								text = bio.drawing().nthChild(t2, nIdx);
+
+						d3.select(rect).transition(10)
+													 .style('fill', data === 'Alive' ? 
+													 						'#5D5DD8' : '#D86561');
+						d3.select(text).style('font-weight', 'normal');
+					},
+				},
+				text: function (data, idx, that)	{ return data; },
+			},
+		}[type];
+	};
+	/*
+		Scatter axis, chart 관련 설정.
+	 */
+	function scatter (type, leftMargin)	{
+		return {
+			shape: {
+				margin: [10, leftMargin, 30, 20],
+				attr: {
+					cx: function (data, idx, that)	{ return that.scaleX(data.x); },
+					cy: function (data, idx, that)	{ return that.scaleY(data.y); },
+					r: 5,
+				},
+				style: {
+					fill: function (data, idx, that)	{
+						return data.value === undefined ? '#333333' : 
+									 data.value === 1 ? '#D86561': '#5D5DD8';
+					},
+					fillOpacity: 0.6,
+				},
+				on: {
+					mouseover: function (data, idx, that)	{
+						bio.tooltip({
+							element: this,
+							contents: 'ID: <b>' + data.x + '</b></br>' + 
+												'Months: <b>' + data.y + '</b></br>' + 
+												'Status: <b>' + (data.value === '0' ? 
+												'Alive' : 'Dead') + '</b>',
+						});
+					},
+					mouseout: function (data, idx, that)	{
+						bio.tooltip('hide');
+					},
+				},
+			},
+			axis: {
+				top: 0,
+				left: leftMargin,
+				margin: [0, 0, 0, 0],
+				exclude: 'path, line',
+			},
+		}[type];
+	};
+	/*
+		Heatmap axis, chart 관련 설정.
+	 */
+	function heatmap (type, leftMargin)	{
+		return {
+			shape: {
+				margin: [0, leftMargin, 0, 20],
+				attr: {
+					id: function (data, idx, that)	{
+						return 'expression_heatmap_rect';
+					},
+					x: function (data, idx, that)	{ return that.scaleX(data.x); },
+					y: function (data, idx, that)	{ return that.scaleY(data.y); },
+					width: function (data, idx, that)	{
+						return bio.scales().band(that.scaleX);
+					},
+					height: function (data, idx, that)	{
+						return bio.scales().band(that.scaleY);
+					},
+				},
+				on: {
+					mouseover: function (data, idx, that)	{
+						bio.tooltip({
+							element: this,
+							contents: 'ID: <b>' + data.x + '</b></br>' + 
+												'Gene: <b>' + data.y + '</b></br>' + 
+												'TPM: <b>' + data.value + '</b></br>',
+						});
+					},
+					mouseout: function (data, idx, that)	{
+						bio.tooltip('hide');
+					},
+				},
+			},
+			axis: {
+				top: 0,
+				left: leftMargin,
+				margin: [0, 0, 0, 0],
+				exclude: 'path, line',
+			},
+		}[type];
+	};
+
+	function patient (leftMargin)	{
+		return {
+			margin: [0, leftMargin, 0, 20],
+			attr: {
+				points: function (data, idx, that)	{
+					var y = that.id.indexOf('bar') > -1 ? 
+									data.y - data.value < 0 ? 
+									that.scaleY(data.y) + 8 : 
+									that.scaleY(data.y) + 3 : that.height,
+							dir = that.id.indexOf('bar') > -1 ? 
+										data.y - data.value < 0 ? 'top' : 'bottom' : 'bottom';
+
+					return bio.rendering().triangleStr(
+						that.scaleX(data.x), y, 10, dir);
+				},
+			},
+			style: { fill: '#333333' },
+			on: {
+				mouseover: function (data, idx, that)	{
+					bio.tooltip({
+						element: this,
+						contents: '<b>' + data.x + '</b></br>' + 
+											'Value: <b>' + data.value + '</b></br>',
+					});
+				},
+				mouseout: function (data, idx, that)	{
+					bio.tooltip('hide');
+				},
+			},
+		};
+	};
+	/*
+		bar axis, chart 관련 설정.
+	 */
+	function bar (type, leftMargin)	{
+		return {
+			shape: {
+				margin: [20, leftMargin + 1, 15, 19],
+				attr: {
+					id: function (data, idx, that)	{
+						return 'expression_bar_plot_rect';
+					},
+					x: function (data, idx, that)	{
+						return that.scaleX(data.x);
+					},
+					y: function (data, idx, that)	{
+						return data.y - data.value < 0 ?
+									 that.scaleY(data.value) : that.scaleY(data.y);
+					},
+					width: function (data, idx, that)	{
+						return bio.scales().band(that.scaleX);
+					},
+					height: function (data, idx, that)	{
+						return data.y - data.value < 0 ? 
+									 that.scaleY(data.y) - that.scaleY(data.value) : 
+									 that.scaleY(data.value) - that.scaleY(data.y);
+					},
+				},
+				style: {
+					fill: function (data, idx, that)	{
+						return data.y - data.value === 0 ? '#000000' : '#62C2E0';
+					},
+					stroke: function (data, idx, that)	{
+						return data.y - data.value === 0 ? '#000000' : '#62C2E0';
+					},
+				},
+				on: {
+					mouseover: function (data, idx, that)	{
+						bio.tooltip({
+							element: this,
+							contents: 'ID: <b>' + data.x + '</b></br>' + 
+												'Average: <b>' + data.value + '</b>',
+						});
+					},
+					mouseout: function (data, idx, that)	{
+						bio.tooltip('hide');
+					},
+				},
+			},
+			axis: {
+				top: 0,
+				left: leftMargin,
+				margin: [10, 0, 10, 0],
+			},
+		}[type];
+	};
+	/*
+		Gradient axis, bar 관련 설정.
+	 */
+	function gradient (type, svg)	{
+		var svgAttr = isSVG(svg);
+
+		return {
+			axis: {
+				top: 20,
+				left: 0,
+				margin: [0, 5, 0, 10],
+				exclude: 'path, line',
+				range: [5, svgAttr.width - 10],
+			},
+			shape: {
+				attr: {
+					x: 5, y: 5,
+					rx: 3, ry: 3,
+					width: function (data, idx, that)	{
+						return d3.select(bio.drawing().getParentSVG(this))
+										 .attr('width') - 10;
+					},	
+					height: 15,
+				},
+				style: {
+					fill: function (data, idx, that)	{
+						return 'url(#' + that.data.colorGradient.id + ')';
+					},
+				}
+			},
+		}[type];
+	};
+
+	function division (type, leftMargin)	{
+		var low_path = '.division-path-0-g-tag path',
+				high_path = '.division-path-1-g-tag path',
+				rect = '#expression_division_svg_division_shape_rect';
+
+		function redrawMarker (marker, data, value)	{
+			marker.attr('points', function (d, i, t)	{
+				return bio.rendering().triangleStr(
+							value + data.additional, data.path_y, 10, data.direction);
+			});
+		};
+
+		function redrawLine (line, value)	{
+			var target = line.attr('d'),
+					linePos = target.substring(
+						target.indexOf('M') + 1, target.indexOf(','));
+			// Redraw line.
+			line.attr('d', target.replace(new RegExp(linePos,"gi"), value));
+		};
+
+		return {
+			bar: {
+				margin: [0, leftMargin, 0, 20],
+			},
+			division: {
+				margin: [0, leftMargin, 0, 20],
+				attr: {
+					x: function (data, idx, that)	{
+						that.position.init.low = that.position.init.low ? 
+						that.position.init.low : data.path_x;
+						that.position.init.high = that.position.init.high ? 
+						that.position.init.high : data.path_x;
+						that.position.now.low = that.position.init.low;
+						that.position.now.high = that.position.init.high;
+
+						return this.tagName === 'text' ? 
+									 data.text.indexOf('Low') > -1 ? 
+									 data.start + 5 :  data.end - 
+									 data.textWidth - 15 : 
+									 this.tagName === 'path' ? 
+									 data.path_x : data.start;
+					},
+					y: function (data, idx, that)	{
+						return this.tagName === 'text' ? that.height / 2 : 
+									 this.tagName === 'path' ? 
+									 data.text.indexOf('Low') > -1 ? 
+									 idx === 0 ? data.path_y - 5 : data.path_y : 
+									 idx === 0 ? data.path_y : data.path_y + 5 : 0;
+					},
+					points: function (data, idx, that)	{
+						return bio.rendering().triangleStr(
+										data.path_x + data.additional, 
+										data.path_y, 10, data.direction);
+					},
+					width: function (data, idx, that)	{ return data.end - data.start; },
+					height: function (data, idx, that)	{ return that.height; },
+					rx: 3, ry: 3,	
+				},
+				style: {
+					fill: function (data, idx, that)	{
+						return this.tagName === 'text' ? '#FFFFFF' : 
+									 data.text.indexOf('Low') > -1 ? '#00AC52' : '#FF6252';
+					},
+					stroke: function (data, idx, that)	{
+						return this.tagName === 'text' ? 
+									 data.text.indexOf('Low') > -1 ? 
+									 '#00AC52' : '#FF6252' : 'none';
+					},
+					strokeWidth: '0.5px', fontSize: '12px', fontWeight: 'bold',
+					cursor: function (data, idx, that)	{
+						return this.tagName === 'polygon' ? 'pointer' : 'normal';
+					},
+				},
+				call: {
+					drag: function (data, idx, that)	{
+						if (data.text.indexOf('Low') > -1)	{
+							that.position.init.low = that.position.init.low ? 
+							that.position.init.low : data.path_x;
+							that.position.now.low = that.position.now.low ? 
+							that.position.now.low += d3.event.dx: data.path_x;
+
+							var pos = that.position.now.low = 
+									Math.max(data.start, 
+									Math.min(that.position.now.high || data.path_x, 
+													 that.position.now.low));
+
+							redrawMarker(
+								d3.select(this), data, that.position.now.low);
+							redrawLine(d3.select(low_path), pos);
+							d3.selectAll(rect)
+								.attr('width', function (d, i, t)	{
+									return d.text === data.text ? pos - d.start : 
+												 d.end - that.position.now.high;
+							});
+
+						} else {
+							that.position.init.high = that.position.init.high ? 
+							that.position.init.high : data.path_x;
+							that.position.now.high = that.position.now.high ? 
+							that.position.now.high += d3.event.dx: data.path_x;
+
+							var pos = that.position.now.high = 
+									Math.max(that.position.now.low || data.path_x, 
+									Math.min(data.end, that.position.now.high)),
+									line = d3.select(low_path).attr('d'),
+									linePos = line.substring(line.indexOf('M') + 1, 
+																					 line.indexOf(','));
+							
+							redrawMarker(
+								d3.select(this), data, that.position.now.high);
+							redrawLine(d3.select(high_path), pos);
+							d3.selectAll(rect)
+								.attr('x', function (d, i, t)	{
+									return d.text === data.text ? pos : d.start;
+								})
+								.attr('width', function (d, i, t)	{
+									return d.text === data.text ? d.end - pos : 
+												 that.position.now.low - d.start;
+							});
+						}
+					},
+				},
+				text: function (data, idx, that)	{ return data.text; },
+			},
+			scatter: {
+				margin: [0, leftMargin, 0, 20],
+			},
+		}[type];
+	};
+
+	function survival (type)	{
+		return {
+			legend: {
+				attr: {
+					x: function (data, idx, that)	{
+						var bcr = d3.select('.legend').node()
+												.getBoundingClientRect();
+
+						return bcr.right - bcr.left;
+						return that.data.patient.data === data.text ? 
+									 bcr.right - bcr.left : -5;
+					},
+					y: function (data, idx, that)	{
+						var bcr = d3.select('.legend text').node()
+												.getBoundingClientRect(),
+								txt = bio.drawing().textSize.height('11px');
+
+						return bcr.height / 2.5;
+					},
+				},
+				style: {
+					fill: function (data, idx, that)	{
+						return that.data.patient.data === data.text ? 
+									 data.color : '#FFFFFF';
+					},
+				},
+				text: function (data, idx, that)	{
+					return that.data.patient.data === data.text ? 
+								 that.data.patient.data === ' **' ? '' : ' **' : '';
+				},
+			}
+		}[type];
+	};
+
+	return function ()	{
+		return {
+			bar: bar,
+			legend: legend,
+			scatter: scatter,
+			heatmap: heatmap,
+			patient: patient,
+			gradient: gradient,
+			colorSet: colorSet,
+			division: division,
+			survival: survival,
+		};
+	};
+};
+function landscapeConfig ()	{
+	'use strict';
+
+	var model = {};
+	/*
+		전달 받은 variant 가 CNV 인지 Variant 인지
+		를 구분하는 함수.
+	 */
+	function byCase (variant)	{
+		return bio.boilerPlate
+							.variantInfo[bio.commonConfig()
+														 	.typeFormat(variant)]
+							.order < 2 ? 'cnv' : 'var';
+	};
+
+	function axis (part, direction, svg)	{
+		if (part === 'common')	{
+			return {
+				on: {
+					mouseover: function (data, idx)	{
+						var id = this.parentNode
+												 .parentNode.className.baseVal;
+
+						if (id.indexOf('gene') > -1 && 
+								id.indexOf('right') > -1 || 
+								id.indexOf('group') > -1)	{
+							var txt = id.indexOf('gene') > -1 ? 
+							'Sort by alt + <b>' + this.innerHTML + '</b>' : 
+											'<b>' + this.innerHTML + '</b></br>' + 
+											'Click to sort </br> Alt + Click ' + 
+											'add to key';
+
+							bio.tooltip({ element: this, contents: txt });
+
+							d3.select(this).transition()
+								.style('font-size', 11)
+								.style('font-weight', 'bold');
+						}
+					},
+					mouseout: function (data, idx)	{
+						bio.tooltip('hide');
+
+						d3.select(this).transition()
+							.style('font-size', 10)
+							.style('font-weight', 'normal');
+					},
+				}, 
+			};
+		}
+
+		var w = parseFloat(svg.attr('width')),
+				h = parseFloat(svg.attr('height'));
+
+		return {
+			sampleY: {
+				top: 5,
+				left: w - 5,
+				direction: 'left', 
+				range: [5, h - 25], 
+				margin: [5, 0, 25, 0],
+			},
+			groupY: {
+				top: 5,
+				left: 30,
+				range: [0, 0],
+				direction: 'right', 
+				margin: [0, 0, 0, 0], 
+				exclude: 'path, line',
+				on: {
+					click: function (data, idx, that)	{
+						/*
+							정렬된 그룹 배열을 새로이 복사해준다.
+						 */
+						function mergedGroup (groups)	{
+							var result = [];
+
+							bio.iteration.loop(groups, function (g)	{
+								result = result.concat(g);
+							});
+
+							return result;
+						};
+
+						bio.iteration.loop(that.data.axis.group.y, 
+						function (ag, i)	{
+							if (ag[0] === data)	{
+								var group = [].concat(that.data.group.group[i]);
+
+								that.now.group = bio.landscapeSort().group.call(
+									that, group, d3.event.altKey ? true : false);
+							}
+						});
+
+						var sorted = {
+							axis: 'x',
+							data: mergedGroup(that.now.group.axis.data),
+						};
+
+						return { sorted: sorted, model: that };		
+					},
+				},
+			},
+			geneY: {
+				top: 0,
+				left: w - 70,
+				direction: 'right', 
+				range: [10, h - 45],
+				exclude: 'path, line',
+				margin: [10, 0, 45, 0],
+				on: {
+					click: function (data, idx, that)	{
+						var temp = [];
+
+						bio.iteration.loop(that.data.heatmap, function (h)	{
+							if (h.y === data)	{
+								temp.push(h);
+							}
+						});
+
+						if (d3.event.altKey)	{
+							return {
+								sorted: bio.landscapeSort()
+													 .gene(that.data.axis.heatmap.x, temp),
+								model: that,
+							};	
+						}
+					},
+				},
+			},
+			geneX: {
+				left: 15,
+				top: h - 45,
+				range: [15, w - 85],
+				direction: 'bottom',
+				margin: [0, 15, 0, 85], 
+			},
+			pqX: {
+				left: 5,
+				top: h - 45,
+				direction: 'bottom', 
+				range: [10, w - 20],
+				margin: [0, 10, 20, 20], 
+			},
+		}[part + direction];
+	};
+	/*
+		PQ, Sample, Gene 부분에 들어가는 Sorting title 렌더링 설정 함수.
+	 */
+	function sortTitle (part)	{
+		return {
+			pq: {
+				margin: [5, 15, 13, 5],
+				attr: {
+					rx: 3, ry: 3,
+					x: function (data, idx, that) {
+						return this.tagName === 'text' ? 
+									 that.margin.left : 
+									 that.margin.left - that.margin.right;
+					},
+					y: function (data, idx, that) {
+						return this.tagName === 'text' ? 
+									 that.height - that.margin.bottom : 
+									 that.height - that.margin.bottom * 1.75;
+					},
+					width: function (data, idx, that)	{
+						return that.mostWidth.value + that.margin.right * 2;
+					},
+					height: function (data, idx, that)	{
+						return that.mostHeight + that.margin.top;
+					},
+				},
+			},
+			gene: {
+				margin: [5, 5, 13, 125],
+				attr: {
+					rx: 3, ry: 3,
+					x: function (data, idx, that) {
+						return this.tagName === 'text' ? 
+									 that.width - that.margin.right : 
+									 that.width - that.margin.right - 
+									 that.margin.left;
+					},
+					y: function (data, idx, that) {
+						return this.tagName === 'text' ? 
+									 that.height - that.margin.bottom : 
+									 that.height - that.margin.bottom * 1.75;
+					},
+					width: function (data, idx, that)	{
+						return that.mostWidth.value - that.margin.left * 2;
+					},
+					height: function (data, idx, that)	{
+						return that.mostHeight + that.margin.top;
+					},
+				},
+			},
+			sample: {
+				margin: [10, 6.5, 25, 45],
+				attr: {
+					rx: 3, ry: 3,
+					x: function (data, idx, that) {
+						return this.tagName === 'text' ? 
+								 	 that.height * -1 + that.margin.bottom : 
+								 	 that.height * -1 + that.margin.bottom * 0.65;
+					},
+					y: function (data, idx, that) {
+						return this.tagName === 'text' ? 
+									 that.width - that.margin.right : 
+									 that.width - that.margin.right - 
+									 that.margin.top;
+					},
+					width: function (data, idx, that)	{
+						return that.mostWidth.value - that.margin.left;
+					},
+					height: function (data, idx, that)	{
+						return that.mostHeight + that.margin.top / 2;
+					},
+				},
+			},
+			common: {
+				titles: ['#Mutations', '-log10(p-value)'],
+				style: {
+					fontSize: '10px',
+					fontWeight: 'bold',
+					filter: 'url(#drop_shadow)',
+					fill: function (data, idx, that)	{
+						return this.tagName === 'text' ? 
+									'#FFFFFF' : '#595959';
+					},
+				},
+				on: {
+					click: function (data, idx, that)	{
+						var res = bio.landscapeSort()
+											[that.now.sort[that.sortName]](
+											 that.sortName, that.data);
+
+						return { sorted: res, model: that };
+					},
+					mouseover: function (data, idx, that)	{
+						bio.tooltip({
+							element: this.tagName === 'text' ? 
+											 this.nextSibling ? this.nextSibling : 
+											 this.previousSibling : this,
+							contents: 'Sort by <b>' + data.text + '</b>',
+						});
+					},
+					mouseout: function (data, idx, that)	{
+						bio.tooltip('hide');
+					},
+				},
+				text: function (data, idx, that)	{ return data.text; },
+			}
+		}[part];
+	};
+	/*
+		Bar 차트 설정 함수.
+	 */
+	function bar (part)	{
+		return {
+			pq: {
+				margin: [10, 15, 45.5, 30],
+				attr: {
+					id: function (data, idx, that)	{
+						return 'landscape_gene_' + data.y + 
+										'_pq_rect';
+					},
+					x: function (data, idx, that) {
+						return bio.math.min(that.rangeX);
+					},
+					y: function (data, idx, that) {
+						return that.scaleY(data.y) + 0.25;
+					},
+					width: function (data, idx, that)	{
+						return that.scaleX(data.value);
+					},
+					height: function (data, idx, that)	{
+						return bio.scales().band(that.scaleY) - 0.5;
+					},
+				},
+				style: {
+					fill: '#BFBFBF',
+				},
+				on: {
+					mouseover: function (data, idx, that)	{
+						bio.tooltip({ 
+							element: this, 
+							contents: '<b>' + data.y + '</b></br>' + 
+				 				 'Value: <b>' + data.value + '</b>' });
+
+						d3.select(this)
+							.transition(10)
+							.style('fill', '#7A7A7A')
+							.style('filter', 'url(#drop_shadow)');
+					},
+					mouseout: function (data, idx, that)	{
+						bio.tooltip('hide');
+
+						d3.select(this)
+							.transition(10)
+							.style('fill', '#BFBFBF')
+							.style('filter', 'none');
+					},
+				},
+			},
+			gene: {
+				margin: [10, 30, 45.5, 70],
+				attr: {
+					id: function (data, idx, that)	{
+						return 'landscape_gene_' + data.y + 
+										'_bar_rect';
+					},
+					x: function (data, idx, that) {
+						return that.scaleX(data.x + data.value) + 0.125;
+					},
+					y: function (data, idx, that) {
+						return that.scaleY(data.y) + 0.25;
+					},
+					width: function (data, idx, that)	{
+						return that.scaleX(data.x) - 
+									 that.scaleX(data.x + data.value) - 0.25;
+					},
+					height: function (data, idx, that)	{
+						return bio.scales().band(that.scaleY) - 0.5;
+					},
+				},
+				style: {
+					fill: function (data, idx, that)	{
+						return bio.boilerPlate.variantInfo[data.info].color;
+					},
+				},
+				on: {
+					mouseover: function (data, idx, that)	{
+						var rgba = bio.rendering().opacity(
+							bio.boilerPlate.variantInfo[data.info].color, 0.3);
+
+						bio.tooltip({ 
+							element: this, 
+							contents: '<b>' + data.y + '</b></br>' + 
+								  'Type: <b>' + data.info + '</b></br>' + 
+								 'Count: <b>' + data.value + '</b>' });
+
+						d3.select(this)
+							.transition(10)
+							.style('fill', rgba)
+							.style('filter', 'url(#drop_shadow)');
+					},
+					mouseout: function (data, idx, that)	{
+						bio.tooltip('hide');
+
+						d3.select(this)
+							.transition(10)
+							.style('fill', bio.boilerPlate
+																.variantInfo[data.info].color)
+							.style('filter', 'none');
+					},
+				},
+			},
+			sample: {
+				margin: [10, 5, 20, 0],
+				attr: {
+					x: function (data, idx, that) {
+						return that.scaleX(data.x) + 0.25;
+					},
+					y: function (data, idx, that) {
+						return that.scaleY(data.y + data.value) + 0.25;
+					},
+					width: function (data, idx, that)	{
+						return bio.scales().band(that.scaleX) - 0.5; 
+					},
+					height: function (data, idx, that)	{
+						return that.scaleY(data.y) - 
+									 that.scaleY(data.y + data.value) - 0.5;
+					},
+				},
+				style: {
+					fill: function (data, idx, that)	{
+						return bio.boilerPlate.variantInfo[data.info].color;
+					},
+				},
+				on: {
+					mouseover: function (data, idx, that)	{
+						var rgba = bio.rendering().opacity(
+							bio.boilerPlate.variantInfo[data.info].color, 0.3);
+
+						bio.tooltip({ 
+							element: this, 
+							contents: '<b>' + data.x + '</b></br>' + 
+								  'Type: <b>' + data.info + '</b></br>' + 
+								 'Count: <b>' + data.value + '</b>' });
+
+						d3.select(this)
+							.transition(10)
+							.style('fill', rgba)
+							.style('filter', 'url(#drop_shadow)');
+					},
+					mouseout: function (data, idx, that)	{
+						bio.tooltip('hide');
+
+						d3.select(this)
+							.transition(10)
+							.style('fill', bio.boilerPlate
+																.variantInfo[data.info].color)
+							.style('filter', 'none');
+					},
+				},
+			},
+		}[part];
+	};
+	/*
+		Heatmap 설정 함수.
+	 */
+	function heatmap (part)	{
+		return {
+			heatmap: {
+				margin: [10, 5, 45.5, 0],
+				attr: {
+					id: function (data, idx, that)	{
+						return 'landscape_gene_' + data.y + 
+										'_heatmap_rect';
+					},
+					x: function (data, idx, that)	{
+						return that.scaleX(data.x);
+					},
+					y: function (data, idx, that)	{
+						return byCase(data.value) !== 'cnv' ? 
+									bio.scales().band(that.scaleY) / 3 + 
+									that.scaleY(data.y) : that.scaleY(data.y);
+					},
+					width: function (data, idx, that)	{
+						return bio.scales().band(that.scaleX);
+					},
+					height: function (data, idx, that)	{
+						return byCase(data.value) !== 'cnv' ? 
+									bio.scales().band(that.scaleY) / 3 : 
+									bio.scales().band(that.scaleY);
+					},
+				},
+				style: {
+					fill: function (data, idx, that)	{
+						return bio.boilerPlate.variantInfo[data.value].color;
+					},
+				},
+				on: {
+					mouseover: function (data, idx, that)	{
+						var rgba = bio.rendering().opacity(
+									bio.boilerPlate
+										 .variantInfo[data.value].color, 0.3),
+								typeStr = '';
+
+						if (data.info.length > 0)	{
+							bio.iteration.loop(data.info, function (i)	{
+								typeStr += '</br><b>' + i + '</b>';
+							});
+						}
+
+						bio.tooltip({
+							element: this,
+							contents: '<b>Gene mutations</b></br>' + 
+										 'X: <b>' + data.x + '</b></br>' + 
+										 'Y: <b>' + data.y + '</b></br>' + 
+						 'Type: </br><b>' + data.value + '</b>' + typeStr,
+						});
+
+						d3.select(this)
+							.transition(10)
+							.style('fill', rgba)
+							.style('filter', 'url(#drop_shadow)');
+					},
+					mouseout: function (data, idx, that)	{
+						bio.tooltip('hide');
+
+						d3.select(this)
+							.transition(10)
+							.style('fill', bio.boilerPlate
+																.variantInfo[data.value].color)
+							.style('filter', 'none');
+					},
+				},
+			},
+			group: {
+				margin: [0, 5, 7, 0],
+				attr: {
+					x: function (data, idx, that)	{
+						return that.scaleX(data.x) || that.margin.left;
+					},
+					y: function (data, idx, that)	{
+						return that.scaleY(data.y);
+					},
+					width: function (data, idx, that)	{
+						return bio.scales().band(that.scaleX);
+					},
+					height: function (data, idx, that)	{
+						return bio.scales().band(that.scaleY);
+					},
+				},
+				style: {
+					fill: function (data, idx, that)	{
+						return bio.boilerPlate
+											.clinicalInfo[data.value].color;
+					},
+				},
+				on: {
+					mouseover: function (data, idx, that)	{
+						var rgba = bio.rendering().opacity(
+									bio.boilerPlate
+										 .clinicalInfo[data.value].color, 0.3);
+
+						bio.tooltip({
+							element: this,
+							contents: '<b>' + data.y + '</b></br>' + 
+								'Sample: <b>' + data.x + '</b></br>' + 
+								 'Value: <b>' + data.value + '</b></br>',
+												
+						});
+
+						d3.select(this)
+							.transition(10)
+							.style('fill', rgba)
+							.style('filter', 'url(#drop_shadow)');
+					},
+					mouseout: function (data, idx, that)	{
+						bio.tooltip('hide');
+
+						d3.select(this)
+							.transition(10)
+							.style('fill', bio.boilerPlate
+																.clinicalInfo[data.value].color)
+							.style('filter', 'none');
+					},
+				},
+			},
+		}[part];	
+	};
+	/*
+		Legend 설정 함수. 
+	 */
+	function legend ()	{
+		var shape = '.legend-shape-g-tag',
+				texts = '.legend-text-g-tag';
+
+		return {	
+			margin: [20, 15, 5, 15],
+			attr: {
+				x: function (data, idx, that)	{ 
+					return this.tagName === 'text' ? 
+								 that.margin.left : 0; 
+				},
+				y: function (data, idx, that)	{
+					var y = this.tagName === 'text' ? 
+					 idx * (that.fontHeight + that.padding) : 
+					 idx * (that.fontHeight + that.padding) - 
+					 				that.fontHeight / 2 - 1;
+
+					return this.tagName === 'rect' && 
+								 byCase(data) === 'var' ? 
+								 y + that.fontHeight / 4 : y;
+				},
+				width: function (data, idx, that)	{
+					return that.fontHeight / 2;
+				},
+				height: function (data, idx, that)	{
+					return byCase(data) === 'var' ? 
+									that.fontHeight / 2 : that.fontHeight;
+				},
+			},
+			style: {
+				fill: function (data, idx, that)	{
+					return this.tagName === 'text' ? '#333333' : 
+									bio.boilerPlate.variantInfo[data].color;
+				},
+				fontSize: '8px',
+			},
+			on: {
+				mouseover: function (data, idx, that)	{
+					var nIdx = that.legendData.indexOf(data),
+							rect = bio.drawing().nthChild(shape, nIdx),
+							text = bio.drawing().nthChild(texts, nIdx),
+							rgba = bio.rendering().opacity(
+										 bio.boilerPlate
+										 	  .variantInfo[data].color, 0.3);
+
+					d3.select(rect).transition(10)
+												 .style('fill', rgba);
+					d3.select(text).style('font-weight', 'bold');
+				},
+				mouseout: function (data, idx, that)	{
+					var nIdx = that.legendData.indexOf(data),
+							rect = bio.drawing().nthChild(shape, nIdx),
+							text = bio.drawing().nthChild(texts, nIdx);
+
+					d3.select(rect).transition(10)
+												 .style('fill', bio.boilerPlate
+												 	.variantInfo[data].color);
+					d3.select(text).style('font-weight', 'normal');
+				},
+			},
+			text: function (data, idx, that)	{ return data; },
+		};
+	};
+
+	return function ()	{
+		return {
+			bar: bar,
+			axis: axis,
+			legend: legend,
+			byCase: byCase,
+			title: sortTitle,
+			heatmap: heatmap,
+		};
+	};
+};
+function pathwayConfig ()	{
+	'use strict';
+
+	var model = {
+		drug_color: {
+			type1: { class: 'agent-red', color: 'red' },
+			type2: { class: 'agent-blue', color: 'blue' },
+			type3: { class: 'agent-black', color: 'black' },
+		}
+	};
+
+	function color (data)	{
+		if (data)	{
+			var scale = bio.scales().get([0, 50], [1, 0.5]),
+					base = d3.hsl(
+						data.active === 'Y' ? 'red' : 'blue');
+					base.l = scale(data.frequency);
+
+			return base;
+		} 
+
+		return '#d0d0d0';
+	};
+
+	function getId (element)	{
+		var full = d3.select(element).node().parentNode.id;
+
+		return full.substring(full.lastIndexOf('_') + 1, 
+													full.length).toUpperCase();
+	};
+
+	function node ()	{
+		return {
+			style: {
+				fill: function (data, idx, that)	{
+					return this.tagName === 'rect' ? color(data) : 
+								 data && data.frequency >= 30 ? 
+								'#F2F2F2' : '#333333';
+				},
+			},
+			on: { 
+				mouseover: function (data, idx, that)	{
+					var elem = this.tagName === 'rect' ? this : 
+								d3.select(this.parentNode).select('rect').node(),
+							freq = data ? data.frequency : 'NA',
+							color = data ? data.active === 'Y' ? 
+											'RED' : 'BLUE' : '#E8E8E8',
+							isAct = data ? data.active === 'Y' ? 
+											'Activated' : 'Inactivated' : 'NA',
+							id = getId(this);
+
+					bio.tooltip({
+						element: elem,
+						contents: '<b>' + id + '</b></br>frequency : ' + 
+						freq + '</br><span style="color : ' + color + 
+						'"><b>' + isAct + '</b></span>',
+					});
+				},
+				mouseout: function (data, idx, that)	{
+					bio.tooltip('hide');
+				},
+			},
+		};
+	};
+
+	function drug ()	{
+		function geneTag (gene)	{
+			return '<div id="modal_gene_name">' + gene + '</div>';
+		};
+
+		function onOverAndOut (data)	{
+			var isOver = d3.event.type === 'mouseout' ? 0 : 1,
+					sv = isOver ? 0.02 : 0,
+					tv = isOver ? -5 : 0;
+
+			d3.select(this).transition()
+				.attr('transform', function ()	{
+					return 'matrix(' + 
+					(data.scaleX + sv) + ', 0, 0, ' + 
+					(data.scaleY + sv) + ', ' + 
+					(data.translateX + tv) + ', ' + 
+					(data.translateY + tv) + ')';
+				})
+				.style('cursor', 'pointer')
+				.selectAll('path')
+				.style('stroke', isOver ? '#FBFD24' : '#FFFFFF')
+				.style('stroke-width', isOver ? 20 : 0);
+		};
+		/*
+			data 값에 따른 URL 요청 주소를 반환한다.
+		 */
+		function drugURL (data)	{
+			return data.nci_id ? 
+			'http://www.cancer.gov/about-cancer/treatment/drugs/' + 
+			data.nci_id : !data.nci_id && data.dailymed_id ? 
+			'http://www.dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?' + 
+			'setid=' + data.dailymed_id : null;	
+		};
+		/*
+			type 구분을 위한 drug 모양을 반환한다.
+		 */
+		function drugShape (type)	{
+			var color = model.drug_color[type].color,
+					drug = document.querySelector(
+						'#legend_icon_' + color).cloneNode(true),
+					svg = document.createElement('svg');
+
+			drug.setAttribute('transform', 
+				'matrix(0.04, 0, 0, 0.04, 10, 0)');
+
+			svg.setAttribute('width', 40);
+			svg.setAttribute('height', 20);
+			svg.appendChild(drug);
+
+			return svg.outerHTML;
+		};
+
+		return {
+			on: {
+				click: function (data, idx, that)	{
+					var gene = this.id.split('_')[1],
+							title = document.querySelector('.modal-title'),
+							body = document.querySelector('.modal-body');
+
+							$('#drug_modal').modal({
+								keyboard: false,
+								backdrop: 'static',
+							});
+
+							$('#drug_modal').on('shown.bs.modal', function (e)	{
+								var bodyHeight = $(this).find('.modal-body').css('height');
+								console.log(bodyHeight);
+								bio.table({
+									height: parseFloat(bodyHeight) - 70,
+									element: body,
+									heads: ['Type', 'Drug', 'Level of approval', 
+													'Treated Cancer', 'Reference'],
+									data: data.drugs,
+									columns: function (col, row, head, data, that)	{
+										if (col === 0) return drugShape(data.drug_type);
+										else if (col === 1) 	{
+											var urls = drugURL(data);
+											
+											return urls ? data.agent + 
+											'<a class="drug-link" href=' + urls + 
+											' target=\'drug\'>' + 
+											'<i class="fa fa-external-link"></i></a>' : 
+												data.agent;
+										}										
+										else if (col === 2) 	return data.drug_class;
+										else if (col === 3) 	return data.cancer;
+										else if (col === 4) 	return data.source;
+									},
+								});
+							});
+				},
+				mouseover: onOverAndOut,
+				mouseout: onOverAndOut,
+			}
+		}
+	};
+
+	return function ()	{
+		return { node: node, drug: drug };
+	};
+};
+function variantsConfig ()	{
+	'use strict';
+
+	var model = {};
+	/*
+		값에 따른 지름값 계산.
+	 */
+	function radius (count)	{
+		return Math.sqrt(count) * 3 / 1.25;
+	};
+	/*
+		Needle, Graph 의 x, y 축 설정 함수.
+	 */
+	function axis (part, direction, svg)	{
+		if (part === 'common')	{ return {}; }
+
+		var w = parseFloat(svg.attr('width')),
+				h = parseFloat(svg.attr('height'));
+
+		return {
+			needleX: {
+				top: h - 35, left: 0,
+				direction: 'bottom', 
+				range: [40, w - 40], 
+				margin: [10, 40, 35, 40],
+			},
+			needleY: {
+				top: 0, left: 40,
+				direction: 'left', 
+				range: [20, h - 80], 
+				margin: [20, 40, 80, 0],
+			},
+		}[part + direction];
+	};
+	/*
+		Needle, Patient 에 대한 Legend.
+	 */
+	function legend (part)	{
+		var shape = '.legend-shape-g-tag',
+				texts = '.legend-text-g-tag',
+				pShape = '.variants_patient_legend_svg' + shape,
+				pTexts = '.variants_patient_legend_svg' + texts;
+
+		return {
+			needle: {
+				margin: [15, 10, 5, 15],
+				attr: {
+					cx: function (data, idx, that)	{
+						return that.margin.left;
+					},
+					cy: function (data, idx, that)	{
+						return idx * (that.fontHeight + 5);
+					},
+					r: 5, 
+					x: function (data, idx, that)	{
+						return this.tagName === 'text' ? 
+									 that.margin.left * 2 : that.margin.left;
+					},
+					y: function (data, idx, that)	{
+						return idx * (that.fontHeight + 5) + 1;	
+					},
+				},
+				style: {
+					fill: function (data, idx, that)	{
+						return this.tagName === 'text' ? '#333333' : 
+									 bio.boilerPlate.variantInfo[data].color;
+					},
+				},
+				on: {
+					mouseover: function (data, idx, that)	{
+						var nIdx = that.legendData.indexOf(data),
+								rect = bio.drawing().nthChild(shape, nIdx),
+								text = bio.drawing().nthChild(texts, nIdx),
+								rgba = bio.rendering().opacity(
+											 bio.boilerPlate
+											 	  .variantInfo[data].color, 0.3);
+
+						d3.select(rect).transition(10)
+													 .style('fill', rgba);
+						d3.select(text).style('font-weight', 'bold');
+					},
+					mouseout: function (data, idx, that)	{
+						var nIdx = that.legendData.indexOf(data),
+								rect = bio.drawing().nthChild(shape, nIdx),
+								text = bio.drawing().nthChild(texts, nIdx);
+
+						d3.select(rect).transition(10)
+													 .style('fill', bio.boilerPlate
+													 	.variantInfo[data].color);
+						d3.select(text).style('font-weight', 'normal');
+					},
+				},
+				text: function (data, idx, that)	{ return data; },
+			},
+			patient: {
+				margin: [15, 10, 5, 15],
+				attr: {
+					x: function (data, idx, that)	{
+						return this.tagName === 'text' ? 
+									 that.margin.left * 2 : that.margin.left;
+					},
+					y: 0,
+					points: function (data, idx, that)	{
+						return bio.rendering().triangleStr(
+										that.margin.left, -5, 8, 'top');
+					},
+				},
+				style: {
+					fill: function (data, idx, that)	{
+						return this.tagName === 'text' ? '#333' : '#FFFFFF';
+					},
+					stroke: function (data, idx, that)	{
+						return this.tagName === 'text' ? 'none' : '#333333';
+					},
+					strokeWidth: '1px',
+				},
+				on: {
+					mouseover: function (data, idx, that)	{
+						var nIdx = that.legendData.indexOf(data),
+								rect = bio.drawing().nthChild(pShape, nIdx),
+								text = bio.drawing().nthChild(pTexts, nIdx),
+								rgba = bio.rendering().opacity('#333333', 0.3);
+
+						d3.select(rect).transition(10)
+													 .style('stroke', rgba);
+						d3.select(text).style('font-weight', 'bold');
+					},
+					mouseout: function (data, idx, that)	{
+						var nIdx = that.legendData.indexOf(data),
+								rect = bio.drawing().nthChild(pShape, nIdx),
+								text = bio.drawing().nthChild(pTexts, nIdx);
+
+						d3.select(rect).transition(10)
+													 .style('stroke', '#333333');
+						d3.select(text).style('font-weight', 'normal');
+					},
+				},
+				text: function (data, idx, that)	{ return data; },
+			},
+		}[part];
+	};
+
+	function needle ()	{
+		return {
+			margin: [20, 40, 80, 40],
+			attr: {
+				cx: function (data, idx, that)	{
+					var x = that.scaleX(data.x);
+
+					return x > that.width - that.margin.right || 
+								 x < that.margin.left? x * that.width : x;
+				},
+				cy: function (data, idx, that)	{
+					return that.scaleY(data.y);
+				},
+				r: function (data, idx, that)	{
+					return radius(data.value);
+				},
+				x: function (data, idx, that)	{
+					var x = that.scaleX(data.x);
+
+					return x > that.width - that.margin.right || 
+								 x < that.margin.left? x * that.width : x;
+				},
+				y: function (data, idx, that)	{
+					return that.scaleY(data.y);
+				},
+			},
+			style: {
+				fill: function (data, idx, that)	{
+					return this.tagName === 'path' ? '#A8A8A8' : 
+								 that.id.indexOf('needle') > -1 ? bio.boilerPlate
+									   .variantInfo[data.info[0].type].color : 
+								 bio.rendering().opacity(bio.boilerPlate
+									  .variantInfo[data.info[0].type].color, 0.3);
+
+				},
+				stroke: function (data, idx, that)	{
+					return this.tagName === 'path' ? '#A8A8A8' : 'none';
+				},
+			},
+			on: {
+				mouseover: function (data, idx, that)	{
+					var rgba = bio.rendering().opacity(
+										 bio.boilerPlate.variantInfo[
+										 data.info[0].type].color, 0.5);
+
+					bio.tooltip({
+						element: this,
+						contents: 
+						'Type: <b>' + data.info[0].type + 
+						'</b></br>AAChange: <b>' + data.info[0].aachange +
+						'</b></br>Counts: <b>' + data.y + 
+						'</b></br>Position: <b>' + data.x + '</b>'
+					});
+
+					d3.select(this).transition(10).style('fill', rgba);
+				},
+				mouseout: function (data, idx, that)	{
+					bio.tooltip('hide');
+
+					d3.select(this).transition(10)
+												 .style('fill', bio.boilerPlate
+												 	.variantInfo[data.info[0].type].color);
+				},
+			},
+		};
+	};
+
+	function navi ()	{
+		return {
+			margin: [0, 40, 5, 40],
+			end: { init: 0, now: 0 },
+			start: { init: 0, now: 0 },
+			navi: { init: 0, now: 0, width: 0, nowWidth: 0 },
+			attr: {
+				x: function (data, idx, that)	{
+					return data === 'main' ? that.start : 
+								 data === 'end' ? that.end + that.margin.left - 
+								 that.controls.width : 
+								 that.start - that.controls.width;
+				},
+				y: function (data, idx, that)	{
+					return data === 'main' ? 0 : that.height * 0.25;
+				},
+				width: function (data, idx, that)	{
+					return data === 'main' ? 
+								 that.end : that.controls.width * 2;
+				},
+				height: function (data, idx, that)	{
+					return data === 'main' ? 
+								 that.height - that.margin.bottom : 
+								 that.controls.height;
+				},
+				rx: function (data, idx, that)	{
+					return data === 'main' ? 3 : 5;
+				},
+				ry: function (data, idx, that)	{
+					return data === 'main' ? 3 : 5;
+				},
+			},
+			style: {
+				fill: function (data, idx, that)	{
+					return data === 'main' ? 'rgba(255, 255, 50, 0.1)' : 
+					'#A8A8A8';
+				},
+				stroke: function (data, idx, that)	{
+					return data === 'main' ? '#FFDF6D' : '#EAECED';
+				},
+				strokeWidth: function (data, idx, that)	{
+					return data === 'main' ? '1px' : '2px';
+				},
+				cursor: function (data, idx, that)	{
+					return data === 'main' ? 'move' : 'ew-resize';
+				},
+			},
+			call: {
+				drag: function (data, idx, that)	{
+					var main = d3.select(
+						'#variants_navi_svg_navi_main_rect'),
+							start = d3.select(
+						'#variants_navi_svg_navi_start_rect'),
+							end = d3.select(
+						'#variants_navi_svg_navi_end_rect'),
+							dg = that.opts.drag;
+					/*
+						Start, end 의 드래그 이동 값을 설정하는 함수.
+					 */
+					function getDragValue (type)	{
+						dg[type].now += d3.event.dx;
+
+						return dg[type].now = 
+						Math.max(dg.start[type === 'end' ? 'now' : 'init'],
+						Math.min(dg.end[type === 'end' ? 'init' : 'now'],
+						dg[type === 'end' ? 'end' : 'start'].now)),
+						dg[type].now;
+					};
+
+					if (data === 'start')	{
+						d3.select(this).attr('x', getDragValue(data));
+
+						dg.navi.now = dg.navi.init + (
+						dg.start.now - dg.start.init);
+						dg.navi.nowWidth = dg.navi.width - (
+						dg.end.init - dg.end.now) - (
+						dg.start.now - dg.start.init);
+
+						main.attr('x', dg.navi.now)
+								.attr('width', dg.navi.nowWidth);
+					} else if (data === 'end') {
+						d3.select(this).attr('x', getDragValue(data));
+
+						dg.navi.nowWidth = dg.navi.width - (
+						dg.start.now - dg.start.init) - (
+						dg.end.init - dg.end.now);
+
+						main.attr('width', dg.navi.nowWidth);
+					}	else {
+						dg.navi.now += d3.event.dx;
+
+						var value = dg.navi.now = 
+						Math.max(dg.navi.init, 
+						Math.min((dg.navi.width + that.margin.left) - 
+											dg.navi.nowWidth, dg.navi.now));
+
+						dg.start.now = value - that.controls.width;
+						dg.end.now = (value + dg.navi.nowWidth) - 
+															that.controls.width;
+
+						main.attr('x', value);
+						start.attr('x', dg.start.now);
+						end.attr('x', dg.end.now);
+					}
+				},
+			},
+		};
+	};
+
+	function graph ()	{
+		return {
+			margin: [20, 40, 80, 40],
+			attr: {
+				x: function (data, idx, that)	{
+					var x = that.scaleX(data.x);
+
+					return this.id.indexOf('base') > -1 ? 
+								 that.margin.left : 
+								 this.id.indexOf('text') > -1 ? x + 5 : 
+								 x < that.margin.left ? that.margin.left : 
+								 x > that.width - that.margin.right ? 
+								 that.width - that.margin.right : x;
+				},
+				y: function (data, idx, that)	{
+					var height = ((that.height - 10) - 
+												(that.height - that.margin.bottom)) * 0.4
+
+					return this.tagName !== 'text' ? 
+								 that.height - that.margin.bottom : 
+								 that.height - that.margin.bottom + height / 2;
+				},
+				width: function (data, idx, that)	{
+					var x = that.scaleX(data.x),
+							width = that.scaleX(data.x + data.width);
+
+					if (x < that.margin.left)	{
+						width -= (that.margin.left - x);
+
+						if (width < 0)	{ return 0; }
+					} else if (x + (width - x) > 
+										that.width - that.margin.right) {
+						width -= (x + width - x) - 
+										 (that.width - that.margin.right);
+
+						if (width - x < 0)	{ return 0; }
+					}
+
+					return this.id.indexOf('base') > -1 ? that.width - 
+								 that.margin.left - that.margin.right : 
+								 width - x;
+				},
+				height: function (data, idx, that)	{
+					return ((that.height - 10) - 
+									(that.height - that.margin.bottom)) * 0.4;
+				},
+				rx: function (data, idx, that)	{
+					return this.id.indexOf('base') > -1 ? 1 : 3;
+				}, 
+				ry: function (data, idx, that)	{
+					return this.id.indexOf('base') > -1 ? 1 : 3;
+				},
+			},
+			style: {
+				fill: function (data, idx, that)	{
+					return this.id.indexOf('base') > -1 ? '#DADFE1' : 
+								 this.id.indexOf('text') > -1 ? '#FFFFFF' : 
+								 data.color;
+				},
+			},
+			on: {
+				mouseover: function (data, idx, that)	{
+					var tag = this.id.indexOf('base') > -1 ? null : 
+										this.tagName === 'text' ? 
+										this.previousSibling ? this.previousSibling : 
+										this.nextSibling : this,
+							rgba = bio.rendering().opacity(data.color, 0.5);
+
+					if (tag)	{
+						bio.tooltip({
+							element: tag,
+							contents: 
+							'<b>' + data.info.identifier + 
+							'</b></br>Desc: <b>' + data.info.description +
+							'</b></br>Section: <b>' + data.x + ' - ' + 
+								(data.x + data.width) + '</b>'
+						});
+
+						d3.select(tag).transition(10).style('fill', rgba);
+					}	
+				},
+				mouseout: function (data, idx, that)	{
+					var tag = this.id.indexOf('base') > -1 ? null : 
+										this.tagName === 'text' ? 
+										this.previousSibling ? this.previousSibling : 
+										this.nextSibling : this;
+
+					if (tag)	{
+						bio.tooltip('hide');
+
+						d3.select(tag).transition(10)
+												 	.style('fill', data.color);
+					}
+				},
+			},
+			text: function (data, idx, that)	{
+				var x = that.scaleX(data.x),
+						width = that.scaleX(data.x + data.width);
+				
+				return bio.drawing().textOverflow(
+							data.info.identifier, '10px', (width - x), 5);
+			},
+		};
+	};
+	/*
+		Patient 표시 관련 설정 함수.
+	 */
+	function patient ()	{
+		return {
+			// To be modify.
+			margin: [20, 40, 25, 40],
+			attr: {
+				points: function (data, idx, that)	{
+					var x = that.scaleX(data.x);
+
+					if (x < that.margin.left || 
+							x > that.width - that.margin.right)	{
+						x = that.width + that.margin.right;
+					}
+
+					return bio.rendering().triangleStr(
+								x, that.scaleY(0) - that.margin.bottom, 
+								10, 'top');
+				},
+			},
+			style: {
+				fill: function (data, idx, that)	{
+					return this.tagName === 'path' ? '#A8A8A8' : 
+								 bio.boilerPlate
+									  .variantInfo[data.info[0].type].color;
+				},
+				stroke: function (data, idx, that)	{
+					return this.tagName === 'path' ? '#A8A8A8' : 'none';
+				},
+			},
+		};
+	};
+
+	return function ()	{
+		return {
+			axis: axis,
+			navi: navi,
+			graph: graph,
+			legend: legend,
+			needle: needle,
+			radius: radius,
+			patient: patient,
+		};
+	};
 };
 function axises ()	{
 	'use strict';
@@ -3770,6 +5861,25 @@ function landscape ()	{
 		init.height = parseFloat(def.style.height);
 	};
 	/*
+		enable/disable, refresh 등의 작업을 할 때, sample 의
+		데이터와 축이 변경되게 하는 함수이다.
+	 */
+	function changeSampleStack (mutationList)	{
+		var changedSampleStack = model.data.iterMut([
+			{ 
+				obj: {}, data: 'participant_id', 
+				type: 'type', keyName: 'sample' 
+			}
+		], mutationList);
+		var changeSampleStacks = model.data.byStack([], 'sample', 
+					changedSampleStack.result.sample),
+				reloadSampleAxis = model.data.makeLinearAxis(
+					'sample', changeSampleStacks.axis);
+
+		model.data.axis.sample.y = reloadSampleAxis;
+		model.data.stack.sample = changeSampleStacks.data;
+	};
+	/*
 		Landscape scale option group 을 그리는 함수.
 	 */
 	function drawScaleSet (setting)	{
@@ -3782,8 +5892,20 @@ function landscape ()	{
 				if (data.type === 'refresh')	{
 					changeAxis({ axis: 'x', data: model.init.axis.x });
 					changeAxis({ axis: 'y', data: model.init.axis.y });
-					console.log(model.init.axis.sampleY)
-					model.data.axis.sample.y = model.init.axis.sampleY;
+					changeSampleStack(model.init.mutation_list);
+
+					model.data.gene = model.init.axis.y;
+
+					bio.iteration.loop(model.init.geneline.axis, function (key, value)	{
+						value.isGene = 'enable';
+					});
+
+					model.now.geneline.axis = 
+					bio.objects.clone(model.init.geneline.axis);
+					model.now.geneline.sortedSiblings = 
+					model.init.geneline.sortedSiblings;
+
+					bio.layout().removeGroupTag();
 
 					return drawLandscape(model.data, 
 					(model.now.width = model.init.width, model.now.width));
@@ -3914,14 +6036,20 @@ function landscape ()	{
 	/*
 		Click 이벤트로 변경된 정렬대로 다시 그려주는 함수.
 	 */
-	function redraw (result)	{
+	function redraw (result, mutationList)	{
 		if (!result)	{ return false;}
 
 		model = result.model;
 		
 		bio.layout().removeGroupTag();
 		changeAxis(result.sorted);
-		drawLandscape(model.data, model.now.width);	
+		drawLandscape(model.data, model.now.width);
+
+		if (Object.keys(
+			model.now.geneline.removedMutationObj).length > 0)	{
+			enableDisableBlur();
+			enabledDisabeldMaximumElement(mutationList);	
+		}
 	};
 	/*
 		Drag 와 Drag end 에서 모두 사용되는 함수.
@@ -3992,10 +6120,13 @@ function landscape ()	{
 			model.now.geneline.sortedSiblings[nowIdx + direction] = tempParent;
 		};
 
-		if ((yAxis > model.now.geneline.axis[nextGene].value - model.init.geneline.axisHalfHeight) && 
+		if ((yAxis > model.now.geneline.axis[nextGene].value - 
+								 model.init.geneline.axisHalfHeight) && 
 				tempVal !== model.now.geneline.axis[nextGene].value)	{
 			moveElement(that, direction, nextGene, nowIdx, tempVal, tempGene);
-		} else if ((yAxis < model.now.geneline.axis[beforeGene].value + model.init.geneline.axisHalfHeight) && tempVal !== model.now.geneline.axis[beforeGene].value)	{
+		} else if ((yAxis < model.now.geneline.axis[beforeGene].value + 
+												model.init.geneline.axisHalfHeight) && 
+						tempVal !== model.now.geneline.axis[beforeGene].value)	{
 			moveElement(that, direction, beforeGene, nowIdx, tempVal, tempGene);
 		}
 	};
@@ -4039,91 +6170,119 @@ function landscape ()	{
 		model.now.geneline.isDraggable = false;
 	}
 
-	function geneLineDivisionElement (gene, what)	{
-		var sortedByMax = getGeneLineMaximumElement(gene),
-				maxElement = d3.select(sortedByMax[0]);
-
-		model.now.geneline[ what + 'dDivisionValues'][gene] = {
-			data: maxElement.datum(),
-			posx: parseFloat(maxElement.attr('x')),
-			elem: maxElement,
-		};
-
-		return {
-			width: parseFloat(maxElement.attr('width')),
-		};
-	};
-
-	function getEnableDisableMax (data)	{
-		var maxValue = 0;
-
-		bio.iteration.loop(data, function (k, v)	{
-			maxValue = maxValue > data[k].posx ? 
-								maxValue : data[k].posx;
-		});
-
-		return maxValue;
-	};
-
 	function drawDivisionPath ()	{
 		if (model.now.divisionPathData)	{
-			bio.path({
-				element: d3.select('.landscape_heatmap_svg.heatmap-g-tag'),
-				data: model.now.divisionPathData.data,
-				attr: {
-					id: function (d, idx, that) {
-						return 'landscape_gene_division_path';
+			bio.iteration.loop(model.now.divisionPathData.data, 
+			function (dd)	{
+				bio.path({
+					element: d3.select('.landscape_heatmap_svg.heatmap-g-tag'),
+					data: dd,
+					attr: {
+						id: function (d, idx, that) {
+							return 'landscape_gene_division_path';
+						},
+						x: function (d, idx, that)	{ return d.x; },
+						y: function (d, idx, that)	{ return d.y - 40; },
 					},
-					x: function (d, idx, that)	{ return d.x; },
-					y: function (d, idx, that)	{ return d.y - 40; },
-				},
-				style:{
-					stroke: '#333333',
-					strokeWidth: '0.5px',
-					strokeDash: '3',
-				}
+					style:{
+						stroke: '#333333',
+						strokeWidth: '0.5px',
+						strokeDash: '3',
+					}
+				});
 			});
+		}
+	};
+
+	function getDivisionLineLocation (list)	{
+		var divX = 0,
+				maximum = 0,
+				divWidth = 0,
+				divisionLineElement = undefined;
+
+		bio.iteration.loop(list, function (l)	{
+			var idx = model.data.axis.heatmap.x.indexOf(
+									l.participant_id);
+			
+			maximum = maximum > idx ? maximum : idx;
+		});
+
+		divisionLineElement = model.data.axis.heatmap.x[maximum];
+
+		d3.selectAll('#landscape_heatmap_svg rect')
+			.datum(function (d)	{
+				if (d.x === divisionLineElement)	{
+					var that = d3.select(this);
+
+					divX = parseFloat(that.attr('x'));
+					divWidth = parseFloat(that.attr('width'));
+				}
+
+				return d;
+			});
+
+		return {
+			maximum: maximum,
+			divPosx: divX + divWidth,
+			element: divisionLineElement,
+		};
+	};
+
+	function drawDivisionLineForDisableEnable (ml)	{	
+		if (model.now.mutation_list)	{
+			return ml ? getDivisionLineLocation(ml) : 
+									getDivisionLineLocation(
+									model.now.mutation_list);
+		} else {
+			return undefined;
 		}
 	};
 	/*
 		enable 과 disabled 된 부분을 나눠주는 함수.
 	 */
-	function enabledDisabeldMaximumElement ()	{
-		var enableMax = 0,
-				disableMax = 0,
-				elementWidth = 0;
+	function enabledDisabeldMaximumElement (mutationList)	{
+		var loc = [],
+				svg = d3.select('#landscape_heatmap_svg');
 
-		bio.iteration.loop(model.now.geneline.axis, 
-		function (k, v)	{
-			if (!model.now.geneline.removedMutationObj[k])	{
-				elementWidth = geneLineDivisionElement(k, 'enable').width;
-			} else {
-				elementWidth = geneLineDivisionElement(k, 'disable').width;
+		if (mutationList)	{
+			bio.iteration.loop(mutationList, function (ml)	{
+				loc.push(drawDivisionLineForDisableEnable(ml));
+			});
+		} else {
+			if (!drawDivisionLineForDisableEnable())	{
+				return false;
 			}
+			
+			loc.push(drawDivisionLineForDisableEnable());
+		}
+
+		model.now.divisionPathData = { data: [] };
+
+		bio.iteration.loop(loc, function (l)	{
+			model.now.divisionPathData.data.push([
+				{ x: l.divPosx, y: 0 },
+				{ x: l.divPosx, y: parseFloat(svg.attr('height'))}
+			]);
 		});
 
-		enableMax = getEnableDisableMax(model.now.geneline.enabledDivisionValues);
-		disableMax = getEnableDisableMax(model.now.geneline.disabledDivisionValues);
+		if (mutationList)	{
+			var isDrawLine = 0;
 
-		if (disableMax > enableMax)	{
-			var svg = d3.select('#landscape_heatmap_svg');
-			// 나중에 새로 그리기 위해 추가 한다.
-			model.now.divisionPathData = {
-				data: [
-					{ x: enableMax + elementWidth, y: 0 },
-					{ 
-						x: enableMax + elementWidth, 
-						y: parseFloat(svg.attr('height')) 
-					}
-				]
-			};
+			bio.iteration.loop(mutationList, function (ml)	{
+				isDrawLine += ml.length;
+			});
 
+			if (isDrawLine !== model.init.mutation_list.length)	{
+				drawDivisionPath();
+			}
+		} else {
 			drawDivisionPath();
 		}
 	};
 
 	function enableDisableBlur ()	{
-		bio.iteration.loop(model.now.geneline.axis,
+		if (model.now.geneline.axis)	{
+			bio.iteration.loop(model.now.geneline.axis,
 			function (k, v)	{
 				if (model.now.geneline.axis[k].isGene === 'enable') {
 					d3.selectAll('#landscape_gene_' + k + '_bar_rect')
@@ -4137,6 +6296,7 @@ function landscape ()	{
 						.style('fill-opacity', '0.2');
 				}
 			});
+		}
 	}
 	/*
 		removed 된 쪽과 enable 쪽의 중복이 되지 않는
@@ -4200,11 +6360,61 @@ function landscape ()	{
 				.on('mouseout', common.on ? common.on.mouseout : false)
 				.on('mouseover', common.on ? common.on.mouseover : false)
 				.on('click', function (data, idx)	{
-					console.log(part, direction)
 					if (part === 'group' && direction === 'Y')	{
 						var res = config.on ? 
-											config.on.click.call(this, data, idx, model) : false;
-						redraw(res);
+											config.on.click.call(this, data, idx, model) : false,
+								groupList = [],
+								mutationList = [],
+								isRemovable = false;
+						// x 축에 속하는 그룹 id 만 가져온다.
+						bio.iteration.loop(model.now.group.group, 
+						function (group)	{
+							var temp = [];
+
+							group.filter(function (gp)	{
+								if (res.sorted.data.indexOf(gp.x) > -1)	{
+									temp[res.sorted.data.indexOf(gp.x)] = (gp.x);
+								}
+							});
+
+							groupList.push(temp.filter(function (tgp)	{
+								return tgp;
+							}));
+						});	
+
+						// Group 별 enable / disable 된 mutation list 를 만든다.
+						bio.iteration.loop(groupList, function (gl)	{
+							var temp = [];
+
+							bio.iteration.loop(model.now.mutation_list || 
+															 	 model.init.mutation_list, 
+							function (ml)	{
+								if (gl.indexOf(ml.participant_id) > -1)	{
+									if (Object.keys(
+										model.now.geneline.removedMutationObj).length > 0)	{
+										bio.iteration.loop(model.now.geneline.removedMutationObj, 
+										function (key, value)	{
+											if (ml.gene !== key)	{
+												temp.push(ml);
+											}
+
+											if (value)	{
+												isRemovable = true;
+											}
+										});
+									} else {
+										temp.push(ml);
+									}
+								}
+							});
+
+							mutationList.push(temp);	
+						});
+
+						model.now.geneline.groupList = groupList;
+						model.now.geneline.mutationList = mutationList;
+
+						redraw(res, isRemovable ? mutationList : undefined);
 					}
 
 					if (part === 'gene' && direction === 'Y')	{
@@ -4212,9 +6422,13 @@ function landscape ()	{
 							if (d3.event.altKey)	{
 								var res = config.on ? 
 													config.on.click.call(this, data, idx, model) : false;
-								redraw(res);	
+
+								model.now.geneline.mutationList = undefined;
+
+								redraw(res);
 							} else {
-								var tempGeneList = [].concat(model.data.gene);
+								var tempGeneList = [].concat(model.data.gene),
+										isGroupMutationList = undefined;
 
 								if (model.now.geneline.axis[data].isGene === 'enable')	{
 									var	geneIdx = tempGeneList.indexOf(data),
@@ -4225,10 +6439,9 @@ function landscape ()	{
 									// 현재 라인 disable 
 									model.data.gene = tempGeneList;
 									model.now.geneline.axis[data].isGene = 'disable';
-									model.now.mutation_list = 
-									model.now.mutation_list ? 
-									model.now.mutation_list : 
-									model.init.mutation_list;
+
+									model.now.mutation_list = model.now.mutation_list ? 
+									model.now.mutation_list : model.init.mutation_list;
 									// Disable 된 gene 을 포함하는 sample 을 제거.
 									// 지금은 mutation_list 만 제거하지만
 									// 나중에는 patient_list 도 제거해야 한다.
@@ -4238,15 +6451,46 @@ function landscape ()	{
 											return d;
 										} else {
 											if (!model.now.geneline.removedMutationObj[d.gene])	{
-												model.now.geneline.removedMutationObj[d.gene] = [d];
+												model.now.geneline.removedMutationObj[d.gene] = [d.participant_id];
 											} else {
-												model.now.geneline.removedMutationObj[d.gene].push(d);
+												if (model.now.geneline.removedMutationObj[d.gene]
+																 .indexOf(d.participant_id) < 0)	{
+													model.now.geneline.removedMutationObj[d.gene]
+															 .push(d.participant_id);
+												} 
+											}
+
+											if (!model.now.geneline.removedMutationArr[d.gene])	{
+												model.now.geneline.removedMutationArr[d.gene] = [d];
+											} else {
+												if (model.now.geneline.removedMutationArr[d.gene]
+																 .indexOf(d.participant_id) < 0)	{
+													model.now.geneline.removedMutationArr[d.gene].push(d);
+												}
 											}
 										}
 									});
 									// disable 된 group 태그를 svg 하위 
 									// 항목에서 제거해야 한다.
-									model.now.geneline.sortedSiblings.push(model.now.geneline.sortedSiblings.splice(geneIdx, 1)[0]);
+									model.now.geneline.sortedSiblings.push(
+									model.now.geneline.sortedSiblings.splice(geneIdx, 1)[0]);
+
+
+									if (model.now.geneline.mutationList)	{
+											model.now.geneline.mutationList = 
+											model.now.geneline.mutationList.map(
+											function (ml)	{
+												ml = ml.filter(function (mlData)	{
+													if (mlData.gene !== data)	{
+														return mlData;
+													}
+												});
+
+												return ml;
+											});
+									} 
+									console.log(model.now.geneline.mutationList);
+									isGroupMutationList = model.now.geneline.mutationList;
 
 									nowGeneLineValue();
 								} else {
@@ -4260,64 +6504,50 @@ function landscape ()	{
 
 									model.now.mutation_list = 
 									model.now.mutation_list.concat(
-										model.now.geneline.removedMutationObj[data]);
+										model.now.geneline.removedMutationArr[data]);
 
 									model.now.geneline.removedMutationObj[data] = undefined;
+									model.now.geneline.removedMutationArr[data] = undefined;
+									isGroupMutationList = undefined;
 									model.now.geneline.axis[data].isGene = 'enable';
-									// disable 된 geneline tag 를 
-									// 원 위치 시켜 놓는다.
-									model.now.geneline.sortedSiblings.splice(geneIdx, 0, model.now.geneline.sortedSiblings.splice(beforeIdx, 1)[0]);
+									// disable 된 geneline tag 를 원 위치 시켜 놓는다.
+									model.now.geneline.sortedSiblings.splice(geneIdx, 0, 
+										model.now.geneline.sortedSiblings.splice(beforeIdx, 1)[0]);
 
 									nowGeneLineValue();
 								}
-								// click event 에서 disable/enable 한다
-								var changedSampleStack = model.data.iterMut([
-										{ 
-											obj: {}, data: 'participant_id', 
-											type: 'type', keyName: 'sample' 
-										}
-									], model.now.mutation_list);
-									var changeSampleStack = model.data.byStack([], 'sample', changedSampleStack.result.sample);
-									var reloadSampleAxis = model.data.makeLinearAxis(
-										'sample', changeSampleStack.axis)
 
-									model.data.axis.gene.y = model.data.gene;
-									model.data.axis.sample.y = reloadSampleAxis;
-									model.data.axis.heatmap.y = model.data.gene;
-									model.data.axis.pq.y = model.data.gene;	
+								model.data.axis.gene.y = model.data.gene;
+								model.data.axis.heatmap.y = model.data.gene;
+								model.data.axis.pq.y = model.data.gene;	
 
 								var type = model.now.exclusivity_opt ? 
 													 model.now.exclusivity_opt : 
 													 model.init.exclusivity_opt;
 
-								bio.layout().removeGroupTag([
-									'.landscape_heatmap_svg.heatmap-g-tag',
-									'.landscape_gene_svg.bar-g-tag',
-									'.landscape_gene_svg.right-axis-g-tag',
-									'.landscape_sample_svg.bar-g-tag',
-									'.landscape_axis_sample_svg.left-axis-g-tag'
-								]);
+								bio.layout().removeGroupTag();
 
 								model.exclusive.now = 
 								bio.landscapeSort()
 									 .exclusive(model.data.heatmap, model.data.gene, type);
-								
-								changeAxis(model.exclusive.now);
+								changeSampleStack(model.now.mutation_list);
+								// Group 별로 정렬된 상태에서 enable / disable 을 할때,
+								// Group 정렬을 유지한다.
+								if (model.now.geneline.groupList)	{
+									var groups = [];
 
-								drawAxis('gene', 'Y');
-								drawAxis('sample', 'Y');
-								drawBar('pq', model.data.pq, 
-												model.data.axis.pq, ['top', 'left']);
-								drawBar('gene', model.data.stack.gene, 
-												model.data.axis.gene, ['top', 'left']);
-								drawBar('sample', changeSampleStack.data, 
-									model.data.axis.sample, ['top', 'left']);
-								drawHeatmap('heatmap', model.data.heatmap, 
-														model.data.axis.heatmap);
+									bio.iteration.loop(model.now.geneline.groupList, 
+									function (gl)	{
+										groups = groups.concat(gl);
+									});
 
+									changeAxis({ axis: 'x', data: groups });
+								} else {
+									changeAxis(model.exclusive.now);
+								}
+								drawLandscape(model.data, model.now.width);
 								enableDisableBlur();
-
-								enabledDisabeldMaximumElement(data);
+								enabledDisabeldMaximumElement(isGroupMutationList);
 								// 나눔선을 기준으로 enable/disable/others 로 나눠준다.
 								if (model.divisionFunc)	{
 									var disableList = [];
@@ -4572,6 +6802,8 @@ function landscape ()	{
 				siblings = bio.dom().siblings(tags.children),
 					sortedSiblings = [];
 
+		model.init.geneline.sortedSiblings = siblings;
+
 			bio.iteration.loop(siblings, function (s, i)	{
 				var gene = s.innerHTML.substring(
 										s.innerHTML.indexOf('>') + 1, 
@@ -4646,7 +6878,7 @@ function landscape ()	{
 		// 최대 위치가 모든 데이터에서의 최대위치 보다 작을때는
 		// 나눔선을 표시하지 않기 위해서 이다.
 		// model.init.geneline.enabledDivisionValues = {};
-		model.now.geneline = [].concat(model.init.geneline)[0];
+		model.now.geneline = bio.objects.clone(model.init.geneline);
 		// mutation 이 존재 하는 영역과 존재하지 않는영역을 
 		// 나누는 값을 저장하는 객체.
 		model.now.geneline.enabledDivisionValues = {};
@@ -4654,20 +6886,9 @@ function landscape ()	{
 		// gene 을 enable/disable 할때, disable 한 gene 의 
 		// mutation_list 값을 가지는 객체이다.
 		model.now.geneline.removedMutationObj = {};
+		model.now.geneline.removedMutationArr = {};
 
 		genelineSortedSiblings();
-	};
-
-	function getGeneLineMaximumElement (gene)	{
-		var target = d3.selectAll('#landscape_gene_' + 
-									gene + '_heatmap_rect').nodes();
-
-		return target.sort(function (a, b)	{
-			var tap = parseFloat(d3.select(a).attr('x')),
-					tbp = parseFloat(d3.select(b).attr('x'));
-
-			return tap < tbp ? 1 : -1;
-		});
 	};
 
 	function drawExclusivityLandscape (type)	{
@@ -4681,10 +6902,33 @@ function landscape ()	{
 		model.init.axis.y = [].concat(model.data.axis.gene.y);
 		model.init.axis.sampleY = [].concat(model.data.axis.sample.y);
 
+		bio.layout().removeGroupTag();
+
 		orderByTypePriority(model.data.type);
 		patientAxis(model.data.axis);
-		changeAxis(model.exclusive.init);
+
+		if (model.now.geneline.groupList)	{
+			var groups = [];
+
+			bio.iteration.loop(model.now.geneline.groupList, 
+			function (gl)	{
+				console.log(gl);
+				groups = groups.concat(gl);
+			});
+			// console.log(groups);
+			changeAxis({ axis: 'x', data: groups });
+		} else {
+			changeAxis(model.exclusive.now || 
+								 model.exclusive.init);	
+		}
+
+		// changeAxis(model.exclusive.now || 
+		// 						 model.exclusive.init);
+		
 		drawLandscape(model.data, model.init.width);
+		enableDisableBlur();
+		// enabledDisabeldMaximumElement(
+		// 	model.now.geneline.mutationList || undefined);
 	};
 
 	return function (opts)	{
@@ -5201,6 +7445,96 @@ function sortTitle ()	{
 		bio.text(model.opts.text, model);
 	};
 };
+/*
+	BioChart 를 window 객체에 넣어주는 객체.
+ */
+// 초기 실행 시 window 객체를 넘겨받는다. window 객체가
+// 존재하지 않을경우 빈 객체를 받는다.
+(function (whole)	{
+	'use strict';
+	// Window 객체에 bio 라는 이름의 객체를 포함 시킨다.
+
+	var bio = {
+		// >>> Model.
+		initialize: initialize(),
+		// >>> Common.
+		sizing: sizing(),
+		layout: layout(),
+		setting: setting(),
+		boilerPlate: boilerPlate(),
+		// >>> Configuration.
+		commonConfig: commonConfig(),
+		pathwayConfig: pathwayConfig(),
+		variantsConfig: variantsConfig(),
+		landscapeConfig: landscapeConfig(),
+		expressionConfig: expressionConfig(),
+		exclusivityConfig: exclusivityConfig(),
+		// >>> Preprocess.
+		preprocess: preprocess(),
+		preprocPathway: preprocPathway(),
+		preprocVariants: preprocVariants(),
+		preprocLandscape: preprocLandscape(),
+		preprocExpression: preprocExpression(),
+		preprocExclusivity: preprocExclusivity(),
+		// >>> Tools.
+		modal: modal(),
+		title: title(),
+		table: table(),
+		loading: loading(),
+		tooltip: tooltip(),
+		selectBox: selectBox(),
+		clinicalGenerator: clinicalGenerator(),
+		// >>> Drawing.
+		bar: bar(),
+		text: text(),
+		path: path(),
+		heat: heat(),
+		axises: axises(),
+		circle: circle(),
+		scales: scales(),
+		needle: needle(),
+		legend: legend(),
+		drawing: drawing(),
+		scatter: scatter(),
+		network: network(),
+		triangle: triangle(),
+		survival: survival(),
+		rectangle: rectangle(),
+		rendering: rendering(),
+		divisionLine: divisionLine(),
+		// >>> Utilities.
+		dom: dom(),
+		math: math(),
+		// >>> Events.
+		handler: handler(),
+		// strings 객체는 String 의 프로토 타입을 
+		// 확장한 객체로 여기서 실행만 시켜놓고 따로 객체를 호출하거나
+		// 인스턴스를 생성하지 않는다.
+		strings: strings(), 
+		objects: objects(),
+		iteration: iteration(),
+		dependencies: dependencies(),
+		// >>> Expression.
+		expression: expression(),
+		colorGradient: colorGradient(),
+		// >>> Exclusivity.
+		exclusivity: exclusivity(),
+		// >>> Landscape.
+		scaleSet: scaleSet(),
+		sortTitle: sortTitle(),
+		landscape: landscape(),
+		landscapeSort: landscapeSort(),
+		// >>> Variants.
+		variants: variants(),
+		variantsNavi: variantsNavi(),
+		variantsGraph: variantsGraph(),
+		variantsPatient: variantsPatient(),
+		// >>> Pathway.
+		pathway: pathway(),
+	};
+
+	whole.bio = bio;
+}(window||{}));
 function initialize ()	{
 	'use strict';
 	// >>> Common.
@@ -5380,2179 +7714,6 @@ function initialize ()	{
 	return function (name)	{
 		return bio.objects.clone(
 					!set[name] ? {} : set[name]);
-	};
-};
-/*
-	BioChart 를 window 객체에 넣어주는 객체.
- */
-// 초기 실행 시 window 객체를 넘겨받는다. window 객체가
-// 존재하지 않을경우 빈 객체를 받는다.
-(function (whole)	{
-	'use strict';
-	// Window 객체에 bio 라는 이름의 객체를 포함 시킨다.
-
-	var bio = {
-		// >>> Model.
-		initialize: initialize(),
-		// >>> Common.
-		sizing: sizing(),
-		layout: layout(),
-		setting: setting(),
-		boilerPlate: boilerPlate(),
-		// >>> Configuration.
-		commonConfig: commonConfig(),
-		pathwayConfig: pathwayConfig(),
-		variantsConfig: variantsConfig(),
-		landscapeConfig: landscapeConfig(),
-		expressionConfig: expressionConfig(),
-		exclusivityConfig: exclusivityConfig(),
-		// >>> Preprocess.
-		preprocess: preprocess(),
-		preprocPathway: preprocPathway(),
-		preprocVariants: preprocVariants(),
-		preprocLandscape: preprocLandscape(),
-		preprocExpression: preprocExpression(),
-		preprocExclusivity: preprocExclusivity(),
-		// >>> Tools.
-		modal: modal(),
-		title: title(),
-		table: table(),
-		loading: loading(),
-		tooltip: tooltip(),
-		selectBox: selectBox(),
-		clinicalGenerator: clinicalGenerator(),
-		// >>> Drawing.
-		bar: bar(),
-		text: text(),
-		path: path(),
-		heat: heat(),
-		axises: axises(),
-		circle: circle(),
-		scales: scales(),
-		needle: needle(),
-		legend: legend(),
-		drawing: drawing(),
-		scatter: scatter(),
-		network: network(),
-		triangle: triangle(),
-		survival: survival(),
-		rectangle: rectangle(),
-		rendering: rendering(),
-		divisionLine: divisionLine(),
-		// >>> Utilities.
-		dom: dom(),
-		math: math(),
-		// >>> Events.
-		handler: handler(),
-		// strings 객체는 String 의 프로토 타입을 
-		// 확장한 객체로 여기서 실행만 시켜놓고 따로 객체를 호출하거나
-		// 인스턴스를 생성하지 않는다.
-		strings: strings(), 
-		objects: objects(),
-		iteration: iteration(),
-		dependencies: dependencies(),
-		// >>> Expression.
-		expression: expression(),
-		colorGradient: colorGradient(),
-		// >>> Exclusivity.
-		exclusivity: exclusivity(),
-		// >>> Landscape.
-		scaleSet: scaleSet(),
-		sortTitle: sortTitle(),
-		landscape: landscape(),
-		landscapeSort: landscapeSort(),
-		// >>> Variants.
-		variants: variants(),
-		variantsNavi: variantsNavi(),
-		variantsGraph: variantsGraph(),
-		variantsPatient: variantsPatient(),
-		// >>> Pathway.
-		pathway: pathway(),
-	};
-
-	whole.bio = bio;
-}(window||{}));
-function commonConfig ()	{
-	'use strict';
-
-	var model = {};
-	/*
-		Ins & del => Indel 과 같은 통합 표기법 형태로
-		Type 을 변경해주는 함수.
-	 */
-	model.typeFormat = function (type)	{
-		return type.replace(
-					/(_ins|_del)$/ig, '_indel').pronoun();
-	};
-
-	return function ()	{
-		return model;
-	};
-};
-function exclusivityConfig ()	{
-	'use strict';
-
-	var model = {};
-	/*
-		여러 Variant 로 이루어진 값을 분해하는 함수.
-	 */
-	function separate (value)	{
-		// 0th element 는 배경, 1st element 는 실제 엘리먼트가 되어야 한다.
-		return value === 'B' ? ['A', 'M'] : 
-					 value === 'E' ? ['D', 'M'] : 
-					 value === 'M' ? ['.', 'M'] : [value];
-	};
-	/*
-		Mutation case 을 Exclusivity 용으로 전환.
-	 */
-	function byCase (value, name)	{
-		if (value === 'var')	{
-			return 'Mutation';
-		} else {
-			if (name.toUpperCase().indexOf('AMP') > -1)	{
-				return 'Amplipication';
-			} else {
-				return 'Deletion';
-			}
-		}
-	};
-
-	function abbreviation (name)	{
-		return name === 'Amplification' ? 'A' : 
-					 name === 'Homozygous_deletion' ? 'D' : 'M';
-	};
-
-	function symbol (name)	{
-		return {
-			'Amplification': 'A',
-			'Deletion': 'D',
-			'Mutation': 'M',
-			'None': '.',
-		}[name];
-	};
-
-	function name (abbreviation)	{
-		return {
-			'A': 'Amplification',
-			'D': 'Deletion',
-			'M': 'Mutation',
-			'.': 'None',
-		}[abbreviation];
-	};
-	// To be delete. 알파뱃 순으로 정렬가능하기때문에.
-	function priority (value)	{
-		return { 
-			'Amplification': 0, 
-			'Deletion': 1, 
-			'Mutation': 2, 
-			'None': 3 
-		}[value];
-	};
-
-	function sample (type, leftMargin, svg)	{
-		var tempWidth = null;
-
-		return {
-			legend: {
-				attr: {
-					x: function (data, idx, that)	{
-						var width = tempWidth ? tempWidth : 0,
-								forSize = data.text.replace(' ', 'H');
-						// To be modify
-						tempWidth = tempWidth ? tempWidth + 
-						bio.drawing().textSize.width(forSize, '14px') : 
-						bio.drawing().textSize.width(forSize, '14px') + 5;
-
-						return leftMargin + width;
-					},
-					y: function (data, idx, that)	{
-						return data.text === '**' ? 18 : 15;
-					},
-				},
-				style: {
-					fill: function (data, idx, that)	{
-						return data.color;
-					},
-					fontSize: function (data, idx, that)	{
-						// To be modify.
-						return data.text === '**' ? '16px' : '14px';
-					},
-				},
-				text: function (data, idx, that)	{ return data.text; },
-			},
-			division: {
-				attr: {
-					x: function (data, idx, that)	{
-						// To be modify.
-						var width = bio.drawing().textSize.width(
-													data.text, '18px');
-
-						return data.color === '#00AC52' ? 
-									 svg.attr('width') - (10 + width) : leftMargin;
-					},
-					y: function (data, idx, that)	{
-						return svg.attr('height') * 0.05;
-					},
-				},
-				style: {
-					fill: function (data, idx, that)	{
-						return data.color;
-					},
-					// To be modify
-					fontSize: '18px',
-				},
-				text: function (data, idx, that)	{ 
-					if (data.text === '**')	{ return data.text; }
-				},
-			},
-		}[type];
-	};
-
-	function legend (leftMargin)	{
-		var shape = '.exclusivity_legend_svg.legend-shape-g-tag',
-				texts = '.exclusivity_legend_svg.legend-text-g-tag';
-
-		return {
-			margin: [0, leftMargin, 0, 0],
-			attr: {
-				x: function (data, idx, that)	{
-					return this.tagName === 'text' ? 
-								 idx * (that.fontWidth.value * 1.3) + 5 : 
-								 idx * (that.fontWidth.value * 1.3);
-				},
-				y: function (data, idx, that)	{
-					return this.tagName === 'text' ? 
-								 that.height * 0.8 / 2 + that.height * 0.2 : 
-								 data.indexOf('Mutation') > -1 ? 
-								 that.height * 0.2 + that.height * 0.8 / 4.5 : 
-								 that.height * 0.2;
-				},
-				width: 2.5,
-				height: function (data, idx, that)	{
-					return data === 'Mutation' ? 
-								 that.height * 0.8 / 2 : that.height * 0.8;
-				},
-			},
-			style: {
-				fill: function (data, idx, that)	{
-					return this.tagName === 'text' ? '#333333' : 
-								 bio.boilerPlate.exclusivityInfo[data]
-				},
-				fontSize: '11px',
-			},
-			on: {
-				mouseover: function (data, idx, that)	{
-					var nIdx = that.legendData.indexOf(data),
-							rect = bio.drawing().nthChild(shape, nIdx),
-							text = bio.drawing().nthChild(texts, nIdx),
-							rgba = bio.rendering().opacity(
-										 bio.boilerPlate
-										 	  .exclusivityInfo[data], 0.3);
-
-					d3.select(rect).transition(10)
-												 .style('fill', rgba);
-					d3.select(text).style('font-weight', 'bold');
-				},
-				mouseout: function (data, idx, that)	{
-					var nIdx = that.legendData.indexOf(data),
-							rect = bio.drawing().nthChild(shape, nIdx),
-							text = bio.drawing().nthChild(texts, nIdx);
-
-					d3.select(rect).transition(10)
-												 .style('fill', bio.boilerPlate
-												 	.exclusivityInfo[data]);
-					d3.select(text).style('font-weight', 'normal');
-				},
-			},
-			text: function (data, idx, that)	{ return data; },
-		};
-	};
-
-	function network ()	{
-		return {
-
-		};
-	};
-
-	function heatmap (type, svg, leftMargin)	{
-		var height = svg.attr('height');
-
-		return {
-			shape: {
-				margin: [height * 0.2, leftMargin, 0, 10],
-				attr: {
-					x: function (data, idx, that)	{
-						return that.scaleX(data.x);
-					},
-					y: function (data, idx, that)	{
-						return data.value === 'Mutation' ? 
-									 that.scaleY(data.y) + 
-									 bio.scales().band(that.scaleY) / 3 : 
-									 that.scaleY(data.y);
-					},
-					width: function (data, idx, that)	{
-						return bio.scales().band(that.scaleX);
-					},
-					height: function (data, idx, that)	{
-						return data.value === 'Mutation' ? 
-									 bio.scales().band(that.scaleY) / 3 : 
-									 bio.scales().band(that.scaleY);
-					},
-				},
-				style: {
-					fill: function (data, idx, that)	{
-						return bio.boilerPlate.exclusivityInfo[data.value];
-					},
-				},
-			},
-			axis: {
-				margin: [height * 0.2, leftMargin, 0, 10],
-				range: [height * 0.2, height],
-			},
-		}[type];
-	};
-
-	function survival ()	{
-		return {
-			attr: {
-				x: function (data, idx, that)	{
-					var bcr = d3.select('.legend').node()
-											.getBoundingClientRect();
-
-					return bcr.width;
-				},
-				y: function (data, idx, that)	{
-					var bcr = d3.select('.legend text').node()
-											.getBoundingClientRect();
-
-					return bcr.height / 3;
-				},
-			},
-			style: {
-				fill: function (data, idx, that)	{
-					var color = null;
-
-					bio.iteration.loop(that.data.sample.isAltered, 
-					function (a)	{
-						if (a.text === data.text)	{
-							color = data.color;
-						}
-					});
-
-					return color ? color : 'none';
-				},
-				fontSize: '25px',
-			},
-			text: function (data, idx, that)	{ return '**'; },
-		};
-	};
-
-	function division (leftMargin)	{
-		return {
-			margin: [20, leftMargin, 0, 9],
-			attr: {
-				x: function (data, idx, that)	{
-					return this.tagName === 'text' ? 
-								 data.text.indexOf('Un') > -1 ? 
-								 data.end - data.textWidth - that.margin.right : 
-								 data.start + that.margin.right: 
-								 this.tagName === 'path' ? 
-								 data.path_x : data.start;
-				},
-				y: function (data, idx, that)	{
-					return this.tagName === 'text' ? 
-								 that.height * 0.05 + that.margin.top : 
-								 this.tagName === 'path' ? idx === 0 ? 
-								 that.margin.top : data.path_y : 
-								 that.margin.top;
-				},
-				width: function (data, idx, that)	{
-					return data.end - data.start;
-				},
-				height: function (data, idx, that)	{
-					return that.height * 0.1;
-				},
-			},
-			style: {
-				fill: function (data, idx, that)	{
-					return this.tagName === 'text' ? 
-								 '#FFFFFF' : data.color;	
-				},
-				stroke: function (data, idx, that)	{
-					return this.tagName === 'path' ? '#333333' : 'none';	
-				},
-				fontSize: '11px',
-			},
-			text: function (data, idx, that)	{ return data.text; },
-		};
-	};
-
-	return function ()	{
-		return {
-			name: name,
-			symbol: symbol,
-			byCase: byCase,
-			legend: legend,
-			sample: sample,
-			network: network,
-			heatmap: heatmap,
-			survival: survival,
-			separate: separate,
-			priority: priority,
-			division: division,
-			abbreviation: abbreviation,
-		};
-	};
-};
-function expressionConfig ()	{
-	'use strict';
-
-	var model = {},
-			colorSet = [
-		'#B82647', '#0A8D5E', '#F9D537', '#0B6DB7', '#E3DDCB',
-		'#9F494C', '#CBDD61', '#ED9149', '#89236A', '#D8C8B2',
-		'#CA5E59', '#006494', '#2E674E', '#9A6B31', '#403F95',
-		'#616264', '#E2A6B4', '#5AC6D0', '#733E7F', '#45436C'
-	];
-	/*
-		parameter 로 svg 가 존재하면 가로, 세로 값을 반환.
-	 */
-	function isSVG (svg)	{	
-		return {
-			width: svg ? svg.attr('width') : 0,
-			height: svg ? svg.attr('height') : 0,
-		};
-	}
-
-	function legend (type)	{
-		var r = '.expression_bar_legend_svg.legend-shape-g-tag',
-				t1 = '.expression_bar_legend_svg.legend-text-g-tag',
-				c = '.expression_scatter_legend_svg.legend-shape-g-tag',
-				t2 = '.expression_scatter_legend_svg.legend-text-g-tag';
-
-		return {
-			color_mapping: {
-				margin: [10, 15, 0, 0],
-				attr: {
-					x: function (data, idx, that)	{
-						return this.tagName === 'text' ? 
-									 that.margin.left : 0;
-					},
-					y: function (data, idx, that)	{
-						return this.tagName === 'text' ? idx * that.fontHeight + 
-									 that.fontHeight / 2 - 1.5 : idx * that.fontHeight;
-					},
-					width: 8,
-					height: 8,
-				},
-				style: {
-					fill: function (data, idx, that)	{
-						return this.tagName === 'text' ? '#333333' : 
-									 data === 'NA' ? '#A4AAA7' : colorSet[idx];
-					},
-					fontSize: '11px',
-				},
-				on: {
-					mouseover: function (data, idx, that)	{
-						var nIdx = that.legendData.indexOf(data),
-								rect = bio.drawing().nthChild(r, nIdx),
-								text = bio.drawing().nthChild(t1, nIdx),
-								rgba = bio.rendering().opacity(
-											 data === 'NA' ? '#A4AAA7' : 
-											 colorSet[idx], 0.3);
-
-						d3.select(rect).transition(10).style('fill', rgba);
-						d3.select(text).style('font-weight', 'bold');
-					},
-					mouseout: function (data, idx, that)	{
-						var nIdx = that.legendData.indexOf(data),
-								rect = bio.drawing().nthChild(r, nIdx),
-								text = bio.drawing().nthChild(t1, nIdx);
-
-						d3.select(rect).transition(10)
-													 .style('fill', data === 'NA' ? 
-													 	'#A4AAA7' : colorSet[idx]);
-						d3.select(text).style('font-weight', 'normal');
-					},
-				},
-				text: function (data, idx, that)	{ 
-					return bio.drawing().textOverflow(
-							data, '11px', that.width * 0.75); 
-				},
-			},
-			scatter: {
-				margin: [15, 15, 20, 15],
-				attr: {
-					cx: 0,
-					cy: function (data, idx, that)	{
-						return idx * (that.fontHeight + 3);
-					},
-					r: 5,
-					x: function (data, idx, that)	{ return that.margin.left; },
-					y: function (data, idx, that)	{
-						return idx * (that.fontHeight + 3) + 1;
-					},
-				},
-				style: {
-					fill: function (data, idx, that)	{
-						return data === 'Alive' ? '#5D5DD8' : '#D86561';
-					},
-					fontSize: '11px',
-				},
-				on: {
-					mouseover: function (data, idx, that)	{
-						var nIdx = that.legendData.indexOf(data),
-								rect = bio.drawing().nthChild(c, nIdx),
-								text = bio.drawing().nthChild(t2, nIdx),
-								rgba = bio.rendering().opacity(
-											 data === 'Alive' ? 
-											 '#5D5DD8' : '#D86561', 0.3);
-
-						d3.select(rect).transition(10)
-													 .style('fill', rgba);
-						d3.select(text).style('font-weight', 'bold');
-					},
-					mouseout: function (data, idx, that)	{
-						var nIdx = that.legendData.indexOf(data),
-								rect = bio.drawing().nthChild(c, nIdx),
-								text = bio.drawing().nthChild(t2, nIdx);
-
-						d3.select(rect).transition(10)
-													 .style('fill', data === 'Alive' ? 
-													 						'#5D5DD8' : '#D86561');
-						d3.select(text).style('font-weight', 'normal');
-					},
-				},
-				text: function (data, idx, that)	{ return data; },
-			},
-		}[type];
-	};
-	/*
-		Scatter axis, chart 관련 설정.
-	 */
-	function scatter (type, leftMargin)	{
-		return {
-			shape: {
-				margin: [10, leftMargin, 30, 20],
-				attr: {
-					cx: function (data, idx, that)	{ return that.scaleX(data.x); },
-					cy: function (data, idx, that)	{ return that.scaleY(data.y); },
-					r: 5,
-				},
-				style: {
-					fill: function (data, idx, that)	{
-						return data.value === undefined ? '#333333' : 
-									 data.value === 1 ? '#D86561': '#5D5DD8';
-					},
-					fillOpacity: 0.6,
-				},
-				on: {
-					mouseover: function (data, idx, that)	{
-						bio.tooltip({
-							element: this,
-							contents: 'ID: <b>' + data.x + '</b></br>' + 
-												'Months: <b>' + data.y + '</b></br>' + 
-												'Status: <b>' + (data.value === '0' ? 
-												'Alive' : 'Dead') + '</b>',
-						});
-					},
-					mouseout: function (data, idx, that)	{
-						bio.tooltip('hide');
-					},
-				},
-			},
-			axis: {
-				top: 0,
-				left: leftMargin,
-				margin: [0, 0, 0, 0],
-				exclude: 'path, line',
-			},
-		}[type];
-	};
-	/*
-		Heatmap axis, chart 관련 설정.
-	 */
-	function heatmap (type, leftMargin)	{
-		return {
-			shape: {
-				margin: [0, leftMargin, 0, 20],
-				attr: {
-					id: function (data, idx, that)	{
-						return 'expression_heatmap_rect';
-					},
-					x: function (data, idx, that)	{ return that.scaleX(data.x); },
-					y: function (data, idx, that)	{ return that.scaleY(data.y); },
-					width: function (data, idx, that)	{
-						return bio.scales().band(that.scaleX);
-					},
-					height: function (data, idx, that)	{
-						return bio.scales().band(that.scaleY);
-					},
-				},
-				on: {
-					mouseover: function (data, idx, that)	{
-						bio.tooltip({
-							element: this,
-							contents: 'ID: <b>' + data.x + '</b></br>' + 
-												'Gene: <b>' + data.y + '</b></br>' + 
-												'TPM: <b>' + data.value + '</b></br>',
-						});
-					},
-					mouseout: function (data, idx, that)	{
-						bio.tooltip('hide');
-					},
-				},
-			},
-			axis: {
-				top: 0,
-				left: leftMargin,
-				margin: [0, 0, 0, 0],
-				exclude: 'path, line',
-			},
-		}[type];
-	};
-
-	function patient (leftMargin)	{
-		return {
-			margin: [0, leftMargin, 0, 20],
-			attr: {
-				points: function (data, idx, that)	{
-					var y = that.id.indexOf('bar') > -1 ? 
-									data.y - data.value < 0 ? 
-									that.scaleY(data.y) + 8 : 
-									that.scaleY(data.y) + 3 : that.height,
-							dir = that.id.indexOf('bar') > -1 ? 
-										data.y - data.value < 0 ? 'top' : 'bottom' : 'bottom';
-
-					return bio.rendering().triangleStr(
-						that.scaleX(data.x), y, 10, dir);
-				},
-			},
-			style: { fill: '#333333' },
-			on: {
-				mouseover: function (data, idx, that)	{
-					bio.tooltip({
-						element: this,
-						contents: '<b>' + data.x + '</b></br>' + 
-											'Value: <b>' + data.value + '</b></br>',
-					});
-				},
-				mouseout: function (data, idx, that)	{
-					bio.tooltip('hide');
-				},
-			},
-		};
-	};
-	/*
-		bar axis, chart 관련 설정.
-	 */
-	function bar (type, leftMargin)	{
-		return {
-			shape: {
-				margin: [20, leftMargin + 1, 15, 19],
-				attr: {
-					id: function (data, idx, that)	{
-						return 'expression_bar_plot_rect';
-					},
-					x: function (data, idx, that)	{
-						return that.scaleX(data.x);
-					},
-					y: function (data, idx, that)	{
-						return data.y - data.value < 0 ?
-									 that.scaleY(data.value) : that.scaleY(data.y);
-					},
-					width: function (data, idx, that)	{
-						return bio.scales().band(that.scaleX);
-					},
-					height: function (data, idx, that)	{
-						return data.y - data.value < 0 ? 
-									 that.scaleY(data.y) - that.scaleY(data.value) : 
-									 that.scaleY(data.value) - that.scaleY(data.y);
-					},
-				},
-				style: {
-					fill: function (data, idx, that)	{
-						return data.y - data.value === 0 ? '#000000' : '#62C2E0';
-					},
-					stroke: function (data, idx, that)	{
-						return data.y - data.value === 0 ? '#000000' : '#62C2E0';
-					},
-				},
-				on: {
-					mouseover: function (data, idx, that)	{
-						bio.tooltip({
-							element: this,
-							contents: 'ID: <b>' + data.x + '</b></br>' + 
-												'Average: <b>' + data.value + '</b>',
-						});
-					},
-					mouseout: function (data, idx, that)	{
-						bio.tooltip('hide');
-					},
-				},
-			},
-			axis: {
-				top: 0,
-				left: leftMargin,
-				margin: [10, 0, 10, 0],
-			},
-		}[type];
-	};
-	/*
-		Gradient axis, bar 관련 설정.
-	 */
-	function gradient (type, svg)	{
-		var svgAttr = isSVG(svg);
-
-		return {
-			axis: {
-				top: 20,
-				left: 0,
-				margin: [0, 5, 0, 10],
-				exclude: 'path, line',
-				range: [5, svgAttr.width - 10],
-			},
-			shape: {
-				attr: {
-					x: 5, y: 5,
-					rx: 3, ry: 3,
-					width: function (data, idx, that)	{
-						return d3.select(bio.drawing().getParentSVG(this))
-										 .attr('width') - 10;
-					},	
-					height: 15,
-				},
-				style: {
-					fill: function (data, idx, that)	{
-						return 'url(#' + that.data.colorGradient.id + ')';
-					},
-				}
-			},
-		}[type];
-	};
-
-	function division (type, leftMargin)	{
-		var low_path = '.division-path-0-g-tag path',
-				high_path = '.division-path-1-g-tag path',
-				rect = '#expression_division_svg_division_shape_rect';
-
-		function redrawMarker (marker, data, value)	{
-			marker.attr('points', function (d, i, t)	{
-				return bio.rendering().triangleStr(
-							value + data.additional, data.path_y, 10, data.direction);
-			});
-		};
-
-		function redrawLine (line, value)	{
-			var target = line.attr('d'),
-					linePos = target.substring(
-						target.indexOf('M') + 1, target.indexOf(','));
-			// Redraw line.
-			line.attr('d', target.replace(new RegExp(linePos,"gi"), value));
-		};
-
-		return {
-			bar: {
-				margin: [0, leftMargin, 0, 20],
-			},
-			division: {
-				margin: [0, leftMargin, 0, 20],
-				attr: {
-					x: function (data, idx, that)	{
-						that.position.init.low = that.position.init.low ? 
-						that.position.init.low : data.path_x;
-						that.position.init.high = that.position.init.high ? 
-						that.position.init.high : data.path_x;
-						that.position.now.low = that.position.init.low;
-						that.position.now.high = that.position.init.high;
-
-						return this.tagName === 'text' ? 
-									 data.text.indexOf('Low') > -1 ? 
-									 data.start + 5 :  data.end - 
-									 data.textWidth - 15 : 
-									 this.tagName === 'path' ? 
-									 data.path_x : data.start;
-					},
-					y: function (data, idx, that)	{
-						return this.tagName === 'text' ? that.height / 2 : 
-									 this.tagName === 'path' ? 
-									 data.text.indexOf('Low') > -1 ? 
-									 idx === 0 ? data.path_y - 5 : data.path_y : 
-									 idx === 0 ? data.path_y : data.path_y + 5 : 0;
-					},
-					points: function (data, idx, that)	{
-						return bio.rendering().triangleStr(
-										data.path_x + data.additional, 
-										data.path_y, 10, data.direction);
-					},
-					width: function (data, idx, that)	{ return data.end - data.start; },
-					height: function (data, idx, that)	{ return that.height; },
-					rx: 3, ry: 3,	
-				},
-				style: {
-					fill: function (data, idx, that)	{
-						return this.tagName === 'text' ? '#FFFFFF' : 
-									 data.text.indexOf('Low') > -1 ? '#00AC52' : '#FF6252';
-					},
-					stroke: function (data, idx, that)	{
-						return this.tagName === 'text' ? 
-									 data.text.indexOf('Low') > -1 ? 
-									 '#00AC52' : '#FF6252' : 'none';
-					},
-					strokeWidth: '0.5px', fontSize: '12px', fontWeight: 'bold',
-					cursor: function (data, idx, that)	{
-						return this.tagName === 'polygon' ? 'pointer' : 'normal';
-					},
-				},
-				call: {
-					drag: function (data, idx, that)	{
-						if (data.text.indexOf('Low') > -1)	{
-							that.position.init.low = that.position.init.low ? 
-							that.position.init.low : data.path_x;
-							that.position.now.low = that.position.now.low ? 
-							that.position.now.low += d3.event.dx: data.path_x;
-
-							var pos = that.position.now.low = 
-									Math.max(data.start, 
-									Math.min(that.position.now.high || data.path_x, 
-													 that.position.now.low));
-
-							redrawMarker(
-								d3.select(this), data, that.position.now.low);
-							redrawLine(d3.select(low_path), pos);
-							d3.selectAll(rect)
-								.attr('width', function (d, i, t)	{
-									return d.text === data.text ? pos - d.start : 
-												 d.end - that.position.now.high;
-							});
-
-						} else {
-							that.position.init.high = that.position.init.high ? 
-							that.position.init.high : data.path_x;
-							that.position.now.high = that.position.now.high ? 
-							that.position.now.high += d3.event.dx: data.path_x;
-
-							var pos = that.position.now.high = 
-									Math.max(that.position.now.low || data.path_x, 
-									Math.min(data.end, that.position.now.high)),
-									line = d3.select(low_path).attr('d'),
-									linePos = line.substring(line.indexOf('M') + 1, 
-																					 line.indexOf(','));
-							
-							redrawMarker(
-								d3.select(this), data, that.position.now.high);
-							redrawLine(d3.select(high_path), pos);
-							d3.selectAll(rect)
-								.attr('x', function (d, i, t)	{
-									return d.text === data.text ? pos : d.start;
-								})
-								.attr('width', function (d, i, t)	{
-									return d.text === data.text ? d.end - pos : 
-												 that.position.now.low - d.start;
-							});
-						}
-					},
-				},
-				text: function (data, idx, that)	{ return data.text; },
-			},
-			scatter: {
-				margin: [0, leftMargin, 0, 20],
-			},
-		}[type];
-	};
-
-	function survival (type)	{
-		return {
-			legend: {
-				attr: {
-					x: function (data, idx, that)	{
-						var bcr = d3.select('.legend').node()
-												.getBoundingClientRect();
-
-						return bcr.right - bcr.left;
-						return that.data.patient.data === data.text ? 
-									 bcr.right - bcr.left : -5;
-					},
-					y: function (data, idx, that)	{
-						var bcr = d3.select('.legend text').node()
-												.getBoundingClientRect(),
-								txt = bio.drawing().textSize.height('11px');
-
-						return bcr.height / 2.5;
-					},
-				},
-				style: {
-					fill: function (data, idx, that)	{
-						return that.data.patient.data === data.text ? 
-									 data.color : '#FFFFFF';
-					},
-				},
-				text: function (data, idx, that)	{
-					return that.data.patient.data === data.text ? 
-								 that.data.patient.data === ' **' ? '' : ' **' : '';
-				},
-			}
-		}[type];
-	};
-
-	return function ()	{
-		return {
-			bar: bar,
-			legend: legend,
-			scatter: scatter,
-			heatmap: heatmap,
-			patient: patient,
-			gradient: gradient,
-			colorSet: colorSet,
-			division: division,
-			survival: survival,
-		};
-	};
-};
-function landscapeConfig ()	{
-	'use strict';
-
-	var model = {};
-	/*
-		전달 받은 variant 가 CNV 인지 Variant 인지
-		를 구분하는 함수.
-	 */
-	function byCase (variant)	{
-		return bio.boilerPlate
-							.variantInfo[bio.commonConfig()
-														 	.typeFormat(variant)]
-							.order < 2 ? 'cnv' : 'var';
-	};
-
-	function axis (part, direction, svg)	{
-		if (part === 'common')	{
-			return {
-				on: {
-					mouseover: function (data, idx)	{
-						var id = this.parentNode
-												 .parentNode.className.baseVal;
-
-						if (id.indexOf('gene') > -1 && 
-								id.indexOf('right') > -1 || 
-								id.indexOf('group') > -1)	{
-							var txt = id.indexOf('gene') > -1 ? 
-							'Sort by alt + <b>' + this.innerHTML + '</b>' : 
-											'<b>' + this.innerHTML + '</b></br>' + 
-											'Click to sort </br> Alt + Click ' + 
-											'add to key';
-
-							bio.tooltip({ element: this, contents: txt });
-
-							d3.select(this).transition()
-								.style('font-size', 11)
-								.style('font-weight', 'bold');
-						}
-					},
-					mouseout: function (data, idx)	{
-						bio.tooltip('hide');
-
-						d3.select(this).transition()
-							.style('font-size', 10)
-							.style('font-weight', 'normal');
-					},
-				}, 
-			};
-		}
-
-		var w = parseFloat(svg.attr('width')),
-				h = parseFloat(svg.attr('height'));
-
-		return {
-			sampleY: {
-				top: 5,
-				left: w - 5,
-				direction: 'left', 
-				range: [5, h - 25], 
-				margin: [5, 0, 25, 0],
-			},
-			groupY: {
-				top: 5,
-				left: 30,
-				range: [0, 0],
-				direction: 'right', 
-				margin: [0, 0, 0, 0], 
-				exclude: 'path, line',
-				on: {
-					click: function (data, idx, that)	{
-						/*
-							정렬된 그룹 배열을 새로이 복사해준다.
-						 */
-						function mergedGroup (groups)	{
-							var result = [];
-
-							bio.iteration.loop(groups, function (g)	{
-								result = result.concat(g);
-							});
-
-							return result;
-						};
-
-						bio.iteration.loop(that.data.axis.group.y, 
-						function (ag, i)	{
-							if (ag[0] === data)	{
-								var group = [].concat(that.data.group.group[i]);
-
-								that.now.group = bio.landscapeSort().group.call(
-									that, group, d3.event.altKey ? true : false);
-							}
-						});
-
-						var sorted = {
-							axis: 'x',
-							data: mergedGroup(that.now.group.axis.data),
-						};
-
-						return { sorted: sorted, model: that };		
-					},
-				},
-			},
-			geneY: {
-				top: 0,
-				left: w - 70,
-				direction: 'right', 
-				range: [10, h - 45],
-				exclude: 'path, line',
-				margin: [10, 0, 45, 0],
-				on: {
-					click: function (data, idx, that)	{
-						var temp = [];
-
-						bio.iteration.loop(that.data.heatmap, function (h)	{
-							if (h.y === data)	{
-								temp.push(h);
-							}
-						});
-
-						if (d3.event.altKey)	{
-							return {
-								sorted: bio.landscapeSort()
-													 .gene(that.data.axis.heatmap.x, temp),
-								model: that,
-							};	
-						}
-					},
-				},
-			},
-			geneX: {
-				left: 15,
-				top: h - 45,
-				range: [15, w - 85],
-				direction: 'bottom',
-				margin: [0, 15, 0, 85], 
-			},
-			pqX: {
-				left: 5,
-				top: h - 45,
-				direction: 'bottom', 
-				range: [10, w - 20],
-				margin: [0, 10, 20, 20], 
-			},
-		}[part + direction];
-	};
-	/*
-		PQ, Sample, Gene 부분에 들어가는 Sorting title 렌더링 설정 함수.
-	 */
-	function sortTitle (part)	{
-		return {
-			pq: {
-				margin: [5, 15, 13, 5],
-				attr: {
-					rx: 3, ry: 3,
-					x: function (data, idx, that) {
-						return this.tagName === 'text' ? 
-									 that.margin.left : 
-									 that.margin.left - that.margin.right;
-					},
-					y: function (data, idx, that) {
-						return this.tagName === 'text' ? 
-									 that.height - that.margin.bottom : 
-									 that.height - that.margin.bottom * 1.75;
-					},
-					width: function (data, idx, that)	{
-						return that.mostWidth.value + that.margin.right * 2;
-					},
-					height: function (data, idx, that)	{
-						return that.mostHeight + that.margin.top;
-					},
-				},
-			},
-			gene: {
-				margin: [5, 5, 13, 125],
-				attr: {
-					rx: 3, ry: 3,
-					x: function (data, idx, that) {
-						return this.tagName === 'text' ? 
-									 that.width - that.margin.right : 
-									 that.width - that.margin.right - 
-									 that.margin.left;
-					},
-					y: function (data, idx, that) {
-						return this.tagName === 'text' ? 
-									 that.height - that.margin.bottom : 
-									 that.height - that.margin.bottom * 1.75;
-					},
-					width: function (data, idx, that)	{
-						return that.mostWidth.value - that.margin.left * 2;
-					},
-					height: function (data, idx, that)	{
-						return that.mostHeight + that.margin.top;
-					},
-				},
-			},
-			sample: {
-				margin: [10, 6.5, 25, 45],
-				attr: {
-					rx: 3, ry: 3,
-					x: function (data, idx, that) {
-						return this.tagName === 'text' ? 
-								 	 that.height * -1 + that.margin.bottom : 
-								 	 that.height * -1 + that.margin.bottom * 0.65;
-					},
-					y: function (data, idx, that) {
-						return this.tagName === 'text' ? 
-									 that.width - that.margin.right : 
-									 that.width - that.margin.right - 
-									 that.margin.top;
-					},
-					width: function (data, idx, that)	{
-						return that.mostWidth.value - that.margin.left;
-					},
-					height: function (data, idx, that)	{
-						return that.mostHeight + that.margin.top / 2;
-					},
-				},
-			},
-			common: {
-				titles: ['#Mutations', '-log10(p-value)'],
-				style: {
-					fontSize: '10px',
-					fontWeight: 'bold',
-					filter: 'url(#drop_shadow)',
-					fill: function (data, idx, that)	{
-						return this.tagName === 'text' ? 
-									'#FFFFFF' : '#595959';
-					},
-				},
-				on: {
-					click: function (data, idx, that)	{
-						var res = bio.landscapeSort()
-											[that.now.sort[that.sortName]](
-											 that.sortName, that.data);
-
-						return { sorted: res, model: that };
-					},
-					mouseover: function (data, idx, that)	{
-						bio.tooltip({
-							element: this.tagName === 'text' ? 
-											 this.nextSibling ? this.nextSibling : 
-											 this.previousSibling : this,
-							contents: 'Sort by <b>' + data.text + '</b>',
-						});
-					},
-					mouseout: function (data, idx, that)	{
-						bio.tooltip('hide');
-					},
-				},
-				text: function (data, idx, that)	{ return data.text; },
-			}
-		}[part];
-	};
-	/*
-		Bar 차트 설정 함수.
-	 */
-	function bar (part)	{
-		return {
-			pq: {
-				margin: [10, 15, 45.5, 30],
-				attr: {
-					id: function (data, idx, that)	{
-						return 'landscape_gene_' + data.y + 
-										'_pq_rect';
-					},
-					x: function (data, idx, that) {
-						return bio.math.min(that.rangeX);
-					},
-					y: function (data, idx, that) {
-						return that.scaleY(data.y) + 0.25;
-					},
-					width: function (data, idx, that)	{
-						return that.scaleX(data.value);
-					},
-					height: function (data, idx, that)	{
-						return bio.scales().band(that.scaleY) - 0.5;
-					},
-				},
-				style: {
-					fill: '#BFBFBF',
-				},
-				on: {
-					mouseover: function (data, idx, that)	{
-						bio.tooltip({ 
-							element: this, 
-							contents: '<b>' + data.y + '</b></br>' + 
-				 				 'Value: <b>' + data.value + '</b>' });
-
-						d3.select(this)
-							.transition(10)
-							.style('fill', '#7A7A7A')
-							.style('filter', 'url(#drop_shadow)');
-					},
-					mouseout: function (data, idx, that)	{
-						bio.tooltip('hide');
-
-						d3.select(this)
-							.transition(10)
-							.style('fill', '#BFBFBF')
-							.style('filter', 'none');
-					},
-				},
-			},
-			gene: {
-				margin: [10, 30, 45.5, 70],
-				attr: {
-					id: function (data, idx, that)	{
-						return 'landscape_gene_' + data.y + 
-										'_bar_rect';
-					},
-					x: function (data, idx, that) {
-						return that.scaleX(data.x + data.value) + 0.125;
-					},
-					y: function (data, idx, that) {
-						return that.scaleY(data.y) + 0.25;
-					},
-					width: function (data, idx, that)	{
-						return that.scaleX(data.x) - 
-									 that.scaleX(data.x + data.value) - 0.25;
-					},
-					height: function (data, idx, that)	{
-						return bio.scales().band(that.scaleY) - 0.5;
-					},
-				},
-				style: {
-					fill: function (data, idx, that)	{
-						return bio.boilerPlate.variantInfo[data.info].color;
-					},
-				},
-				on: {
-					mouseover: function (data, idx, that)	{
-						var rgba = bio.rendering().opacity(
-							bio.boilerPlate.variantInfo[data.info].color, 0.3);
-
-						bio.tooltip({ 
-							element: this, 
-							contents: '<b>' + data.y + '</b></br>' + 
-								  'Type: <b>' + data.info + '</b></br>' + 
-								 'Count: <b>' + data.value + '</b>' });
-
-						d3.select(this)
-							.transition(10)
-							.style('fill', rgba)
-							.style('filter', 'url(#drop_shadow)');
-					},
-					mouseout: function (data, idx, that)	{
-						bio.tooltip('hide');
-
-						d3.select(this)
-							.transition(10)
-							.style('fill', bio.boilerPlate
-																.variantInfo[data.info].color)
-							.style('filter', 'none');
-					},
-				},
-			},
-			sample: {
-				margin: [10, 5, 20, 0],
-				attr: {
-					x: function (data, idx, that) {
-						return that.scaleX(data.x) + 0.25;
-					},
-					y: function (data, idx, that) {
-						return that.scaleY(data.y + data.value) + 0.25;
-					},
-					width: function (data, idx, that)	{
-						return bio.scales().band(that.scaleX) - 0.5; 
-					},
-					height: function (data, idx, that)	{
-						return that.scaleY(data.y) - 
-									 that.scaleY(data.y + data.value) - 0.5;
-					},
-				},
-				style: {
-					fill: function (data, idx, that)	{
-						return bio.boilerPlate.variantInfo[data.info].color;
-					},
-				},
-				on: {
-					mouseover: function (data, idx, that)	{
-						var rgba = bio.rendering().opacity(
-							bio.boilerPlate.variantInfo[data.info].color, 0.3);
-
-						bio.tooltip({ 
-							element: this, 
-							contents: '<b>' + data.x + '</b></br>' + 
-								  'Type: <b>' + data.info + '</b></br>' + 
-								 'Count: <b>' + data.value + '</b>' });
-
-						d3.select(this)
-							.transition(10)
-							.style('fill', rgba)
-							.style('filter', 'url(#drop_shadow)');
-					},
-					mouseout: function (data, idx, that)	{
-						bio.tooltip('hide');
-
-						d3.select(this)
-							.transition(10)
-							.style('fill', bio.boilerPlate
-																.variantInfo[data.info].color)
-							.style('filter', 'none');
-					},
-				},
-			},
-		}[part];
-	};
-	/*
-		Heatmap 설정 함수.
-	 */
-	function heatmap (part)	{
-		return {
-			heatmap: {
-				margin: [10, 5, 45.5, 0],
-				attr: {
-					id: function (data, idx, that)	{
-						return 'landscape_gene_' + data.y + 
-										'_heatmap_rect';
-					},
-					x: function (data, idx, that)	{
-						return that.scaleX(data.x);
-					},
-					y: function (data, idx, that)	{
-						return byCase(data.value) !== 'cnv' ? 
-									bio.scales().band(that.scaleY) / 3 + 
-									that.scaleY(data.y) : that.scaleY(data.y);
-					},
-					width: function (data, idx, that)	{
-						return bio.scales().band(that.scaleX);
-					},
-					height: function (data, idx, that)	{
-						return byCase(data.value) !== 'cnv' ? 
-									bio.scales().band(that.scaleY) / 3 : 
-									bio.scales().band(that.scaleY);
-					},
-				},
-				style: {
-					fill: function (data, idx, that)	{
-						return bio.boilerPlate.variantInfo[data.value].color;
-					},
-				},
-				on: {
-					mouseover: function (data, idx, that)	{
-						var rgba = bio.rendering().opacity(
-									bio.boilerPlate
-										 .variantInfo[data.value].color, 0.3),
-								typeStr = '';
-
-						if (data.info.length > 0)	{
-							bio.iteration.loop(data.info, function (i)	{
-								typeStr += '</br><b>' + i + '</b>';
-							});
-						}
-
-						bio.tooltip({
-							element: this,
-							contents: '<b>Gene mutations</b></br>' + 
-										 'X: <b>' + data.x + '</b></br>' + 
-										 'Y: <b>' + data.y + '</b></br>' + 
-						 'Type: </br><b>' + data.value + '</b>' + typeStr,
-						});
-
-						d3.select(this)
-							.transition(10)
-							.style('fill', rgba)
-							.style('filter', 'url(#drop_shadow)');
-					},
-					mouseout: function (data, idx, that)	{
-						bio.tooltip('hide');
-
-						d3.select(this)
-							.transition(10)
-							.style('fill', bio.boilerPlate
-																.variantInfo[data.value].color)
-							.style('filter', 'none');
-					},
-				},
-			},
-			group: {
-				margin: [0, 5, 7, 0],
-				attr: {
-					x: function (data, idx, that)	{
-						return that.scaleX(data.x) || that.margin.left;
-					},
-					y: function (data, idx, that)	{
-						return that.scaleY(data.y);
-					},
-					width: function (data, idx, that)	{
-						return bio.scales().band(that.scaleX);
-					},
-					height: function (data, idx, that)	{
-						return bio.scales().band(that.scaleY);
-					},
-				},
-				style: {
-					fill: function (data, idx, that)	{
-						// console.log(data.value);
-						return '#333333';
-						return bio.boilerPlate
-											.clinicalInfo[data.value].color;
-					},
-				},
-				on: {
-					mouseover: function (data, idx, that)	{
-						var rgba = bio.rendering().opacity(
-									bio.boilerPlate
-										 .clinicalInfo[data.value].color, 0.3);
-
-						bio.tooltip({
-							element: this,
-							contents: '<b>' + data.y + '</b></br>' + 
-								'Sample: <b>' + data.x + '</b></br>' + 
-								 'Value: <b>' + data.value + '</b></br>',
-												
-						});
-
-						d3.select(this)
-							.transition(10)
-							.style('fill', rgba)
-							.style('filter', 'url(#drop_shadow)');
-					},
-					mouseout: function (data, idx, that)	{
-						bio.tooltip('hide');
-
-						d3.select(this)
-							.transition(10)
-							.style('fill', bio.boilerPlate
-																.clinicalInfo[data.value].color)
-							.style('filter', 'none');
-					},
-				},
-			},
-		}[part];	
-	};
-	/*
-		Legend 설정 함수. 
-	 */
-	function legend ()	{
-		var shape = '.legend-shape-g-tag',
-				texts = '.legend-text-g-tag';
-
-		return {	
-			margin: [20, 15, 5, 15],
-			attr: {
-				x: function (data, idx, that)	{ 
-					return this.tagName === 'text' ? 
-								 that.margin.left : 0; 
-				},
-				y: function (data, idx, that)	{
-					var y = this.tagName === 'text' ? 
-					 idx * (that.fontHeight + that.padding) : 
-					 idx * (that.fontHeight + that.padding) - 
-					 				that.fontHeight / 2 - 1;
-
-					return this.tagName === 'rect' && 
-								 byCase(data) === 'var' ? 
-								 y + that.fontHeight / 4 : y;
-				},
-				width: function (data, idx, that)	{
-					return that.fontHeight / 2;
-				},
-				height: function (data, idx, that)	{
-					return byCase(data) === 'var' ? 
-									that.fontHeight / 2 : that.fontHeight;
-				},
-			},
-			style: {
-				fill: function (data, idx, that)	{
-					return this.tagName === 'text' ? '#333333' : 
-									bio.boilerPlate.variantInfo[data].color;
-				},
-				fontSize: '8px',
-			},
-			on: {
-				mouseover: function (data, idx, that)	{
-					var nIdx = that.legendData.indexOf(data),
-							rect = bio.drawing().nthChild(shape, nIdx),
-							text = bio.drawing().nthChild(texts, nIdx),
-							rgba = bio.rendering().opacity(
-										 bio.boilerPlate
-										 	  .variantInfo[data].color, 0.3);
-
-					d3.select(rect).transition(10)
-												 .style('fill', rgba);
-					d3.select(text).style('font-weight', 'bold');
-				},
-				mouseout: function (data, idx, that)	{
-					var nIdx = that.legendData.indexOf(data),
-							rect = bio.drawing().nthChild(shape, nIdx),
-							text = bio.drawing().nthChild(texts, nIdx);
-
-					d3.select(rect).transition(10)
-												 .style('fill', bio.boilerPlate
-												 	.variantInfo[data].color);
-					d3.select(text).style('font-weight', 'normal');
-				},
-			},
-			text: function (data, idx, that)	{ return data; },
-		};
-	};
-
-	return function ()	{
-		return {
-			bar: bar,
-			axis: axis,
-			legend: legend,
-			byCase: byCase,
-			title: sortTitle,
-			heatmap: heatmap,
-		};
-	};
-};
-function pathwayConfig ()	{
-	'use strict';
-
-	var model = {
-		drug_color: {
-			type1: { class: 'agent-red', color: 'red' },
-			type2: { class: 'agent-blue', color: 'blue' },
-			type3: { class: 'agent-black', color: 'black' },
-		}
-	};
-
-	function color (data)	{
-		if (data)	{
-			var scale = bio.scales().get([0, 50], [1, 0.5]),
-					base = d3.hsl(
-						data.active === 'Y' ? 'red' : 'blue');
-					base.l = scale(data.frequency);
-
-			return base;
-		} 
-
-		return '#d0d0d0';
-	};
-
-	function getId (element)	{
-		var full = d3.select(element).node().parentNode.id;
-
-		return full.substring(full.lastIndexOf('_') + 1, 
-													full.length).toUpperCase();
-	};
-
-	function node ()	{
-		return {
-			style: {
-				fill: function (data, idx, that)	{
-					return this.tagName === 'rect' ? color(data) : 
-								 data && data.frequency >= 30 ? 
-								'#F2F2F2' : '#333333';
-				},
-			},
-			on: { 
-				mouseover: function (data, idx, that)	{
-					var elem = this.tagName === 'rect' ? this : 
-								d3.select(this.parentNode).select('rect').node(),
-							freq = data ? data.frequency : 'NA',
-							color = data ? data.active === 'Y' ? 
-											'RED' : 'BLUE' : '#E8E8E8',
-							isAct = data ? data.active === 'Y' ? 
-											'Activated' : 'Inactivated' : 'NA',
-							id = getId(this);
-
-					bio.tooltip({
-						element: elem,
-						contents: '<b>' + id + '</b></br>frequency : ' + 
-						freq + '</br><span style="color : ' + color + 
-						'"><b>' + isAct + '</b></span>',
-					});
-				},
-				mouseout: function (data, idx, that)	{
-					bio.tooltip('hide');
-				},
-			},
-		};
-	};
-
-	function drug ()	{
-		function geneTag (gene)	{
-			return '<div id="modal_gene_name">' + gene + '</div>';
-		};
-
-		function onOverAndOut (data)	{
-			var isOver = d3.event.type === 'mouseout' ? 0 : 1,
-					sv = isOver ? 0.02 : 0,
-					tv = isOver ? -5 : 0;
-
-			d3.select(this).transition()
-				.attr('transform', function ()	{
-					return 'matrix(' + 
-					(data.scaleX + sv) + ', 0, 0, ' + 
-					(data.scaleY + sv) + ', ' + 
-					(data.translateX + tv) + ', ' + 
-					(data.translateY + tv) + ')';
-				})
-				.style('cursor', 'pointer')
-				.selectAll('path')
-				.style('stroke', isOver ? '#FBFD24' : '#FFFFFF')
-				.style('stroke-width', isOver ? 20 : 0);
-		};
-		/*
-			data 값에 따른 URL 요청 주소를 반환한다.
-		 */
-		function drugURL (data)	{
-			return data.nci_id ? 
-			'http://www.cancer.gov/about-cancer/treatment/drugs/' + 
-			data.nci_id : !data.nci_id && data.dailymed_id ? 
-			'http://www.dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?' + 
-			'setid=' + data.dailymed_id : null;	
-		};
-		/*
-			type 구분을 위한 drug 모양을 반환한다.
-		 */
-		function drugShape (type)	{
-			var color = model.drug_color[type].color,
-					drug = document.querySelector(
-						'#legend_icon_' + color).cloneNode(true),
-					svg = document.createElement('svg');
-
-			drug.setAttribute('transform', 
-				'matrix(0.04, 0, 0, 0.04, 10, 0)');
-
-			svg.setAttribute('width', 40);
-			svg.setAttribute('height', 20);
-			svg.appendChild(drug);
-
-			return svg.outerHTML;
-		};
-
-		return {
-			on: {
-				click: function (data, idx, that)	{
-					var gene = this.id.split('_')[1],
-							title = document.querySelector('.modal-title'),
-							body = document.querySelector('.modal-body');
-
-							$('#drug_modal').modal({
-								keyboard: false,
-								backdrop: 'static',
-							});
-
-							$('#drug_modal').on('shown.bs.modal', function (e)	{
-								var bodyHeight = $(this).find('.modal-body').css('height');
-								console.log(bodyHeight);
-								bio.table({
-									height: parseFloat(bodyHeight) - 70,
-									element: body,
-									heads: ['Type', 'Drug', 'Level of approval', 
-													'Treated Cancer', 'Reference'],
-									data: data.drugs,
-									columns: function (col, row, head, data, that)	{
-										if (col === 0) return drugShape(data.drug_type);
-										else if (col === 1) 	{
-											var urls = drugURL(data);
-											
-											return urls ? data.agent + 
-											'<a class="drug-link" href=' + urls + 
-											' target=\'drug\'>' + 
-											'<i class="fa fa-external-link"></i></a>' : 
-												data.agent;
-										}										
-										else if (col === 2) 	return data.drug_class;
-										else if (col === 3) 	return data.cancer;
-										else if (col === 4) 	return data.source;
-									},
-								});
-							});
-				},
-				mouseover: onOverAndOut,
-				mouseout: onOverAndOut,
-			}
-		}
-	};
-
-	return function ()	{
-		return { node: node, drug: drug };
-	};
-};
-function variantsConfig ()	{
-	'use strict';
-
-	var model = {};
-	/*
-		값에 따른 지름값 계산.
-	 */
-	function radius (count)	{
-		return Math.sqrt(count) * 3 / 1.25;
-	};
-	/*
-		Needle, Graph 의 x, y 축 설정 함수.
-	 */
-	function axis (part, direction, svg)	{
-		if (part === 'common')	{ return {}; }
-
-		var w = parseFloat(svg.attr('width')),
-				h = parseFloat(svg.attr('height'));
-
-		return {
-			needleX: {
-				top: h - 35, left: 0,
-				direction: 'bottom', 
-				range: [40, w - 40], 
-				margin: [10, 40, 35, 40],
-			},
-			needleY: {
-				top: 0, left: 40,
-				direction: 'left', 
-				range: [20, h - 80], 
-				margin: [20, 40, 80, 0],
-			},
-		}[part + direction];
-	};
-	/*
-		Needle, Patient 에 대한 Legend.
-	 */
-	function legend (part)	{
-		var shape = '.legend-shape-g-tag',
-				texts = '.legend-text-g-tag',
-				pShape = '.variants_patient_legend_svg' + shape,
-				pTexts = '.variants_patient_legend_svg' + texts;
-
-		return {
-			needle: {
-				margin: [15, 10, 5, 15],
-				attr: {
-					cx: function (data, idx, that)	{
-						return that.margin.left;
-					},
-					cy: function (data, idx, that)	{
-						return idx * (that.fontHeight + 5);
-					},
-					r: 5, 
-					x: function (data, idx, that)	{
-						return this.tagName === 'text' ? 
-									 that.margin.left * 2 : that.margin.left;
-					},
-					y: function (data, idx, that)	{
-						return idx * (that.fontHeight + 5) + 1;	
-					},
-				},
-				style: {
-					fill: function (data, idx, that)	{
-						return this.tagName === 'text' ? '#333333' : 
-									 bio.boilerPlate.variantInfo[data].color;
-					},
-				},
-				on: {
-					mouseover: function (data, idx, that)	{
-						var nIdx = that.legendData.indexOf(data),
-								rect = bio.drawing().nthChild(shape, nIdx),
-								text = bio.drawing().nthChild(texts, nIdx),
-								rgba = bio.rendering().opacity(
-											 bio.boilerPlate
-											 	  .variantInfo[data].color, 0.3);
-
-						d3.select(rect).transition(10)
-													 .style('fill', rgba);
-						d3.select(text).style('font-weight', 'bold');
-					},
-					mouseout: function (data, idx, that)	{
-						var nIdx = that.legendData.indexOf(data),
-								rect = bio.drawing().nthChild(shape, nIdx),
-								text = bio.drawing().nthChild(texts, nIdx);
-
-						d3.select(rect).transition(10)
-													 .style('fill', bio.boilerPlate
-													 	.variantInfo[data].color);
-						d3.select(text).style('font-weight', 'normal');
-					},
-				},
-				text: function (data, idx, that)	{ return data; },
-			},
-			patient: {
-				margin: [15, 10, 5, 15],
-				attr: {
-					x: function (data, idx, that)	{
-						return this.tagName === 'text' ? 
-									 that.margin.left * 2 : that.margin.left;
-					},
-					y: 0,
-					points: function (data, idx, that)	{
-						return bio.rendering().triangleStr(
-										that.margin.left, -5, 8, 'top');
-					},
-				},
-				style: {
-					fill: function (data, idx, that)	{
-						return this.tagName === 'text' ? '#333' : '#FFFFFF';
-					},
-					stroke: function (data, idx, that)	{
-						return this.tagName === 'text' ? 'none' : '#333333';
-					},
-					strokeWidth: '1px',
-				},
-				on: {
-					mouseover: function (data, idx, that)	{
-						var nIdx = that.legendData.indexOf(data),
-								rect = bio.drawing().nthChild(pShape, nIdx),
-								text = bio.drawing().nthChild(pTexts, nIdx),
-								rgba = bio.rendering().opacity('#333333', 0.3);
-
-						d3.select(rect).transition(10)
-													 .style('stroke', rgba);
-						d3.select(text).style('font-weight', 'bold');
-					},
-					mouseout: function (data, idx, that)	{
-						var nIdx = that.legendData.indexOf(data),
-								rect = bio.drawing().nthChild(pShape, nIdx),
-								text = bio.drawing().nthChild(pTexts, nIdx);
-
-						d3.select(rect).transition(10)
-													 .style('stroke', '#333333');
-						d3.select(text).style('font-weight', 'normal');
-					},
-				},
-				text: function (data, idx, that)	{ return data; },
-			},
-		}[part];
-	};
-
-	function needle ()	{
-		return {
-			margin: [20, 40, 80, 40],
-			attr: {
-				cx: function (data, idx, that)	{
-					var x = that.scaleX(data.x);
-
-					return x > that.width - that.margin.right || 
-								 x < that.margin.left? x * that.width : x;
-				},
-				cy: function (data, idx, that)	{
-					return that.scaleY(data.y);
-				},
-				r: function (data, idx, that)	{
-					return radius(data.value);
-				},
-				x: function (data, idx, that)	{
-					var x = that.scaleX(data.x);
-
-					return x > that.width - that.margin.right || 
-								 x < that.margin.left? x * that.width : x;
-				},
-				y: function (data, idx, that)	{
-					return that.scaleY(data.y);
-				},
-			},
-			style: {
-				fill: function (data, idx, that)	{
-					return this.tagName === 'path' ? '#A8A8A8' : 
-								 that.id.indexOf('needle') > -1 ? bio.boilerPlate
-									   .variantInfo[data.info[0].type].color : 
-								 bio.rendering().opacity(bio.boilerPlate
-									  .variantInfo[data.info[0].type].color, 0.3);
-
-				},
-				stroke: function (data, idx, that)	{
-					return this.tagName === 'path' ? '#A8A8A8' : 'none';
-				},
-			},
-			on: {
-				mouseover: function (data, idx, that)	{
-					var rgba = bio.rendering().opacity(
-										 bio.boilerPlate.variantInfo[
-										 data.info[0].type].color, 0.5);
-
-					bio.tooltip({
-						element: this,
-						contents: 
-						'Type: <b>' + data.info[0].type + 
-						'</b></br>AAChange: <b>' + data.info[0].aachange +
-						'</b></br>Counts: <b>' + data.y + 
-						'</b></br>Position: <b>' + data.x + '</b>'
-					});
-
-					d3.select(this).transition(10).style('fill', rgba);
-				},
-				mouseout: function (data, idx, that)	{
-					bio.tooltip('hide');
-
-					d3.select(this).transition(10)
-												 .style('fill', bio.boilerPlate
-												 	.variantInfo[data.info[0].type].color);
-				},
-			},
-		};
-	};
-
-	function navi ()	{
-		return {
-			margin: [0, 40, 5, 40],
-			end: { init: 0, now: 0 },
-			start: { init: 0, now: 0 },
-			navi: { init: 0, now: 0, width: 0, nowWidth: 0 },
-			attr: {
-				x: function (data, idx, that)	{
-					return data === 'main' ? that.start : 
-								 data === 'end' ? that.end + that.margin.left - 
-								 that.controls.width : 
-								 that.start - that.controls.width;
-				},
-				y: function (data, idx, that)	{
-					return data === 'main' ? 0 : that.height * 0.25;
-				},
-				width: function (data, idx, that)	{
-					return data === 'main' ? 
-								 that.end : that.controls.width * 2;
-				},
-				height: function (data, idx, that)	{
-					return data === 'main' ? 
-								 that.height - that.margin.bottom : 
-								 that.controls.height;
-				},
-				rx: function (data, idx, that)	{
-					return data === 'main' ? 3 : 5;
-				},
-				ry: function (data, idx, that)	{
-					return data === 'main' ? 3 : 5;
-				},
-			},
-			style: {
-				fill: function (data, idx, that)	{
-					return data === 'main' ? 'rgba(255, 255, 50, 0.1)' : 
-					'#A8A8A8';
-				},
-				stroke: function (data, idx, that)	{
-					return data === 'main' ? '#FFDF6D' : '#EAECED';
-				},
-				strokeWidth: function (data, idx, that)	{
-					return data === 'main' ? '1px' : '2px';
-				},
-				cursor: function (data, idx, that)	{
-					return data === 'main' ? 'move' : 'ew-resize';
-				},
-			},
-			call: {
-				drag: function (data, idx, that)	{
-					var main = d3.select(
-						'#variants_navi_svg_navi_main_rect'),
-							start = d3.select(
-						'#variants_navi_svg_navi_start_rect'),
-							end = d3.select(
-						'#variants_navi_svg_navi_end_rect'),
-							dg = that.opts.drag;
-					/*
-						Start, end 의 드래그 이동 값을 설정하는 함수.
-					 */
-					function getDragValue (type)	{
-						dg[type].now += d3.event.dx;
-
-						return dg[type].now = 
-						Math.max(dg.start[type === 'end' ? 'now' : 'init'],
-						Math.min(dg.end[type === 'end' ? 'init' : 'now'],
-						dg[type === 'end' ? 'end' : 'start'].now)),
-						dg[type].now;
-					};
-
-					if (data === 'start')	{
-						d3.select(this).attr('x', getDragValue(data));
-
-						dg.navi.now = dg.navi.init + (
-						dg.start.now - dg.start.init);
-						dg.navi.nowWidth = dg.navi.width - (
-						dg.end.init - dg.end.now) - (
-						dg.start.now - dg.start.init);
-
-						main.attr('x', dg.navi.now)
-								.attr('width', dg.navi.nowWidth);
-					} else if (data === 'end') {
-						d3.select(this).attr('x', getDragValue(data));
-
-						dg.navi.nowWidth = dg.navi.width - (
-						dg.start.now - dg.start.init) - (
-						dg.end.init - dg.end.now);
-
-						main.attr('width', dg.navi.nowWidth);
-					}	else {
-						dg.navi.now += d3.event.dx;
-
-						var value = dg.navi.now = 
-						Math.max(dg.navi.init, 
-						Math.min((dg.navi.width + that.margin.left) - 
-											dg.navi.nowWidth, dg.navi.now));
-
-						dg.start.now = value - that.controls.width;
-						dg.end.now = (value + dg.navi.nowWidth) - 
-															that.controls.width;
-
-						main.attr('x', value);
-						start.attr('x', dg.start.now);
-						end.attr('x', dg.end.now);
-					}
-				},
-			},
-		};
-	};
-
-	function graph ()	{
-		return {
-			margin: [20, 40, 80, 40],
-			attr: {
-				x: function (data, idx, that)	{
-					var x = that.scaleX(data.x);
-
-					return this.id.indexOf('base') > -1 ? 
-								 that.margin.left : 
-								 this.id.indexOf('text') > -1 ? x + 5 : 
-								 x < that.margin.left ? that.margin.left : 
-								 x > that.width - that.margin.right ? 
-								 that.width - that.margin.right : x;
-				},
-				y: function (data, idx, that)	{
-					var height = ((that.height - 10) - 
-												(that.height - that.margin.bottom)) * 0.4
-
-					return this.tagName !== 'text' ? 
-								 that.height - that.margin.bottom : 
-								 that.height - that.margin.bottom + height / 2;
-				},
-				width: function (data, idx, that)	{
-					var x = that.scaleX(data.x),
-							width = that.scaleX(data.x + data.width);
-
-					if (x < that.margin.left)	{
-						width -= (that.margin.left - x);
-
-						if (width < 0)	{ return 0; }
-					} else if (x + (width - x) > 
-										that.width - that.margin.right) {
-						width -= (x + width - x) - 
-										 (that.width - that.margin.right);
-
-						if (width - x < 0)	{ return 0; }
-					}
-
-					return this.id.indexOf('base') > -1 ? that.width - 
-								 that.margin.left - that.margin.right : 
-								 width - x;
-				},
-				height: function (data, idx, that)	{
-					return ((that.height - 10) - 
-									(that.height - that.margin.bottom)) * 0.4;
-				},
-				rx: function (data, idx, that)	{
-					return this.id.indexOf('base') > -1 ? 1 : 3;
-				}, 
-				ry: function (data, idx, that)	{
-					return this.id.indexOf('base') > -1 ? 1 : 3;
-				},
-			},
-			style: {
-				fill: function (data, idx, that)	{
-					return this.id.indexOf('base') > -1 ? '#DADFE1' : 
-								 this.id.indexOf('text') > -1 ? '#FFFFFF' : 
-								 data.color;
-				},
-			},
-			on: {
-				mouseover: function (data, idx, that)	{
-					var tag = this.id.indexOf('base') > -1 ? null : 
-										this.tagName === 'text' ? 
-										this.previousSibling ? this.previousSibling : 
-										this.nextSibling : this,
-							rgba = bio.rendering().opacity(data.color, 0.5);
-
-					if (tag)	{
-						bio.tooltip({
-							element: tag,
-							contents: 
-							'<b>' + data.info.identifier + 
-							'</b></br>Desc: <b>' + data.info.description +
-							'</b></br>Section: <b>' + data.x + ' - ' + 
-								(data.x + data.width) + '</b>'
-						});
-
-						d3.select(tag).transition(10).style('fill', rgba);
-					}	
-				},
-				mouseout: function (data, idx, that)	{
-					var tag = this.id.indexOf('base') > -1 ? null : 
-										this.tagName === 'text' ? 
-										this.previousSibling ? this.previousSibling : 
-										this.nextSibling : this;
-
-					if (tag)	{
-						bio.tooltip('hide');
-
-						d3.select(tag).transition(10)
-												 	.style('fill', data.color);
-					}
-				},
-			},
-			text: function (data, idx, that)	{
-				var x = that.scaleX(data.x),
-						width = that.scaleX(data.x + data.width);
-				
-				return bio.drawing().textOverflow(
-							data.info.identifier, '10px', (width - x), 5);
-			},
-		};
-	};
-	/*
-		Patient 표시 관련 설정 함수.
-	 */
-	function patient ()	{
-		return {
-			// To be modify.
-			margin: [20, 40, 25, 40],
-			attr: {
-				points: function (data, idx, that)	{
-					var x = that.scaleX(data.x);
-
-					if (x < that.margin.left || 
-							x > that.width - that.margin.right)	{
-						x = that.width + that.margin.right;
-					}
-
-					return bio.rendering().triangleStr(
-								x, that.scaleY(0) - that.margin.bottom, 
-								10, 'top');
-				},
-			},
-			style: {
-				fill: function (data, idx, that)	{
-					return this.tagName === 'path' ? '#A8A8A8' : 
-								 bio.boilerPlate
-									  .variantInfo[data.info[0].type].color;
-				},
-				stroke: function (data, idx, that)	{
-					return this.tagName === 'path' ? '#A8A8A8' : 'none';
-				},
-			},
-		};
-	};
-
-	return function ()	{
-		return {
-			axis: axis,
-			navi: navi,
-			graph: graph,
-			legend: legend,
-			needle: needle,
-			radius: radius,
-			patient: patient,
-		};
 	};
 };
 function pathway ()	{
@@ -10950,38 +11111,38 @@ var SurvivalTab = (function() {
  /*
     Landscape
   */
- // $.ajax({
- //    'type': 'POST',
- //    'url': '/files/datas',
- //    data: {
- //     name: 'landscape',
- //    },
- //    beforeSend: function () {
- //      // bio.loading().start(document.querySelector('#main'), 900, 600);
- //    },
- //    success: function (d) {
- //      bio.landscape({
-	// 			element: '#main',
-	// 			width: 1200,
-	// 			height: 800,
-	// 			data: {
-	// 				pq: 'p',
-	// 				type: 'LUAD',
-	// 				data: d[0].data,
-	// 				title:d[0].data.name,
-	// 			},
- //        plot: {
- //          patient: false, // true
- //          pq: false, // true
- //        },
- //        divisionFunc: function (enable, disable, others)  {
- //          // console.log(enable, disable, others);
- //        },
-	// 		});
+ $.ajax({
+    'type': 'POST',
+    'url': '/files/datas',
+    data: {
+     name: 'landscape',
+    },
+    beforeSend: function () {
+      // bio.loading().start(document.querySelector('#main'), 900, 600);
+    },
+    success: function (d) {
+      bio.landscape({
+				element: '#main',
+				width: 1200,
+				height: 800,
+				data: {
+					pq: 'p',
+					type: 'LUAD',
+					data: d[0].data,
+					title:d[0].data.name,
+				},
+        plot: {
+          patient: false, // true
+          pq: false, // true
+        },
+        divisionFunc: function (enable, disable, others)  {
+          // console.log(enable, disable, others);
+        },
+			});
 
- //      // bio.loading().end();
- //    },
- //  });
+      // bio.loading().end();
+    },
+  });
 
 function clinicalGenerator ()	{
 	'use strict';
@@ -10989,27 +11150,45 @@ function clinicalGenerator ()	{
 	var model = {},
 			naColor = '#D6E2E3';
 
-	function colorGenerator (colors)	{
-		console.log(d3.rgb(colors).toString(16))
-	};
+	function getRandomColor ()	{
+		var letters = '0123456789ABCDEF',
+				color = '#';
 
-	function setStartColors (clinicalLength)	{
-		var start = '#04CDA4';
+		for (var i = 0; i < 6; i++)	{
+			color += letters[Math.floor(Math.random() * 16)];
+		}
 
-		colorGenerator(start);
-	};
+		return color;
+	}
 	/*
 		Clinical 의 색상을 지정해주는 함수.
 		이는 Clinical 의 개수와 상관없이 일정하게 
 		색상을 정해준다.
 	 */
 	function colors (clinicals)	{
-		var startColors = setStartColors(
-									Object.keys(clinicals).length);
-
 		bio.iteration.loop(clinicals, 
 		function (clinical, values)	{
-			console.log(clinical, values);
+			var i = 0;
+
+			bio.iteration.loop(values, function (val, idx)	{
+				var result = '#';
+
+				if (val !== 'NA')	{
+
+					i = i > val.length ? i - val.length : i;
+
+					for (var len = i + 3; i < len; i++)	{
+						var first = i.toString(16),
+								secnd = val.charCodeAt(i).toString(16).split('')[1];
+
+						result += (secnd + first);
+					}
+
+					model[val].color = result;
+				} else {
+					model[val].color = naColor;
+				}
+			});
 		});
 	};
 
@@ -11031,18 +11210,22 @@ function clinicalGenerator ()	{
 		});
 	};
 
+	function setClinicals (obj, key, val)	{
+		if (obj[key])	{
+			if (obj[key].indexOf(val) < 0)	{
+				obj[key].push(val)
+			}
+		} else {
+			obj[key] = [val];
+		}
+	};
+
 	function landscapeDataToArr (data)	{
 		var clinicals = {};
 
 		bio.iteration.loop(data, function (group)	{
 			bio.iteration.loop(group, function (gp)	{
-				if (clinicals[gp.y])	{
-					if (clinicals[gp.y].indexOf(gp.value) < 0)	{
-						clinicals[gp.y].push(gp.value)
-					}
-				} else {
-					clinicals[gp.y] = [gp.value];
-				}
+				setClinicals(clinicals, gp.y, gp.value);
 			});
 		});
 
@@ -11051,7 +11234,16 @@ function clinicalGenerator ()	{
 	};
 
 	function expressionDataToArr (data)	{
-		return null;
+		var clinicals = {};
+
+		bio.iteration.loop(data, function (d)	{
+			bio.iteration.loop(d.value, function (val)	{
+				setClinicals(clinicals, d.key, val);
+			});
+		});
+		
+		orders(clinicals);
+		colors(clinicals);
 	};
 
 	function toArrClinicalData (clinicalData, chart)	{
@@ -11062,15 +11254,14 @@ function clinicalGenerator ()	{
 		} else if (chart === 'expression')	{
 			expressionDataToArr(clinicalData);
 		}
-
-
 	};
 
 	return function (clinicalData, chart)	{
-		console.log(clinicalData, chart)
+		model = {};
+
 		toArrClinicalData(clinicalData, chart);
 
-		return null;
+		bio.boilerPlate.clinicalInfo = model;
 	};
 };
 function loading ()	{
