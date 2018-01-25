@@ -194,7 +194,8 @@ function preprocExpression ()	{
 	 */
 	function toPatient (patient)	{
 		var mut = model.axis.bar.y[1],
-				pat = model.func.avg[model.axis.bar.x.indexOf(patient)];
+				pat = model.func.xaxis[model.func.now || model.func.default]
+							[model.axis.bar.x.indexOf(patient)];
 
 		return mut >= pat ? 'Low score group' : 'High score group';
 	};

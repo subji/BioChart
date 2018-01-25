@@ -53,7 +53,8 @@
  //          cancer_type: 'luad',
  //          sample_id: 'SMCLUAD1705230001',
  //          // signature: 'PAM50',
- //          signature: '180117',
+ //          // signature: '180117',
+ //          signature: '180125',
  //          filter: ':'
  //        },
  //        data: d[0].data,

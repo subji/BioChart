@@ -10,7 +10,7 @@ function triangle ()	{
 			element: opts.element,
 			data: opts.data || null,
 			attr: !opts.attr ? null : {
-				id: function (d) { 
+				id: function (d, i) { 
 					return opts.attr.id ? 
 					typeof(opts.attr.id) !== 'function' ?  
 								(opts.id || that.id || 

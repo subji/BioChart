@@ -740,7 +740,7 @@ function expression ()	{
 		drawLegend('color_mapping', model.now.subtypeSet || null);
 		drawLegend('scatter', ['Alive', 'Dead']);
 		drawColorGradient(data.axis.gradient.x);
-		drawHeatmap(data, data.axis.heatmap, data.axis.gradient.x);
+		// drawHeatmap(data, data.axis.heatmap, data.axis.gradient.x);
 		drawFunctionBar(data, data.axis.bar);
 		drawSurvivalPlot(data);
 		drawScatter(data, data.axis.scatter, model.now.osdfs);
