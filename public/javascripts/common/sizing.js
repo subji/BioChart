@@ -124,6 +124,7 @@ function sizing ()	{
 	model.chart.landscape = function (ele, w, h, group, isPlotted, geneList)	{
 		var geneLenght = geneList.length,
 				stdSign = geneLenght > 40 ? 1 : -1,
+				stdGeneCount = Math.abs(40 - geneLenght),
 				stdGeneHeight = 0.01,
 				stdContentsHeight = 0.0095;
 		// Gene list 의 개수에 따라 크기를 지정.
@@ -148,6 +149,17 @@ function sizing ()	{
 			landscape_heatmap: { width: w * 0.63, height: geneHeight },
 			landscape_pq: { width: w * 0.1, height: geneHeight },
 		};
+
+		bio.iteration.loop(isPlotted, function (isP)	{
+			if (isP.indexOf('pq') > -1 || isP.indexOf('gene') > -1)	{
+				id.landscape_sample.width = w * 0.72;
+				id.landscape_heatmap.width = w * 0.72;
+				id.landscape_group.width = w * 0.72;
+				id.landscape_pq.width = w * 0.01;
+				id.landscape_temp_group.width = w * 0.01;
+				id.landscape_scale_option.width = w * 0.01;
+			}
+		});
 
 		var divs = makeDivide('landscape', ele, w, h, 0.05);
 

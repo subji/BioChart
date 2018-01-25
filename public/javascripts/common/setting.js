@@ -45,7 +45,8 @@ function setting ()	{
 		model = bio.initialize('setting');
 
 		var groupLayout = null,
-				isPlotted = opts.plot ? opts.plot : null;
+				isPlotted = opts.plot ? opts.plot : null,
+				geneList = opts.data.data ? opts.data.data.gene_list : undefined;
 
 		if (opts.data.data && opts.data.data.name)	{
 			groupLayout = opts.data.data.group_list;
@@ -61,7 +62,7 @@ function setting ()	{
 									model.dom, 
 									model.size.width, 
 									model.size.height, groupLayout, isPlotted,
-									opts.data.data.gene_list),
+									geneList),
 			svgs: setSVGElement(chart, model.ids, isPlotted),
 		};
 	};
