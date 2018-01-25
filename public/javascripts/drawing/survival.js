@@ -109,6 +109,13 @@ function survival ()	{
 
 		makeTab(opts.element, ['OS', 'DFS']);
 
+		SurvivalCurveBroilerPlate.subGroupSettings.legend = {
+			low: opts.legends.low.text, high: opts.legends.high.text,
+		};
+		SurvivalCurveBroilerPlate.subGroupSettings.line_color = {
+			low: opts.legends.low.color, high: opts.legends.high.color
+		};
+
 		SurvivalTab.init(opts.division, model.survival_data.pure);
 
 		return model;

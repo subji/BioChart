@@ -1,13 +1,7 @@
 function expressionConfig ()	{
 	'use strict';
 
-	var model = {},
-			colorSet = [
-		'#B82647', '#0A8D5E', '#F9D537', '#0B6DB7', '#E3DDCB',
-		'#9F494C', '#CBDD61', '#ED9149', '#89236A', '#D8C8B2',
-		'#CA5E59', '#006494', '#2E674E', '#9A6B31', '#403F95',
-		'#616264', '#E2A6B4', '#5AC6D0', '#733E7F', '#45436C'
-	];
+	var model = {};
 	/*
 		parameter 로 svg 가 존재하면 가로, 세로 값을 반환.
 	 */
@@ -42,7 +36,8 @@ function expressionConfig ()	{
 				style: {
 					fill: function (data, idx, that)	{
 						return this.tagName === 'text' ? '#333333' : 
-									 data === 'NA' ? '#A4AAA7' : colorSet[idx];
+									 data === 'NA' ? '#A4AAA7' : 
+									 bio.boilerPlate.clinicalInfo[data].color;
 					},
 					fontSize: '11px',
 				},
@@ -53,7 +48,7 @@ function expressionConfig ()	{
 								text = bio.drawing().nthChild(t1, nIdx),
 								rgba = bio.rendering().opacity(
 											 data === 'NA' ? '#A4AAA7' : 
-											 colorSet[idx], 0.3);
+											 bio.boilerPlate.clinicalInfo[data].color, 0.3);
 
 						d3.select(rect).transition(10).style('fill', rgba);
 						d3.select(text).style('font-weight', 'bold');
@@ -65,7 +60,7 @@ function expressionConfig ()	{
 
 						d3.select(rect).transition(10)
 													 .style('fill', data === 'NA' ? 
-													 	'#A4AAA7' : colorSet[idx]);
+													 	'#A4AAA7' : bio.boilerPlate.clinicalInfo[data].color);
 						d3.select(text).style('font-weight', 'normal');
 					},
 				},
@@ -497,7 +492,6 @@ function expressionConfig ()	{
 			heatmap: heatmap,
 			patient: patient,
 			gradient: gradient,
-			colorSet: colorSet,
 			division: division,
 			survival: survival,
 		};

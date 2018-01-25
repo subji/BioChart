@@ -99,10 +99,14 @@ var SurvivalCurveView = function(_opts) {
 		var unalteredSettingsInst = jQuery.extend(true, {}, SurvivalCurveBroilerPlate.subGroupSettings);
 		// unalteredSettingsInst.line_color = "blue";
 		// Modified.
-		unalteredSettingsInst.line_color = '#00AC52';
+		unalteredSettingsInst.line_color = SurvivalCurveBroilerPlate.
+			subGroupSettings.line_color.low;
+		// unalteredSettingsInst.line_color = '#00AC52';
 		// unalteredSettingsInst.mouseover_color = "#81BEF7";
 		// Modified.
-		unalteredSettingsInst.mouseover_color = "#00AC52";
+		// unalteredSettingsInst.mouseover_color = "#00AC52";
+		unalteredSettingsInst.mouseover_color = SurvivalCurveBroilerPlate.
+			subGroupSettings.line_color.low;
 		// unalteredSettingsInst.legend = "Low score group";
 		unalteredSettingsInst.legend = SurvivalCurveBroilerPlate.subGroupSettings.legend.low;
 		// unalteredSettingsInst.legend = "Cases without Alteration(s) in Query Gene(s)";
@@ -110,10 +114,14 @@ var SurvivalCurveView = function(_opts) {
 		var alteredSettingsInst = jQuery.extend(true, {}, SurvivalCurveBroilerPlate.subGroupSettings);
 		// alteredSettingsInst.line_color = "red";
 		// Modified.
-		alteredSettingsInst.line_color = '#FF6252';
+		alteredSettingsInst.line_color = SurvivalCurveBroilerPlate.
+			subGroupSettings.line_color.high;
+		// alteredSettingsInst.line_color = '#FF6252';
 		// alteredSettingsInst.mouseover_color = "#F5BCA9";
 		// Modified.
-		alteredSettingsInst.mouseover_color = "#FF6252";
+		// alteredSettingsInst.mouseover_color = "#FF6252";
+		alteredSettingsInst.mouseover_color = SurvivalCurveBroilerPlate.
+			subGroupSettings.line_color.high;
 		// alteredSettingsInst.legend = "High score group";
 		alteredSettingsInst.legend = SurvivalCurveBroilerPlate.subGroupSettings.legend.high;
 		// alteredSettingsInst.legend = "Cases with Alteration(s) in Query Gene(s)";

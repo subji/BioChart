@@ -46,6 +46,8 @@ var SurvivalCurve = function() {
     //qtip func
     var qtipFunc = {};
 
+    var lineInfo = {};
+
     function initCanvas() {
         $('#' + divs.curveDivId).empty();
         elem.svg = d3.select("#" + divs.curveDivId)
@@ -375,10 +377,8 @@ var SurvivalCurve = function() {
         // });
         // Modified.
         $.each(_infoTableInputArr, function(index, obj) {
-            var color = obj.groupName === 'High score group' || 
-                        obj.groupName === 'Altered group' ? '#FF6252' : '#00AC52';
             // Modified.
-            
+            var color = lineInfo[index].line_color;
             var width = $('#exclusivity_survival div').width();
 
             $('#' + divs.infoTableDivId).append(
@@ -392,7 +392,7 @@ var SurvivalCurve = function() {
               + obj.num_of_events_cases + '</b></td></tr>' + 
               '<tr><td style="width: ' + width + 'px; text-align:right;">' 
               + text.infoTableTitles.median + '</td><td style="width: ' + width + 'px; text-align:center;"><b>' 
-              + obj.median + '</b></td></tr>' 
+              + parseFloat(obj.median).toFixed(2) + '</b></td></tr>' 
             );
             // $("#" + divs.infoTableDivId).append("<tr>" +
             //                                     "<td>" + obj.groupName + "</td>" +
@@ -466,7 +466,7 @@ var SurvivalCurve = function() {
         });
     }
 
-    function drawCurve(_inputArr, _obj){
+    function drawCurve(_inputArr, _obj, index){
         var data = _obj.data;
         var opts = _obj.settings;
         var _curve = {};
@@ -476,6 +476,8 @@ var SurvivalCurve = function() {
         elem.dots[_curve.id] = elem.svg.append("g").attr('id', _curve.id+"-dots"); //the invisible dots
         initLines();
         drawLines(data.getData(), opts, _curve.id);
+
+        lineInfo[index] = _obj.settings;
 
         //First element is used to draw lines and its case_id is NA, this dot
         //will not be needed for drawing censored dots and invisible dots.
@@ -556,7 +558,7 @@ var SurvivalCurve = function() {
                     appendAxis(elem.xAxis, elem.yAxis);
                     appendAxisTitles(text.xTitle, text.yTitle);
                     $.each(_inputArr, function(index, obj) {
-                        drawCurve(_inputArr, obj);
+                        drawCurve(_inputArr, obj, index);
                     });
                     appendImgConverter(_inputArr);
                     if (_opts.settings.include_info_table) {

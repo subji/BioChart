@@ -12,7 +12,7 @@ function expression ()	{
 		});
 
 		bio.selectBox({
-			fontSize: '14px',
+			fontSize: '12px',
 			items: funcNames,
 			viewName: 'function',
 			margin: [3, 3, 0, 0],
@@ -41,21 +41,23 @@ function expression ()	{
 					'.expression_scatter_plot_svg.division-path-1-g-tag',
 					'.expression_scatter_plot_svg.division-shape-1-g-tag'
 				]);
+
 				// drawHeatmap(model.data, model.data.axis.heatmap, model.data.axis.gradient.x);
 				drawFunctionBar(model.data, model.data.axis.bar);
 				drawScatter(model.data, model.data.axis.scatter, model.now.osdfs);				
 				drawSurvivalPlot(model.data);
 				drawDivision(model.data);
+				getDivisionData();
 			},
 		});
 	};
 
 	function changeBarColor (data, idx, that)	{
-		if (!model.now.colorSet)	{ return '#62C2E0'; }
+		if (!model.now.subtypeSet)	{ return '#62C2E0'; }
 
 		var state = data.info ? 
-								data.info[model.now.color_mapping] : 'NA';
-		// if (model.now.color_mapping.indexOf('pathologic') > -1)	{
+								data.info[model.now.subtype_mapping] : 'NA';
+		// if (model.now.subtype_mapping.indexOf('pathologic') > -1)	{
 		// 	state = state.replace(/[a-z]/ig, '');
 		// }
 		return state === 'NA' ? '#D6E2E3' : 
@@ -64,10 +66,10 @@ function expression ()	{
 	
 	function drawColorMapSelectBox (subtypes)	{
 		bio.selectBox({
-			fontSize: '14px',
+			fontSize: '12px',
 			margin: [3, 3, 0, 0],
 			viewName: 'color_mapping',
-			defaultText: 'Color Mapping',
+			defaultText: 'Subtype Mapping',
 			id: '#expression_color_mapping',
 			className: 'expression-color-mapping',
 			items: subtypes.map(function (i)	{
@@ -80,8 +82,8 @@ function expression ()	{
 				bio.iteration.loop(subtypes, function (item)	{
 					if (item.key.toLowerCase() === 
 							value.toLowerCase())	{
-						model.now.color_mapping = item.key;
-						model.now.colorSet = item.value;
+						model.now.subtype_mapping = item.key;
+						model.now.subtypeSet = item.value;
 					}
 				});
 
@@ -96,12 +98,16 @@ function expression ()	{
 					.style('fill', changeBarColor)
 					.style('stroke', changeBarColor);
 
-				drawLegend('color_mapping', model.now.colorSet);
+				drawLegend('color_mapping', model.now.subtypeSet);
 				// Scatter legend 의 위치가 유동적이게 되므로 이를 고정하기
 				// 위해서 아래 코드를 추가함.
 				barLegend.style.marginBottom = 
 				(parseFloat(model.init.bar_legend_height) - 
 				 parseFloat(barLegend.style.height) - 5) + 'px';
+
+				if (model.subtypeFunc)	{
+					model.subtypeFunc(model.now.subtype_mapping)
+				}
 			},
 		});
 	};
@@ -384,6 +390,16 @@ function expression ()	{
 					data: model.divide.patient_list || 
 								model.setting.defaultData.patient_list,
 					division: model.divide.divide || data.survival.divide,
+					legends: {
+						high: {
+							text: 'High score group',
+							color: '#FF6252',
+						},
+						low: {
+							text: 'Low score group',
+							color: '#00AC52',
+						}
+					}
 				});
 
 		model.data.survival.data = plot.survival_data;
@@ -709,10 +725,10 @@ function expression ()	{
 		if (origin.signature_list)	{
 			drawSigSelectBox(origin.signature_list);
 		}
-		drawLegend('color_mapping', model.now.colorSet || null);
+		drawLegend('color_mapping', model.now.subtypeSet || null);
 		drawLegend('scatter', ['Alive', 'Dead']);
 		drawColorGradient(data.axis.gradient.x);
-		drawHeatmap(data, data.axis.heatmap, data.axis.gradient.x);
+		// drawHeatmap(data, data.axis.heatmap, data.axis.gradient.x);
 		drawFunctionBar(data, data.axis.bar);
 		drawSurvivalPlot(data);
 		drawScatter(data, data.axis.scatter, model.now.osdfs);
@@ -722,7 +738,6 @@ function expression ()	{
 		}
 
 		drawDivision(data);
-		getDivisionData();
 	};
 
 	return function (opts)	{
@@ -734,10 +749,11 @@ function expression ()	{
 		opts.data.riskFunctions = model.riskFunctions;
 		model.setting = bio.setting('expression', opts);
 		model.data = model.setting.preprocessData;
+		bio.clinicalGenerator(model.data.subtype, 'expression');
 		model.divisionFunc = opts.divisionFunc ? 
 		opts.divisionFunc : null;
-
-		bio.clinicalGenerator(model.data.subtype, 'expression');
+		model.subtypeFunc = opts.onSubtypeSelection ? 
+		opts.onSubtypeSelection : null;
 		// About request configurations.
 		model.requestData = opts.requestData || {};
 		model.requestURL = opts.requestURL || '/rest/expressions';

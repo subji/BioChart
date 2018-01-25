@@ -67,11 +67,34 @@ BioChart 0.0.24
         divisionFunc: function (left, mid, right) {
           // console.log(left, mid, right)
         },
+        onSubtypeSelection: function (subtypeName) {
+          // console.log(subtypeName)
+        },
 			});
 
 			bio.loading().end();
 		},
 	});
+
+  ps.
+
+  bio.survival option 추가
+
+  legends: {
+    high: {
+      text: 'High score group',
+      color: '#FF6252',
+    },
+    low: {
+      text: 'Low score group',
+      color: '#00AC52',
+    }
+  }
+
+  옵션을 추가하면 범례의 색과 이름 그리고
+
+  라인의 색상을 변경할 수 있다.
+
   ```
 
 ```

@@ -16,14 +16,14 @@
 .drop-menu .select {
   display: block;
   cursor: pointer;
-  /* To be delete*/
-  /*line-height: 5px;*/
+  line-height: 48%;
 }
 
 .drop-menu .select i {
   color: #888;
   float: right;
   cursor: pointer;
+  line-height: 52%;
   transition: all .5s ease;
 }
 

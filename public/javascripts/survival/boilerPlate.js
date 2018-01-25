@@ -185,8 +185,8 @@ var SurvivalCurveBroilerPlate = {
 		// pval_x: 710,
 		// pval_y: 110
 		// Modified.
-		pval_x 						 : 220		,
-		pval_y 						 : 57
+		pval_x 						 : 220,
+		pval_y 						 : 57,
 	},
 	divs : {
 		curveDivId     : "",
