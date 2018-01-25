@@ -45,6 +45,9 @@ function expression ()	{
 
 				model.now.subtype_mapping = undefined;
 				model.now.subtypeSet = undefined;
+				model.divide.divide = undefined;
+				model.divide.patient_list = undefined;
+				model.divide.scatter = undefined;
 
 				document.querySelector('#expression_bar_legend').style.height = '0px';
 				document.querySelector('#expression_bar_legend').style.marginBottom = '0px';
