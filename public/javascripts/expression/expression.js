@@ -55,16 +55,14 @@ function expression ()	{
 
 		var state = data.info ? 
 								data.info[model.now.color_mapping] : 'NA';
-		if (model.now.color_mapping.indexOf('pathologic') > -1)	{
-			state = state.replace(/[a-z]/ig, '');
-		}
-
-		return state === 'NA' ? '#A4AAA7' : 
-					bio.expressionConfig().colorSet[
-					model.now.colorSet.indexOf(state)];
+		// if (model.now.color_mapping.indexOf('pathologic') > -1)	{
+		// 	state = state.replace(/[a-z]/ig, '');
+		// }
+		return state === 'NA' ? '#D6E2E3' : 
+						bio.boilerPlate.clinicalInfo[state].color;
 	};
 	
-	function drawColorMapSelectBox (items)	{
+	function drawColorMapSelectBox (subtypes)	{
 		bio.selectBox({
 			fontSize: '14px',
 			margin: [3, 3, 0, 0],
@@ -72,18 +70,19 @@ function expression ()	{
 			defaultText: 'Color Mapping',
 			id: '#expression_color_mapping',
 			className: 'expression-color-mapping',
-			items: items.map(function (i)	{
+			items: subtypes.map(function (i)	{
 				return i.key;
 			}),
 			clickItem: function (value)	{
 				var barLegend = document.querySelector(
 											'#expression_bar_legend');
-
-				model.now.color_mapping = value;
-
-				items.some(function (i)	{
-					return model.now.colorSet = i.value,
-								 model.now.color_mapping === i.key;
+				
+				bio.iteration.loop(subtypes, function (item)	{
+					if (item.key.toLowerCase() === 
+							value.toLowerCase())	{
+						model.now.color_mapping = item.key;
+						model.now.colorSet = item.value;
+					}
 				});
 
 				bio.layout().removeGroupTag([
@@ -184,7 +183,6 @@ function expression ()	{
 		bio.layout().get(model.setting.svgs, [ids], 
 		function (id, svg)	{
 			var config = bio.expressionConfig().legend(type);
-
 			if (data)	{
 				bio.legend({
 					data: data,
@@ -714,7 +712,7 @@ function expression ()	{
 		drawLegend('color_mapping', model.now.colorSet || null);
 		drawLegend('scatter', ['Alive', 'Dead']);
 		drawColorGradient(data.axis.gradient.x);
-		// drawHeatmap(data, data.axis.heatmap, data.axis.gradient.x);
+		drawHeatmap(data, data.axis.heatmap, data.axis.gradient.x);
 		drawFunctionBar(data, data.axis.bar);
 		drawSurvivalPlot(data);
 		drawScatter(data, data.axis.scatter, model.now.osdfs);

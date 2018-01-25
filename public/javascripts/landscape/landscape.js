@@ -314,7 +314,8 @@ function landscape ()	{
 							model.data.axis.gene, ['top', 'left']);
 			drawHeatmap('heatmap', model.data.heatmap, 
 									model.data.axis.heatmap);	
-
+			// TODO 2.
+			// 드래그 후에 만약 그룹정렬되어 있는 상태였다면, 드래그 후에도 정렬을 해야되는가.
 			genelineSortedSiblings();
 
 			if (Object.keys(model.now.geneline.removedMutationObj).length > 0)	{
@@ -472,7 +473,10 @@ function landscape ()	{
 
 		return result;
 	};
-
+	/*
+		Group 정렬된 상태에서 enable / disable 을 적용하기 위한
+		함수.
+	 */
 	function remakeMutationList ()	{
 		var mutationList = [],
 				pidList = [],
@@ -542,7 +546,9 @@ function landscape ()	{
 			arr: pidList,
 		};
 	};
-
+	/*
+		Enable / Disable / Others 를 반환하는 함수.
+	 */
 	function callEnableDisableOtherFunc ()	{
 		if (model.divisionFunc)	{
 			var disableList = [];
@@ -715,8 +721,6 @@ function landscape ()	{
 
 									isGroupMutationList = mutationList.data; 
 									isNewPidGroupList = mutationList.arr;
-
-									console.log(mutationList);
 
 									nowGeneLineValue();
 								} else {
@@ -1120,6 +1124,7 @@ function landscape ()	{
 		orderByTypePriority(model.data.type);
 		patientAxis(model.data.axis);
 		// Group 별 정렬된 상태에서 Type 변경을 하면 적용이 안되는거 같다.
+		// TODO 1.
 		// if (model.now.geneline.groupList)	{
 		// 	var groups = [];
 
