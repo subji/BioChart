@@ -128,7 +128,7 @@ function sizing ()	{
 				stdGeneHeight = 0.01,
 				stdContentsHeight = 0.0095;
 		// Gene list 의 개수에 따라 크기를 지정.
-		var geneHeight = h * (0.64 + (geneLenght * stdGeneHeight * stdSign)),
+		var geneHeight = h * (0.62 + (geneLenght * stdGeneHeight * stdSign)),
 				contHeight = (0.95 + (geneLenght * stdContentsHeight * stdSign));
 				contHeight = contHeight < 0.61 ? h * 0.6 : h * contHeight;
 

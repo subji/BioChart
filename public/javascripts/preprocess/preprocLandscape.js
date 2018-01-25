@@ -58,11 +58,8 @@ function preprocLandscape ()	{
 			bio.iteration.loop(stacks, function (s)	{
 				nested(s.obj, d[s.data], d[s.type]);
 			});
-			// nested(model.stack.gene, d.gene, d.type);
-			// nested(model.stack.sample, d.participant_id, d.type);
 			
 			heatmapDataFormat(model.heatmap, d);
-
 			makeXAxis(model.axis.sample.x, d.participant_id);
 		});
 
@@ -185,32 +182,15 @@ function preprocLandscape ()	{
 			];
 		} else {
 			if (isPlotted && isPlotted.patient)	{
+				return [bio.math.max(arr), 0];
+			} else {
 				return [
 					bio.math.max(
 					bio.math.max(pat), 
 					bio.math.max(arr)), 0
 				];
-			} else {
-				return [bio.math.max(arr), 0];
 			}
 		}
-		// model.axis.gene.x = [bio.math.max(model.axis.gene.x), 0];
-
-		// if (isPlotted.patient)	{
-		// 	model.axis.sample.y = [
-		// 		bio.math.max(model.axis.patient.y, 
-		// 		bio.math.max(model.axis.sample.y)), 0
-		// 	];
-		// } else {
-		// 	model.axis.sample.y = [
-		// 		bio.math.max(model.axis.sample.y), 0
-		// 	];
-		// }
-		
-		// model.axis.pq.x = [
-		// 	0, bio.math.max(model.pq.map(function (pq)	{
-		// 		return Math.ceil(pq.value);
-		// }))];
 	};	
 	/*
 		gene 의 mutation 이 가장 높은 값을 가진 
@@ -260,13 +240,6 @@ function preprocLandscape ()	{
 		model.axis.group.x = model.axis.sample.x;
 	};
 
-	// function mergedMuationList (data)	{
-	// 	var groupList = data.group_list[0],
-	// 			mutationList = data.mustation_list;
-
-		
-	// };
-
 	return function (data, isPlotted)	{
 		model = bio.initialize('preprocess').landscape;
 		// Data 안에 다른 객체가 존재할 경우 그 안을 찾아본다.
@@ -276,8 +249,6 @@ function preprocLandscape ()	{
 		model.iterPat = iteratePatient;
 		model.iterGroup = iterateGroup;
 		model.byStack = byStack;
-
-		// mergedMuationList(data);
 
 		var mut = model.iterMut([
 			{ obj: model.stack.gene, data: 'gene', type: 'type', keyName: 'gene'},

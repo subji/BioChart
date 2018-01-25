@@ -117,10 +117,10 @@
 	// 				data: d[0].data,
 	// 				title:d[0].data.name,
 	// 			},
- //        plot: {
- //          patient: false, // true
- //          pq: false, // true
- //        },
+ //        // plot: {
+ //        //   patient: false, // true
+ //        //   pq: false, // true
+ //        // },
  //        divisionFunc: function (enable, disable, others)  {
  //          // console.log(enable, disable, others);
  //        },

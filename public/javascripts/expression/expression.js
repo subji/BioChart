@@ -181,14 +181,6 @@ function expression ()	{
 						bio.loading().end();
 					},
 				});
-				// To be Delete.
-				// $.ajax({
-				// 	type: 'GET',
-				// 	url: model.requestURL,
-				// 	data: model.requestData,
-				// 	success: function (d)	{
-				// 	},
-				// });
 			},
 		});
 	};
