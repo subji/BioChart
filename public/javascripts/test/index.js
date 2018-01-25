@@ -85,7 +85,7 @@
  //          // console.log(left, mid, right)
  //        },
  //        onSubtypeSelection: function (subtypeName) {
- //          // console.log(subtypeName)
+ //          console.log(subtypeName)
  //        },
  //      });
 

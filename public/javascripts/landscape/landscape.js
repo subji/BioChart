@@ -300,8 +300,20 @@ function landscape ()	{
 			model.exclusive.now = bio.landscapeSort().exclusive(
 				model.data.heatmap, model.data.gene, type);
 
-			changeAxis(model.now.geneline.groupList || 
-								 model.exclusive.now);
+			if (model.now.geneline.groupList)	{
+				var groups = [];
+
+				model.now.geneline.pidList = remakeMutationList();
+
+				bio.iteration.loop(model.now.geneline.pidList.arr, function (gl)	{
+					groups = groups.concat(gl.data);
+				});
+
+				changeAxis({ axis: 'x', data: groups });
+			} else {
+				changeAxis(model.now.geneline.groupList || 
+								 	 model.exclusive.now);
+			}
 
 			model.data.axis.gene.y = model.data.gene;
 			model.data.axis.heatmap.y = model.data.gene;
@@ -314,14 +326,14 @@ function landscape ()	{
 							model.data.axis.gene, ['top', 'left']);
 			drawHeatmap('heatmap', model.data.heatmap, 
 									model.data.axis.heatmap);	
-			// TODO 2.
-			// 드래그 후에 만약 그룹정렬되어 있는 상태였다면, 드래그 후에도 정렬을 해야되는가.
+
 			genelineSortedSiblings();
 
 			if (Object.keys(model.now.geneline.removedMutationObj).length > 0)	{
 				enableDisableBlur();
 				enabledDisabeldMaximumElement(
-					model.now.geneline.mutationList || undefined);
+					model.now.geneline.groupList ? 
+					model.now.geneline.pidList.data : undefined);
 			}
 		}
 	};
@@ -402,6 +414,7 @@ function landscape ()	{
 	 */
 	function enabledDisabeldMaximumElement (mutationList)	{
 		var loc = [],
+				isDraw = false,
 				svg = d3.select('#landscape_heatmap_svg');
 
 		if (mutationList)	{
@@ -414,29 +427,37 @@ function landscape ()	{
 			}
 			
 			loc.push(drawDivisionLineForDisableEnable());
-		}
-
-		model.now.divisionPathData = { data: [] };
+		}	
 
 		bio.iteration.loop(loc, function (l)	{
-			model.now.divisionPathData.data.push([
-				{ x: l.divPosx, y: 0 },
-				{ x: l.divPosx, y: parseFloat(svg.attr('height'))}
-			]);
+			if (l)	{
+				isDraw = true;
+			}
 		});
 
-		if (mutationList)	{
-			var isDrawLine = 0;
+		if (isDraw)	{
+			model.now.divisionPathData = { data: [] };
 
-			bio.iteration.loop(mutationList, function (ml)	{
-				isDrawLine += ml.length;
+			bio.iteration.loop(loc, function (l)	{
+				model.now.divisionPathData.data.push([
+					{ x: l.divPosx, y: 0 },
+					{ x: l.divPosx, y: parseFloat(svg.attr('height'))}
+				]);
 			});
 
-			if (isDrawLine !== model.init.mutation_list.length)	{
+			if (mutationList)	{
+				var isDrawLine = 0;
+
+				bio.iteration.loop(mutationList, function (ml)	{
+					isDrawLine += ml.length;
+				});
+
+				if (isDrawLine !== model.init.mutation_list.length)	{
+					drawDivisionPath();
+				}
+			} else {
 				drawDivisionPath();
-			}
-		} else {
-			drawDivisionPath();
+			}	
 		}
 	};
 
@@ -649,13 +670,12 @@ function landscape ()	{
 						});	
 
 						model.now.geneline.groupList = groupList;
+						model.now.geneline.pidList = remakeMutationList();
+						model.now.geneline.mutationList = 
+						model.now.geneline.pidList.data;
 
-						var mutationList = remakeMutationList();
-
-						model.now.geneline.mutationList = mutationList.data;
-
-						redraw(res, mutationList.isRemovable ? 
-							mutationList.data : undefined);
+						redraw(res, model.now.geneline.pidList.isRemovable ? 
+												model.now.geneline.pidList.data : undefined);
 					}
 
 					if (part === 'gene' && direction === 'Y')	{
@@ -717,10 +737,9 @@ function landscape ()	{
 									model.now.geneline.sortedSiblings.push(
 									model.now.geneline.sortedSiblings.splice(geneIdx, 1)[0]);
 									
-									var mutationList = remakeMutationList();
-
-									isGroupMutationList = mutationList.data; 
-									isNewPidGroupList = mutationList.arr;
+									model.now.geneline.pidList = remakeMutationList();
+									isGroupMutationList = model.now.geneline.pidList.data; 
+									isNewPidGroupList = model.now.geneline.pidList.arr;
 
 									nowGeneLineValue();
 								} else {
@@ -741,7 +760,7 @@ function landscape ()	{
 									model.now.geneline.removedMutationObj[data] = undefined;
 									model.now.geneline.removedMutationArr[data] = undefined;
 
-									var mutationList = remakeMutationList();
+									model.now.geneline.pidList = remakeMutationList();
 
 									bio.iteration.loop(model.now.geneline.axis,
 									function (key, value)	{
@@ -751,8 +770,8 @@ function landscape ()	{
 									});
 
 									isGroupMutationList = !isTerminated ? undefined : 
-																				mutationList.data;
-									isNewPidGroupList = mutationList.arr;
+																				model.now.geneline.pidList.data;
+									isNewPidGroupList = model.now.geneline.pidList.arr;
 									// disable 된 geneline tag 를 원 위치 시켜 놓는다.
 									model.now.geneline.sortedSiblings.splice(geneIdx, 0, 
 										model.now.geneline.sortedSiblings.splice(beforeIdx, 1)[0]);
@@ -1094,7 +1113,7 @@ function landscape ()	{
 		// 나눔선을 표시하지 않기 위해서 이다.
 		model.now.geneline = bio.objects.clone(model.init.geneline);
 		// group 별로 새 정렬된 pid 를 저장하는 변수.
-		model.now.geneline.pidList = [];
+		model.now.geneline.pidList = undefined;
 		// mutation 이 존재 하는 영역과 존재하지 않는영역을 
 		// 나누는 값을 저장하는 객체.
 		model.now.geneline.enabledDivisionValues = {};
@@ -1123,29 +1142,28 @@ function landscape ()	{
 
 		orderByTypePriority(model.data.type);
 		patientAxis(model.data.axis);
-		// Group 별 정렬된 상태에서 Type 변경을 하면 적용이 안되는거 같다.
-		// TODO 1.
-		// if (model.now.geneline.groupList)	{
-		// 	var groups = [];
+		
+		if (model.now.geneline.groupList)	{
+			var groups = [];
 
-		// 	bio.iteration.loop(model.now.geneline.groupList, 
-		// 	function (gl)	{
-		// 		groups = groups.concat(gl);
-		// 	});
+			model.now.geneline.pidList = remakeMutationList();
 
-		// 	changeAxis({ axis: 'x', data: groups });
-		// } else {
-		// 	changeAxis(model.exclusive.now || 
-		// 						 model.exclusive.init);	
-		// }
+			bio.iteration.loop(model.now.geneline.pidList.arr, 
+			function (gl)	{
+				groups = groups.concat(gl.data);
+			});
 
-		changeAxis(model.exclusive.now || 
+			changeAxis({ axis: 'x', data: groups });
+		} else {
+			changeAxis(model.exclusive.now || 
 								 model.exclusive.init);
+		}
 		
 		drawLandscape(model.data, model.init.width);
 		enableDisableBlur();
-		// enabledDisabeldMaximumElement(
-		// 	model.now.geneline.mutationList || undefined);
+		enabledDisabeldMaximumElement(
+			model.now.geneline.groupList ? 
+			model.now.geneline.pidList.data : undefined);
 	};
 
 	return function (opts)	{
