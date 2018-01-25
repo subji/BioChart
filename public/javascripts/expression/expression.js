@@ -39,10 +39,19 @@ function expression ()	{
 					'.expression_scatter_plot_svg.scatter-g-tag',
 					'.expression_scatter_plot_svg.left-axis-g-tag',
 					'.expression_scatter_plot_svg.division-path-1-g-tag',
-					'.expression_scatter_plot_svg.division-shape-1-g-tag'
+					'.expression_scatter_plot_svg.division-shape-1-g-tag',
+					'expression_bar_legend_svg'
 				]);
 
+				model.now.subtype_mapping = undefined;
+				model.now.subtypeSet = undefined;
+
+				document.querySelector('#expression_bar_legend').style.height = '0px';
+				document.querySelector('#expression_bar_legend').style.marginBottom = '0px';
+				document.querySelector('#expression_color_mapping').innerHTML = '';
+
 				// drawHeatmap(model.data, model.data.axis.heatmap, model.data.axis.gradient.x);
+				drawColorMapSelectBox(model.data.subtype);
 				drawFunctionBar(model.data, model.data.axis.bar);
 				drawScatter(model.data, model.data.axis.scatter, model.now.osdfs);				
 				drawSurvivalPlot(model.data);
@@ -389,7 +398,7 @@ function expression ()	{
 					margin: [20, 20, 20, 20],
 					data: model.divide.patient_list || 
 								model.setting.defaultData.patient_list,
-					division: model.divide.divide || data.survival.divide,
+					division: (model.divide.divide || data.survival.divide),
 					legends: {
 						high: {
 							text: 'High score group',
@@ -610,7 +619,7 @@ function expression ()	{
 		/*
 			Low, High 별로 환자 배열을 순환.
 		 */
-		function patientByDrag (arr)	{
+		function patientByDrag (arr, isAltered)	{
 			bio.iteration.loop(arr, function (a)	{
 				if (model.data.patient)	{
 					if (a !== model.data.patient.name)	{
@@ -621,7 +630,7 @@ function expression ()	{
 							}
 						});
 
-						model.divide.divide[a] = model.data.survival.divide[a];
+						model.divide.divide[a] = isAltered;
 					}
 				} else {
 					bio.iteration.loop(model.setting.defaultData.patient_list, 
@@ -631,7 +640,7 @@ function expression ()	{
 							}
 						});
 
-						model.divide.divide[a] = model.data.survival.divide[a];
+						model.divide.divide[a] = isAltered;
 				}
 			});
 		};
@@ -643,8 +652,8 @@ function expression ()	{
 			model.divide.patient_list = [];
 			model.divide.scatter = { os: [], dfs: [] };
 			// Pick up patients.
-			patientByDrag(low);
-			patientByDrag(high);
+			patientByDrag(low, 'unaltered');
+			patientByDrag(high, 'altered');
 			// Survival chart update.
 			drawSurvivalPlot(data);
 			if (data.patient)	{
@@ -692,7 +701,7 @@ function expression ()	{
 					drag: divCnf.call.drag,
 					end: function (data, idx, that)	{
 						var axis = [].concat(that.axis);
-
+						
 						model.divide.low_sample = 
 						that.invert(that.position.now.low);
 						model.divide.high_sample = 

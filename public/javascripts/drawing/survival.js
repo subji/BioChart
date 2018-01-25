@@ -109,12 +109,19 @@ function survival ()	{
 
 		makeTab(opts.element, ['OS', 'DFS']);
 
-		SurvivalCurveBroilerPlate.subGroupSettings.legend = {
-			low: opts.legends.low.text, high: opts.legends.high.text,
-		};
-		SurvivalCurveBroilerPlate.subGroupSettings.line_color = {
-			low: opts.legends.low.color, high: opts.legends.high.color
-		};
+		if (!opts.legends)	{
+			SurvivalCurveBroilerPlate.subGroupSettings.legend = {
+				low: 'Low score group', high: 'High score group',
+			};
+			SurvivalCurveBroilerPlate.subGroupSettings.line_color = { low: '#00AC52', high: '#FF6252' };			
+		} else {
+			SurvivalCurveBroilerPlate.subGroupSettings.legend = {
+				low: opts.legends.low.text, high: opts.legends.high.text,
+			};
+			SurvivalCurveBroilerPlate.subGroupSettings.line_color = {
+				low: opts.legends.low.color, high: opts.legends.high.color
+			};
+		}
 
 		SurvivalTab.init(opts.division, model.survival_data.pure);
 
