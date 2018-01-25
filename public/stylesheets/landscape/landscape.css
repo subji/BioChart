@@ -243,6 +243,7 @@ g {
 	margin-top: 5px;
 	min-height: 100%;
 	max-height: 100%;
+	position: relative;
 }
 
 #option_group label {

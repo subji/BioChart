@@ -123,7 +123,7 @@ function sizing ()	{
 	// Chart 별 영역의 크기 설정 및 ID List 생성.
 	model.chart.landscape = function (ele, w, h, group, isPlotted, geneList)	{
 		var geneLenght = geneList.length,
-				stdSign = geneLenght > 40 ? 1 : -1,
+				stdSign = geneLenght >= 40 ? 1 : -1,
 				stdGeneCount = Math.abs(40 - geneLenght),
 				stdGeneHeight = 0.01,
 				stdContentsHeight = 0.0095;
