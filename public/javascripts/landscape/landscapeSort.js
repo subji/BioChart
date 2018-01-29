@@ -230,7 +230,7 @@ function landscapeSort ()	{
 													.byCase(d.value);
 					r.value = r.value.replaceAt(geneIdx, '1');
 					r.value = r.value.replaceAt(mutIdx, mutVal === 'cnv' ? 
-																		 (type === '1' ? '1' : '0') : '0');
+																		 (type === '2' ? '1' : '0') : '0');
 				}
 			});
 		});
