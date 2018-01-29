@@ -720,6 +720,8 @@ function expression ()	{
 				idxes: data.axis.bar.y,
 			}, model);
 		});
+
+		getDivisionData();
 	};
 	/*
 		초기 실행 또는 새 데이터를 받았을 때 실행되는 함수.
