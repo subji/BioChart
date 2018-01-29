@@ -48,6 +48,7 @@ function expression ()	{
 				model.divide.divide = undefined;
 				model.divide.patient_list = undefined;
 				model.divide.scatter = undefined;
+				model.divide = {};
 
 				document.querySelector('#expression_bar_legend').style.height = '0px';
 				document.querySelector('#expression_bar_legend').style.marginBottom = '0px';
@@ -392,8 +393,8 @@ function expression ()	{
 				plot = bio.survival({
 					element: '#expression_survival',
 					margin: [20, 20, 20, 20],
-					data: model.divide.patient_list || 
-								model.setting.defaultData.patient_list,
+					data: (model.divide.patient_list || 
+								 model.setting.defaultData.patient_list),
 					division: (model.divide.divide || data.survival.divide),
 					legends: {
 						high: {
@@ -603,8 +604,8 @@ function expression ()	{
 		하는 함수이다.
 	 */
 	function getDivisionData ()	{
-		var data = Object.keys(model.divide).length < 1 ? 
-							model.data.survival.divide : model.divide,
+		var data = Object.keys(model.divide).length > 0 ? 
+							 model.divide : model.data.survival.divide,
 				division = divideDivisionData(data);
 
 		model.divisionFunc(
@@ -720,8 +721,6 @@ function expression ()	{
 				idxes: data.axis.bar.y,
 			}, model);
 		});
-
-		getDivisionData();
 	};
 	/*
 		초기 실행 또는 새 데이터를 받았을 때 실행되는 함수.
@@ -745,6 +744,7 @@ function expression ()	{
 		}
 
 		drawDivision(data);
+		getDivisionData();
 	};
 
 	return function (opts)	{
