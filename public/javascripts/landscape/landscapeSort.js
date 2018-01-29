@@ -221,15 +221,17 @@ function landscapeSort ()	{
 		Type 을 문자열의 형태로 바꿔주는 함수.
 	 */
 	function typeToString (result, genes, data, type)	{
+		console.log(genes);
 		bio.iteration.loop(result, function (r)	{
 			bio.iteration.loop(data, function(d)	{
 				if (d.x === r.key)	{
 					var geneIdx = genes.indexOf(d.y) * 2,
-							mutIdx = geneIdx + 2,
+							mutIdx = geneIdx + 1,
 							mutVal = bio.landscapeConfig()
 													.byCase(d.value);
-					r.value = r.value.replaceAt(geneIdx, '11');
-					r.value = r.value.replaceAt(mutIdx -1, mutVal === 'cnv' ? (type === '1' ? '00' : '11') : '00');
+					r.value = r.value.replaceAt(geneIdx, '1');
+					r.value = r.value.replaceAt(mutIdx, mutVal === 'cnv' ? 
+																		 (type === '1' ? '1' : '0') : '0');
 				}
 			});
 		});
