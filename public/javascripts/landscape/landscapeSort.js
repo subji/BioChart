@@ -221,7 +221,6 @@ function landscapeSort ()	{
 		Type 을 문자열의 형태로 바꿔주는 함수.
 	 */
 	function typeToString (result, genes, data, type)	{
-		console.log(genes);
 		bio.iteration.loop(result, function (r)	{
 			bio.iteration.loop(data, function(d)	{
 				if (d.x === r.key)	{
