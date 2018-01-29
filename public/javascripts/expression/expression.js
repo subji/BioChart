@@ -118,7 +118,8 @@ function expression ()	{
 				 parseFloat(barLegend.style.height) - 5) + 'px';
 
 				if (model.subtypeFunc)	{
-					model.subtypeFunc(model.now.subtype_mapping)
+					model.subtypeFunc(model.now.subtype_mapping, 
+														bio.boilerPlate.clinicalInfo, model);
 				}
 			},
 		});

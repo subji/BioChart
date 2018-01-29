@@ -85,8 +85,8 @@
  //        divisionFunc: function (left, mid, right) {
  //          // console.log(left, mid, right)
  //        },
- //        onSubtypeSelection: function (subtypeName) {
- //          console.log(subtypeName)
+ //        onSubtypeSelection: function (subtypeName, subtypeColors, model) {
+ //          // console.log(subtypeName, subtypeColors, model)
  //        },
  //      });
 
