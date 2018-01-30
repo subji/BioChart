@@ -43,8 +43,8 @@ function expression ()	{
 					'expression_bar_legend_svg'
 				]);
 
-				model.now.subtype_mapping = undefined;
-				model.now.subtypeSet = undefined;
+				// model.now.subtype_mapping = undefined;
+				// model.now.subtypeSet = undefined;
 				model.divide.divide = undefined;
 				model.divide.patient_list = undefined;
 				model.divide.scatter = undefined;
@@ -55,7 +55,8 @@ function expression ()	{
 				document.querySelector('#expression_color_mapping').innerHTML = '';
 
 				// drawHeatmap(model.data, model.data.axis.heatmap, model.data.axis.gradient.x);
-				drawColorMapSelectBox(model.data.subtype);
+				drawColorMapSelectBox(model.data.subtype, model.now.subtype_mapping);
+				drawLegendBySubtypeMapping(model.now.subtypeSet);
 				drawFunctionBar(model.data, model.data.axis.bar);
 				drawScatter(model.data, model.data.axis.scatter, model.now.osdfs);				
 				drawSurvivalPlot(model.data);
@@ -76,22 +77,43 @@ function expression ()	{
 		return state === 'NA' ? '#D6E2E3' : 
 						bio.boilerPlate.clinicalInfo[state].color;
 	};
+
+	function drawLegendBySubtypeMapping (nowSubtypeSet)	{
+		var barLegend = document.querySelector(
+									'#expression_bar_legend');
+
+		bio.layout().removeGroupTag([
+			'expression_bar_legend_svg']);
+
+		if (barLegend.className.indexOf('active') < 0)	{
+			barLegend.className += 'active';
+		}
+
+		d3.selectAll('#expression_bar_plot_rect')
+			.style('fill', changeBarColor)
+			.style('stroke', changeBarColor);
+
+		drawLegend('color_mapping', 
+			(nowSubtypeSet || model.now.subtypeSet));
+		// Scatter legend 의 위치가 유동적이게 되므로 이를 고정하기
+		// 위해서 아래 코드를 추가함.
+		barLegend.style.marginBottom = 
+		(parseFloat(model.init.bar_legend_height) - 
+		 parseFloat(barLegend.style.height) - 5) + 'px';
+	};
 	
-	function drawColorMapSelectBox (subtypes)	{
+	function drawColorMapSelectBox (subtypes, title)	{
 		bio.selectBox({
 			fontSize: '12px',
 			margin: [3, 3, 0, 0],
-			viewName: 'color_mapping',
-			defaultText: 'Subtype Mapping',
+			viewName: 'subtype_mapping',
+			defaultText: (title || 'Subtype Mapping'),
 			id: '#expression_color_mapping',
 			className: 'expression-color-mapping',
 			items: subtypes.map(function (i)	{
 				return i.key;
 			}),
 			clickItem: function (value)	{
-				var barLegend = document.querySelector(
-											'#expression_bar_legend');
-				
 				bio.iteration.loop(subtypes, function (item)	{
 					if (item.key.toLowerCase() === 
 							value.toLowerCase())	{
@@ -100,23 +122,7 @@ function expression ()	{
 					}
 				});
 
-				bio.layout().removeGroupTag([
-					'expression_bar_legend_svg']);
-
-				if (barLegend.className.indexOf('active') < 0)	{
-					barLegend.className += 'active';
-				}
-
-				d3.selectAll('#expression_bar_plot_rect')
-					.style('fill', changeBarColor)
-					.style('stroke', changeBarColor);
-
-				drawLegend('color_mapping', model.now.subtypeSet);
-				// Scatter legend 의 위치가 유동적이게 되므로 이를 고정하기
-				// 위해서 아래 코드를 추가함.
-				barLegend.style.marginBottom = 
-				(parseFloat(model.init.bar_legend_height) - 
-				 parseFloat(barLegend.style.height) - 5) + 'px';
+				drawLegendBySubtypeMapping(model.now.subtypeSet);
 
 				if (model.subtypeFunc)	{
 					model.subtypeFunc(model.now.subtype_mapping, 
@@ -195,7 +201,12 @@ function expression ()	{
 		bio.layout().get(model.setting.svgs, [ids], 
 		function (id, svg)	{
 			var config = bio.expressionConfig().legend(type);
+
 			if (data)	{
+				if (data.indexOf('NA') > -1)	{
+					data.push(data.splice(data.indexOf('NA'), 1)[0]);
+				}
+
 				bio.legend({
 					data: data,
 					element: svg,
@@ -734,7 +745,7 @@ function expression ()	{
 		drawLegend('color_mapping', model.now.subtypeSet || null);
 		drawLegend('scatter', ['Alive', 'Dead']);
 		drawColorGradient(data.axis.gradient.x);
-		drawHeatmap(data, data.axis.heatmap, data.axis.gradient.x);
+		// drawHeatmap(data, data.axis.heatmap, data.axis.gradient.x);
 		drawFunctionBar(data, data.axis.bar);
 		drawSurvivalPlot(data);
 		drawScatter(data, data.axis.scatter, model.now.osdfs);
