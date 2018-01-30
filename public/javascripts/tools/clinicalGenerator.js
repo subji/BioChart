@@ -31,8 +31,14 @@ function clinicalGenerator ()	{
 				// console.log(val);
 
 				if (val !== 'NA')	{
+					var valueLen = val.length;
 
-					i = i > val.length ? i - val.length : i;
+					// if (val.length === 1)	{
+					// 	console.log(isNaN(val.charCodeAt(2)))
+					// } 
+
+
+					i = i > valueLen ? i - valueLen : i;
 
 					for (var len = i + 3; i < len; i++)	{
 						var first = i.toString(16),

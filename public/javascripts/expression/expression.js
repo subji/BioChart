@@ -68,9 +68,15 @@ function expression ()	{
 
 	function changeBarColor (data, idx, that)	{
 		if (!model.now.subtypeSet)	{ return '#62C2E0'; }
-		
-		var state = data.info ? 
-								data.info[model.now.subtype_mapping.toLowerCase()] : 'NA';
+
+		var dataKeys = Object.keys(data.info),
+				state = 'NA';
+
+		bio.iteration.loop(dataKeys, function (key)	{
+			if (key.toLowerCase() === model.now.subtype_mapping.toLowerCase())	{
+				state = data.info[key];
+			} 
+		});
 
 		return state === 'NA' ? '#D6E2E3' : 
 						bio.boilerPlate.clinicalInfo[state].color;
