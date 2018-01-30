@@ -68,12 +68,10 @@ function expression ()	{
 
 	function changeBarColor (data, idx, that)	{
 		if (!model.now.subtypeSet)	{ return '#62C2E0'; }
-
+		
 		var state = data.info ? 
-								data.info[model.now.subtype_mapping] : 'NA';
-		// if (model.now.subtype_mapping.indexOf('pathologic') > -1)	{
-		// 	state = state.replace(/[a-z]/ig, '');
-		// }
+								data.info[model.now.subtype_mapping.toLowerCase()] : 'NA';
+
 		return state === 'NA' ? '#D6E2E3' : 
 						bio.boilerPlate.clinicalInfo[state].color;
 	};
@@ -745,7 +743,7 @@ function expression ()	{
 		drawLegend('color_mapping', model.now.subtypeSet || null);
 		drawLegend('scatter', ['Alive', 'Dead']);
 		drawColorGradient(data.axis.gradient.x);
-		// drawHeatmap(data, data.axis.heatmap, data.axis.gradient.x);
+		drawHeatmap(data, data.axis.heatmap, data.axis.gradient.x);
 		drawFunctionBar(data, data.axis.bar);
 		drawSurvivalPlot(data);
 		drawScatter(data, data.axis.scatter, model.now.osdfs);

@@ -20,12 +20,15 @@ function clinicalGenerator ()	{
 		색상을 정해준다.
 	 */
 	function colors (clinicals)	{
+		// console.log(clinicals);
 		bio.iteration.loop(clinicals, 
 		function (clinical, values)	{
 			var i = 0;
 
 			bio.iteration.loop(values, function (val, idx)	{
 				var result = '#';
+
+				// console.log(val);
 
 				if (val !== 'NA')	{
 
