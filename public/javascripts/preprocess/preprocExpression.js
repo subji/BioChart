@@ -211,7 +211,8 @@ function preprocExpression ()	{
 			most = most > textWidth ? most : textWidth;
 		});
 
-		return most;
+		console.log(most)
+		return most * 1.25;
 	};
 
 	function addRiskFunctions (funcs)	{

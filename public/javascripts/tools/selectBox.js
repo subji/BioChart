@@ -63,7 +63,7 @@ function selectBox ()	{
 			li.id = item;
 			li.title = item;
 			li.innerHTML = bio.drawing().textOverflow(
-				item, model.fontSize, model.width * 0.40);
+				item, model.fontSize, model.width * 0.80);
 
 			ul.appendChild(li);
 		});
