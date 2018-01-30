@@ -55,9 +55,9 @@ function expression ()	{
 				document.querySelector('#expression_color_mapping').innerHTML = '';
 
 				// drawHeatmap(model.data, model.data.axis.heatmap, model.data.axis.gradient.x);
+				drawFunctionBar(model.data, model.data.axis.bar);
 				drawColorMapSelectBox(model.data.subtype, model.now.subtype_mapping);
 				drawLegendBySubtypeMapping(model.now.subtypeSet);
-				drawFunctionBar(model.data, model.data.axis.bar);
 				drawScatter(model.data, model.data.axis.scatter, model.now.osdfs);				
 				drawSurvivalPlot(model.data);
 				drawDivision(model.data);
