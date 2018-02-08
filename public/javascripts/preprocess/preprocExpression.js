@@ -150,6 +150,31 @@ function preprocExpression ()	{
 			makeFuncAxis(k, model.func.bar[k], model.func.data);
 		});
 	};
+
+	function geneSortByTpmAverage (alls, genes)	{
+		var result = {},	
+				resultArr = [];
+
+		bio.iteration.loop(alls, function (a)	{
+			if (!result[a.hugo_symbol])	{
+				result[a.hugo_symbol] = a.tpm;
+			} else {
+				result[a.hugo_symbol] += a.tpm;
+			}
+		});
+		
+		bio.iteration.loop(result, function(gene, tpm)	{
+			resultArr.push({
+				gene: gene, avgTpm: tpm / model.axis.heatmap.x.length
+			});
+		});
+
+		return resultArr.sort(function (a, b)	{
+			return a.avgTpm < b.avgTpm ? 1 : -1;
+		}).map(function(res)	{
+			return res.gene;
+		});
+	};
 	/*
 		전체 Cohort 리스트에서 값의 합, 최소 & 최대값을 만든다.
 	 */
@@ -185,7 +210,8 @@ function preprocExpression ()	{
 			model.func.now = model.func.default;
 		}
 
-		model.axis.heatmap.y = Object.keys(model.axis.heatmap.y);
+		model.axis.heatmap.y = geneSortByTpmAverage(alls, 
+														Object.keys(model.axis.heatmap.y));
 		model.axis.scatter.x = model.axis.heatmap.x;
 		model.axis.bar.x = model.axis.heatmap.x;
 	};
@@ -211,7 +237,6 @@ function preprocExpression ()	{
 			most = most > textWidth ? most : textWidth;
 		});
 
-		console.log(most)
 		return most * 1.25;
 	};
 

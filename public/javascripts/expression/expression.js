@@ -236,7 +236,7 @@ function expression ()	{
 				element: svg,
 				offset: axis,
 				adjustValue: 6,
-				colors: ['#FF0000', '#000000', '#00FF00'],
+				colors: ['#00FF00', '#000000', '#FF0000'],
 			});
 
 			bio.rectangle({
@@ -263,7 +263,7 @@ function expression ()	{
 		bio.layout().get(model.setting.svgs, ['heatmap'], 
 		function (id, svg)	{
 			var colorScale = bio.scales().get(gradientAxis, [
-								'#FF0000', '#000000', '#00FF00']),
+								'#00FF00', '#000000', '#FF0000']),
 					config = bio.expressionConfig(),
 					shapeCnf = config.heatmap('shape', data.axisMargin),
 					axisCnf = config.heatmap('axis', data.axisMargin);
@@ -624,7 +624,7 @@ function expression ()	{
 				division = divideDivisionData(data);
 
 		model.divisionFunc(
-			division.low, division.mid, division.high);
+			division.low, division.mid, division.high, model.data.axis.heatmap.y);
 	};
 
 	function drawDivision (data, lowHigh)	{

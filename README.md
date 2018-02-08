@@ -1,4 +1,4 @@
-BioChart 0.0.24
+BioChart 0.0.25
 ==============
 
 > This is a set of charts for Clinical Decision support.
@@ -64,7 +64,7 @@ BioChart 0.0.24
             },
           }
         ],
-        divisionFunc: function (left, mid, right) {
+        divisionFunc: function (left, mid, right, geneList) {
           // console.log(left, mid, right)
         },
         onSubtypeSelection: function (subtypeName) {
