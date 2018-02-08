@@ -64,7 +64,7 @@ BioChart 0.0.25
             },
           }
         ],
-        divisionFunc: function (left, mid, right, geneList) {
+        divisionFunc: function (left, mid, right, geneList, allRnaList) {
           // console.log(left, mid, right)
         },
         onSubtypeSelection: function (subtypeName) {

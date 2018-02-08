@@ -82,8 +82,8 @@
  //            },
  //          }
  //        ],
- //        divisionFunc: function (left, mid, right, geneList) {
- //          // console.log(left, mid, right, geneList)
+ //        divisionFunc: function (left, mid, right, geneList, allRnaList) {
+ //          // console.log(left, mid, right, geneList, allRnaList)
  //        },
  //        onSubtypeSelection: function (subtypeName, subtypeColors, model) {
  //          // console.log(subtypeName, subtypeColors, model)

@@ -624,7 +624,7 @@ function expression ()	{
 				division = divideDivisionData(data);
 
 		model.divisionFunc(
-			division.low, division.mid, division.high, model.data.axis.heatmap.y);
+			division.low, division.mid, division.high, model.data.axis.heatmap.y, model.data.all_rna_list);
 	};
 
 	function drawDivision (data, lowHigh)	{
