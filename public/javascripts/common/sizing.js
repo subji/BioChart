@@ -179,7 +179,7 @@ function sizing ()	{
 		var id = {
 			variants_needle: {width: w * 0.82, height: h * 0.825},
 			variants_legend: {width: w * 0.175, height: h * 0.5},
-			variants_patient_legend: {width: w * 0.175, height: h * 0.425},
+			variants_patient_legend: {width: w * 0.175, height: h * 0.42},
 			variants_navi: {width: w * 0.82, height: h * 0.1},
 		};
 
