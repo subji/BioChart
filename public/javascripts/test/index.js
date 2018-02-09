@@ -129,3 +129,27 @@
  //      // bio.loading().end();
  //    },
  //  });
+
+
+/* Variants */
+$.ajax({
+    'type': 'POST',
+    'url': '/files/datas',
+    data: {
+     name: 'variants',
+    },
+    beforeSend: function () {
+      // bio.loading().start(document.querySelector('#main'), 900, 600);
+    },
+    success: function (d) {
+      bio.variants({
+        element: '#main',
+        width: 900,
+        height: 400,
+        data: {
+          variants: d[0].data,
+          type: 'LUAD',
+        }
+      });
+    }
+});

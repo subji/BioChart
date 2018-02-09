@@ -177,10 +177,10 @@ function sizing ()	{
 	
 	model.chart.variants = function (ele, w, h)	{
 		var id = {
-			variants_needle: {width: w * 0.825, height: h * 0.825},
+			variants_needle: {width: w * 0.82, height: h * 0.825},
 			variants_legend: {width: w * 0.175, height: h * 0.5},
 			variants_patient_legend: {width: w * 0.175, height: h * 0.425},
-			variants_navi: {width: w * 0.825, height: h * 0.1},
+			variants_navi: {width: w * 0.82, height: h * 0.1},
 		};
 
 		var divs = makeDivide('variants', ele, w, h, 0.075);
