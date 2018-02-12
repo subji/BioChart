@@ -180,8 +180,8 @@ var SurvivalCurveBroilerPlate = {
 	  chart_left 				 : 50		,
 	  chart_top 				 : 25		,
 	  include_info_table : false, //Statistic Results from the curve
-		include_legend 		 : true ,
-		include_pvalue 		 : true ,
+		include_legend 		 : true,
+		include_pvalue 		 : true,
 		// pval_x: 710,
 		// pval_y: 110
 		// Modified.

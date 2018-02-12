@@ -89,7 +89,23 @@ BioChart 0.0.25
       text: 'Low score group',
       color: '#00AC52',
     }
-  }
+  },
+  styles: {
+    size: {
+      chartWidth: chart width,
+      chartHeight: chart height,
+    },
+    position: {
+      chartTop: chart top position,
+      chartLeft: chart left position,
+      axisXtitlePosX: X-axis title left position,
+      axisXtitlePosY: X-axis title top position,
+      axisYtitlePosX: Y-axis title top position,
+      axisYtitlePosY: Y-axis title left position,
+      pvalX: P-value left position,
+      pvalY: P-value top position,
+    },
+  },
 
   옵션을 추가하면 범례의 색과 이름 그리고
 

@@ -374,36 +374,6 @@ function expression ()	{
 				width = parseFloat(element.style.width),
 				height = parseFloat(element.style.height) / 1.4;
 
-		SurvivalCurveBroilerPlate.settings = {
-			canvas_width 			 : width * 0.92,
-			canvas_height 		 : height * 0.9,
-		 	chart_width 			 : width * 0.9,
-	  	chart_height 			 : height * 0.9,
-		  chart_left 				 : 50,
-		  chart_top 				 : 15,
-		  include_info_table : false,
-			include_legend 		 : true,
-			include_pvalue 		 : true,
-			pval_x 						 : width / 1.95,
-			pval_y 						 : 40,
-		};
-
-		SurvivalCurveBroilerPlate.style = {
-		  censored_sign_size : 5,
-		  axis_stroke_width  : 1,
-		  axisX_title_pos_x  : width / 2,
-		  axisX_title_pos_y  : height / 1.125,
-		  axisY_title_pos_x  : -(width / 2),
-		  axisY_title_pos_y  : 10,
-		  axis_color 				 : "black",
-			pval_font_size 		 : 10,
-			pval_font_style 	 : 'normal',
-		};
-
-		SurvivalCurveBroilerPlate.subGroupSettings.legend = {
-			low: 'Low score group', high: 'High score group',
-		};
-
 		var divide = divideSurvivalData(data.bar, data.axis.bar.y[1]),
 				plot = bio.survival({
 					element: '#expression_survival',
@@ -420,7 +390,24 @@ function expression ()	{
 							text: 'Low score group',
 							color: '#00AC52',
 						}
-					}
+					},
+					styles: {
+						size: {
+							chartWidth: width * 0.9,
+							chartHeight: height * 0.9,
+						},
+						position: {
+							chartTop: 15,
+							chartLeft: 50,
+							axisXtitlePosX: width / 2,
+							axisXtitlePosY: height / 1.125,
+							axisYtitlePosX: -(width / 2),
+							axisYtitlePosY: 10,
+							pvalX: width / 1.95,
+							pvalY: 40
+						},
+						pvalFontSize: 10,
+					},
 				});
 
 		model.data.survival.data = plot.survival_data;

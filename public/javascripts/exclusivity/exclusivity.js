@@ -245,41 +245,37 @@ function exclusivity ()	{
 				width = parseFloat(element.style.width),
 				height = parseFloat(element.style.height);
 
-		SurvivalCurveBroilerPlate.settings = {
-			canvas_width 			 : width * 0.9,
-			canvas_height 		 : height * 0.59,
-		 	chart_width 			 : width * 0.9,
-	  	chart_height 			 : height * 0.59,
-		  chart_left 				 : 50,
-		  chart_top 				 : 15,
-		  include_info_table : false,
-			include_legend 		 : true,
-			include_pvalue 		 : true,
-			pval_x 						 : width / 1.95,
-			pval_y 						 : 40,
-		};
-
-		SurvivalCurveBroilerPlate.style = {
-		  censored_sign_size : 5,
-		  axis_stroke_width  : 1,
-		  axisX_title_pos_x  : width / 2,
-		  axisX_title_pos_y  : height / 1.725,
-		  axisY_title_pos_x  : -(width / 2),
-		  axisY_title_pos_y  : 10,
-		  axis_color 				 : "black",
-			pval_font_size 		 : 10,
-			pval_font_style 	 : 'normal',
-		};
-
-		SurvivalCurveBroilerPlate.subGroupSettings.legend = {
-			low: 'Unaltered group', high: 'Altered group',
-		};
-
 		bio.survival({
 			element: '#exclusivity_survival',
 			margin: [20, 20, 20, 20],
 			data: data.survival.data[model.now.geneset],
 			division: divideForSurvival(model.now.geneset, data),
+			legends: {
+		    high: {
+		      text: 'Unaltered group',
+		      color: '#FF6252',
+		    },
+		    low: {
+		      text: 'Altered group',
+		      color: '#00AC52',
+		    }
+		  },
+		  styles: {
+		    size: {
+		      chartWidth: width * 0.9,
+		      chartHeight: height * 0.59,
+		    },
+		    position: {
+		      chartTop: 15,
+		      chartLeft: 50,
+		      axisXtitlePosX: width / 2,
+		      axisXtitlePosY: height / 1.725,
+		      axisYtitlePosX: -(width / 2),
+		      axisYtitlePosY: 10,
+		      pvalX: width / 1.95,
+		      pvalY: 40,
+		    },
+		  },
 		});
 	};
 

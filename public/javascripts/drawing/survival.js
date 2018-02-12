@@ -123,6 +123,29 @@ function survival ()	{
 			};
 		}
 
+		if (opts.styles)	{
+			SurvivalCurveBroilerPlate.settings = {
+				canvas_width: opts.styles.size.chartWidth,
+				canvas_height: opts.styles.size.chartHeight,
+			 	chart_width: opts.styles.size.chartWidth,
+		  	chart_height: opts.styles.size.chartHeight,
+			  chart_left: opts.styles.position.chartLeft,
+			  chart_top: opts.styles.position.chartTop,
+				include_legend: true,
+				include_pvalue: true,
+				pval_x: opts.styles.position.pvalX,
+				pval_y: opts.styles.position.pvalY,
+			};
+
+			SurvivalCurveBroilerPlate.style = {
+			  axisX_title_pos_x: opts.styles.position.axisXtitlePosX,
+			  axisX_title_pos_y: opts.styles.position.axisXtitlePosY,
+			  axisY_title_pos_x: opts.styles.position.axisYtitlePosX,
+			  axisY_title_pos_y: opts.styles.position.axisYtitlePosY,
+				pval_font_size: opts.styles.pvalFontSize,
+			};
+		}
+
 		SurvivalTab.init(opts.division, model.survival_data.pure);
 
 		return model;
