@@ -111,7 +111,7 @@ function layout ()	{
 		'g-tag' 클래스를 가진 g tag 를 모두 지워주는 함수.
 	 */
 	model.removeGroupTag = function (classify)	{
-		if (classify)	{
+		if (classify && typeof classify !== 'string')	{
 			classify = bio.objects.getType(classify) === 'Array' ? 
 			classify : [classify];
 

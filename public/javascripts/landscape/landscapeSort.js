@@ -162,8 +162,6 @@ function landscapeSort ()	{
 				heatmap = exclusiveGroup.call(this, group),
 				result = {};
 
-		console.log(obj)
-
 		bio.iteration.loop(heatmap, function (h)	{
 			result.axis = h.axis;
 			result.data ? result.data.push(h.data) : 

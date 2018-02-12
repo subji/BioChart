@@ -52,6 +52,7 @@ var SurvivalCurve = function() {
         $('#' + divs.curveDivId).empty();
         elem.svg = d3.select("#" + divs.curveDivId)
             .append("svg")
+            .attr('id', 'survival_plot')
             .attr("width", settings.canvas_width)
             .attr("height", settings.canvas_height);
         elem.curve = elem.svg.append("g");

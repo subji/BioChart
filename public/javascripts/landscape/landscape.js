@@ -195,7 +195,7 @@ function landscape ()	{
 
 		model = result.model;
 
-		bio.layout().removeGroupTag();
+		bio.layout().removeGroupTag('survival');
 		changeAxis(result.sorted);
 		drawLandscape(model.data, model.now.width);
 

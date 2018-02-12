@@ -777,6 +777,8 @@ function expression ()	{
 
 		drawExpression(model.data, model.setting.defaultData);
 
+		bio.layout().removeGroupTag('survival');
+
 		console.log('>>> Expression reponse data: ', opts);
 		console.log('>>> Expression setting data: ', model.setting);
 		console.log('>>> Expression model data: ', model);
