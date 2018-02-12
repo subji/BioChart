@@ -64,7 +64,7 @@ function heat ()	{
 		model.opts.id = model.id + '_heatmap_rect';
 		model.opts.element = 
 		model.group.selectAll('.' + model.id + '_heatmap_rect');
-
+		
 		bio.rectangle(model.opts, model);
 	};
 };

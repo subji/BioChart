@@ -101,7 +101,7 @@ function preprocLandscape ()	{
 					// 나중에 Group sort 를 위함이다.
 					if (d.participant_id === h.x)	{
 						heat.push(h);
-					}
+					} 
 				});
 
 				temp.push({
@@ -240,11 +240,27 @@ function preprocLandscape ()	{
 		model.axis.group.x = model.axis.sample.x;
 	};
 
+	function adjustMutationList (mut, group)	{
+		var result = [];
+
+		bio.iteration.loop(group, function (g)	{
+			bio.iteration.loop(mut, function (m)	{
+				if (g.participant_id === m.participant_id)	{
+					result.push(m);
+				}
+			})
+		});
+
+		return result;
+	};
+
 	return function (data, isPlotted)	{
 		model = bio.initialize('preprocess').landscape;
 		// Data 안에 다른 객체가 존재할 경우 그 안을 찾아본다.
 		data = data.gene_list ? data : data.data;
 		// Mutation, Sample, Gene, Group, Patient 데이터 생성.
+		data.mutation_list = adjustMutationList(data.mutation_list, data.group_list[0].data);
+
 		model.iterMut = iterateMutation;
 		model.iterPat = iteratePatient;
 		model.iterGroup = iterateGroup;

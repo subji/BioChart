@@ -194,7 +194,7 @@ function landscape ()	{
 		if (!result)	{ return false;}
 
 		model = result.model;
-		
+
 		bio.layout().removeGroupTag();
 		changeAxis(result.sorted);
 		drawLandscape(model.data, model.now.width);
@@ -987,7 +987,6 @@ function landscape ()	{
 		drawHeatmap('heatmap', md.heatmap, md.axis.heatmap);
 		drawHeatmap('patientHeatmap', md.patient, 
 																	md.axis.patient.heatmap);
-
 		bio.iteration.loop(md.axis.group.y, function (g, idx)	{
 			var yaxis = md.axis.group.y[idx],
 					group = { x: md.axis.group.x, y: yaxis },
@@ -997,7 +996,6 @@ function landscape ()	{
 			drawHeatmap('patientGroup', 
 								 [md.group.patient[idx]], patient);
 		});
-
 		drawLegend(md.type);
 	};
 

@@ -85,7 +85,6 @@ function landscapeConfig ()	{
 						function (ag, i)	{
 							if (ag[0] === data)	{
 								var group = [].concat(that.data.group.group[i]);
-
 								that.now.group = bio.landscapeSort().group.call(
 									that, group, d3.event.altKey ? true : false);
 							}
