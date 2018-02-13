@@ -43,8 +43,7 @@ function landscape ()	{
 			change: function (event, data)	{
 				bio.layout().removeGroupTag('survival');
 
-				if (data.type === 'refresh')	{
-					console.log(model.init)
+				if (data.type === 'refresh')	{					
 					changeAxis({ axis: 'x', data: model.init.axis.x });
 					changeAxis({ axis: 'y', data: Object.keys(model.init.geneline.axis) });
 					changeSampleStack(model.init.mutation_list);
@@ -57,6 +56,9 @@ function landscape ()	{
 						value.isGene = 'enable';
 					});
 
+					model.now.mutation_list = 
+					model.init.mutation_list;
+
 					model.now.geneline.axis = 
 					bio.objects.clone(model.init.geneline.axis);
 					model.now.geneline.sortedSiblings = 
@@ -64,6 +66,7 @@ function landscape ()	{
 
 					model.now.geneline.groupList = undefined;
 					model.now.geneline.mutationList = undefined;
+					model.now.geneline.pidList = undefined;
 					model.now.geneline.removedMutationArr = {};
 					model.now.geneline.removedMutationList = {};
 					model.now.geneline.removedMutationObj = {};
@@ -758,7 +761,6 @@ function landscape ()	{
 									model.now.geneline.pidList = remakeMutationList();
 									isGroupMutationList = model.now.geneline.pidList.data; 
 									isNewPidGroupList = model.now.geneline.pidList.arr;
-									console.log(model.now.geneline)
 									nowGeneLineValue();
 								} else {
 									var beforeIdx = tempGeneList.indexOf(data),
@@ -793,7 +795,6 @@ function landscape ()	{
 									// disable 된 geneline tag 를 원 위치 시켜 놓는다.
 									model.now.geneline.sortedSiblings.splice(geneIdx, 0, 
 										model.now.geneline.sortedSiblings.splice(beforeIdx, 1)[0]);
-									console.log(model.now.geneline)
 									nowGeneLineValue();
 								}
 
