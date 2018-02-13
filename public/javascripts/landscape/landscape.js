@@ -689,10 +689,10 @@ function landscape ()	{
 
 						if (id.indexOf('gene') > -1)	{
 							if (model.now.geneline.removedMutationObj[data])	{
-								txt = '<b>Enable to</b></br>Sort by alt + <b>' + 
+								txt = '<b>Click to Enable</b></br>Sort by alt + <b>' + 
 											this.innerHTML + '</b>'; 
 							} else {
-								txt = '<b>Disable to</b></br>Sort by alt + <b>' + 
+								txt = '<b>Click to Disable</b></br>Sort by alt + <b>' + 
 											this.innerHTML + '</b>'; 
 							}
 						} else {
