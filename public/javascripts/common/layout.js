@@ -119,6 +119,13 @@ function layout ()	{
 				d3.selectAll((d.indexOf('.') > -1 ? d : '.' + d))
 					.remove();
 			});
+		} else if (typeof classify === 'string')	{
+			bio.iteration.loop(d3.selectAll('svg').nodes(), 
+			function (svg)	{
+				if (svg.id.indexOf(classify) < 0)	{
+					d3.select(svg).selectAll('g').remove();
+				}
+			});
 		} else {
 			d3.selectAll('svg g').remove();
 		}

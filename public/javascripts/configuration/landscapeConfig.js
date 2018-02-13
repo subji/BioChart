@@ -81,7 +81,7 @@ function landscapeConfig ()	{
 							return result;
 						};
 
-						bio.iteration.loop(that.data.axis.group.y, 
+						bio.iteration.loop(that.data.axis.group.y,
 						function (ag, i)	{
 							if (ag[0] === data)	{
 								var group = [].concat(that.data.group.group[i]);

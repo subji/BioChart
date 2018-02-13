@@ -259,7 +259,10 @@ function preprocLandscape ()	{
 		// Data 안에 다른 객체가 존재할 경우 그 안을 찾아본다.
 		data = data.gene_list ? data : data.data;
 		// Mutation, Sample, Gene, Group, Patient 데이터 생성.
-		data.mutation_list = adjustMutationList(data.mutation_list, data.group_list[0].data);
+		if (data.group_list[0].data.length > 
+				data.mutation_list.length)	{
+			data.mutation_list = adjustMutationList(data.mutation_list, data.group_list[0].data);
+		}
 
 		model.iterMut = iterateMutation;
 		model.iterPat = iteratePatient;
