@@ -41,7 +41,7 @@ function landscape ()	{
 			element: '#landscape_option',
 			defaultValue: model.init.width,
 			change: function (event, data)	{
-				bio.layout().removeGroupTag();
+				bio.layout().removeGroupTag('survival');
 
 				if (data.type === 'refresh')	{
 					changeAxis({ axis: 'x', data: model.init.axis.x });
@@ -59,7 +59,7 @@ function landscape ()	{
 					model.now.geneline.sortedSiblings = 
 					model.init.geneline.sortedSiblings;
 
-					bio.layout().removeGroupTag();
+					bio.layout().removeGroupTag('survival');
 
 					return drawLandscape(model.data, 
 					(model.now.width = model.init.width, model.now.width));
@@ -77,7 +77,7 @@ function landscape ()	{
 		$('input[type="radio"]').change(function (e)	{
 			model.now.exclusivity_opt = this.value;
 
-			bio.layout().removeGroupTag();
+			bio.layout().removeGroupTag('survival');
 
 			drawExclusivityLandscape(this.value);
 		});
@@ -787,7 +787,7 @@ function landscape ()	{
 													 model.now.exclusivity_opt : 
 													 model.init.exclusivity_opt;
 
-								bio.layout().removeGroupTag();
+								bio.layout().removeGroupTag('survival');
 
 								model.exclusive.now = 
 								bio.landscapeSort()
@@ -1136,7 +1136,7 @@ function landscape ()	{
 		model.init.axis.y = [].concat(model.data.axis.gene.y);
 		model.init.axis.sampleY = [].concat(model.data.axis.sample.y);
 
-		bio.layout().removeGroupTag();
+		bio.layout().removeGroupTag('survival');
 
 		orderByTypePriority(model.data.type);
 		patientAxis(model.data.axis);
