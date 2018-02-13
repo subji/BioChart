@@ -83,6 +83,8 @@ function landscape ()	{
 						model.now.exclusivity_opt);
 					callEnableDisableOtherFunc();
 
+					model.onClickClinicalName(null);
+
 					return false;
 				} 
 
