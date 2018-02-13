@@ -123,6 +123,10 @@ function survival ()	{
 			};
 		}
 
+		SurvivalCurveBroilerPlate.pvalueSettings = {
+			url: opts.pvalueURL || "http://www.cbioportal.org/calcPval.do",
+		};
+
 		if (opts.styles)	{
 			SurvivalCurveBroilerPlate.settings = {
 				canvas_width: opts.styles.size.chartWidth,

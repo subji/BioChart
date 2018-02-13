@@ -31,7 +31,7 @@
 */
 
 
-var LogRankTest = function() {
+var LogRankTest = function(pvalueURL) {
 
     var datum = {
             time: "",    //num of months
@@ -133,7 +133,8 @@ var LogRankTest = function() {
             V += obj.variance;            
         });
         var chi_square_score = (O1 - E1) * (O1 - E1) / V;
-        $.post("http://www.cbioportal.org/calcPval.do", { chi_square_score: chi_square_score })
+        
+        $.post(pvalueURL, { chi_square_score: chi_square_score })
             .done( function(_data) {
                 callBackFunc = _callBackFunc;
                 callBackFunc(_data);

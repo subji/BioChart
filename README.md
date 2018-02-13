@@ -79,7 +79,7 @@ BioChart 0.0.26
   ps.
 
   bio.survival option 추가
-
+  pvalueURL: 'URL Address',
   legends: {
     high: {
       text: 'High score group',

@@ -381,6 +381,7 @@ function expression ()	{
 					data: (model.divide.patient_list || 
 								 model.setting.defaultData.patient_list),
 					division: (model.divide.divide || data.survival.divide),
+					pvalueURL: undefined,
 					legends: {
 						high: {
 							text: 'High score group',
@@ -777,8 +778,8 @@ function expression ()	{
 
 		drawExpression(model.data, model.setting.defaultData);
 
-		console.log('>>> Expression reponse data: ', opts);
-		console.log('>>> Expression setting data: ', model.setting);
-		console.log('>>> Expression model data: ', model);
+		// console.log('>>> Expression reponse data: ', opts);
+		// console.log('>>> Expression setting data: ', model.setting);
+		// console.log('>>> Expression model data: ', model);
 	};
 };

@@ -275,8 +275,8 @@ function preprocExpression ()	{
 
 		model.axisMargin = getAxisMargin(model.axis.heatmap.y);
 
-		console.log('>>> Preprocess variants data: ', data);
-		console.log('>>> Preprocess data: ', model);
+		// console.log('>>> Preprocess variants data: ', data);
+		// console.log('>>> Preprocess data: ', model);
 
 		return model;
 	};

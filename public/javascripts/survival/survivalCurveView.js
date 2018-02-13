@@ -65,7 +65,7 @@ var SurvivalCurveView = function(_opts) {
     var getResultInit = function(_caseLists, _data) {
         //Init all the calculators
         kmEstimator = new KmEstimator(); 
-        logRankTest = new LogRankTest();   
+        logRankTest = new LogRankTest(SurvivalCurveBroilerPlate.pvalueSettings.url);   
         //confidenceIntervals = new ConfidenceIntervals();   
         
         //Split the data into different(altered/unaltered) groups  
