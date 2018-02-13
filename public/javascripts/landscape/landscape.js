@@ -44,11 +44,14 @@ function landscape ()	{
 				bio.layout().removeGroupTag('survival');
 
 				if (data.type === 'refresh')	{
+					console.log(model.init)
 					changeAxis({ axis: 'x', data: model.init.axis.x });
-					changeAxis({ axis: 'y', data: model.init.axis.y });
+					changeAxis({ axis: 'y', data: Object.keys(model.init.geneline.axis) });
 					changeSampleStack(model.init.mutation_list);
 
-					model.data.gene = model.init.axis.y;
+					model.data.gene = Object.keys(model.init.geneline.axis);
+					model.now.exclusivity_opt = 
+					model.init.exclusivity_opt;
 
 					bio.iteration.loop(model.init.geneline.axis, function (key, value)	{
 						value.isGene = 'enable';
@@ -59,14 +62,31 @@ function landscape ()	{
 					model.now.geneline.sortedSiblings = 
 					model.init.geneline.sortedSiblings;
 
-					bio.layout().removeGroupTag('survival');
+					model.now.geneline.groupList = undefined;
+					model.now.geneline.mutationList = undefined;
+					model.now.geneline.removedMutationArr = {};
+					model.now.geneline.removedMutationList = {};
+					model.now.geneline.removedMutationObj = {};
+					model.now.exclusive = undefined;
+					// 타입 버튼 변화.
+					var labels = document.querySelectorAll('label');
 
-					return drawLandscape(model.data, 
-					(model.now.width = model.init.width, model.now.width));
+					labels[0].className = 'btn btn-default btn-sm active';
+					labels[1].className = 'btn btn-default btn-sm';
+					document.querySelector('#option_1').checked = true;
+					document.querySelector('#option_2').checked = false;
+
+					drawExclusivityLandscape(
+						model.now.exclusivity_opt);
+					callEnableDisableOtherFunc();
+
+					return false;
 				} 
 
-				return drawLandscape(model.data, 
+				drawLandscape(model.data, 
 					(model.now.width = data.value, model.now.width));
+
+				return false;
 			},
 		});
 	};
@@ -541,7 +561,7 @@ function landscape ()	{
 						value: t.type
 					};
 				});
-
+				
 				exclusiveGroup = bio.landscapeSort()
 				 										.exclusive(temptemp, model.data.gene, type);
 
@@ -579,8 +599,7 @@ function landscape ()	{
 					model.now.geneline.removedMutationObj[k]);
 			});
 
-			var enableSample = uniqueParticipantId(model.now.mutation_list || 
-																						model.init.mutation_list),
+			var enableSample = uniqueParticipantId(model.now.mutation_list || model.init.mutation_list),
 					disableSample = model.data.axis.sample.x.filter(function (s)	{
 						return enableSample.indexOf(s) < 0;
 					}),
@@ -668,7 +687,6 @@ function landscape ()	{
 								return tgp;
 							}));
 						});	
-
 						model.now.geneline.groupList = groupList;
 						model.now.geneline.pidList = remakeMutationList();
 						model.now.geneline.mutationList = 
@@ -740,7 +758,7 @@ function landscape ()	{
 									model.now.geneline.pidList = remakeMutationList();
 									isGroupMutationList = model.now.geneline.pidList.data; 
 									isNewPidGroupList = model.now.geneline.pidList.arr;
-
+									console.log(model.now.geneline)
 									nowGeneLineValue();
 								} else {
 									var beforeIdx = tempGeneList.indexOf(data),
@@ -775,7 +793,7 @@ function landscape ()	{
 									// disable 된 geneline tag 를 원 위치 시켜 놓는다.
 									model.now.geneline.sortedSiblings.splice(geneIdx, 0, 
 										model.now.geneline.sortedSiblings.splice(beforeIdx, 1)[0]);
-
+									console.log(model.now.geneline)
 									nowGeneLineValue();
 								}
 
@@ -1136,16 +1154,13 @@ function landscape ()	{
 		model.init.axis.y = [].concat(model.data.axis.gene.y);
 		model.init.axis.sampleY = [].concat(model.data.axis.sample.y);
 
-		bio.layout().removeGroupTag('survival');
-
 		orderByTypePriority(model.data.type);
 		patientAxis(model.data.axis);
-		
+
 		if (model.now.geneline.groupList)	{
 			var groups = [];
 
 			model.now.geneline.pidList = remakeMutationList();
-
 			bio.iteration.loop(model.now.geneline.pidList.arr, 
 			function (gl)	{
 				groups = groups.concat(gl.data);
@@ -1156,7 +1171,29 @@ function landscape ()	{
 			changeAxis(model.exclusive.now || 
 								 model.exclusive.init);
 		}
-		
+
+		if (model.now.geneline)	{
+			if (model.now.geneline.groupList)	{
+				var groups = [];
+
+				model.now.geneline.pidList = remakeMutationList();
+				bio.iteration.loop(model.now.geneline.pidList.arr, 
+				function (gl)	{
+					groups = groups.concat(gl.data);
+				});
+
+				changeAxis({ axis: 'x', data: groups });
+			}	else {
+				model.exclusive.now = bio.landscapeSort().exclusive(
+				model.data.heatmap, model.data.gene, type);
+
+				changeAxis(model.exclusive.now || 
+									 model.exclusive.init);
+			}
+		}
+
+		bio.layout().removeGroupTag('survival');
+
 		drawLandscape(model.data, model.init.width);
 		enableDisableBlur();
 		enabledDisabeldMaximumElement(
@@ -1196,8 +1233,8 @@ function landscape ()	{
 			group.scrollLeft = this.scrollLeft;
 		});
 
-		console.log('>>> Landscape reponse data: ', opts);
-		console.log('>>> Landscape setting data: ', model.setting);
-		console.log('>>> Landscape model data: ', model);
+		// console.log('>>> Landscape reponse data: ', opts);
+		// console.log('>>> Landscape setting data: ', model.setting);
+		// console.log('>>> Landscape model data: ', model);
 	};
 };

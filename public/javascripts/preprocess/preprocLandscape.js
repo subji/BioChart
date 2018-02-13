@@ -239,7 +239,12 @@ function preprocLandscape ()	{
 		model.axis.heatmap.x = 
 		model.axis.group.x = model.axis.sample.x;
 	};
-
+	/*
+		Group list 개수와 Mutation list 개수가
+		맞지 않을때 에러가 발생한다.
+		그러므로 mutation list 를 group list 개수에 맞춰줘야
+		한다.
+	 */
 	function adjustMutationList (mut, group)	{
 		var result = [];
 
@@ -252,6 +257,14 @@ function preprocLandscape ()	{
 		});
 
 		return result;
+	};
+	/*
+		group heatmap 이 그려질때 같은자리에 중복으로 그려지는
+		것을 피하기 위해 한개의 데이터만 남겨놓고 나머지는 제외하는
+		함수.
+	 */
+	function adjustGroupData (groups, xaxis, axis)	{
+		// console.log(groups, xaxis, axis);
 	};
 
 	return function (data, isPlotted)	{
@@ -294,8 +307,10 @@ function preprocLandscape ()	{
 		// Only Gene list.
 		model.gene = [].concat(model.axis.gene.y);
 
-		console.log('>>> Preprocess landscape data: ', data);
-		console.log('>>> Preprocess data: ', model);
+		adjustGroupData(model.group, model.axis.group.x, model.axis.heatmap.x);
+
+		// console.log('>>> Preprocess landscape data: ', data);
+		// console.log('>>> Preprocess data: ', model);
 
 		return model;
 	};

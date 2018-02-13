@@ -254,6 +254,8 @@ function landscapeSort ()	{
 		Exclusive 하게 보여지는데 필요한 데이터를 만드는 함수.
 	 */
 	function exclusive (data, genes, type)	{
+		type = type || '1';
+
 		var temp = {},
 				result = [],
 				idx = 0;
