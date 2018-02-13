@@ -249,11 +249,20 @@ function landscape ()	{
 								Math.min((
 									parseFloat(nowTranslate[1]) + d3.event.y),
 									model.init.geneline.lastYAxis));
-		// disable 된 gene line 은 드래그를 막는다.
-		if (model.now.geneline.axis[d].isGene === 
-				'disable')	{
-			return false;			
+
+		if (model.data.clinicalList.indexOf(d) > -1)	{
+			return false;
 		}
+
+		try {
+			// disable 된 gene line 은 드래그를 막는다.
+			if (model.now.geneline.axis[d].isGene === 
+					'disable')	{
+				return false;			
+			}
+		} catch(err)	{
+			console.log('')
+		} 
 
 		d3.select(that)
 			.attr('transform', 'translate(0, ' + yAxis + ')');

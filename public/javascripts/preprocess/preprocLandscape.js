@@ -299,6 +299,12 @@ function preprocLandscape ()	{
 		// Only Gene list.
 		model.gene = [].concat(model.axis.gene.y);
 
+		model.clinicalList = [];
+
+		bio.iteration.loop(model.axis.group.y, function (gy)	{
+			model.clinicalList = model.clinicalList.concat(gy);
+		});
+
 		// console.log('>>> Preprocess landscape data: ', data);
 		// console.log('>>> Preprocess data: ', model);
 
