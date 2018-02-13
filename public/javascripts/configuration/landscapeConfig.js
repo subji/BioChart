@@ -17,10 +17,9 @@ function landscapeConfig ()	{
 		if (part === 'common')	{
 			return {
 				on: {
-					mouseover: function (data, idx)	{
+					mouseover: function (data, idx, that)	{
 						var id = this.parentNode
 												 .parentNode.className.baseVal;
-
 						if (id.indexOf('gene') > -1 && 
 								id.indexOf('right') > -1 || 
 								id.indexOf('group') > -1)	{

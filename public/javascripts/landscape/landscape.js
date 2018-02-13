@@ -678,7 +678,36 @@ function landscape ()	{
 
 			axises.selectAll('text')
 				.on('mouseout', common.on ? common.on.mouseout : false)
-				.on('mouseover', common.on ? common.on.mouseover : false)
+				// .on('mouseover', common.on ? common.on.mouseover : false)
+				.on('mouseover', function (data, idx)	{
+					var id = this.parentNode
+											 .parentNode.className.baseVal;
+					if (id.indexOf('gene') > -1 && 
+							id.indexOf('right') > -1 || 
+							id.indexOf('group') > -1)	{
+						var txt = '';
+
+						if (id.indexOf('gene') > -1)	{
+							if (model.now.geneline.removedMutationObj[data])	{
+								txt = '<b>Enable to</b></br>Sort by alt + <b>' + 
+											this.innerHTML + '</b>'; 
+							} else {
+								txt = '<b>Disable to</b></br>Sort by alt + <b>' + 
+											this.innerHTML + '</b>'; 
+							}
+						} else {
+							txt = '<b>' + this.innerHTML + '</b></br>' + 
+										'Click to sort </br> Alt + Click ' + 
+										'add to key';
+						}
+
+					bio.tooltip({ element: this, contents: txt });
+
+					d3.select(this).transition()
+						.style('font-size', 11)
+						.style('font-weight', 'bold');
+					}
+				})
 				.on('click', function (data, idx)	{
 					if (part === 'group' && direction === 'Y')	{
 						var res = config.on ? 
@@ -707,6 +736,10 @@ function landscape ()	{
 
 						redraw(res, model.now.geneline.pidList.isRemovable ? 
 												model.now.geneline.pidList.data : undefined);
+
+						if (!d3.event.altKey)	{
+							model.onClickClinicalName(data);
+						}
 					}
 
 					if (part === 'gene' && direction === 'Y')	{
@@ -1232,6 +1265,9 @@ function landscape ()	{
 		opts.divisionFunc : null;
 		model.clinicalFunc = opts.clinicalFunc ? 
 		opts.clinicalFunc : null;
+		model.onClickClinicalName = 
+		opts.onClickClinicalName ? 
+		opts.onClickClinicalName : null;
 
 		bio.clinicalGenerator(model.data.group.group, 'landscape');
 

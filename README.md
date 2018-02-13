@@ -187,6 +187,9 @@ $.ajax({
       clinicalFunc: function (data, colors) {
         // console.log(data, colors);
       },
+      onClickClinicalName: function (clinicalName)  {
+        // console.log(clinicalName)
+      },
     })
     
     bio.loading().end();
