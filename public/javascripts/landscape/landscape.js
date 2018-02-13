@@ -1230,6 +1230,8 @@ function landscape ()	{
 		model.data = model.setting.preprocessData;
 		model.divisionFunc = opts.divisionFunc ? 
 		opts.divisionFunc : null;
+		model.clinicalFunc = opts.clinicalFunc ? 
+		opts.clinicalFunc : null;
 
 		bio.clinicalGenerator(model.data.group.group, 'landscape');
 
@@ -1246,6 +1248,9 @@ function landscape ()	{
 		makeGeneLineDataList();
 		// 초기에 한번 불러온다.
 		callEnableDisableOtherFunc();
+
+		model.clinicalFunc(model.data.group, 
+			bio.boilerPlate.clinicalInfo);
 
 		bio.handler().scroll('#landscape_heatmap', function (e)	{
 			var sample = bio.dom().get('#landscape_sample'),

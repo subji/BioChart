@@ -1,4 +1,4 @@
-BioChart 0.0.25
+BioChart 0.0.26
 ==============
 
 > This is a set of charts for Clinical Decision support.
@@ -183,7 +183,10 @@ $.ajax({
       // division option
       divisionFunc: function (enable, disable)  {
 
-        },
+      },
+      clinicalFunc: function (data, colors) {
+        // console.log(data, colors);
+      },
     })
     
     bio.loading().end();
