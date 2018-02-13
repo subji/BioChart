@@ -690,6 +690,7 @@ function landscape ()	{
 								return tgp;
 							}));
 						});	
+
 						model.now.geneline.groupList = groupList;
 						model.now.geneline.pidList = remakeMutationList();
 						model.now.geneline.mutationList = 
@@ -795,6 +796,7 @@ function landscape ()	{
 									// disable 된 geneline tag 를 원 위치 시켜 놓는다.
 									model.now.geneline.sortedSiblings.splice(geneIdx, 0, 
 										model.now.geneline.sortedSiblings.splice(beforeIdx, 1)[0]);
+
 									nowGeneLineValue();
 								}
 
@@ -1009,9 +1011,19 @@ function landscape ()	{
 		bio.iteration.loop(md.axis.group.y, function (g, idx)	{
 			var yaxis = md.axis.group.y[idx],
 					group = { x: md.axis.group.x, y: yaxis },
-					patient = { x: md.axis.patient.group.x, y: yaxis };
+					patient = { x: md.axis.patient.group.x, y: yaxis },
+					zipGroup = [];
+			// Clinical data 가 x-axis 의 양보다 많아지면
+			// 맨앞에 중첩되어서 정렬이 잘못 나온다. 그래서 x-axis 의 개수에 맞춰
+			// clinical data 를 축소 한다.
+			bio.iteration.loop(md.group.group[idx], 
+			function (g)	{
+				if (md.axis.group.x.indexOf(g.x) > -1)	{
+					zipGroup.push(g);
+				}
+			});
 
-			drawHeatmap('group', md.group.group[idx], group);
+			drawHeatmap('group', zipGroup, group);
 			drawHeatmap('patientGroup', 
 								 [md.group.patient[idx]], patient);
 		});
