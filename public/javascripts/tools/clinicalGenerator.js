@@ -28,15 +28,8 @@ function clinicalGenerator ()	{
 			bio.iteration.loop(values, function (val, idx)	{
 				var result = '#';
 
-				// console.log(val);
-
 				if (val !== 'NA')	{
 					var valueLen = val.length;
-
-					// if (val.length === 1)	{
-					// 	console.log(isNaN(val.charCodeAt(2)))
-					// } 
-
 
 					i = i > valueLen ? i - valueLen : i;
 
@@ -58,18 +51,34 @@ function clinicalGenerator ()	{
 	function orders (clinicals)	{
 		bio.iteration.loop(clinicals, 
 		function (clinical, values)	{
-			if (values.indexOf('NA') > -1)	{
-				values.push(
-				values.splice(
-				values.indexOf('NA'), 1)[0]);
-			}
+			var na = null;
 
-			bio.iteration.loop(values, 
-			function (v, i)	{
-				if (!model[v])	{
-					model[v] = { order: i + 1 };
-				}
-			});
+			if (values.indexOf('NA') > -1)	{
+				na = values.splice(
+				values.indexOf('NA'), 1);
+
+				bio.iteration.loop(values.sort(function (a, b)	{
+					return a > b ? 1 : -1;
+				}), 
+				function (v, i)	{
+					if (!model[v])	{
+						model[v] = { order: i + 1 };
+					}
+				});
+
+				model['NA'] = { order: values.length + 1 };
+
+				values.push(na[0]);
+			}	else {
+				bio.iteration.loop(values.sort(function (a, b)	{
+					return a > b ? 1 : -1;
+				}), 
+				function (v, i)	{
+					if (!model[v])	{
+						model[v] = { order: i + 1 };
+					}
+				});			
+			}
 		});
 	};
 

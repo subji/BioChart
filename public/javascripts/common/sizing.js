@@ -132,6 +132,9 @@ function sizing ()	{
 				contHeight = (0.95 + (geneLenght * stdContentsHeight * stdSign));
 				contHeight = contHeight < 0.61 ? h * 0.6 : h * contHeight;
 
+		geneHeight = geneLenght < 5 ? 360 : geneHeight;
+		contHeight = geneLenght < 5 ? 630 : contHeight;
+
 		var id = {
 			landscape_temp_sample: { width: w * 0.12, height: h * 0.15 },
 			landscape_axis_sample: { width: w * 0.14, height: h * 0.15 },

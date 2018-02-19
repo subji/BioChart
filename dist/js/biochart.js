@@ -2587,6 +2587,9 @@ function sizing ()	{
 				contHeight = (0.95 + (geneLenght * stdContentsHeight * stdSign));
 				contHeight = contHeight < 0.61 ? h * 0.6 : h * contHeight;
 
+		geneHeight = geneLenght < 5 ? 360 : geneHeight;
+		contHeight = geneLenght < 5 ? 630 : contHeight;
+
 		var id = {
 			landscape_temp_sample: { width: w * 0.12, height: h * 0.15 },
 			landscape_axis_sample: { width: w * 0.14, height: h * 0.15 },
@@ -11414,44 +11417,44 @@ var SurvivalTab = (function() {
  /*
     Landscape
   */
- // $.ajax({
- //    'type': 'POST',
- //    'url': '/files/datas',
- //    data: {
- //     name: 'landscape',
- //    },
- //    beforeSend: function () {
- //      // bio.loading().start(document.querySelector('#main'), 900, 600);
- //    },
- //    success: function (d) {
- //      bio.landscape({
-	// 			element: '#main',
-	// 			width: 1200,
-	// 			height: 800,
-	// 			data: {
-	// 				pq: 'p',
-	// 				type: 'LUAD',
-	// 				data: d[0].data,
-	// 				title:d[0].data.name,
-	// 			},
- //        plot: {
- //          patient: false, // true
- //          pq: false, // true
- //        },
- //        divisionFunc: function (enable, disable, others)  {
- //          // console.log(enable, disable, others);
- //        },
- //        clinicalFunc: function (data, colors) {
- //          // console.log(data, colors);
- //        },
- //        onClickClinicalName: function (clinicalName)  {
- //          console.log(clinicalName)
- //        },
-	// 		});
+ $.ajax({
+    'type': 'POST',
+    'url': '/files/datas',
+    data: {
+     name: 'landscape',
+    },
+    beforeSend: function () {
+      // bio.loading().start(document.querySelector('#main'), 900, 600);
+    },
+    success: function (d) {
+      bio.landscape({
+				element: '#main',
+				width: 1200,
+				height: 800,
+				data: {
+					pq: 'p',
+					type: 'LUAD',
+					data: d[0].data,
+					title:d[0].data.name,
+				},
+        plot: {
+          patient: false, // true
+          pq: false, // true
+        },
+        divisionFunc: function (enable, disable, others)  {
+          // console.log(enable, disable, others);
+        },
+        clinicalFunc: function (data, colors) {
+          // console.log(data, colors);
+        },
+        onClickClinicalName: function (clinicalName)  {
+          // console.log(clinicalName)
+        },
+			});
 
- //      // bio.loading().end();
- //    },
- //  });
+      // bio.loading().end();
+    },
+  });
 
 
 /* Variants */
@@ -11507,15 +11510,8 @@ function clinicalGenerator ()	{
 			bio.iteration.loop(values, function (val, idx)	{
 				var result = '#';
 
-				// console.log(val);
-
 				if (val !== 'NA')	{
 					var valueLen = val.length;
-
-					// if (val.length === 1)	{
-					// 	console.log(isNaN(val.charCodeAt(2)))
-					// } 
-
 
 					i = i > valueLen ? i - valueLen : i;
 
@@ -11537,18 +11533,34 @@ function clinicalGenerator ()	{
 	function orders (clinicals)	{
 		bio.iteration.loop(clinicals, 
 		function (clinical, values)	{
-			if (values.indexOf('NA') > -1)	{
-				values.push(
-				values.splice(
-				values.indexOf('NA'), 1)[0]);
-			}
+			var na = null;
 
-			bio.iteration.loop(values, 
-			function (v, i)	{
-				if (!model[v])	{
-					model[v] = { order: i + 1 };
-				}
-			});
+			if (values.indexOf('NA') > -1)	{
+				na = values.splice(
+				values.indexOf('NA'), 1);
+
+				bio.iteration.loop(values.sort(function (a, b)	{
+					return a > b ? 1 : -1;
+				}), 
+				function (v, i)	{
+					if (!model[v])	{
+						model[v] = { order: i + 1 };
+					}
+				});
+
+				model['NA'] = { order: values.length + 1 };
+
+				values.push(na[0]);
+			}	else {
+				bio.iteration.loop(values.sort(function (a, b)	{
+					return a > b ? 1 : -1;
+				}), 
+				function (v, i)	{
+					if (!model[v])	{
+						model[v] = { order: i + 1 };
+					}
+				});			
+			}
 		});
 	};
 
