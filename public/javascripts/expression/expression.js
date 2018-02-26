@@ -40,7 +40,6 @@ function expression ()	{
 					'.expression_scatter_plot_svg.left-axis-g-tag',
 					'.expression_scatter_plot_svg.division-path-1-g-tag',
 					'.expression_scatter_plot_svg.division-shape-1-g-tag',
-					'expression_bar_legend_svg'
 				]);
 
 				// model.now.subtype_mapping = undefined;
@@ -49,15 +48,13 @@ function expression ()	{
 				model.divide.patient_list = undefined;
 				model.divide.scatter = undefined;
 				model.divide = {};
-
-				document.querySelector('#expression_bar_legend').style.height = '0px';
-				document.querySelector('#expression_bar_legend').style.marginBottom = '0px';
-				document.querySelector('#expression_color_mapping').innerHTML = '';
-
+				
 				// drawHeatmap(model.data, model.data.axis.heatmap, model.data.axis.gradient.x);
 				drawFunctionBar(model.data, model.data.axis.bar);
 				drawColorMapSelectBox(model.data.subtype, model.now.subtype_mapping);
-				drawLegendBySubtypeMapping(model.now.subtypeSet);
+				if (model.now.subtype_mapping)	{
+					drawLegendBySubtypeMapping(model.now.subtypeSet);
+				}
 				drawScatter(model.data, model.data.axis.scatter, model.now.osdfs);				
 				drawSurvivalPlot(model.data);
 				drawDivision(model.data);

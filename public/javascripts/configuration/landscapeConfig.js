@@ -27,8 +27,8 @@ function landscapeConfig ()	{
 							'Sort by alt + <b>' + this.innerHTML + '</b>' : 
 											'<b>' + this.innerHTML + '</b></br>' + 
 											'Click to sort </br> Alt + Click ' + 
-											'add to key';
-
+											// 'add to key';
+// 
 							bio.tooltip({ element: this, contents: txt });
 
 							d3.select(this).transition()
