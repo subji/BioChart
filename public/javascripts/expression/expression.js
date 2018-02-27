@@ -354,7 +354,8 @@ function expression ()	{
 	function callScatter (tab, data)	{
 		if (model.now.osdfs !== tab)	{
 			bio.layout().removeGroupTag([
-				'scatter-g-tag', 'left-axis-g-tag']);
+				'.expression_scatter_plot_svg.scatter-g-tag', 
+				'.expression_scatter_plot_svg.left-axis-g-tag']);
 
 			model.now.osdfs = tab;
 
