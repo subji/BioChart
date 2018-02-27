@@ -37,6 +37,7 @@ BioChart 0.0.26
         riskFunctions: [
           { 
             name: 'Test', 
+            isDefault: true,
             func: function (data)  {
               input data : 
               [
