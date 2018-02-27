@@ -608,8 +608,10 @@ function expression ()	{
 							 model.divide : model.data.survival.divide,
 				division = divideDivisionData(data);
 
-		model.divisionFunc(
+		if (model.divisionFunc)	{
+			model.divisionFunc(
 			division.low, division.mid, division.high, model.data.axis.heatmap.y, model.data.all_rna_list);
+		}
 	};
 
 	function drawDivision (data, lowHigh)	{
