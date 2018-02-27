@@ -4,19 +4,23 @@ function expression ()	{
 	var model = {};
 	
 	function drawFuncSelectBox ()	{
-		var funcNames = ['Average'];
+		var funcNames = ['Average'],
+				defaultFunction = '';
 
 		bio.iteration.loop(model.riskFunctions, 
 		function (risk)	{
 			funcNames.push(risk.name);
+			if (risk.isDefault)	{
+				defaultFunction = risk.name;
+			}
 		});
-
+		
 		bio.selectBox({
 			fontSize: '12px',
 			items: funcNames,
 			viewName: 'function',
 			margin: [3, 3, 0, 0],
-			defaultText: 'Average',
+			defaultText: defaultFunction,
 			id: '#expression_function',
 			className: 'expression-function',
 			clickItem: function (value)	{
