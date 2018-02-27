@@ -2,6 +2,19 @@ function expression ()	{
 	'use strict';
 
 	var model = {};
+
+	function changedFunction (value)	{
+		model.now.function = value.toLowerCase();
+		model.data.bar = model.data.func.bar[value.toLowerCase()]
+		model.data.axis.bar.x = 
+		model.data.func.xaxis[value.toLowerCase()];
+		model.data.axis.bar.y = 
+		model.data.func.yaxis[value.toLowerCase()];
+		model.data.axis.scatter.x = 
+		model.data.func.xaxis[value.toLowerCase()];
+		model.data.axis.heatmap.x = 
+		model.data.func.xaxis[value.toLowerCase()];
+	};
 	
 	function drawFuncSelectBox ()	{
 		var funcNames = ['Average'],
@@ -11,20 +24,11 @@ function expression ()	{
 		function (risk)	{
 			funcNames.push(risk.name);
 			if (risk.isDefault)	{
-				defaultFunction = risk.name.toLowerCase();
+				defaultFunction = risk.name;
 			}
 		});
-		
-		model.now.function = defaultFunction;
-		model.data.bar = model.data.func.bar[defaultFunction]
-		model.data.axis.bar.x = 
-		model.data.func.xaxis[defaultFunction];
-		model.data.axis.bar.y = 
-		model.data.func.yaxis[defaultFunction];
-		model.data.axis.scatter.x = 
-		model.data.func.xaxis[defaultFunction];
-		model.data.axis.heatmap.x = 
-		model.data.func.xaxis[defaultFunction];
+
+		changedFunction(defaultFunction)
 		
 		bio.selectBox({
 			fontSize: '12px',
@@ -35,16 +39,7 @@ function expression ()	{
 			id: '#expression_function',
 			className: 'expression-function',
 			clickItem: function (value)	{
-				model.now.function = value;
-				model.data.bar = model.data.func.bar[value];
-				model.data.axis.bar.x = 
-				model.data.func.xaxis[value];
-				model.data.axis.bar.y = 
-				model.data.func.yaxis[value];
-				model.data.axis.scatter.x = 
-				model.data.func.xaxis[value];
-				model.data.axis.heatmap.x = 
-				model.data.func.xaxis[value];
+				changedFunction(value);
 
 				bio.layout().removeGroupTag([
 					'.expression_bar_plot_svg.bar-g-tag',
