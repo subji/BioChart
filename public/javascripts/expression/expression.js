@@ -66,17 +66,19 @@ function expression ()	{
 	function changeBarColor (data, idx, that)	{
 		if (!model.now.subtypeSet)	{ return '#62C2E0'; }
 
-		var dataKeys = Object.keys(data.info),
-				state = 'NA';
+		if (data.info)	{
+			var dataKeys = Object.keys(data.info),
+					state = 'NA';
 
-		bio.iteration.loop(dataKeys, function (key)	{
-			if (key.toLowerCase() === model.now.subtype_mapping.toLowerCase())	{
-				state = data.info[key];
-			} 
-		});
+			bio.iteration.loop(dataKeys, function (key)	{
+				if (key.toLowerCase() === model.now.subtype_mapping.toLowerCase())	{
+					state = data.info[key];
+				} 
+			});
 
-		return state === 'NA' ? '#D6E2E3' : 
-						bio.boilerPlate.clinicalInfo[state].color;
+			return state === 'NA' ? '#D6E2E3' : 
+							bio.boilerPlate.clinicalInfo[state].color;
+		}
 	};
 
 	function drawLegendBySubtypeMapping (nowSubtypeSet)	{

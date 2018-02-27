@@ -4654,69 +4654,6 @@ function triangle ()	{
 		});
 	};
 };
-function handler ()	{
-	'use strict';
-
-	var model = {};
-	/*
-		스크롤 이벤트 핸들러.
-	 */
-	function scroll (target, callback)	{
-		bio.dom().get(target)
-			 .addEventListener('scroll', callback, false);
-	};
-	/*
-	 	특정 이벤트 중 이벤트가 바디태그에서는 Disable 하게 만들어주는 함수.
-	 */
-	function preventBodyEvent (ele, events)	{
-		var DOEVENT = false;
-
-		// 사용자가 지정한 DIV 에 마우스 휠을 작동할때는, 바디에 마우스 휠
-		// 이벤트를 막아놓는다.
-		document.body.addEventListener(events, function (e)	{
-			if (DOEVENT)	{
-				if (e.preventDefault) {
-					e.preventDefault();
-				}
-
-				return false;
-			}
-		});
-
-		ele.addEventListener('mouseenter', function (e)	{
-			DOEVENT = true;
-		});
-
-		ele.addEventListener('mouseleave', function (e)	{
-			DOEVENT = false;
-		});
-	};
-	/*
-		x, y 스크롤이 hidden 일 때, 스크롤을 가능하게 해주는 함수.
-	 */
-	function scrollOnHidden (element, callback)	{
-		if (!element)	{
-			throw new Error('No given element');
-		}
-
-		preventBodyEvent(element, 'mousewheel');
-
-		element.addEventListener('mousewheel', function (e)	{
-			element.scrollTop += element.wheelDelta;
-
-			if (callback) {
-				callback.call(element, e);
-			}
-		});
-	};
-
-	return function ()	{
-		return {
-			scroll: scroll,
-			scrollOnHidden: scrollOnHidden,
-		};
-	};
-};
 function exclusivity ()	{
 	'use strict';
 
@@ -5069,6 +5006,69 @@ function exclusivity ()	{
 		console.log('>>> Exclusivity model data: ', model);
 	};
 };
+function handler ()	{
+	'use strict';
+
+	var model = {};
+	/*
+		스크롤 이벤트 핸들러.
+	 */
+	function scroll (target, callback)	{
+		bio.dom().get(target)
+			 .addEventListener('scroll', callback, false);
+	};
+	/*
+	 	특정 이벤트 중 이벤트가 바디태그에서는 Disable 하게 만들어주는 함수.
+	 */
+	function preventBodyEvent (ele, events)	{
+		var DOEVENT = false;
+
+		// 사용자가 지정한 DIV 에 마우스 휠을 작동할때는, 바디에 마우스 휠
+		// 이벤트를 막아놓는다.
+		document.body.addEventListener(events, function (e)	{
+			if (DOEVENT)	{
+				if (e.preventDefault) {
+					e.preventDefault();
+				}
+
+				return false;
+			}
+		});
+
+		ele.addEventListener('mouseenter', function (e)	{
+			DOEVENT = true;
+		});
+
+		ele.addEventListener('mouseleave', function (e)	{
+			DOEVENT = false;
+		});
+	};
+	/*
+		x, y 스크롤이 hidden 일 때, 스크롤을 가능하게 해주는 함수.
+	 */
+	function scrollOnHidden (element, callback)	{
+		if (!element)	{
+			throw new Error('No given element');
+		}
+
+		preventBodyEvent(element, 'mousewheel');
+
+		element.addEventListener('mousewheel', function (e)	{
+			element.scrollTop += element.wheelDelta;
+
+			if (callback) {
+				callback.call(element, e);
+			}
+		});
+	};
+
+	return function ()	{
+		return {
+			scroll: scroll,
+			scrollOnHidden: scrollOnHidden,
+		};
+	};
+};
 function colorGradient ()	{
 	'use strict';
 
@@ -5203,17 +5203,19 @@ function expression ()	{
 	function changeBarColor (data, idx, that)	{
 		if (!model.now.subtypeSet)	{ return '#62C2E0'; }
 
-		var dataKeys = Object.keys(data.info),
-				state = 'NA';
+		if (data.info)	{
+			var dataKeys = Object.keys(data.info),
+					state = 'NA';
 
-		bio.iteration.loop(dataKeys, function (key)	{
-			if (key.toLowerCase() === model.now.subtype_mapping.toLowerCase())	{
-				state = data.info[key];
-			} 
-		});
+			bio.iteration.loop(dataKeys, function (key)	{
+				if (key.toLowerCase() === model.now.subtype_mapping.toLowerCase())	{
+					state = data.info[key];
+				} 
+			});
 
-		return state === 'NA' ? '#D6E2E3' : 
-						bio.boilerPlate.clinicalInfo[state].color;
+			return state === 'NA' ? '#D6E2E3' : 
+							bio.boilerPlate.clinicalInfo[state].color;
+		}
 	};
 
 	function drawLegendBySubtypeMapping (nowSubtypeSet)	{
@@ -11353,65 +11355,65 @@ var SurvivalTab = (function() {
  /*
     Expression
   */
- // $.ajax({
- //    'type': 'POST',
- //    'url': '/files/datas',
- //    data: {
- //     name: 'expression',
- //    },
- //    beforeSend: function () {
- //      // bio.loading().start(document.querySelector('#main'), 900, 600);
- //    },
- //    success: function (d) {
- //      bio.expression({
- //        element: '#main',
- //        width: 900,
- //        height: 600,
- //        requestData: {
- //          source: 'GDAC',
- //          cancer_type: 'luad',
- //          sample_id: 'SMCLUAD1705230001',
- //          // signature: 'PAM50',
- //          // signature: '180117',
- //          signature: '180125',
- //          filter: ':'
- //        },
- //        data: d[0].data,
- //        riskFunctions: [
- //          { 
- //            name: 'Test', 
- //            func: function (data)  {
- //              var result = [];
+ $.ajax({
+    'type': 'POST',
+    'url': '/files/datas',
+    data: {
+     name: 'expression',
+    },
+    beforeSend: function () {
+      // bio.loading().start(document.querySelector('#main'), 900, 600);
+    },
+    success: function (d) {
+      bio.expression({
+        element: '#main',
+        width: 900,
+        height: 600,
+        requestData: {
+          source: 'GDAC',
+          cancer_type: 'luad',
+          sample_id: 'SMCLUAD1705230001',
+          // signature: 'PAM50',
+          // signature: '180117',
+          signature: '180125',
+          filter: ':'
+        },
+        data: d[0].data,
+        riskFunctions: [
+          { 
+            name: 'Test', 
+            func: function (data)  {
+              var result = [];
 
- //              data.forEach(function (d) {
- //                var sum = 0, avg = 0;
+              data.forEach(function (d) {
+                var sum = 0, avg = 0;
 
- //                bio.iteration.loop(d.values, 
- //                function (v)  {
- //                  sum += v.tpm;
- //                });
+                bio.iteration.loop(d.values, 
+                function (v)  {
+                  sum += v.tpm;
+                });
 
- //                result.push({
- //                  pid: d.pid,
- //                  score: sum / d.values.length
- //                });
- //              });
+                result.push({
+                  pid: d.pid,
+                  score: sum / d.values.length
+                });
+              });
               
- //              return result;
- //            },
- //          }
- //        ],
- //        divisionFunc: function (left, mid, right, geneList, allRnaList) {
- //          // console.log(left, mid, right, geneList, allRnaList)
- //        },
- //        onSubtypeSelection: function (subtypeName, subtypeColors, model) {
- //          // console.log(subtypeName, subtypeColors, model)
- //        },
- //      });
+              return result;
+            },
+          }
+        ],
+        divisionFunc: function (left, mid, right, geneList, allRnaList) {
+          // console.log(left, mid, right, geneList, allRnaList)
+        },
+        onSubtypeSelection: function (subtypeName, subtypeColors, model) {
+          // console.log(subtypeName, subtypeColors, model)
+        },
+      });
 
- //      // bio.loading().end();
- //    },
- //  });
+      // bio.loading().end();
+    },
+  });
 
  /*
     Landscape
