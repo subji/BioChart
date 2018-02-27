@@ -11,9 +11,20 @@ function expression ()	{
 		function (risk)	{
 			funcNames.push(risk.name);
 			if (risk.isDefault)	{
-				defaultFunction = risk.name;
+				defaultFunction = risk.name.toLowerCase();
 			}
 		});
+		
+		model.now.function = defaultFunction;
+		model.data.bar = model.data.func.bar[defaultFunction]
+		model.data.axis.bar.x = 
+		model.data.func.xaxis[defaultFunction];
+		model.data.axis.bar.y = 
+		model.data.func.yaxis[defaultFunction];
+		model.data.axis.scatter.x = 
+		model.data.func.xaxis[defaultFunction];
+		model.data.axis.heatmap.x = 
+		model.data.func.xaxis[defaultFunction];
 		
 		bio.selectBox({
 			fontSize: '12px',
