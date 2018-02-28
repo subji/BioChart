@@ -1286,9 +1286,10 @@ function landscape ()	{
 		makeGeneLineDataList();
 		// 초기에 한번 불러온다.
 		callEnableDisableOtherFunc();
-
-		model.clinicalFunc(model.data.group, 
-			bio.boilerPlate.clinicalInfo);
+		if (model.clinicalFunc)	{
+			model.clinicalFunc(model.data.group, 
+				bio.boilerPlate.clinicalInfo);
+		}
 
 		bio.handler().scroll('#landscape_heatmap', function (e)	{
 			var sample = bio.dom().get('#landscape_sample'),

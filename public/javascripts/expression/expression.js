@@ -18,7 +18,7 @@ function expression ()	{
 	
 	function drawFuncSelectBox ()	{
 		var funcNames = ['Average'],
-				defaultFunction = '';
+				defaultFunction = 'Average';
 
 		bio.iteration.loop(model.riskFunctions, 
 		function (risk)	{
