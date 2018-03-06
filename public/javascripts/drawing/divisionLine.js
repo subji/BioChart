@@ -4,6 +4,7 @@ function divisionLine ()	{
 	var model = {};
 
 	return function (opts, that)	{
+		console.log(opts, that)
 		model = bio.objects.clone(that || {});
 		model = bio.sizing.chart.default(model, opts);
 		model.position = { now: {}, init: {} };

@@ -50,6 +50,8 @@ function expression ()	{
 					'.expression_scatter_plot_svg.left-axis-g-tag',
 					'.expression_scatter_plot_svg.division-path-1-g-tag',
 					'.expression_scatter_plot_svg.division-shape-1-g-tag',
+					'.expression_heatmap_svg.heatmap-g-tag',
+					'.expression_heatmap_svg.left-axis-g-tag'
 				]);
 
 				// model.now.subtype_mapping = undefined;
@@ -623,7 +625,8 @@ function expression ()	{
 
 		if (model.divisionFunc)	{
 			model.divisionFunc(
-			division.low, division.mid, division.high, model.data.axis.heatmap.y, model.data.all_rna_list);
+			division.low, division.mid, division.high, 
+			model.data.axis.heatmap.y, model.data.all_rna_list);
 		}
 	};
 

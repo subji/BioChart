@@ -117,8 +117,30 @@ function preprocExpression ()	{
 		});
 
 		var result = func(funcData);
+		var isExp = function (score)	{
+			if (Math.abs(score) < 1.0) {
+		    var e = parseInt(score.toString().split('e-')[1]);
+		    if (e) {
+		        score *= Math.pow(10,e-1);
+		        score = '0.' + (new Array(e)).join('0') + score.toString().substring(2);
+		    }
+		  } else {
+		    var e = parseInt(score.toString().split('+')[1]);
+		    if (e > 20) {
+		        e -= 20;
+		        score /= Math.pow(10,e);
+		        score += (new Array(e+1)).join('0');
+		    }
+		  }	
+		  
+		  return score;
+		};
 
 		bio.iteration.loop(result, function (res)	{
+
+			// res.score = isExp(res.score);
+			// res.score = res.score.toString();
+
 			if (model.func.bar[funcName])	{
 				model.func.bar[funcName].push({
 					x: res.pid, 
@@ -237,7 +259,7 @@ function preprocExpression ()	{
 			most = most > textWidth ? most : textWidth;
 		});
 
-		return most * 1.25;
+		return most * 1.5;
 	};
 
 	function addRiskFunctions (funcs)	{
