@@ -31,29 +31,24 @@ function divisionLine ()	{
 		model.axis = [].concat(opts.axis);
 		model.range = [model.margin.left, model.width - 
 										model.margin.right];
-		model.idxes = opts.idxes.map(function (idx)	{
-			return idx;
-		});
 		model.scale = bio.scales().get(model.axis, model.range);
 		model.invert = bio.scales().invert(model.scale);
 
 		if (that.data.bar)	{
 			bio.iteration.loop(that.data.bar, function (bar)	{
-				var fitIdx = bar.value + '_' + bar.x;
-
-				if (fitIdx === model.idxes[0])	{
+				if (bar.value === opts.idxes[0])	{
 					model.division_info[0].start = model.scale(bar.x);
-				} else if (fitIdx === model.idxes[1])	{	
+				} else if (bar.value === opts.idxes[1])	{	
 					model.division_info[0].end = model.scale(bar.x);
 					model.division_info[1].start = model.scale(bar.x);
-				} else if (fitIdx === model.idxes[2])	{
+				} else if (bar.value === opts.idxes[2])	{
 					model.division_info[1].end = model.scale(bar.x);
 				}
 			});
 		} else if (model.now.geneset)	{
 			model.division_info[0].start = model.scale(model.axis[0]);
-			model.division_info[0].end = model.scale(model.idxes);
-			model.division_info[1].start = model.scale(model.idxes);
+			model.division_info[0].end = model.scale(opts.idxes);
+			model.division_info[1].start = model.scale(opts.idxes);
 			model.division_info[1].end = 
 			model.scale(model.axis.length - 1);
 		}

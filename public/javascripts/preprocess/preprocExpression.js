@@ -79,23 +79,18 @@ function preprocExpression ()	{
 		Risk function 별 axis 를 만들어 준다.
 	 */
 	function makeFuncAxis (funcName, barData, funcData)	{
-		var data = [].concat(funcData[funcName]).sort(),
-				result = [],
-				obj = {};
+		var axis = [].concat(funcData[funcName]),
+				result = [];
 
 		bio.iteration.loop(barData, function (b)	{
-			result[data.indexOf(b.value + '_' + b.x)] = b.x;
+			result[axis.indexOf(b.value)] = b.x;
 		});
 
 		model.func.xaxis[funcName] = result;
 		model.func.yaxis[funcName] = [
-			// bio.math.min(data),
-			// bio.math.median(data),
-			// bio.math.max(data)
-			data[0],
-			data[data.length % 2 == 1 ? 
-					(data.length + 1) / 2 : data.length / 2],
-			data[data.length - 1]
+			bio.math.min(funcData[funcName]),
+			bio.math.median(funcData[funcName]),
+			bio.math.max(funcData[funcName])
 		];
 
 		bio.iteration.loop(barData, function (b)	{
@@ -139,9 +134,9 @@ function preprocExpression ()	{
 			}
 
 			if (model.func.data[funcName])	{
-				model.func.data[funcName].push(res.score + '_' + res.pid);
+				model.func.data[funcName].push(res.score);
 			} else {
-				model.func.data[funcName] = [res.score + '_' + res.pid];
+				model.func.data[funcName] = [res.score];
 			}	
 		});
 
@@ -149,7 +144,7 @@ function preprocExpression ()	{
 		function (k, f)	{
 			model.func.data[k] = 
 			model.func.data[k].sort(function (a, b) {
-				return a.split('_')[0] > b.split('_')[0] ? 1 : -1;
+				return a > b ? 1 : -1;
 			});
 
 			makeFuncAxis(k, model.func.bar[k], model.func.data);

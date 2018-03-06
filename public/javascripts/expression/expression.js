@@ -4,16 +4,12 @@ function expression ()	{
 	var model = {};
 
 	function changedFunction (value)	{
-		var funcBar = [].concat(model.data.func.bar[value.toLowerCase()]),
-				axisY = [].concat(model.data.func.yaxis[value.toLowerCase()]);
-
 		model.now.function = value.toLowerCase();
-		model.data.bar = funcBar;
+		model.data.bar = model.data.func.bar[value.toLowerCase()]
 		model.data.axis.bar.x = 
 		model.data.func.xaxis[value.toLowerCase()];
-		// model.data.axis.bar.y = axisY.map(function (ya)	{
-		// 	return parseFloat(ya.split('_')[0]);
-		// });
+		model.data.axis.bar.y = 
+		model.data.func.yaxis[value.toLowerCase()];
 		model.data.axis.scatter.x = 
 		model.data.func.xaxis[value.toLowerCase()];
 		model.data.axis.heatmap.x = 
@@ -315,39 +311,28 @@ function expression ()	{
 	function drawFunctionBar (data, axis)	{
 		bio.layout().get(model.setting.svgs, ['bar_plot'], 
 		function (id, svg)	{
-			console.log(data.bar)
 			var config = bio.expressionConfig(),
 					shapeCnf = config.bar('shape', data.axisMargin),
-					axisCnf = config.bar('axis', data.axisMargin),
-					newAxis = bio.objects.clone(axis || {}),
-					newAxisY = newAxis.y.map(function (y)	{
-						return parseFloat(y.split('_')[0]);
-					}),
-					newBar = [].concat(data.bar).map(function (db)	{
-						db.y = typeof(db.y) === 'string' ? 
-									parseFloat(db.y.split('_')[0]) : db.y;
-
-						return db;
-					});
+					axisCnf = config.bar('axis', data.axisMargin);
 
 			bio.bar({
 				element: svg,
 				xaxis: axis.x,
-				data: newBar,
+				data: data.bar,
 				on: shapeCnf.on,
 				attr: shapeCnf.attr,
 				style: shapeCnf.style,
 				margin: shapeCnf.margin,
-				yaxis: [newAxisY[2], newAxisY[0]],
+				yaxis: [axis.y[2], axis.y[0]],
 			});
 
 			bio.axises().left({
 				element: svg,
 				top: axisCnf.top,
 				left: axisCnf.left,
-				tickValues: newAxisY,
+				tickValues: axis.y,
 				margin: axisCnf.margin,
-				domain: [newAxisY[2], newAxisY[0]],
+				domain: [axis.y[2], axis.y[0]],
 				range: [20, svg.attr('height') - 15],
 			}).selectAll('path, line').style('stroke', '#999999');
 		});
@@ -358,9 +343,7 @@ function expression ()	{
 	 */
 	function divideSurvivalData (bars, median)	{
 		model.data.survival.divide = {};
-		median = typeof(median) === 'string' ? 
-		median.split('_')[0] : median;
-			
+
 		bio.iteration.loop(bars, function (bar)	{
 			bar.value <= median ? 
 			model.data.survival.divide[bar.x] = 'unaltered' : 
@@ -402,8 +385,8 @@ function expression ()	{
 		var element = document.querySelector('#expression_survival'),
 				width = parseFloat(element.style.width),
 				height = parseFloat(element.style.height) / 1.4;
-		var divide = divideSurvivalData(data.bar, 
-									data.func.yaxis[model.now.function][1]),
+
+		var divide = divideSurvivalData(data.bar, data.axis.bar.y[1]),
 				plot = bio.survival({
 					element: '#expression_survival',
 					margin: [20, 20, 20, 20],
@@ -752,10 +735,8 @@ function expression ()	{
 				},
 				style: divCnf.style,
 				margin: divCnf.margin,
-				// axis: data.axis.bar.x,
-				axis: data.func.xaxis[model.now.function],
-				// idxes: data.axis.bar.y,
-				idxes: data.func.yaxis[model.now.function]
+				axis: data.axis.bar.x,
+				idxes: data.axis.bar.y,
 			}, model);
 		});
 	};
@@ -772,14 +753,7 @@ function expression ()	{
 		drawLegend('scatter', ['Alive', 'Dead']);
 		drawColorGradient(data.axis.gradient.x);
 		drawHeatmap(data, data.axis.heatmap, data.axis.gradient.x);
-		if (model.now.function)	{
-			drawFunctionBar(data, {
-				x: data.func.xaxis[model.now.function], 
-				y: data.func.yaxis[model.now.function]
-			});
-		} else {
-			drawFunctionBar(data, data.axis.bar);
-		}
+		drawFunctionBar(data, data.axis.bar);
 		drawSurvivalPlot(data);
 		drawScatter(data, data.axis.scatter, model.now.osdfs);
 
@@ -809,8 +783,7 @@ function expression ()	{
 		model.requestData = opts.requestData || {};
 		model.requestURL = opts.requestURL || '/rest/expressions';
 		// To initialize signature.
-		model.init.signature = opts.data.signature_list ? 
-													 opts.data.signature_list[0].signature : [];
+		model.init.signature = opts.data.signature_list ? opts.data.signature_list[0].signature : [];
 		// model.now.signature = model.init.signature;
 		model.now.signature = model.requestData.signature;
 		model.init.bar_legend_height = 
