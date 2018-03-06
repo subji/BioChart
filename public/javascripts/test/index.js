@@ -75,8 +75,8 @@
                 
  //                result.push({
  //                  pid: d.pid,
- //                  // score: i == 0 ? 1 : i == data.length - 1 ? -1 : 0
- //                  score: sum / d.values.length
+ //                  score: i == 0 ? 1 : i == data.length - 1 ? -1 : 0
+ //                  // score: sum / d.values.length
  //                });
  //              });
               
@@ -92,9 +92,9 @@
  //        },
  //      });
 
- //      // bio.loading().end();
- //    },
- //  });
+      // bio.loading().end();
+  //   },
+  // });
 
  /*
     Landscape

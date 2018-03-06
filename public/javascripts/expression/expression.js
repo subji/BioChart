@@ -315,6 +315,7 @@ function expression ()	{
 	function drawFunctionBar (data, axis)	{
 		bio.layout().get(model.setting.svgs, ['bar_plot'], 
 		function (id, svg)	{
+			console.log(data.bar)
 			var config = bio.expressionConfig(),
 					shapeCnf = config.bar('shape', data.axisMargin),
 					axisCnf = config.bar('axis', data.axisMargin),
@@ -323,7 +324,8 @@ function expression ()	{
 						return parseFloat(y.split('_')[0]);
 					}),
 					newBar = [].concat(data.bar).map(function (db)	{
-						db.y = parseFloat(db.y.split('_')[0]);
+						db.y = typeof(db.y) === 'string' ? 
+									parseFloat(db.y.split('_')[0]) : db.y;
 
 						return db;
 					});
