@@ -326,6 +326,7 @@ function expression ()	{
 				style: shapeCnf.style,
 				margin: shapeCnf.margin,
 				yaxis: [axis.y[2], axis.y[0]],
+				allYaxis: axis.y,
 			});
 
 			bio.axises().left({

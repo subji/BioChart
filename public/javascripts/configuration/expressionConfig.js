@@ -247,6 +247,22 @@ function expressionConfig ()	{
 						return that.scaleX(data.x);
 					},
 					y: function (data, idx, that)	{
+						if ((that.copyAllYaxis[0] === 
+								 that.copyAllYaxis[1]) && 
+								 (that.copyAllYaxis[0] ===
+								  bio.math.min(that.copyY)))	{
+							if (data.value === 0)	{
+								return that.height;
+							} else {
+								return that.scaleY(bio.math.max(that.copyY));
+							}
+						} if ((that.copyAllYaxis[1] === 
+									that.copyAllYaxis[2]) &&  
+									(that.copyAllYaxis[2] === 
+									bio.math.max(that.copyY))) {
+							return that.scaleY(bio.math.max(that.copyY));
+						}
+
 						return data.y - data.value < 0 ?
 									 that.scaleY(data.value) : that.scaleY(data.y);
 					},
@@ -254,6 +270,18 @@ function expressionConfig ()	{
 						return bio.scales().band(that.scaleX);
 					},
 					height: function (data, idx, that)	{
+						if ((that.copyAllYaxis[0] === 
+								 that.copyAllYaxis[1]) && 
+								 (that.copyAllYaxis[0] ===
+								  bio.math.min(that.copyY)))	{
+							return that.scaleY(bio.math.max(that.copyY)) - that.scaleY(bio.math.min(that.copyY));
+						} if ((that.copyAllYaxis[1] === 
+									that.copyAllYaxis[2]) &&  
+									(that.copyAllYaxis[2] === 
+									bio.math.max(that.copyY))) {
+							return that.scaleY(bio.math.max(that.copyY)) - that.scaleY(bio.math.min(that.copyY));
+						}
+
 						return data.y - data.value < 0 ? 
 									 that.scaleY(data.y) - that.scaleY(data.value) : 
 									 that.scaleY(data.value) - that.scaleY(data.y);
@@ -261,9 +289,27 @@ function expressionConfig ()	{
 				},
 				style: {
 					fill: function (data, idx, that)	{
+						if ((that.copyAllYaxis[0] === 
+								 that.copyAllYaxis[1]) || 
+								(that.copyAllYaxis[1] === 
+								 that.copyAllYaxis[2]))	{
+							return bio.math.max(that.copyY) - 
+										 bio.math.min(that.copyY) ? 
+										 '#62C2E0' : '#FFFFFF';
+						}
+
 						return data.y - data.value === 0 ? '#000000' : '#62C2E0';
 					},
 					stroke: function (data, idx, that)	{
+						if ((that.copyAllYaxis[0] === 
+								 that.copyAllYaxis[1]) || 
+								(that.copyAllYaxis[1] === 
+								 that.copyAllYaxis[2]))	{
+							return bio.math.max(that.copyY) - 
+										 bio.math.min(that.copyY) ? 
+										 '#62C2E0' : '#FFFFFF';
+						}
+
 						return data.y - data.value === 0 ? '#000000' : '#62C2E0';
 					},
 				},

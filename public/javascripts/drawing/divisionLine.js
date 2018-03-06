@@ -27,7 +27,6 @@ function divisionLine ()	{
 			di.textWidth = bio.drawing().textSize.width(
 			di.text.replace(' ', 'a'), opts.style.fontSize || '10px');
 		});
-
 		model.axis = [].concat(opts.axis);
 		model.range = [model.margin.left, model.width - 
 										model.margin.right];
@@ -49,30 +48,31 @@ function divisionLine ()	{
 				});
 			} else {
 				if (opts.idxes[0] === opts.idxes[1] === opts.idxes[2])	{
-					model.division_info[0].start = model.scale(that.data.bar[0].x);
-					model.division_info[0].end = model.scale(that.data.bar[
-							that.data.bar.length % 2 === 1 ? 
-							(that.data.bar.length + 1) / 2 : that.data.bar.length / 2].x);
-					model.division_info[1].start = model.scale(that.data.bar[
-							that.data.bar.length % 2 === 1 ? 
-							(that.data.bar.length + 1) / 2 : that.data.bar.length / 2].x);
-					model.division_info[1].end = model.scale(that.data.bar[that.data.bar.length - 1].x);
+					model.division_info[0].start = model.scale(model.axis[0]);
+					model.division_info[0].end = model.scale(model.axis[
+							model.axis.length % 2 === 1 ? 
+							(model.axis.length + 1) / 2 : model.axis.length / 2]);
+					model.division_info[1].start = model.scale(model.axis[
+							model.axis.length % 2 === 1 ? 
+							(model.axis.length + 1) / 2 : model.axis.length / 2]);
+					model.division_info[1].end = model.scale(model.axis[model.axis.length - 1]);
 				} if ((opts.idxes[0] === opts.idxes[1]) !== opts.idxes[2])	{
-					model.division_info[0].start = model.scale(that.data.bar[0].x);
-					model.division_info[0].end = model.scale(that.data.bar[
-							that.data.bar.length % 2 === 1 ? 
-							(that.data.bar.length + 1) / 2 : that.data.bar.length / 2].x);
-					model.division_info[1].start = model.scale(that.data.bar[
-							that.data.bar.length % 2 === 1 ? 
-							(that.data.bar.length + 1) / 2 : that.data.bar.length / 2].x);
+					model.division_info[0].start = model.scale(model.axis[0]);
+					model.division_info[0].end = model.scale(model.axis[
+							model.axis.length % 2 === 1 ? 
+							(model.axis.length + 1) / 2 : model.axis.length / 2]);
+					model.division_info[1].start = model.scale(model.axis[
+							model.axis.length % 2 === 1 ? 
+							(model.axis.length + 1) / 2 : model.axis.length / 2]);
 				} if ((opts.idxes[1] === opts.idxes[2]) !== (opts.idxes[0]))	{
-					model.division_info[0].end = model.scale(that.data.bar[
-							that.data.bar.length % 2 === 1 ? 
-							(that.data.bar.length + 1) / 2 : that.data.bar.length / 2].x);
-					model.division_info[1].start = model.scale(that.data.bar[
-							that.data.bar.length % 2 === 1 ? 
-							(that.data.bar.length + 1) / 2 : that.data.bar.length / 2].x);
-					model.division_info[1].end = model.scale(that.data.bar[that.data.bar.length - 1].x);
+					model.division_info[0].start = model.scale(model.axis[0]);
+					model.division_info[0].end = model.scale(model.axis[
+							model.axis.length % 2 === 1 ? 
+							(model.axis.length + 1) / 2 : model.axis.length / 2]);
+					model.division_info[1].start = model.scale(model.axis[
+							model.axis.length % 2 === 1 ? 
+							(model.axis.length + 1) / 2 : model.axis.length / 2]);
+					model.division_info[1].end = model.scale(model.axis[model.axis.length - 1]);
 				}
 			}
 		} else if (model.now.geneset)	{

@@ -16,6 +16,7 @@ function bar ()	{
 
 		model.copyX = [].concat(opts.xaxis);
 		model.copyY = [].concat(opts.yaxis);
+		model.copyAllYaxis = [].concat(opts.allYaxis);
 		model.startTo = opts.startTo || ['top', 'left'];
 		model.rangeX = range(model.width, model.margin.left, 
 												 model.margin.right, model.startTo[1]);

@@ -75,10 +75,13 @@
                 
  //                result.push({
  //                  pid: d.pid,
- //                  score: i === data.length - 1 ? 1 : 0
+ //                  score: 0,
+ //                  // score: i === data.length - 1 ? 0 : 1
  //                  // score: sum / d.values.length
  //                });
  //              });
+
+ //              console.log(result);
 
  //              return result;
  //            },
