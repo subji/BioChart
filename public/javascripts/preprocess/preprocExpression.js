@@ -79,18 +79,23 @@ function preprocExpression ()	{
 		Risk function 별 axis 를 만들어 준다.
 	 */
 	function makeFuncAxis (funcName, barData, funcData)	{
-		var axis = [].concat(funcData[funcName]),
-				result = [];
+		var data = [].concat(funcData[funcName]).sort(),
+				result = [],
+				obj = {};
 
 		bio.iteration.loop(barData, function (b)	{
-			result[axis.indexOf(b.value)] = b.x;
+			result[data.indexOf(b.value + '_' + b.x)] = b.x;
 		});
 
 		model.func.xaxis[funcName] = result;
 		model.func.yaxis[funcName] = [
-			bio.math.min(funcData[funcName]),
-			bio.math.median(funcData[funcName]),
-			bio.math.max(funcData[funcName])
+			// bio.math.min(data),
+			// bio.math.median(data),
+			// bio.math.max(data)
+			data[0],
+			data[data.length % 2 == 1 ? 
+					(data.length + 1) / 2 : data.length / 2],
+			data[data.length - 1]
 		];
 
 		bio.iteration.loop(barData, function (b)	{
@@ -117,30 +122,8 @@ function preprocExpression ()	{
 		});
 
 		var result = func(funcData);
-		var isExp = function (score)	{
-			if (Math.abs(score) < 1.0) {
-		    var e = parseInt(score.toString().split('e-')[1]);
-		    if (e) {
-		        score *= Math.pow(10,e-1);
-		        score = '0.' + (new Array(e)).join('0') + score.toString().substring(2);
-		    }
-		  } else {
-		    var e = parseInt(score.toString().split('+')[1]);
-		    if (e > 20) {
-		        e -= 20;
-		        score /= Math.pow(10,e);
-		        score += (new Array(e+1)).join('0');
-		    }
-		  }	
-		  
-		  return score;
-		};
 
 		bio.iteration.loop(result, function (res)	{
-
-			// res.score = isExp(res.score);
-			// res.score = res.score.toString();
-
 			if (model.func.bar[funcName])	{
 				model.func.bar[funcName].push({
 					x: res.pid, 
@@ -156,9 +139,9 @@ function preprocExpression ()	{
 			}
 
 			if (model.func.data[funcName])	{
-				model.func.data[funcName].push(res.score);
+				model.func.data[funcName].push(res.score + '_' + res.pid);
 			} else {
-				model.func.data[funcName] = [res.score];
+				model.func.data[funcName] = [res.score + '_' + res.pid];
 			}	
 		});
 
@@ -166,7 +149,7 @@ function preprocExpression ()	{
 		function (k, f)	{
 			model.func.data[k] = 
 			model.func.data[k].sort(function (a, b) {
-				return a > b ? 1 : -1;
+				return a.split('_')[0] > b.split('_')[0] ? 1 : -1;
 			});
 
 			makeFuncAxis(k, model.func.bar[k], model.func.data);

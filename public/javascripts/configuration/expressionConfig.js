@@ -354,7 +354,7 @@ function expressionConfig ()	{
 						that.position.init.high : data.path_x;
 						that.position.now.low = that.position.init.low;
 						that.position.now.high = that.position.init.high;
-						
+
 						return this.tagName === 'text' ? 
 									 data.text.indexOf('Low') > -1 ? 
 									 data.start + 5 :  data.end - 

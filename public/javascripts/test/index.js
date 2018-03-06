@@ -51,7 +51,7 @@
  //        requestData: {
  //          source: 'GDAC',
  //          cancer_type: 'luad',
- //          sample_id: 'SMCLUAD1705230001',
+ //          // sample_id: 'SMCLUAD1705230001',
  //          // signature: 'PAM50',
  //          // signature: '180117',
  //          signature: '180125',
@@ -65,16 +65,17 @@
  //            func: function (data)  {
  //              var result = [];
 
- //              data.forEach(function (d) {
+ //              data.forEach(function (d, i) {
  //                var sum = 0, avg = 0;
 
  //                bio.iteration.loop(d.values, 
  //                function (v)  {
  //                  sum += v.tpm;
  //                });
-
+                
  //                result.push({
  //                  pid: d.pid,
+ //                  // score: i == 0 ? 1 : i == data.length - 1 ? -1 : 0
  //                  score: sum / d.values.length
  //                });
  //              });

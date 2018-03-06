@@ -51,6 +51,7 @@ function initialize ()	{
 				xaxis: {},
 				yaxis: {},
 				bar: {},
+				tpmMinMax: {},
 			},
 			riskFuncs: {
 				average: function (data)	{
