@@ -34,67 +34,67 @@
  /*
     Expression
   */
- // $.ajax({
- //    'type': 'POST',
- //    'url': '/files/datas',
- //    data: {
- //     name: 'expression',
- //    },
- //    beforeSend: function () {
- //      // bio.loading().start(document.querySelector('#main'), 900, 600);
- //    },
- //    success: function (d) {
- //      bio.expression({
- //        element: '#main',
- //        width: 900,
- //        height: 600,
- //        requestData: {
- //          source: 'GDAC',
- //          cancer_type: 'luad',
- //          // sample_id: 'SMCLUAD1705230001',
- //          // signature: 'PAM50',
- //          // signature: '180117',
- //          signature: '180125',
- //          filter: ':'
- //        },
- //        data: d[0].data,
- //        riskFunctions: [
- //          { 
- //            name: 'Test', 
- //            isDefault: true, // default false
- //            func: function (data)  {
- //              var result = [];
+ $.ajax({
+    'type': 'POST',
+    'url': '/files/datas',
+    data: {
+     name: 'expression',
+    },
+    beforeSend: function () {
+      // bio.loading().start(document.querySelector('#main'), 900, 600);
+    },
+    success: function (d) {
+      bio.expression({
+        element: '#main',
+        width: 900,
+        height: 600,
+        requestData: {
+          source: 'GDAC',
+          cancer_type: 'luad',
+          // sample_id: 'SMCLUAD1705230001',
+          // signature: 'PAM50',
+          // signature: '180117',
+          signature: '180125',
+          filter: ':'
+        },
+        data: d[0].data,
+        riskFunctions: [
+          { 
+            name: 'Test', 
+            isDefault: true, // default false
+            func: function (data)  {
+              var result = [];
 
- //              data.forEach(function (d, i) {
- //                var sum = 0, avg = 0;
+              data.forEach(function (d, i) {
+                var sum = 0, avg = 0;
 
- //                bio.iteration.loop(d.values, 
- //                function (v)  {
- //                  sum += v.tpm;
- //                });
+                bio.iteration.loop(d.values, 
+                function (v)  {
+                  sum += v.tpm;
+                });
                 
- //                result.push({
- //                  pid: d.pid,
- //                  score: i == 0 ? 1 : i == data.length - 1 ? -1 : 0
- //                  // score: sum / d.values.length
- //                });
- //              });
+                result.push({
+                  pid: d.pid,
+                  score: i === 0 ? 1 : 0
+                  // score: sum / d.values.length
+                });
+              });
               
- //              return result;
- //            },
- //          }
- //        ],
- //        divisionFunc: function (left, mid, right, geneList, allRnaList) {
- //          // console.log(left, mid, right, geneList, allRnaList)
- //        },
- //        onSubtypeSelection: function (subtypeName, subtypeColors, model) {
- //          // console.log(subtypeName, subtypeColors, model)
- //        },
- //      });
+              return result;
+            },
+          }
+        ],
+        divisionFunc: function (left, mid, right, geneList, allRnaList) {
+          // console.log(left, mid, right, geneList, allRnaList)
+        },
+        onSubtypeSelection: function (subtypeName, subtypeColors, model) {
+          // console.log(subtypeName, subtypeColors, model)
+        },
+      });
 
- //      // bio.loading().end();
- //    },
- //  });
+      // bio.loading().end();
+    },
+  });
 
  /*
     Landscape

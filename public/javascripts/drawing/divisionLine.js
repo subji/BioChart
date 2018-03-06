@@ -35,14 +35,31 @@ function divisionLine ()	{
 		model.invert = bio.scales().invert(model.scale);
 
 		if (that.data.bar)	{
-			bio.iteration.loop(that.data.bar, function (bar)	{
+			bio.iteration.loop(that.data.bar, function (bar, i)	{
 				if (bar.value === opts.idxes[0])	{
-					model.division_info[0].start = model.scale(bar.x);
-				} else if (bar.value === opts.idxes[1])	{	
-					model.division_info[0].end = model.scale(bar.x);
-					model.division_info[1].start = model.scale(bar.x);
+					if (opts.idxes[0] === 0)	{
+						model.division_info[0].start = model.scale(that.data.bar[0].x);
+					} else {
+						model.division_info[0].start = model.scale(bar.x);
+					}
+				} else if (bar.value === opts.idxes[1])	{
+					if (opts.idxes[1] === 0)	{
+						model.division_info[0].end = model.scale(that.data.bar[
+								that.data.bar.length % 2 === 1 ? 
+								(that.data.bar.length + 1) / 2 : that.data.bar.length / 2].x);
+						model.division_info[1].start = model.scale(that.data.bar[
+								that.data.bar.length % 2 === 1 ? 
+								(that.data.bar.length + 1) / 2 : that.data.bar.length / 2].x);	
+					}	else {
+						model.division_info[0].end = model.scale(bar.x);
+						model.division_info[1].start = model.scale(bar.x);
+					}
 				} else if (bar.value === opts.idxes[2])	{
-					model.division_info[1].end = model.scale(bar.x);
+					if (opts.idxes[2] === 0)	{
+						model.division_info[1].end = model.scale(that.data.bar[that.data.bar.length - 1].x);
+					} else {
+						model.division_info[1].end = model.scale(bar.x);
+					}
 				}
 			});
 		} else if (model.now.geneset)	{
@@ -52,6 +69,8 @@ function divisionLine ()	{
 			model.division_info[1].end = 
 			model.scale(model.axis.length - 1);
 		}
+
+		console.log(model.division_info)
 
 		model.shapeGroup = bio.rendering().addGroup(
 												opts.element, 0, 0, 'division-shape');

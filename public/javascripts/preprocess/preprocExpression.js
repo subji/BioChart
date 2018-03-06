@@ -83,10 +83,11 @@ function preprocExpression ()	{
 				result = [];
 
 		bio.iteration.loop(barData, function (b, i)	{
-			var valIdx = b.value === 0 ? 
-									 i : axis.indexOf(b.value);
-
-			result[valIdx] = b.x;
+			if (b.value !== 0)	{
+				result[axis.indexOf(b.value)] = b.x;
+			} else {
+				result.push(b.x);
+			}
 		});
 
 		model.func.xaxis[funcName] = result;
