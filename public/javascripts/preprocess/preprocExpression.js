@@ -80,13 +80,25 @@ function preprocExpression ()	{
 	 */
 	function makeFuncAxis (funcName, barData, funcData)	{
 		var axis = [].concat(funcData[funcName]),
-				result = [];
+				result = [],
+				beforeVal = null,
+				beforeIdx = 0;
 
-		bio.iteration.loop(barData, function (b, i)	{
-			if (b.value !== 0)	{
-				result[axis.indexOf(b.value)] = b.x;
+		bio.iteration.loop(barData, function (b)	{
+			if (beforeVal === null)	{
+				result[axis.indexOf(b.value)] = b.x;	
+				beforeVal = b.value;
+				beforeIdx = axis.indexOf(b.value);
 			} else {
-				result.push(b.x);
+				if (b.value === beforeVal)	{
+					beforeIdx += 1;
+					result[beforeIdx] = b.x;
+
+				} else {
+					beforeVal = b.value;
+					beforeIdx = axis.indexOf(b.value);
+					result[axis.indexOf(b.value)] = b.x;
+				}
 			}
 		});
 

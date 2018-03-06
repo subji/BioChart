@@ -51,7 +51,9 @@ function expression ()	{
 					'.expression_scatter_plot_svg.division-path-1-g-tag',
 					'.expression_scatter_plot_svg.division-shape-1-g-tag',
 					'.expression_heatmap_svg.heatmap-g-tag',
-					'.expression_heatmap_svg.left-axis-g-tag'
+					'.expression_heatmap_svg.left-axis-g-tag',
+					'.expression_division_svg.division-shape-g-tag',
+					'.expression_division_svg.division-text-g-tag'
 				]);
 
 				// model.now.subtype_mapping = undefined;
@@ -344,11 +346,25 @@ function expression ()	{
 	function divideSurvivalData (bars, median)	{
 		model.data.survival.divide = {};
 
-		bio.iteration.loop(bars, function (bar)	{
-			bar.value <= median ? 
-			model.data.survival.divide[bar.x] = 'unaltered' : 
-			model.data.survival.divide[bar.x] = 'altered';
+		var temp = [].concat(bars);
+
+		temp.sort(function (a, b)	{
+			return a.value > b.value ? 1 : -1;
 		});
+
+		var idx = temp.length % 2 === 1 ? (temp.length + 1) / 2 : temp.length / 2;
+
+		bio.iteration.loop(temp, function (t, i)	{
+			i <= idx ? 
+			model.data.survival.divide[t.x] = 'unaltered' : 
+			model.data.survival.divide[t.x] = 'altered';
+		});
+
+		// bio.iteration.loop(bars, function (bar)	{
+		// 	bar.value <= median ? 
+		// 	model.data.survival.divide[bar.x] = 'unaltered' : 
+		// 	model.data.survival.divide[bar.x] = 'altered';
+		// });
 	};
 	/*
 		선택된 Tab 의 Scatter 를 보여준다.
