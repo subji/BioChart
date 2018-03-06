@@ -59,7 +59,7 @@ function expression ()	{
 				model.divide.scatter = undefined;
 				model.divide = {};
 				
-				// drawHeatmap(model.data, model.data.axis.heatmap, model.data.axis.gradient.x);
+				drawHeatmap(model.data, model.data.axis.heatmap, model.data.axis.gradient.x);
 				drawFunctionBar(model.data, model.data.axis.bar);
 				drawColorMapSelectBox(model.data.subtype, model.now.subtype_mapping);
 				if (model.now.subtype_mapping)	{

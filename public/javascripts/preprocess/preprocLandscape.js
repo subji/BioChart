@@ -263,9 +263,17 @@ function preprocLandscape ()	{
 		model = bio.initialize('preprocess').landscape;
 		// Data 안에 다른 객체가 존재할 경우 그 안을 찾아본다.
 		data = data.gene_list ? data : data.data;
+
+		var tempMut = {};
+
+		data.mutation_list.map(function (m)	{
+			tempMut[m.participant_id] = true;
+			return;
+		});
+
 		// Mutation, Sample, Gene, Group, Patient 데이터 생성.
 		if (data.group_list[0].data.length > 
-				data.mutation_list.length)	{
+				Object.keys(tempMut).length)	{
 			data.mutation_list = adjustMutationList(data.mutation_list, data.group_list[0].data);
 		}
 
