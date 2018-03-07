@@ -34,47 +34,56 @@ function divisionLine ()	{
 		model.invert = bio.scales().invert(model.scale);
 
 		if (that.data.bar)	{
-			if ((opts.idxes[0] !== opts.idxes[1]) && (opts.idxes[1] !== opts.idxes[2]) && 
-					(opts.idxes[0] !== opts.idxes[1] !== opts.idxes[2]))	{
-				bio.iteration.loop(that.data.bar, function (bar, i)	{
-					if (bar.value === opts.idxes[0])	{
-						model.division_info[0].start = model.scale(bar.x);
-					} else if (bar.value === opts.idxes[1])	{
-						model.division_info[0].end = model.scale(bar.x);
-						model.division_info[1].start = model.scale(bar.x);
-					} else if (bar.value === opts.idxes[2])	{
-						model.division_info[1].end = model.scale(bar.x);
-					}
-				});
-			} else {
-				if (opts.idxes[0] === opts.idxes[1] === opts.idxes[2])	{
-					model.division_info[0].start = model.scale(model.axis[0]);
-					model.division_info[0].end = model.scale(model.axis[
-							model.axis.length % 2 === 1 ? 
-							(model.axis.length + 1) / 2 : model.axis.length / 2]);
-					model.division_info[1].start = model.scale(model.axis[
-							model.axis.length % 2 === 1 ? 
-							(model.axis.length + 1) / 2 : model.axis.length / 2]);
-					model.division_info[1].end = model.scale(model.axis[model.axis.length - 1]);
-				} if ((opts.idxes[0] === opts.idxes[1]) !== opts.idxes[2])	{
-					model.division_info[0].start = model.scale(model.axis[0]);
-					model.division_info[0].end = model.scale(model.axis[
-							model.axis.length % 2 === 1 ? 
-							(model.axis.length + 1) / 2 : model.axis.length / 2]);
-					model.division_info[1].start = model.scale(model.axis[
-							model.axis.length % 2 === 1 ? 
-							(model.axis.length + 1) / 2 : model.axis.length / 2]);
-				} if ((opts.idxes[1] === opts.idxes[2]) !== (opts.idxes[0]))	{
-					model.division_info[0].start = model.scale(model.axis[0]);
-					model.division_info[0].end = model.scale(model.axis[
-							model.axis.length % 2 === 1 ? 
-							(model.axis.length + 1) / 2 : model.axis.length / 2]);
-					model.division_info[1].start = model.scale(model.axis[
-							model.axis.length % 2 === 1 ? 
-							(model.axis.length + 1) / 2 : model.axis.length / 2]);
-					model.division_info[1].end = model.scale(model.axis[model.axis.length - 1]);
-				}
-			}
+			var median = model.axis[model.axis.length % 2 === 1 ? 
+									(model.axis.length + 1) / 2 : model.axis.length / 2];
+
+			model.division_info[0].start = model.scale(model.axis[0]);
+			model.division_info[0].end = model.scale(median);
+			model.division_info[1].start = model.scale(median);
+			model.division_info[1].end = model.scale(model.axis[model.axis.length - 1]);
+
+
+			// if ((opts.idxes[0] !== opts.idxes[1]) && (opts.idxes[1] !== opts.idxes[2]) && 
+			// 		(opts.idxes[0] !== opts.idxes[1] !== opts.idxes[2]))	{
+			// 	bio.iteration.loop(that.data.bar, function (bar, i)	{
+			// 		if (bar.value === opts.idxes[0])	{
+			// 			model.division_info[0].start = model.scale(bar.x);
+			// 		} else if (bar.value === opts.idxes[1])	{
+			// 			model.division_info[0].end = model.scale(bar.x);
+			// 			model.division_info[1].start = model.scale(bar.x);
+			// 		} else if (bar.value === opts.idxes[2])	{
+			// 			model.division_info[1].end = model.scale(bar.x);
+			// 		}
+			// 	});
+			// } else {
+			// 	if (opts.idxes[0] === opts.idxes[1] === opts.idxes[2])	{
+			// 		model.division_info[0].start = model.scale(model.axis[0]);
+			// 		model.division_info[0].end = model.scale(model.axis[
+			// 				model.axis.length % 2 === 1 ? 
+			// 				(model.axis.length + 1) / 2 : model.axis.length / 2]);
+			// 		model.division_info[1].start = model.scale(model.axis[
+			// 				model.axis.length % 2 === 1 ? 
+			// 				(model.axis.length + 1) / 2 : model.axis.length / 2]);
+			// 		model.division_info[1].end = model.scale(model.axis[model.axis.length - 1]);
+			// 	} if ((opts.idxes[0] === opts.idxes[1]) !== opts.idxes[2])	{
+			// 		model.division_info[0].start = model.scale(model.axis[0]);
+			// 		model.division_info[0].end = model.scale(model.axis[
+			// 				model.axis.length % 2 === 1 ? 
+			// 				(model.axis.length + 1) / 2 : model.axis.length / 2]);
+			// 		model.division_info[1].start = model.scale(model.axis[
+			// 				model.axis.length % 2 === 1 ? 
+			// 				(model.axis.length + 1) / 2 : model.axis.length / 2]);
+			// 	} if ((opts.idxes[1] === opts.idxes[2]) !== (opts.idxes[0]))	{
+			// 		model.division_info[0].start = model.scale(model.axis[0]);
+			// 		model.division_info[0].end = model.scale(model.axis[
+			// 				model.axis.length % 2 === 1 ? 
+			// 				(model.axis.length + 1) / 2 : model.axis.length / 2]);
+			// 		model.division_info[1].start = model.scale(model.axis[
+			// 				model.axis.length % 2 === 1 ? 
+			// 				(model.axis.length + 1) / 2 : model.axis.length / 2]);
+			// 		model.division_info[1].end = model.scale(model.axis[model.axis.length - 1]);
+			// 	}
+			// }
 		} else if (model.now.geneset)	{
 			model.division_info[0].start = model.scale(model.axis[0]);
 			model.division_info[0].end = model.scale(opts.idxes);

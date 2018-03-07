@@ -318,7 +318,7 @@ function expressionConfig ()	{
 						bio.tooltip({
 							element: this,
 							contents: 'ID: <b>' + data.x + '</b></br>' + 
-												'Average: <b>' + data.value + '</b>',
+												'score: <b>' + data.value + '</b>',
 						});
 					},
 					mouseout: function (data, idx, that)	{
