@@ -132,7 +132,18 @@ function preprocExpression ()	{
 			});
 		});
 
-		var result = func(funcData);
+		var result = func(funcData),
+				hasScore = [];
+
+		bio.iteration.loop(result, function (res)	{
+			if (res.score !== undefined)	{
+				hasScore.push(res.score);
+			}
+		});
+
+		if (hasScore.length === 0)	{
+			throw new Error('There are not have any score value in RiskFunction result');
+		}
 
 		bio.iteration.loop(result, function (res)	{
 			if (model.func.bar[funcName])	{
