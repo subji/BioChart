@@ -247,20 +247,10 @@ function expressionConfig ()	{
 						return that.scaleX(data.x);
 					},
 					y: function (data, idx, that)	{
-						if ((that.copyAllYaxis[0] === 
-								 that.copyAllYaxis[1]) && 
-								 (that.copyAllYaxis[0] ===
-								  bio.math.min(that.copyY)))	{
-							if (data.value === 0)	{
-								return that.height;
-							} else {
-								return that.scaleY(bio.math.max(that.copyY));
-							}
-						} if ((that.copyAllYaxis[1] === 
-									that.copyAllYaxis[2]) &&  
-									(that.copyAllYaxis[2] === 
-									bio.math.max(that.copyY))) {
-							return that.scaleY(bio.math.max(that.copyY));
+						if (that.extremeValue)	{
+							return data.value === bio.math.max(that.copyY) ? 
+										 that.scaleY(bio.math.max(that.copyY)) : 
+										 that.height;	
 						}
 
 						return data.y - data.value < 0 ?
@@ -270,16 +260,9 @@ function expressionConfig ()	{
 						return bio.scales().band(that.scaleX);
 					},
 					height: function (data, idx, that)	{
-						if ((that.copyAllYaxis[0] === 
-								 that.copyAllYaxis[1]) && 
-								 (that.copyAllYaxis[0] ===
-								  bio.math.min(that.copyY)))	{
-							return that.scaleY(bio.math.max(that.copyY)) - that.scaleY(bio.math.min(that.copyY));
-						} if ((that.copyAllYaxis[1] === 
-									that.copyAllYaxis[2]) &&  
-									(that.copyAllYaxis[2] === 
-									bio.math.max(that.copyY))) {
-							return that.scaleY(bio.math.max(that.copyY)) - that.scaleY(bio.math.min(that.copyY));
+						if (that.extremeValue)	{
+							return that.scaleY(bio.math.max(that.copyY)) - 
+										 that.scaleY(bio.math.min(that.copyY));
 						}
 
 						return data.y - data.value < 0 ? 
@@ -289,10 +272,7 @@ function expressionConfig ()	{
 				},
 				style: {
 					fill: function (data, idx, that)	{
-						if ((that.copyAllYaxis[0] === 
-								 that.copyAllYaxis[1]) || 
-								(that.copyAllYaxis[1] === 
-								 that.copyAllYaxis[2]))	{
+						if (that.extremeValue)	{
 							return bio.math.max(that.copyY) - 
 										 bio.math.min(that.copyY) ? 
 										 '#62C2E0' : '#FFFFFF';
@@ -301,10 +281,7 @@ function expressionConfig ()	{
 						return data.y - data.value === 0 ? '#000000' : '#62C2E0';
 					},
 					stroke: function (data, idx, that)	{
-						if ((that.copyAllYaxis[0] === 
-								 that.copyAllYaxis[1]) || 
-								(that.copyAllYaxis[1] === 
-								 that.copyAllYaxis[2]))	{
+						if (that.extremeValue)	{
 							return bio.math.max(that.copyY) - 
 										 bio.math.min(that.copyY) ? 
 										 '#62C2E0' : '#FFFFFF';
@@ -317,7 +294,7 @@ function expressionConfig ()	{
 					mouseover: function (data, idx, that)	{
 						bio.tooltip({
 							element: this,
-							contents: 'ID: <b>' + data.x + '</b></br>' + 
+							contents: 'pid: <b>' + data.x + '</b></br>' + 
 												'score: <b>' + data.value + '</b>',
 						});
 					},
