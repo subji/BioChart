@@ -648,6 +648,24 @@ function expression ()	{
 	};
 
 	function drawDivision (data, lowHigh)	{
+		var low_path = '.division-path-0-g-tag path',
+				high_path = '.division-path-1-g-tag path',
+				rect = '#expression_division_svg_division_shape_rect';
+
+		function redrawMarker (marker, data, value)	{
+			marker.attr('points', function (d, i, t)	{
+				return bio.rendering().triangleStr(
+							value + data.additional, data.path_y, 10, data.direction);
+			});
+		};
+
+		function redrawLine (line, value)	{
+			var target = line.attr('d'),
+					linePos = target.substring(
+						target.indexOf('M') + 1, target.indexOf(','));
+			// Redraw line.
+			line.attr('d', target.replace(new RegExp(linePos,"gi"), value));
+		};
 		/*
 			Low, High 별로 환자 배열을 순환.
 		 */
@@ -729,8 +747,121 @@ function expression ()	{
 				data: data.bar,
 				text: divCnf.text,
 				attr: divCnf.attr,
+				on: {
+					mouseover: function (data, idx, that)	{
+						if (!model.isDraggable)	{
+							if (data.text.indexOf('Low') > -1)	{
+								var nowLowPid = that.invert(
+									that.position.now.low || 
+									that.position.init.low),
+										nowScore = that.data.bar.filter(function (d)	{
+											if (d.x === nowLowPid)	{
+												return d.value;
+											};
+										})[0].value;
+
+								bio.tooltip({
+									element: this,
+									contents: '<b>' + nowScore + '</b>',
+								});
+							} else {
+								var nowHighPid = that.invert(
+									that.position.now.high || 
+									that.position.init.high),
+										nowScore = that.data.bar.filter(function (d)	{
+										if (d.x === nowHighPid)	{
+											return d.value;
+										};
+									})[0].value;
+
+								bio.tooltip({
+									element: this,
+									contents: '<b>' + nowScore + '</b>',
+								});
+							}
+						}
+					},
+					mouseout: function (data, idx, that)	{
+						bio.tooltip('hide');
+
+						model.isDraggable = false;
+					}
+				},
 				call: {
-					drag: divCnf.call.drag,
+					start: function (data, idx, that)	{
+						model.isDraggable = true;
+					},
+					drag: function (data, idx, that)	{
+						if (data.text.indexOf('Low') > -1)	{
+							that.position.init.low = that.position.init.low ? 
+							that.position.init.low : data.path_x;
+							that.position.now.low = that.position.now.low ? 
+							that.position.now.low += d3.event.dx: data.path_x;
+
+							var pos = that.position.now.low = 
+									Math.max(data.start, 
+									Math.min(that.position.now.high || data.path_x, 
+													 that.position.now.low));
+
+							redrawMarker(
+								d3.select(this), data, that.position.now.low);
+							redrawLine(d3.select(low_path), pos);
+							d3.selectAll(rect)
+								.attr('width', function (d, i, t)	{
+									return d.text === data.text ? pos - d.start : 
+												 d.end - that.position.now.high;
+							});
+
+						var nowLowPid = that.invert(that.position.now.low),
+								nowScore = that.data.bar.filter(function (d)	{
+									if (d.x === nowLowPid)	{
+										return d.value;
+									};
+								})[0].value;
+
+						bio.tooltip({
+							element: this,
+							contents: '<b>' + nowScore + '</b>',
+						});
+
+						} else {
+							that.position.init.high = that.position.init.high ? 
+							that.position.init.high : data.path_x;
+							that.position.now.high = that.position.now.high ? 
+							that.position.now.high += d3.event.dx: data.path_x;
+
+							var pos = that.position.now.high = 
+									Math.max(that.position.now.low || data.path_x, 
+									Math.min(data.end, that.position.now.high)),
+									line = d3.select(low_path).attr('d'),
+									linePos = line.substring(line.indexOf('M') + 1, 
+																					 line.indexOf(','));
+							
+							redrawMarker(
+								d3.select(this), data, that.position.now.high);
+							redrawLine(d3.select(high_path), pos);
+							d3.selectAll(rect)
+								.attr('x', function (d, i, t)	{
+									return d.text === data.text ? pos : d.start;
+								})
+								.attr('width', function (d, i, t)	{
+									return d.text === data.text ? d.end - pos : 
+												 that.position.now.low - d.start;
+							});
+
+						var nowHighPid = that.invert(that.position.now.high),
+								nowScore = that.data.bar.filter(function (d)	{
+								if (d.x === nowHighPid)	{
+									return d.value;
+								};
+							})[0].value;
+
+							bio.tooltip({
+								element: this,
+								contents: '<b>' + nowScore + '</b>',
+							});
+						}
+					},
 					end: function (data, idx, that)	{
 						var axis = [].concat(that.axis);
 						
@@ -746,8 +877,9 @@ function expression ()	{
 							that.axis.indexOf(model.divide.low_sample));
 
 						changeByDrag(model.divide.low_arr, model.divide.high_arr);
-
 						getDivisionData();
+
+						bio.tooltip('hide');
 					},
 				},
 				style: divCnf.style,
@@ -785,6 +917,7 @@ function expression ()	{
 	return function (opts)	{
 		model = {};
 		model = bio.initialize('expression');
+		model.isDraggable = false;
 		// Risk function 을 추가하는부분.
 		model.riskFunctions = opts.riskFunctions ? 
 		opts.riskFunctions : [];

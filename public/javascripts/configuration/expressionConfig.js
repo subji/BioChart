@@ -354,21 +354,6 @@ function expressionConfig ()	{
 				high_path = '.division-path-1-g-tag path',
 				rect = '#expression_division_svg_division_shape_rect';
 
-		function redrawMarker (marker, data, value)	{
-			marker.attr('points', function (d, i, t)	{
-				return bio.rendering().triangleStr(
-							value + data.additional, data.path_y, 10, data.direction);
-			});
-		};
-
-		function redrawLine (line, value)	{
-			var target = line.attr('d'),
-					linePos = target.substring(
-						target.indexOf('M') + 1, target.indexOf(','));
-			// Redraw line.
-			line.attr('d', target.replace(new RegExp(linePos,"gi"), value));
-		};
-
 		return {
 			bar: {
 				margin: [0, leftMargin, 0, 20],
@@ -422,60 +407,9 @@ function expressionConfig ()	{
 						return this.tagName === 'polygon' ? 'pointer' : 'normal';
 					},
 				},
-				call: {
-					drag: function (data, idx, that)	{
-						if (data.text.indexOf('Low') > -1)	{
-							that.position.init.low = that.position.init.low ? 
-							that.position.init.low : data.path_x;
-							that.position.now.low = that.position.now.low ? 
-							that.position.now.low += d3.event.dx: data.path_x;
-
-							var pos = that.position.now.low = 
-									Math.max(data.start, 
-									Math.min(that.position.now.high || data.path_x, 
-													 that.position.now.low));
-
-							redrawMarker(
-								d3.select(this), data, that.position.now.low);
-							redrawLine(d3.select(low_path), pos);
-							d3.selectAll(rect)
-								.attr('width', function (d, i, t)	{
-									return d.text === data.text ? pos - d.start : 
-												 d.end - that.position.now.high;
-							});
-
-						} else {
-							that.position.init.high = that.position.init.high ? 
-							that.position.init.high : data.path_x;
-							that.position.now.high = that.position.now.high ? 
-							that.position.now.high += d3.event.dx: data.path_x;
-
-							var pos = that.position.now.high = 
-									Math.max(that.position.now.low || data.path_x, 
-									Math.min(data.end, that.position.now.high)),
-									line = d3.select(low_path).attr('d'),
-									linePos = line.substring(line.indexOf('M') + 1, 
-																					 line.indexOf(','));
-							
-							redrawMarker(
-								d3.select(this), data, that.position.now.high);
-							redrawLine(d3.select(high_path), pos);
-							d3.selectAll(rect)
-								.attr('x', function (d, i, t)	{
-									return d.text === data.text ? pos : d.start;
-								})
-								.attr('width', function (d, i, t)	{
-									return d.text === data.text ? d.end - pos : 
-												 that.position.now.low - d.start;
-							});
-						}
-					},
-				},
 				text: function (data, idx, that)	{ return data.text; },
 			},
-			scatter: {
-				margin: [0, leftMargin, 0, 20],
-			},
+			scatter: { margin: [0, leftMargin, 0, 20] },
 		}[type];
 	};
 
