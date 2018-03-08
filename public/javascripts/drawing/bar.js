@@ -16,7 +16,6 @@ function bar ()	{
 
 		model.copyX = [].concat(opts.xaxis);
 		model.copyY = [].concat(opts.yaxis);
-		model.copyAllYaxis = [].concat(opts.allYaxis);
 		model.extremeValue = false;
 		model.startTo = opts.startTo || ['top', 'left'];
 		model.rangeX = range(model.width, model.margin.left, 
@@ -29,17 +28,21 @@ function bar ()	{
 		model.group = bio.rendering().addGroup(
 										opts.element, 0, 0, 'bar');
 
-		var objYaxis = {}
+		if (opts.allYaxis)	{
+			model.copyAllYaxis = [].concat(opts.allYaxis);
 
-		bio.iteration.loop(opts.allYaxis, function (ay)	{
-			objYaxis[ay] = true;
-		});
+			var objYaxis = {}
 
-		if (Object.keys(objYaxis).length === 
-				model.copyY.length)	{
-			if (objYaxis[bio.math.min(model.copyY)] && 
-					objYaxis[bio.math.max(model.copyY)])	{
-				model.extremeValue = true;
+			bio.iteration.loop(opts.allYaxis, function (ay)	{
+				objYaxis[ay] = true;
+			});
+
+			if (Object.keys(objYaxis).length === 
+					model.copyY.length)	{
+				if (objYaxis[bio.math.min(model.copyY)] && 
+						objYaxis[bio.math.max(model.copyY)])	{
+					model.extremeValue = true;
+				}
 			}
 		}
 
