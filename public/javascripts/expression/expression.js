@@ -316,7 +316,7 @@ function expression ()	{
 			var config = bio.expressionConfig(),
 					shapeCnf = config.bar('shape', data.axisMargin),
 					axisCnf = config.bar('axis', data.axisMargin);
-
+					
 			bio.bar({
 				element: svg,
 				xaxis: axis.x,

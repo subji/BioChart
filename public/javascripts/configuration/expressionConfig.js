@@ -248,10 +248,10 @@ function expressionConfig ()	{
 					},
 					y: function (data, idx, that)	{
 						if (that.extremeValue)	{
-							return data.value === bio.math.max(that.copyY) ? 
-										 that.scaleY(bio.math.max(that.copyY)) : 
-										 that.height;	
-						}
+							return data.y - data.value === 0 ? that.scaleY(data.y) : 
+										 data.y - data.value < 0 ?
+								 		that.scaleY(data.value) : that.scaleY(data.y);
+						} 
 
 						return data.y - data.value < 0 ?
 									 that.scaleY(data.value) : that.scaleY(data.y);
@@ -261,8 +261,18 @@ function expressionConfig ()	{
 					},
 					height: function (data, idx, that)	{
 						if (that.extremeValue)	{
-							return that.scaleY(bio.math.max(that.copyY)) - 
-										 that.scaleY(bio.math.min(that.copyY));
+							if ((data.y - data.value) === 0)	{
+								if (that.copyAllYaxis.length === that.copyY.length)	{
+									return that.scaleY(bio.math.max(that.copyY)) - 
+										 		 that.scaleY(bio.math.min(that.copyY));
+								} else {
+									return 0;
+								}
+							}
+
+							return data.y - data.value < 0 ? 
+										 that.scaleY(data.y) - that.scaleY(data.value) : 
+										 that.scaleY(data.value) - that.scaleY(data.y);
 						}
 
 						return data.y - data.value < 0 ? 

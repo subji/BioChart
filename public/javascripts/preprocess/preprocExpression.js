@@ -84,6 +84,8 @@ function preprocExpression ()	{
 				beforeVal = null,
 				beforeIdx = 0;
 
+		// console.log(axis);
+
 		bio.iteration.loop(barData, function (b)	{
 			if (beforeVal === null)	{
 				result[axis.indexOf(b.value)] = b.x;	
