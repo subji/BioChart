@@ -269,10 +269,6 @@ function expressionConfig ()	{
 									return 0;
 								}
 							}
-
-							return data.y - data.value < 0 ? 
-										 that.scaleY(data.y) - that.scaleY(data.value) : 
-										 that.scaleY(data.value) - that.scaleY(data.y);
 						}
 
 						return data.y - data.value < 0 ? 
