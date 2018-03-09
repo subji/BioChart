@@ -449,7 +449,8 @@ function landscape ()	{
 	function enabledDisabeldMaximumElement (mutationList)	{
 		var loc = [],
 				isDraw = false,
-				svg = d3.select('#landscape_heatmap_svg');
+				svg = d3.select('#landscape_heatmap_svg'),
+				isAllEnabled = true;
 
 		if (mutationList)	{
 			bio.iteration.loop(mutationList, function (ml)	{
@@ -478,6 +479,17 @@ function landscape ()	{
 					{ x: l.divPosx, y: parseFloat(svg.attr('height'))}
 				]);
 			});
+
+			bio.iteration.loop(model.now.geneline.axis, 
+			function (key, value)	{
+				if (value.isGene === 'disable')	{
+					isAllEnabled = false;
+				}
+			});
+
+			if (isAllEnabled)	{
+				return false;
+			}
 
 			if (mutationList)	{
 				var isDrawLine = 0;
