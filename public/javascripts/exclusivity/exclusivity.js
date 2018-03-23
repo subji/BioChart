@@ -345,8 +345,8 @@ function exclusivity ()	{
 
 		drawExclusivity(model.data);
 
-		console.log('>>> Exclusivity reponse data: ', opts);
-		console.log('>>> Exclusivity setting data: ', model.setting);
-		console.log('>>> Exclusivity model data: ', model);
+		// console.log('>>> Exclusivity reponse data: ', opts);
+		// console.log('>>> Exclusivity setting data: ', model.setting);
+		// console.log('>>> Exclusivity model data: ', model);
 	};
 };

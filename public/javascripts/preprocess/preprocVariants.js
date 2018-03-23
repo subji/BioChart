@@ -101,8 +101,8 @@ function preprocVariants ()	{
 		forShape(model.needle.line, model.needle.shape);
 		forShape(model.patient.line, model.patient.shape);
 
-		console.log('>>> Preprocess variants data: ', data);
-		console.log('>>> Preprocess data: ', model);
+		// console.log('>>> Preprocess variants data: ', data);
+		// console.log('>>> Preprocess data: ', model);
 
 		return model;
 	};

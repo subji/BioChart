@@ -196,8 +196,8 @@ function variants ()	{
 
 		drawVariants(model.data);
 
-		console.log('>>> Variants reponse data: ', opts);
-		console.log('>>> Variants setting data: ', model.setting);
-		console.log('>>> Variants model data: ', model);
+		// console.log('>>> Variants reponse data: ', opts);
+		// console.log('>>> Variants setting data: ', model.setting);
+		// console.log('>>> Variants model data: ', model);
 	};
 };

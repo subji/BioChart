@@ -262,8 +262,8 @@ function preprocExclusivity ()	{
 		model.mostGeneWidth = 
 		bio.drawing().mostWidth(model.geneset_all, '12px');
 
-		console.log('>>> Preprocess exclusivity data: ', data);
-		console.log('>>> Preprocess data: ', model);
+		// console.log('>>> Preprocess exclusivity data: ', data);
+		// console.log('>>> Preprocess data: ', model);
 
 		return model;
 	};

@@ -205,8 +205,8 @@ function pathway ()	{
 			drugEvent(opts.cancer_type, model.data.drugs);
 		});
 
-		console.log('>>> Pathway reponse data: ', opts);
-		console.log('>>> Pathway setting data: ', model.setting);
-		console.log('>>> Pathway model data: ', model);
+		// console.log('>>> Pathway reponse data: ', opts);
+		// console.log('>>> Pathway setting data: ', model.setting);
+		// console.log('>>> Pathway model data: ', model);
 	};
 };

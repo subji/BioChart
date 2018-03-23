@@ -33,8 +33,8 @@ function preprocPathway ()	{
 
 		makeDrugList(data.pathway, data.drugs);
 
-		console.log('>>> Preprocess pathway data: ', data);
-		console.log('>>> Preprocess data: ', model);
+		// console.log('>>> Preprocess pathway data: ', data);
+		// console.log('>>> Preprocess data: ', model);
 
 		return model;
 	};
