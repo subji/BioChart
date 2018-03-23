@@ -49,7 +49,7 @@ function preprocLandscape ()	{
 		Mutation list 를 반복하며,
 		type list, mutation list, gene, sample 데이터를 만든다.
 	 */
-	function iterateMutation (stacks, mutation)	{
+	function iterateMutation (stacks, mutation, isChange)	{
 		var result = {};
 
 		iterateCommon(mutation, function (d)	{
@@ -59,7 +59,10 @@ function preprocLandscape ()	{
 				nested(s.obj, d[s.data], d[s.type]);
 			});
 			
-			heatmapDataFormat(model.heatmap, d);
+			if (!isChange)	{
+				heatmapDataFormat(model.heatmap, d);
+			}
+
 			makeXAxis(model.axis.sample.x, d.participant_id);
 		});
 

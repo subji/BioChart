@@ -24,7 +24,7 @@ function landscape ()	{
 				obj: {}, data: 'participant_id', 
 				type: 'type', keyName: 'sample' 
 			}
-		], mutationList);
+		], mutationList, true);
 		var changeSampleStacks = model.data.byStack([], 'sample', 
 					changedSampleStack.result.sample),
 				reloadSampleAxis = model.data.makeLinearAxis(
@@ -814,7 +814,6 @@ function landscape ()	{
 									// 항목에서 제거해야 한다.
 									model.now.geneline.sortedSiblings.push(
 									model.now.geneline.sortedSiblings.splice(geneIdx, 1)[0]);
-									
 									model.now.geneline.pidList = remakeMutationList();
 									isGroupMutationList = model.now.geneline.pidList.data; 
 									isNewPidGroupList = model.now.geneline.pidList.arr;
@@ -836,7 +835,6 @@ function landscape ()	{
 
 									model.now.geneline.removedMutationObj[data] = undefined;
 									model.now.geneline.removedMutationArr[data] = undefined;
-
 									model.now.geneline.pidList = remakeMutationList();
 
 									bio.iteration.loop(model.now.geneline.axis,
@@ -869,7 +867,9 @@ function landscape ()	{
 								model.exclusive.now = 
 								bio.landscapeSort()
 									 .exclusive(model.data.heatmap, model.data.gene, type);
+
 								changeSampleStack(model.now.mutation_list);
+								console.log(model.data.heatmap)
 								// Group 별로 정렬된 상태에서 enable / disable 을 할때,
 								// Group 정렬을 유지한다.
 								if (model.now.geneline.groupList)	{
@@ -1061,6 +1061,7 @@ function landscape ()	{
 					 ['top', 'left']);
 		drawBar('samplePatient', md.stack.patient, 
 						md.axis.patient.sample, ['top', 'left']);
+
 		drawHeatmap('heatmap', md.heatmap, md.axis.heatmap);
 		drawHeatmap('patientHeatmap', md.patient, 
 																	md.axis.patient.heatmap);

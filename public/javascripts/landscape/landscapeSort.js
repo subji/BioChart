@@ -276,7 +276,7 @@ function landscapeSort ()	{
 		});
 
 		typeToString(result, genes, data, type);
-		
+
 		return model.exclusive = result, sortByExclusive(result);
 	};
 	/*

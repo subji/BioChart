@@ -244,6 +244,8 @@ function expressionConfig ()	{
 						return 'expression_bar_plot_rect';
 					},
 					x: function (data, idx, that)	{
+						if (that.extremeValue)	{
+						}
 						return that.scaleX(data.x);
 					},
 					y: function (data, idx, that)	{

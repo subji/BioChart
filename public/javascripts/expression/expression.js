@@ -316,7 +316,7 @@ function expression ()	{
 			var config = bio.expressionConfig(),
 					shapeCnf = config.bar('shape', data.axisMargin),
 					axisCnf = config.bar('axis', data.axisMargin);
-					
+			
 			bio.bar({
 				element: svg,
 				xaxis: axis.x,
@@ -360,12 +360,6 @@ function expression ()	{
 			model.data.survival.divide[t.x] = 'unaltered' : 
 			model.data.survival.divide[t.x] = 'altered';
 		});
-
-		// bio.iteration.loop(bars, function (bar)	{
-		// 	bar.value <= median ? 
-		// 	model.data.survival.divide[bar.x] = 'unaltered' : 
-		// 	model.data.survival.divide[bar.x] = 'altered';
-		// });
 	};
 	/*
 		선택된 Tab 의 Scatter 를 보여준다.

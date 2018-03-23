@@ -82,24 +82,38 @@ function preprocExpression ()	{
 		var axis = [].concat(funcData[funcName]),
 				result = [],
 				beforeVal = null,
-				beforeIdx = 0;
+				beforeIdx = 0,
+				valueMaps = {};
 
 		bio.iteration.loop(barData, function (b)	{
-			if (beforeVal === null)	{
-				result[axis.indexOf(b.value)] = b.x;	
-				beforeVal = b.value;
-				beforeIdx = axis.indexOf(b.value);
-			} else {
-				if (b.value === beforeVal)	{
-					beforeIdx += 1;
-					result[beforeIdx] = b.x;
+			var key = b.value + '_' + axis.indexOf(b.value);
 
+			if (Object.keys(valueMaps).length === 0)	{
+				valueMaps[key] = {
+					x: b.x,
+					index: axis.indexOf(b.value),
+				};
+			} else {
+				if (valueMaps[key])	{
+					var idx = valueMaps[key].index += 1;
+
+					valueMaps[b.value + '_' + idx] = {
+						x: b.x,
+						index: idx,
+					};
 				} else {
-					beforeVal = b.value;
-					beforeIdx = axis.indexOf(b.value);
-					result[axis.indexOf(b.value)] = b.x;
+					valueMaps[key] = {
+						x: b.x,
+						index: axis.indexOf(b.value),
+					};
 				}
 			}
+		});
+
+		bio.iteration.loop(valueMaps, function (key, obj)	{
+			var divide = key.split('_');
+
+			result[divide[1]] = obj.x;
 		});
 
 		model.func.xaxis[funcName] = result;
