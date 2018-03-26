@@ -1061,7 +1061,6 @@ function landscape ()	{
 					 ['top', 'left']);
 		drawBar('samplePatient', md.stack.patient, 
 						md.axis.patient.sample, ['top', 'left']);
-
 		drawHeatmap('heatmap', md.heatmap, md.axis.heatmap);
 		drawHeatmap('patientHeatmap', md.patient, 
 																	md.axis.patient.heatmap);

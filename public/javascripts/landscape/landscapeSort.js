@@ -228,9 +228,11 @@ function landscapeSort ()	{
 							mutIdx = geneIdx + 1,
 							mutVal = bio.landscapeConfig()
 													.byCase(d.value);
+
 					r.value = r.value.replaceAt(geneIdx, '1');
 					r.value = r.value.replaceAt(mutIdx, mutVal === 'cnv' ? 
-																		 (type === '1' ? '1' : '0') : '0');
+																		 (type === '1' ? '1' : '0') : 
+																		 r.value[mutIdx] === '1' ? '1' : '0');
 				}
 			});
 		});
