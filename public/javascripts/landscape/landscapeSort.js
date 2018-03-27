@@ -221,47 +221,39 @@ function landscapeSort ()	{
 		Type 을 문자열의 형태로 바꿔주는 함수.
 	 */
 	function typeToString (result, genes, data, type, term)	{
-		var cnvTerm = (model.ordered.endGene + model.ordered.endCnv) - 
-									model.ordered.endGene,
-				somTerm = (model.ordered.endGene + model.ordered.endCnv + 
-									model.ordered.endSomatic) - 
-									(model.ordered.endGene + model.ordered.endCnv),
+		var genLen = genes.length,
 				cnvLen = model.ordered.cnv.length,
 				somLen = model.ordered.somatic.length;
 
 		bio.iteration.loop(result, function (r)	{
 			bio.iteration.loop(data, function(d)	{
 				if (d.x === r.key)	{
-					var geneIdx = genes.indexOf(d.y) * term,
+					var geneIdx = genes.indexOf(d.y) * 2,
 							mutIdx = geneIdx + 1,
 							mutVal = bio.landscapeConfig()
 													.byCase(d.value);
 
-					var cnvOrd = model.ordered.cnv.indexOf(d.value),
-							somOrd = model.ordered.somatic.indexOf(d.value),
-							cnvVal = cnvLen - cnvOrd,
-							somVal = somLen - somOrd,
-							cnvToStr = '' + cnvVal,
-							somToStr = '' + somVal,
-							cnvIdx = geneIdx + model.ordered.endGene + 
-											(cnvTerm - cnvToStr.length),
-							somIdx = cnvIdx + model.ordered.endCnv + 
-											(somTerm - somToStr.length);
+					var genOrd = genes.indexOf(d.y),
+							cnvOrd = model.ordered.cnv.indexOf(d.value),
+							somOrd = model.ordered.somatic.indexOf(d.value);
 
 					r.value = r.value.replaceAt(geneIdx, '1');
 
-					// if (type === '1')	{
-					// 	if (cnvOrd > -1)	{
-					// 		r.value = r.value.replaceAt(0, '1');
-					// 		r.value = r.value.substring(0, cnvIdx) + cnvToStr + 
-					// 							r.value.substring(cnvIdx + cnvToStr.length + 1);
-					// 	} 
+					r.innerSort = r.innerSort.replaceAt(genOrd, '1');
 
-					// 	if (somOrd > -1)	{
-					// 		r.value = r.value.substring(0, somIdx) + somToStr + 
-					// 							r.value.substring(somIdx + somToStr.length + 1);
-					// 	} 
-					// }
+					if (type === '1')	{
+						if (cnvOrd > -1)	{
+							r.innerSort = r.innerSort.replaceAt(
+								genLen + (genOrd * cnvLen) + cnvOrd, '1');
+						} 
+
+						if (somOrd > -1)	{
+							var somStart = genLen + genLen * cnvLen;
+
+							r.innerSort = r.innerSort.replaceAt(
+								somStart + (genOrd * somLen) + somOrd, '1');
+						} 
+					}
 
 					r.value = r.value.replaceAt(mutIdx, mutVal === 'cnv' ? 
 																		 (type === '1' ? '1' : '0') : 
@@ -270,7 +262,33 @@ function landscapeSort ()	{
 			});
 		});
 
-		return result;
+		var obj = {},
+				orderKeys = [],
+				clearResult = [];
+
+		result = sortByExclusive(result);
+
+		bio.iteration.loop(result.resort, function (rs)	{
+			!obj[rs.value] ? obj[rs.value] = [rs] : 
+			obj[rs.value].push(rs);
+		});
+
+		orderKeys = Object.keys(obj).sort(function (a, b)	{
+			return a < b ? 1 : -1;
+		});
+
+		bio.iteration.loop(orderKeys, function (ok)	{
+			clearResult = clearResult.concat(obj[ok].sort(function (a, b)	{
+				return a.innerSort < b.innerSort ? 1 : -1;
+			}));
+		});
+
+		return {
+			axis: 'x',
+			data: clearResult.map(function (cr)	{
+				return cr.key;
+			})
+		};
 	};
 	/*
 		앞서 만들어진 Exclusive 용 데이터를 여기 함수에서
@@ -279,11 +297,13 @@ function landscapeSort ()	{
 	function sortByExclusive (result)	{
 		var res = result.sort(function (a, b)	{
 			return a.value < b.value ? 1 : -1;
-		}).map(function (r)	{
-			return r.key;
 		});
 
-		return { axis: 'x', data: res };
+		return { 
+			axis: 'x', 
+			data: res.map(function (r)	{ return r.key; }), 
+			resort: res,
+		};
 	};
 
 	/*
@@ -295,25 +315,7 @@ function landscapeSort ()	{
 			'somatic': []
 		};
 
-		var geneCnt = 0,
-				cnvCnt = 0,
-				somCnt = 0;
-
-		function recursiveCount (list, len, num, res)	{
-			var len = len || list.length,
-					num = 1,
-					res = res || '0';
-
-			if ((len / 10) < 1)	{
-				return res;
-			}
-
-			num *= 10;
-			len /= 10;
-			res = recursiveCount(list, parseInt(len), num, res);
-
-			return res += '0';
-		};
+		var result = '0';
 
 		bio.iteration.loop(types, function (t)	{
 			if (bio.landscapeConfig().byCase(t) === 'cnv')	{
@@ -325,16 +327,16 @@ function landscapeSort ()	{
 
 		model.ordered.cnv = model.ordered.cnv.sort();
 		model.ordered.somatic = model.ordered.somatic.sort();
-		
-		geneCnt = recursiveCount(genes);
-		cnvCnt = recursiveCount(model.ordered.cnv);
-		somCnt = recursiveCount(model.ordered.somatic);
 
-		model.ordered.endGene = geneCnt.length;
-		model.ordered.endCnv = cnvCnt.length;
-		model.ordered.endSomatic = somCnt.length;
+		bio.iteration.loop(model.ordered.cnv, function (cnv)	{
+			result += '0';
+		});
 
-		return geneCnt + cnvCnt + somCnt;
+		bio.iteration.loop(model.ordered.somatic, function (som)	{
+			result += '0';
+		});
+
+		return result;
 	};
 	/*
 		Exclusive 하게 보여지는데 필요한 데이터를 만드는 함수.
@@ -355,7 +357,7 @@ function landscapeSort ()	{
 					key: d.x,
 					// Type & Gene 두개의 문자가 합쳐진 문자열로 Gene 개수만큼
 					// 문자열을 만든다.
-					// value: [].fill(genes.length, orderStr).join(''),
+					innerSort: [].fill(genes.length, orderStr).join(''),
 					value: [].fill(genes.length, '00').join('')
 				});
 			} else {
@@ -363,9 +365,8 @@ function landscapeSort ()	{
 			}
 		});
 
-		typeToString(result, genes, data, type, orderStr.length);
-
-		return model.exclusive = result, sortByExclusive(result);
+		return model.exclusive = 
+					typeToString(result, genes, data, type, orderStr.length);
 	};
 	/*
 		그룹 명 별로 키값을 만들어 각각의 데이터를 분류하는 함수.
