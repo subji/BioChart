@@ -332,7 +332,7 @@ function landscape ()	{
 			]);
 
 			model.exclusive.now = bio.landscapeSort().exclusive(
-				model.data.heatmap, model.data.gene, type);
+				model.data.heatmap, model.data.gene, type, model.data.type);
 
 			if (model.now.geneline.groupList)	{
 				var groups = [];
@@ -1217,7 +1217,7 @@ function landscape ()	{
 		model.setting.defaultData.data.mutation_list;
 		// 초기 exclusive 값을 설정한다.
 		model.exclusive.init = bio.landscapeSort().exclusive(
-			model.data.heatmap, model.data.gene, type);
+			model.data.heatmap, model.data.gene, type, model.data.type);
 		// 초기 x, y 축 값 설정. 초기화 동작을 위해서이다.
 		model.init.axis.x = [].concat(model.exclusive.init.data);
 		model.init.axis.y = [].concat(model.data.axis.gene.y);
@@ -1254,7 +1254,7 @@ function landscape ()	{
 				changeAxis({ axis: 'x', data: groups });
 			}	else {
 				model.exclusive.now = bio.landscapeSort().exclusive(
-				model.data.heatmap, model.data.gene, type);
+				model.data.heatmap, model.data.gene, type, model.data.type);
 
 				changeAxis(model.exclusive.now || 
 									 model.exclusive.init);

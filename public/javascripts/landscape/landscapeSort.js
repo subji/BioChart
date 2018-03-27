@@ -220,19 +220,51 @@ function landscapeSort ()	{
 	/*
 		Type 을 문자열의 형태로 바꿔주는 함수.
 	 */
-	function typeToString (result, genes, data, type)	{
+	function typeToString (result, genes, data, type, term)	{
+		var cnvTerm = (model.ordered.endGene + model.ordered.endCnv) - 
+									model.ordered.endGene,
+				somTerm = (model.ordered.endGene + model.ordered.endCnv + 
+									model.ordered.endSomatic) - 
+									(model.ordered.endGene + model.ordered.endCnv),
+				cnvLen = model.ordered.cnv.length,
+				somLen = model.ordered.somatic.length;
+
 		bio.iteration.loop(result, function (r)	{
 			bio.iteration.loop(data, function(d)	{
 				if (d.x === r.key)	{
-					var geneIdx = genes.indexOf(d.y) * 2,
+					var geneIdx = genes.indexOf(d.y) * term,
 							mutIdx = geneIdx + 1,
 							mutVal = bio.landscapeConfig()
 													.byCase(d.value);
 
+					var cnvOrd = model.ordered.cnv.indexOf(d.value),
+							somOrd = model.ordered.somatic.indexOf(d.value),
+							cnvVal = cnvLen - cnvOrd,
+							somVal = somLen - somOrd,
+							cnvToStr = '' + cnvVal,
+							somToStr = '' + somVal,
+							cnvIdx = geneIdx + model.ordered.endGene + 
+											(cnvTerm - cnvToStr.length),
+							somIdx = cnvIdx + model.ordered.endCnv + 
+											(somTerm - somToStr.length);
+
 					r.value = r.value.replaceAt(geneIdx, '1');
-					r.value = r.value.replaceAt(mutIdx, mutVal === 'cnv' ? 
-																		 (type === '1' ? '1' : '0') : 
-																		 r.value[mutIdx] === '1' ? '1' : '0');
+
+					if (type === '1')	{
+						if (cnvOrd > -1)	{
+							r.value = r.value.substring(0, cnvIdx) + cnvToStr + 
+												r.value.substring(cnvIdx + cnvToStr.length + 1);
+						} 
+
+						if (somOrd > -1)	{
+							r.value = r.value.substring(0, somIdx) + somToStr + 
+												r.value.substring(somIdx + somToStr.length + 1);
+						} 
+					}
+
+					// r.value = r.value.replaceAt(mutIdx, mutVal === 'cnv' ? 
+					// 													 (type === '1' ? '1' : '0') : 
+					// 													 r.value[mutIdx] === '1' ? '1' : '0');
 				}
 			});
 		});
@@ -252,15 +284,67 @@ function landscapeSort ()	{
 
 		return { axis: 'x', data: res };
 	};
+
+	/*
+		gene, cnv, somatic 개수별로 단문장을 만드는함수.
+	 */
+	function makeOrderString (data, genes, type, types)	{
+		model.ordered = {
+			'cnv': [],
+			'somatic': []
+		};
+
+		var geneCnt = 0,
+				cnvCnt = 0,
+				somCnt = 0;
+
+		function recursiveCount (list, len, num, res)	{
+			var len = len || list.length,
+					num = 1,
+					res = res || '0';
+
+			if ((len / 10) < 1)	{
+				return res;
+			}
+
+			num *= 10;
+			len /= 10;
+			res = recursiveCount(list, parseInt(len), num, res);
+
+			return res += '0';
+		};
+
+		bio.iteration.loop(types, function (t)	{
+			if (bio.landscapeConfig().byCase(t) === 'cnv')	{
+				model.ordered.cnv.push(t);
+			} else {
+				model.ordered.somatic.push(t);
+			}
+		});
+
+		model.ordered.cnv = model.ordered.cnv.sort();
+		model.ordered.somatic = model.ordered.somatic.sort();
+		
+		geneCnt = recursiveCount(genes);
+		cnvCnt = recursiveCount(model.ordered.cnv);
+		somCnt = recursiveCount(model.ordered.somatic);
+
+		model.ordered.endGene = geneCnt.length;
+		model.ordered.endCnv = cnvCnt.length;
+		model.ordered.endSomatic = somCnt.length;
+
+		return geneCnt + cnvCnt + somCnt;
+	};
 	/*
 		Exclusive 하게 보여지는데 필요한 데이터를 만드는 함수.
 	 */
-	function exclusive (data, genes, type)	{
+	function exclusive (data, genes, type, types)	{
 		type = type || '1';
 
 		var temp = {},
 				result = [],
-				idx = 0;
+				idx = 0,
+				orderStr = makeOrderString(data, genes, type, types);
 
 		bio.iteration.loop(data, function (d)	{
 			if (!temp[d.x])	{
@@ -270,14 +354,14 @@ function landscapeSort ()	{
 					key: d.x,
 					// Type & Gene 두개의 문자가 합쳐진 문자열로 Gene 개수만큼
 					// 문자열을 만든다.
-					value: [].fill(genes.length, '00').join('')
+					value: [].fill(genes.length, orderStr).join('')
 				});
 			} else {
 				temp[d.x] = temp[d.x];
 			}
 		});
 
-		typeToString(result, genes, data, type);
+		typeToString(result, genes, data, type, orderStr.length);
 
 		return model.exclusive = result, sortByExclusive(result);
 	};
