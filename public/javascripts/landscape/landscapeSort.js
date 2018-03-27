@@ -250,21 +250,21 @@ function landscapeSort ()	{
 
 					r.value = r.value.replaceAt(geneIdx, '1');
 
-					if (type === '1')	{
-						if (cnvOrd > -1)	{
-							r.value = r.value.substring(0, cnvIdx) + cnvToStr + 
-												r.value.substring(cnvIdx + cnvToStr.length + 1);
-						} 
+					// if (type === '1')	{
+					// 	if (cnvOrd > -1)	{
+					// 		r.value = r.value.substring(0, cnvIdx) + cnvToStr + 
+					// 							r.value.substring(cnvIdx + cnvToStr.length + 1);
+					// 	} 
 
-						if (somOrd > -1)	{
-							r.value = r.value.substring(0, somIdx) + somToStr + 
-												r.value.substring(somIdx + somToStr.length + 1);
-						} 
-					}
+					// 	if (somOrd > -1)	{
+					// 		r.value = r.value.substring(0, somIdx) + somToStr + 
+					// 							r.value.substring(somIdx + somToStr.length + 1);
+					// 	} 
+					// }
 
-					// r.value = r.value.replaceAt(mutIdx, mutVal === 'cnv' ? 
-					// 													 (type === '1' ? '1' : '0') : 
-					// 													 r.value[mutIdx] === '1' ? '1' : '0');
+					r.value = r.value.replaceAt(mutIdx, mutVal === 'cnv' ? 
+																		 (type === '1' ? '1' : '0') : 
+																		 r.value[mutIdx] === '1' ? '1' : '0');
 				}
 			});
 		});
