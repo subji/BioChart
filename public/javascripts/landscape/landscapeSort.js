@@ -252,6 +252,7 @@ function landscapeSort ()	{
 
 					// if (type === '1')	{
 					// 	if (cnvOrd > -1)	{
+					// 		r.value = r.value.replaceAt(0, '1');
 					// 		r.value = r.value.substring(0, cnvIdx) + cnvToStr + 
 					// 							r.value.substring(cnvIdx + cnvToStr.length + 1);
 					// 	} 
@@ -354,7 +355,8 @@ function landscapeSort ()	{
 					key: d.x,
 					// Type & Gene 두개의 문자가 합쳐진 문자열로 Gene 개수만큼
 					// 문자열을 만든다.
-					value: [].fill(genes.length, orderStr).join('')
+					// value: [].fill(genes.length, orderStr).join(''),
+					value: [].fill(genes.length, '00').join('')
 				});
 			} else {
 				temp[d.x] = temp[d.x];

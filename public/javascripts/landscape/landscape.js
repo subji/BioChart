@@ -589,7 +589,7 @@ function landscape ()	{
 				});
 				
 				exclusiveGroup = bio.landscapeSort()
-				 										.exclusive(temptemp, model.data.gene, type);
+				 										.exclusive(temptemp, model.data.gene, type, model.data.type);
 
 				mutationList.push(temp);	
 				pidList.push(exclusiveGroup);
@@ -866,10 +866,9 @@ function landscape ()	{
 
 								model.exclusive.now = 
 								bio.landscapeSort()
-									 .exclusive(model.data.heatmap, model.data.gene, type);
+									 .exclusive(model.data.heatmap, model.data.gene, type, model.data.type);
 
 								changeSampleStack(model.now.mutation_list);
-								console.log(model.data.heatmap)
 								// Group 별로 정렬된 상태에서 enable / disable 을 할때,
 								// Group 정렬을 유지한다.
 								if (model.now.geneline.groupList)	{
