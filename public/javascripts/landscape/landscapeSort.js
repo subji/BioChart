@@ -107,9 +107,9 @@ function landscapeSort ()	{
 	/*
 		개별 gene 에 대한 정렬 함수.
 	 */
-	function byGene (genes, data)	{
+	function byGene (genes, data, type, types)	{
 		var toExclusive = bio.landscapeSort()
-												 .exclusive(data, data[0].y);
+												 .exclusive(data, data[0].y, type, types);
 
 		bio.iteration.loop(genes, function (gene)	{
 			if (toExclusive.data.indexOf(gene) < 0)	{
@@ -148,7 +148,11 @@ function landscapeSort ()	{
 			});
 
 			heat.push(
-				bio.landscapeSort().exclusive(temp, this.data.gene));
+				bio.landscapeSort().exclusive(
+					temp, 
+					this.data.gene, 
+					this.now.exclusivity_opt, 
+					this.data.type));
 		});
 
 		return heat;

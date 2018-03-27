@@ -116,9 +116,12 @@ function landscapeConfig ()	{
 						});
 
 						if (d3.event.altKey)	{
+							console.log(data, that);
+
 							return {
 								sorted: bio.landscapeSort()
-													 .gene(that.data.axis.heatmap.x, temp),
+													 .gene(that.data.axis.heatmap.x, temp, 
+													 			 that.now.exclusivity_opt, that.data.type),
 								model: that,
 							};	
 						}

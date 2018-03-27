@@ -150,6 +150,7 @@ function landscape ()	{
 		base.appendChild(exclusivity);
 
 		model.init.exclusivity_opt = '1';
+		model.now.exclusivity_opt = '1';
 	};
 	/*
 		Group 내에 만들어진 임시 svg 를 삭제하는 함수.
