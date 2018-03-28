@@ -100,7 +100,7 @@ function landscapeConfig ()	{
 			},
 			geneY: {
 				top: 0,
-				left: w - 70,
+				left: w - 85,
 				direction: 'right', 
 				range: [10, h - 45],
 				exclude: 'path, line',
@@ -116,8 +116,6 @@ function landscapeConfig ()	{
 						});
 
 						if (d3.event.altKey)	{
-							console.log(data, that);
-
 							return {
 								sorted: bio.landscapeSort()
 													 .gene(that.data.axis.heatmap.x, temp, 
@@ -131,9 +129,9 @@ function landscapeConfig ()	{
 			geneX: {
 				left: 15,
 				top: h - 45,
-				range: [15, w - 85],
+				range: [15, w - 100],
 				direction: 'bottom',
-				margin: [0, 15, 0, 85], 
+				margin: [0, 15, 0, 100], 
 			},
 			pqX: {
 				left: 5,
@@ -303,7 +301,7 @@ function landscapeConfig ()	{
 				},
 			},
 			gene: {
-				margin: [10, 30, 45.5, 70],
+				margin: [10, 30, 45.5, 85],
 				attr: {
 					id: function (data, idx, that)	{
 						return 'landscape_gene_' + data.y + 

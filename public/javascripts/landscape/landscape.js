@@ -1041,6 +1041,88 @@ function landscape ()	{
 		});
 	};
 	/*
+		Gene Bar Plot 옆 checkbox 표기 함수.
+	 */
+	function drawGeneCheckbox (data)	{
+		var borderSize = 10,
+				strokeSize = 2,
+				geneSVG = d3.select('#landscape_gene_svg'),
+				geneWidth = parseFloat(geneSVG.attr('width')),
+				chkGroup = geneSVG.append('g')
+													.attr('class', 'landscape_gene_svg chkGroup')
+													.attr('transform', 
+																'translate(' + 
+																(geneWidth - (borderSize + 
+																 strokeSize * 2)) + ', 0)');
+
+		var line = (bio.dependencies.version.d3v4() ? 
+								d3.line() : d3.svg.line())
+								.x(function (d)	{ return d.x; })
+								.y(function (d)	{ return d.y; });
+
+		bio.dependencies.version.d3v4() ? 
+		line.curve(d3.curveLinear) : line.interpolate('basic');
+
+		d3.selectAll('.landscape_gene_svg.right-axis-g-tag g')
+			.each(function (gene)	{
+				var translate = d3.select(this).attr('transform'),
+						textY = parseFloat(translate.substring(
+										translate.indexOf(',') + 1, 
+										translate.indexOf(')'))),
+						x = 0,
+						y = textY - 5.5,
+						eachG = chkGroup.append('g')
+														.attr('class', 'landscape_gene_svg ' + 
+																	gene + '-checkbox-group')
+														.data([{ gene: gene, checked: false }]),
+						eachBorder = eachG.append('rect')
+															.attr('width', borderSize)
+															.attr('height', borderSize)
+															.attr('x', x)
+															.attr('y', y)
+															.attr('rx', 3)
+															.attr('ry', 3)
+															.style('cursor', 'pointer')
+															.style('fill-opacity', 0.05)
+															.style('stroke-width', 2)
+															.style('stroke', '#333333');
+
+				var coord = [
+					{ 
+						x: x + borderSize / 8, 
+						y: y + (borderSize / 3) 
+					},
+					{ 
+						x: x + borderSize / 2.2, 
+						y: (y + borderSize) - (borderSize / 4) 
+					},
+					{ 
+						x: (x + borderSize) - borderSize / 8, 
+						y: y + (borderSize / 10) 
+					}
+				];
+
+				var mark = eachG.append('path')
+												.attr('d', line(coord))
+												.style('fill', 'none')
+											  .style('opacity', function (d)	{
+											  	return d.checked ? 1 : 0;
+											  })
+											  .style('stroke', '#333333')
+											  .style('stroke-width', 2);
+
+				eachBorder.on('click', function (d)	{
+					d.checked = !d.checked;
+
+					mark.style('opacity', d.checked ? 1 : 0);
+
+					console.log('Click checkbox ', d, model)
+
+					d3.event.stopPropagation();
+				});
+			});
+	};
+	/*
 		Landscape 전체를 그려주는 함수.
 	 */
 	function drawLandscape (data, width)	{
@@ -1084,6 +1166,7 @@ function landscape ()	{
 								 [md.group.patient[idx]], patient);
 		});
 		drawLegend(md.type);
+		drawGeneCheckbox(md);
 	};
 
 	function geneAxisTermHeight ()	{

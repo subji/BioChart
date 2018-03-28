@@ -137,27 +137,27 @@ function sizing ()	{
 
 		var id = {
 			landscape_temp_sample: { width: w * 0.12, height: h * 0.15 },
-			landscape_axis_sample: { width: w * 0.14, height: h * 0.15 },
+			landscape_axis_sample: { width: w * 0.17, height: h * 0.15 },
 			landscape_patient_sample: { width: w * 0.01, height: h * 0.15 },
-			landscape_sample: { width: w * 0.63, height: h * 0.15 },
+			landscape_sample: { width: w * 0.60, height: h * 0.15 },
 			landscape_scale_option: { width: w * 0.1, height: h * 0.15 },
 			landscape_option: { width: w * 0.12, height: h * 0.16 },
-			landscape_axis_group: { width: w * 0.14, height: h * 0.15 },
+			landscape_axis_group: { width: w * 0.17, height: h * 0.15 },
 			landscape_patient_group: { width: w * 0.01, height: h * 0.16 },
-			landscape_group: { width: w * 0.63, height: h * 0.16 },
+			landscape_group: { width: w * 0.60, height: h * 0.16 },
 			landscape_temp_group: { width: w * 0.1, height: h * 0.16 },
 			landscape_legend: { width: w * 0.12, height: geneHeight},
-			landscape_gene: { width: w * 0.14, height: geneHeight },
+			landscape_gene: { width: w * 0.17, height: geneHeight },
 			landscape_patient_heatmap: { width: w * 0.01, height: geneHeight },
-			landscape_heatmap: { width: w * 0.63, height: geneHeight },
+			landscape_heatmap: { width: w * 0.60, height: geneHeight },
 			landscape_pq: { width: w * 0.1, height: geneHeight },
 		};
 
 		bio.iteration.loop(isPlotted, function (isP)	{
 			if (isP.indexOf('pq') > -1 || isP.indexOf('gene') > -1)	{
-				id.landscape_sample.width = w * 0.72;
-				id.landscape_heatmap.width = w * 0.72;
-				id.landscape_group.width = w * 0.72;
+				id.landscape_sample.width = w * 0.69;
+				id.landscape_heatmap.width = w * 0.69;
+				id.landscape_group.width = w * 0.69;
 				id.landscape_pq.width = w * 0.01;
 				id.landscape_temp_group.width = w * 0.01;
 				id.landscape_scale_option.width = w * 0.01;
