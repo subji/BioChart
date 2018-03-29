@@ -68,7 +68,6 @@ function landscape ()	{
 					model.now.geneline.mutationList = undefined;
 					model.now.geneline.pidList = undefined;
 					model.now.geneline.removedMutationArr = {};
-					model.now.geneline.removedMutationList = {};
 					model.now.geneline.removedMutationObj = {};
 					model.now.exclusive = undefined;
 					// 타입 버튼 변화.
@@ -329,7 +328,8 @@ function landscape ()	{
 			bio.layout().removeGroupTag([
 				'.landscape_heatmap_svg.heatmap-g-tag',
 				'.landscape_gene_svg.bar-g-tag',
-				'.landscape_gene_svg.right-axis-g-tag'
+				'.landscape_gene_svg.right-axis-g-tag',
+				'.landscape_gene_svg.chkGroup'
 			]);
 
 			model.exclusive.now = bio.landscapeSort().exclusive(
@@ -363,6 +363,8 @@ function landscape ()	{
 									model.data.axis.heatmap);	
 
 			genelineSortedSiblings();
+			drawGeneCheckbox(model.data);
+			reserveCheckboxState();
 
 			if (Object.keys(model.now.geneline.removedMutationObj).length > 0)	{
 				enableDisableBlur();
@@ -563,8 +565,7 @@ function landscape ()	{
 												 	 model.init.mutation_list, 
 				function (ml)	{
 					if (gl.indexOf(ml.participant_id) > -1)	{
-						if (Object.keys(
-							model.now.geneline.removedMutationObj).length > 0)	{
+						if (Object.keys(model.now.geneline.removedMutationObj).length > 0)	{
 							bio.iteration.loop(model.now.geneline.removedMutationObj, 
 							function (key, value)	{
 								if (ml.gene !== key)	{
@@ -589,8 +590,8 @@ function landscape ()	{
 					};
 				});
 				
-				exclusiveGroup = bio.landscapeSort()
-				 										.exclusive(temptemp, model.data.gene, type, model.data.type);
+				exclusiveGroup = bio.landscapeSort().exclusive(
+					temptemp, model.data.gene, type, model.data.type);
 
 				mutationList.push(temp);	
 				pidList.push(exclusiveGroup);
@@ -621,12 +622,14 @@ function landscape ()	{
 		if (model.divisionFunc)	{
 			var disableList = [];
 
-			bio.iteration.loop(model.now.geneline.removedMutationObj, function (k, v)	{
+			bio.iteration.loop(model.now.geneline.removedMutationObj, 
+			function (k, v)	{
 				disableList = disableList.concat(
 					model.now.geneline.removedMutationObj[k]);
 			});
 
-			var enableSample = uniqueParticipantId(model.now.mutation_list || model.init.mutation_list),
+			var enableSample = uniqueParticipantId(
+						model.now.mutation_list || model.init.mutation_list),
 					disableSample = model.data.axis.sample.x.filter(function (s)	{
 						return enableSample.indexOf(s) < 0;
 					}),
@@ -813,11 +816,13 @@ function landscape ()	{
 									});
 									// disable 된 group 태그를 svg 하위 
 									// 항목에서 제거해야 한다.
+									// ward1
 									model.now.geneline.sortedSiblings.push(
 									model.now.geneline.sortedSiblings.splice(geneIdx, 1)[0]);
 									model.now.geneline.pidList = remakeMutationList();
 									isGroupMutationList = model.now.geneline.pidList.data; 
 									isNewPidGroupList = model.now.geneline.pidList.arr;
+
 									nowGeneLineValue();
 								} else {
 									var beforeIdx = tempGeneList.indexOf(data),
@@ -864,11 +869,14 @@ function landscape ()	{
 													 model.init.exclusivity_opt;
 
 								bio.layout().removeGroupTag('survival');
-
+								// ward3 
+								// TODO. Hidden/Shown 이 적용된 상태에서 
+								// model.data.heatmap 이 아닌, 새로운 스케일 값이 적용된
+								// heatmap 데이터를 가져와야 한다.
 								model.exclusive.now = 
-								bio.landscapeSort()
-									 .exclusive(model.data.heatmap, model.data.gene, type, model.data.type);
-
+								bio.landscapeSort().exclusive(
+									model.data.heatmap, model.data.gene, type, model.data.type);
+								// ward2
 								changeSampleStack(model.now.mutation_list);
 								// Group 별로 정렬된 상태에서 enable / disable 을 할때,
 								// Group 정렬을 유지한다.
@@ -888,6 +896,7 @@ function landscape ()	{
 								enableDisableBlur();
 								enabledDisabeldMaximumElement(isGroupMutationList);
 								callEnableDisableOtherFunc();
+								reserveCheckboxState();
 							}
 						}
 					}
@@ -1041,6 +1050,16 @@ function landscape ()	{
 		});
 	};
 	/*
+		Gene 클릭 및 드래그 등의 이벤트에서도 체크박스의
+		상태를 유지해주게 하는 함수.
+	 */
+	function reserveCheckboxState ()	{
+		d3.selectAll('.landscape_gene_svg.checkbox-group path')
+			.style('opacity', function (d)	{
+				return model.now.checkboxState[d.gene] ? 1 : 0;
+			});
+	};
+	/*
 		Gene Bar Plot 옆 checkbox 표기 함수.
 	 */
 	function drawGeneCheckbox (data)	{
@@ -1065,6 +1084,10 @@ function landscape ()	{
 
 		d3.selectAll('.landscape_gene_svg.right-axis-g-tag g')
 			.each(function (gene)	{
+				model.now.checkboxState[gene] = 
+				model.now.checkboxState[gene] === undefined ? false : 
+				model.now.checkboxState[gene];
+
 				var translate = d3.select(this).attr('transform'),
 						textY = parseFloat(translate.substring(
 										translate.indexOf(',') + 1, 
@@ -1072,8 +1095,7 @@ function landscape ()	{
 						x = 0,
 						y = textY - 5.5,
 						eachG = chkGroup.append('g')
-														.attr('class', 'landscape_gene_svg ' + 
-																	gene + '-checkbox-group')
+														.attr('class', 'landscape_gene_svg checkbox-group')
 														.data([{ gene: gene, checked: false }]),
 						eachBorder = eachG.append('rect')
 															.attr('width', borderSize)
@@ -1112,11 +1134,43 @@ function landscape ()	{
 											  .style('stroke-width', 2);
 
 				eachBorder.on('click', function (d)	{
+					// Disable/Enable 상관없이 적용되야 한다.
+					// if (model.now.geneline.axis[d.gene].isGene === 'disable')	{
+					// 	return false;
+					// }
+
 					d.checked = !d.checked;
+
+					model.now.checkboxState[d.gene] = d.checked;
+					model.now.mutation_list = !model.now.mutation_list ? 
+					model.init.mutation_list : model.now.mutation_list;
 
 					mark.style('opacity', d.checked ? 1 : 0);
 
-					console.log('Click checkbox ', d, model)
+					console.log('Click checkbox ', d);
+
+					model.now.mutation_list = 
+					model.now.mutation_list.filter(function (m)	{
+						if (d.gene === m.gene)	{
+							// console.log('Shown value: ', m);
+							// console.log(model.now.geneline.shownValues);
+						} else {
+							// console.log('Hidden value: ', m);
+							// console.log(model.now.geneline.hiddenValues);
+						}
+
+						return m;
+					});
+
+					// bio.layout().removeGroupTag('survival');
+
+					// drawLandscape(model.data, model.now.width);
+					// enableDisableBlur();
+					// enabledDisabeldMaximumElement(
+					// 	model.now.geneline.groupList ? 
+					// 	model.now.geneline.pidList.data : undefined);
+					// callEnableDisableOtherFunc();
+					// reserveCheckboxState();
 
 					d3.event.stopPropagation();
 				});
@@ -1266,8 +1320,8 @@ function landscape ()	{
 			
 			model.init.geneline.axis[g] = 
 			{ 
-				idx : i, value: axis, 
-				group: axisGroup, isGene : 'enable' 
+				idx: i, value: axis, 
+				group: axisGroup, isGene: 'enable' 
 			};
 			model.init.geneline.gene.push({ name: g, y: gene });
 			model.init.geneline.heat.push({ name: g, y: heat });
@@ -1282,15 +1336,20 @@ function landscape ()	{
 		model.now.geneline = bio.objects.clone(model.init.geneline);
 		// group 별로 새 정렬된 pid 를 저장하는 변수.
 		model.now.geneline.pidList = undefined;
+		// Hide & Show 별로 체크박스의 상태를 확인한다.
+		model.now.geneline.checkboxState = {};
 		// mutation 이 존재 하는 영역과 존재하지 않는영역을 
 		// 나누는 값을 저장하는 객체.
 		model.now.geneline.enabledDivisionValues = {};
 		model.now.geneline.disabledDivisionValues = {};
+		// mutation or cnv 가 존재 하는 부분과 존재하지 않는 부분을 
+		// 보여주거나 숨기는 값을 저장하는 객체.
+		model.now.geneline.shownValues = {};
+		model.now.geneline.hiddenValues = {};
 		// gene 을 enable/disable 할때, disable 한 gene 의 
 		// mutation_list 값을 가지는 객체이다.
 		model.now.geneline.removedMutationObj = {};
 		model.now.geneline.removedMutationArr = {};
-		model.now.geneline.removedMutationList = {};
 
 		genelineSortedSiblings();
 	};
