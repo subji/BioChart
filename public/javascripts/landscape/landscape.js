@@ -547,7 +547,7 @@ function landscape ()	{
 		Group 정렬된 상태에서 enable / disable 을 적용하기 위한
 		함수.
 	 */
-	function remakeMutationList ()	{
+	function remakeMutationList (obj)	{
 		var mutationList = [],
 				pidList = [],
 				isRemovable = false,
@@ -565,6 +565,7 @@ function landscape ()	{
 												 	 model.init.mutation_list, 
 				function (ml)	{
 					if (gl.indexOf(ml.participant_id) > -1)	{
+						// obj 로 교체.
 						if (Object.keys(model.now.geneline.removedMutationObj).length > 0)	{
 							bio.iteration.loop(model.now.geneline.removedMutationObj, 
 							function (key, value)	{
@@ -816,7 +817,6 @@ function landscape ()	{
 									});
 									// disable 된 group 태그를 svg 하위 
 									// 항목에서 제거해야 한다.
-									// ward1
 									model.now.geneline.sortedSiblings.push(
 									model.now.geneline.sortedSiblings.splice(geneIdx, 1)[0]);
 									model.now.geneline.pidList = remakeMutationList();
@@ -1134,11 +1134,6 @@ function landscape ()	{
 											  .style('stroke-width', 2);
 
 				eachBorder.on('click', function (d)	{
-					// Disable/Enable 상관없이 적용되야 한다.
-					// if (model.now.geneline.axis[d.gene].isGene === 'disable')	{
-					// 	return false;
-					// }
-
 					d.checked = !d.checked;
 
 					model.now.checkboxState[d.gene] = d.checked;
@@ -1148,29 +1143,35 @@ function landscape ()	{
 					mark.style('opacity', d.checked ? 1 : 0);
 
 					console.log('Click checkbox ', d);
-
+					// ward4
 					model.now.mutation_list = 
 					model.now.mutation_list.filter(function (m)	{
 						if (d.gene === m.gene)	{
-							// console.log('Shown value: ', m);
-							// console.log(model.now.geneline.shownValues);
+							if (!model.now.geneline.shownValues[m.gene])	{
+								model.now.geneline.shownValues[m.gene] = [m.participant_id];
+							} else {
+								if (model.now.geneline.shownValues[m.gene].indexOf(m.participant_id) < 0)	{
+									model.now.geneline.shownValues[m.gene].push(m.participant_id);
+								}
+							}
 						} else {
-							// console.log('Hidden value: ', m);
-							// console.log(model.now.geneline.hiddenValues);
+							if (!model.now.geneline.hiddenValues[m.gene])	{
+								model.now.geneline.hiddenValues[m.gene] = [m.participant_id];
+							} else {
+								if (model.now.geneline.hiddenValues[m.gene].indexOf(m.participant_id) < 0)	{
+									model.now.geneline.hiddenValues[m.gene].push(m.participant_id);
+								}
+							}
 						}
 
 						return m;
 					});
 
-					// bio.layout().removeGroupTag('survival');
 
-					// drawLandscape(model.data, model.now.width);
-					// enableDisableBlur();
-					// enabledDisabeldMaximumElement(
-					// 	model.now.geneline.groupList ? 
-					// 	model.now.geneline.pidList.data : undefined);
-					// callEnableDisableOtherFunc();
-					// reserveCheckboxState();
+
+					console.log(
+						model.now.geneline.shownValues,
+						model.now.geneline.hiddenValues);
 
 					d3.event.stopPropagation();
 				});
