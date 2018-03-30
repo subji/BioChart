@@ -122,7 +122,9 @@ function layout ()	{
 		} else if (typeof classify === 'string')	{
 			bio.iteration.loop(d3.selectAll('svg').nodes(), 
 			function (svg)	{
-				if (svg.id.indexOf(classify) < 0)	{
+				if (svg.id.indexOf(classify) >= 0)	{
+					d3.select(svg).select('.' + classify).remove();
+				} else {
 					d3.select(svg).selectAll('g').remove();
 				}
 			});
