@@ -1192,39 +1192,27 @@ function landscape ()	{
 							exclusivedArr = [],
 							exclusivedData = [];
 
-					console.log(model.now.geneline.shownValues)
-
 					bio.iteration.loop(model.now.geneline.shownValues, 
 					function (k, v)	{
 						emptyArr = emptyArr.concat(v);
 					});
-					
-					bio.iteration.loop(emptyArr, function (k, v)	{
-						exclusivedArr[model.exclusive.now.data.indexOf(v)] = v;
+
+					bio.iteration.loop(emptyArr, function (val)	{
+						exclusivedArr[
+						model.exclusive.now.data.indexOf(val)] = val;
 					});
 
-					// bio.iteration.loop(model.now.mutation_list, function (m)	{
-					// 	if (exclusivedArr.indexOf(m.participant_id) > -1)	{
-					// 		exclusivedData.push(m);
-					// 	}
-					// });
+					bio.iteration.loop(model.now.mutation_list, function (m)	{
+						if (exclusivedArr.indexOf(m.participant_id) > -1)	{
+							exclusivedData.push(m);
+						}
+					});
 
-					// model.data.axis.heatmap.x = exclusivedArr;
-					// model.data.axis.sample.x = exclusivedArr;
-					// model.data.axis.group.x = exclusivedArr;
+					model.data.axis.heatmap.x = exclusivedArr;
+					model.data.axis.sample.x = exclusivedArr;
+					model.data.axis.group.x = exclusivedArr;
 
-					// model.now.mutation_list = exclusivedData;
-
-					// changeSampleStack(exclusivedData);
-
-					console.log(
-						exclusivedData,
-						exclusivedArr,
-						model.now.geneline.shownValues,
-						model.now.geneline.shownValuesData,
-						model.now.geneline.hiddenValues,
-						model.now.geneline.hiddenValuesData);
-
+					changeSampleStack(exclusivedData);
 					// TODO.
 					// 1. 선택된 Gene 을 포함하지 않는 mutation list 와 x axis list 를 구한다.
 					// 2. stack value 를 다시 구하고 exclusive 를 다시 구현한다.
