@@ -29,6 +29,7 @@ function landscape ()	{
 					changedSampleStack.result.sample),
 				reloadSampleAxis = model.data.makeLinearAxis(
 					'sample', changeSampleStacks.axis);
+		console.log(changeSampleStacks, reloadSampleAxis)
 
 		model.data.axis.sample.y = reloadSampleAxis;
 		model.data.stack.sample = changeSampleStacks.data;
@@ -335,7 +336,7 @@ function landscape ()	{
 			]);
 
 			model.exclusive.now = bio.landscapeSort().exclusive(
-				model.data.heatmap, model.data.gene, type, model.data.type);
+				model.now.heatmap || model.data.heatmap, model.data.gene, type, model.data.type);
 
 			if (model.now.geneline.groupList)	{
 				var groups = [];
@@ -362,7 +363,7 @@ function landscape ()	{
 							model.data.axis.pq, ['top', 'left']);
 			drawBar('gene', model.data.stack.gene, 
 							model.data.axis.gene, ['top', 'left']);
-			drawHeatmap('heatmap', model.data.heatmap, 
+			drawHeatmap('heatmap', model.now.heatmap || model.data.heatmap, 
 									model.data.axis.heatmap);	
 
 			genelineSortedSiblings();
@@ -878,11 +879,11 @@ function landscape ()	{
 								bio.layout().removeGroupTag('survival');
 								// ward3 
 								// TODO. Hidden/Shown 이 적용된 상태에서 
-								// model.data.heatmap 이 아닌, 새로운 스케일 값이 적용된
+								// model.data.heamap 이 아닌, 새로운 스케일 값이 적용된
 								// heatmap 데이터를 가져와야 한다.
 								model.exclusive.now = 
 								bio.landscapeSort().exclusive(
-									model.data.heatmap, model.data.gene, type, model.data.type);
+									model.now.heatmap || model.data.heatmap, model.data.gene, type, model.data.type);
 								// ward2
 								changeSampleStack(model.now.mutation_list);
 								// Group 별로 정렬된 상태에서 enable / disable 을 할때,
@@ -1141,17 +1142,19 @@ function landscape ()	{
 											  .style('stroke-width', 2);
 
 				eachBorder.on('click', function (d)	{
-					d.checked = !d.checked;
+					d.checked = !(model.now.checkboxState[d.gene] || d.checked);
+					model.now.checkboxState[d.gene] = d.checked;
 
 					mark.style('opacity', d.checked ? 1 : 0);
 
-					model.now.checkboxState[d.gene] = d.checked;
 					model.now.mutation_list = !model.now.mutation_list ? 
 					model.init.mutation_list : model.now.mutation_list;
 
 					model.now.geneline.shownValues = {};
 					model.now.geneline.hiddenValues = {};
-					// ward4
+					model.now.geneline.shownValuesData = {};
+					model.now.geneline.hiddenValuesData = {};
+
 					model.now.mutation_list = 
 					model.now.mutation_list.filter(function (m)	{
 						if (model.now.checkboxState[m.gene])	{
@@ -1175,118 +1178,85 @@ function landscape ()	{
 						return m;
 					});
 
-					var removingArr = [];
-
-					removingArr = model.data.clinicalList.map(function (ra)	{
+					var removingArr = model.data.clinicalList.map(function (ra)	{
 						return '.landscape_group_group_' + ra.replace(' ', '') + 
 									'_svg.heatmap-g-tag';
 					});
 					removingArr.push('.landscape_sample_svg.bar-g-tag');
 					removingArr.push('.landscape_heatmap_svg.heatmap-g-tag');
+					removingArr.push('.landscape_axis_sample_svg.left-axis-g-tag');
 
 					bio.layout().removeGroupTag(removingArr);
+
+					var emptyArr = [],
+							exclusivedArr = [],
+							exclusivedData = [];
+
+					console.log(model.now.geneline.shownValues)
+
+					bio.iteration.loop(model.now.geneline.shownValues, 
+					function (k, v)	{
+						emptyArr = emptyArr.concat(v);
+					});
+					
+					bio.iteration.loop(emptyArr, function (k, v)	{
+						exclusivedArr[model.exclusive.now.data.indexOf(v)] = v;
+					});
+
+					// bio.iteration.loop(model.now.mutation_list, function (m)	{
+					// 	if (exclusivedArr.indexOf(m.participant_id) > -1)	{
+					// 		exclusivedData.push(m);
+					// 	}
+					// });
+
+					// model.data.axis.heatmap.x = exclusivedArr;
+					// model.data.axis.sample.x = exclusivedArr;
+					// model.data.axis.group.x = exclusivedArr;
+
+					// model.now.mutation_list = exclusivedData;
+
+					// changeSampleStack(exclusivedData);
+
+					console.log(
+						exclusivedData,
+						exclusivedArr,
+						model.now.geneline.shownValues,
+						model.now.geneline.shownValuesData,
+						model.now.geneline.hiddenValues,
+						model.now.geneline.hiddenValuesData);
 
 					// TODO.
 					// 1. 선택된 Gene 을 포함하지 않는 mutation list 와 x axis list 를 구한다.
 					// 2. stack value 를 다시 구하고 exclusive 를 다시 구현한다.
 					// 3. 지워진 것은 model 에 저장해 놓고, 체크박스를 해제할때 사용한다.
 					// 4. 체크박스 후 & 전 다른 동작에도 interactive 하게 동작해야한다.
+					drawAxis('sample', 'Y');
+					drawHeatmap('heatmap', model.now.heatmap || model.data.heatmap, 
+									model.data.axis.heatmap);
 
-					// if (model.now.geneline.groupList)	{
-					// 	var groups = [];
+					drawBar('sample', model.data.stack.sample, 
+														model.data.axis.sample, ['top', 'left']);
+					drawHeatmap('patientHeatmap', 
+						model.data.patient, model.data.axis.patient.heatmap);
+					bio.iteration.loop(model.data.axis.group.y, function (g, idx)	{
+						var yaxis = model.data.axis.group.y[idx],
+								group = { x: model.data.axis.group.x, y: yaxis },
+								patient = { x: model.data.axis.patient.group.x, y: yaxis },
+								zipGroup = [];
+						// Clinical data 가 x-axis 의 양보다 많아지면
+						// 맨앞에 중첩되어서 정렬이 잘못 나온다. 그래서 x-axis 의 개수에 맞춰
+						// clinical data 를 축소 한다.
+						bio.iteration.loop(model.data.group.group[idx], 
+						function (g)	{
+							if (model.data.axis.group.x.indexOf(g.x) > -1)	{
+								zipGroup.push(g);
+							}
+						});
 
-					// 	model.now.geneline.pidList = remakeMutationList(
-					// 		model.now.geneline.shownValues);
-
-					// 	bio.iteration.loop(model.now.geneline.pidList.arr, function (gl)	{
-					// 		groups = groups.concat(gl.data);
-					// 	});
-
-					// 	changeAxis({ axis: 'x', data: groups });
-					// } else {
-					// 	changeAxis(model.now.geneline.groupList || 
-					// 					 	 model.exclusive.now);
-					// }	
-					// // 배열만든다. shown 배열.
-					// var arr = [];
-
-					// bio.iteration.loop(model.now.checkboxState, 
-					// function (key, val)	{
-					// 	if (val)	{
-					// 		bio.iteration.loop(model.now.geneline.shownValues, 
-					// 		function (k, val)	{
-					// 			bio.iteration.loop(val, function (v)	{
-					// 				if (arr.indexOf(v) < 0)	{
-					// 					arr.push(v);
-					// 				}
-					// 			});
-					// 		});
-					// 	} 
-					// });
-
-					// model.now.shownHeatmap = [];
-					// model.now.hiddenHeatmap = [];
-					// model.data.heatmap = model.data.heatmap.filter(
-					// function (ht)	{
-					// 	if (model.now.geneline.shownValues[d.gene].indexOf(ht.x) > -1){
-					// 		model.now.shownHeatmap.push(ht);
-					// 	} else {
-					// 		model.now.hiddenHeatmap.push(ht);
-					// 	}
-
-					// 	return ht;
-					// });
-
-					// model.now.shownHeatmapOrigin = [];
-					// model.now.hiddenHeatmapOrigin = [];
-					// model.now.mutation_list = model.now.mutation_list.filter(
-					// function (hm)	{
-					// 	if (model.now.geneline.shownValues[d.gene]
-					// 			.indexOf(hm.participant_id) > -1){
-					// 		model.now.shownHeatmapOrigin.push(hm);
-					// 	} else {
-					// 		model.now.hiddenHeatmapOrigin.push(hm);
-					// 	}
-
-					// 	return hm;
-					// });
-
-					// changeSampleStack(model.now.shownHeatmapOrigin);
-
-					// model.exclusive.now = bio.landscapeSort().exclusive(
-					// 	model.now.shownHeatmap, model.data.gene, 
-					// 	model.now.exclusivity_opt, model.data.type);
-
-					// model.data.axis.heatmap.x = model.exclusive.now.data;
-					// model.data.axis.sample.x = model.exclusive.now.data;
-					// model.data.axis.group.x = model.exclusive.now.data;
-
-					// drawHeatmap('heatmap', model.data.heatmap, 
-					// 				model.data.axis.heatmap);
-
-					// drawBar('sample', model.data.stack.sample, 
-					// 									model.data.axis.sample, ['top', 'left']);
-					// drawHeatmap('patientHeatmap', 
-					// 	model.data.patient, model.data.axis.patient.heatmap);
-					// bio.iteration.loop(model.data.axis.group.y, function (g, idx)	{
-					// 	var yaxis = model.data.axis.group.y[idx],
-					// 			group = { x: model.data.axis.group.x, y: yaxis },
-					// 			patient = { x: model.data.axis.patient.group.x, y: yaxis },
-					// 			zipGroup = [];
-					// 	// Clinical data 가 x-axis 의 양보다 많아지면
-					// 	// 맨앞에 중첩되어서 정렬이 잘못 나온다. 그래서 x-axis 의 개수에 맞춰
-					// 	// clinical data 를 축소 한다.
-					// 	bio.iteration.loop(model.data.group.group[idx], 
-					// 	function (g)	{
-					// 		if (model.data.axis.group.x.indexOf(g.x) > -1)	{
-					// 			zipGroup.push(g);
-					// 		}
-					// 	});
-
-					// 	drawHeatmap('group', zipGroup, group);
-					// 	drawHeatmap('patientGroup', 
-					// 						 [model.data.group.patient[idx]], patient);
-					// });
+						drawHeatmap('group', zipGroup, group);
+						drawHeatmap('patientGroup', 
+											 [model.data.group.patient[idx]], patient);
+					});	
 
 					enableDisableBlur();
 					enabledDisabeldMaximumElement(
@@ -1316,7 +1286,7 @@ function landscape ()	{
 					 ['top', 'left']);
 		drawBar('samplePatient', model.data.stack.patient, 
 						model.data.axis.patient.sample, ['top', 'left']);
-		drawHeatmap('heatmap', model.data.heatmap, model.data.axis.heatmap);
+		drawHeatmap('heatmap', model.now.heatmap || model.data.heatmap, model.data.axis.heatmap);
 		drawHeatmap('patientHeatmap', model.data.patient, 
 																	model.data.axis.patient.heatmap);
 		bio.iteration.loop(model.data.axis.group.y, function (g, idx)	{
@@ -1465,6 +1435,8 @@ function landscape ()	{
 		// 보여주거나 숨기는 값을 저장하는 객체.
 		model.now.geneline.shownValues = {};
 		model.now.geneline.hiddenValues = {};
+		model.now.geneline.shownValuesData = {};
+		model.now.geneline.hiddenValuesData = {};
 		// gene 을 enable/disable 할때, disable 한 gene 의 
 		// mutation_list 값을 가지는 객체이다.
 		model.now.geneline.removedMutationObj = {};
@@ -1478,13 +1450,13 @@ function landscape ()	{
 		model.setting.defaultData.data.mutation_list;
 		// 초기 exclusive 값을 설정한다.
 		model.exclusive.init = bio.landscapeSort().exclusive(
-			model.data.heatmap, model.data.gene, type, model.data.type);
+			model.now.heatmap || model.data.heatmap, model.data.gene, type, model.data.type);
 		// 초기 x, y 축 값 설정. 초기화 동작을 위해서이다.
 		model.init.axis.x = [].concat(model.exclusive.init.data);
 		model.init.axis.y = [].concat(model.data.axis.gene.y);
 		model.init.axis.sampleY = [].concat(model.data.axis.sample.y);
 
-		model.now.heatmap = [].concat(model.data.heatmap);
+		model.now.heatmap = [].concat(model.now.heatmap || model.data.heatmap);
 
 		orderByTypePriority(model.data.type);
 		patientAxis(model.data.axis);
@@ -1519,7 +1491,7 @@ function landscape ()	{
 				changeAxis({ axis: 'x', data: groups });
 			}	else {
 				model.exclusive.now = bio.landscapeSort().exclusive(
-				model.data.heatmap, model.data.gene, type, model.data.type);
+				model.now.heatmap || model.data.heatmap, model.data.gene, type, model.data.type);
 
 				changeAxis(model.exclusive.now || 
 									 model.exclusive.init);
