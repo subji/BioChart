@@ -29,7 +29,6 @@ function landscape ()	{
 					changedSampleStack.result.sample),
 				reloadSampleAxis = model.data.makeLinearAxis(
 					'sample', changeSampleStacks.axis);
-		console.log(changeSampleStacks, reloadSampleAxis)
 
 		model.data.axis.sample.y = reloadSampleAxis;
 		model.data.stack.sample = changeSampleStacks.data;
@@ -65,6 +64,7 @@ function landscape ()	{
 					model.now.geneline.sortedSiblings = 
 					model.init.geneline.sortedSiblings;
 
+					model.now.heatmap = model.init.heatmap;
 					model.now.geneline.groupList = undefined;
 					model.now.geneline.mutationList = undefined;
 					model.now.geneline.pidList = undefined;
@@ -83,7 +83,8 @@ function landscape ()	{
 
 					drawExclusivityLandscape(
 						model.now.exclusivity_opt);
-					callEnableDisableOtherFunc();
+					callEnableDisableOtherFunc(
+						model.now.mutation_list || model.init.mutation_list);
 
 					model.onClickClinicalName(null);
 
@@ -622,19 +623,10 @@ function landscape ()	{
 	/*
 		Enable / Disable / Others 를 반환하는 함수.
 	 */
-	function callEnableDisableOtherFunc ()	{
+	function callEnableDisableOtherFunc (list)	{
 		if (model.divisionFunc)	{
-			var disableList = [];
-
-			bio.iteration.loop(model.now.geneline.removedMutationObj, 
-			function (k, v)	{
-				disableList = disableList.concat(
-					model.now.geneline.removedMutationObj[k]);
-			});
-
-			var enableSample = uniqueParticipantId(
-						model.now.mutation_list || model.init.mutation_list),
-					disableSample = model.data.axis.sample.x.filter(function (s)	{
+			var enableSample = uniqueParticipantId(list),
+					disableSample = model.init.axis.x.filter(function (s)	{
 						return enableSample.indexOf(s) < 0;
 					}),
 					otherSample = model.data.group.group[0].map(function (g)	{
@@ -903,7 +895,8 @@ function landscape ()	{
 								drawLandscape(model.data, model.now.width);
 								enableDisableBlur();
 								enabledDisabeldMaximumElement(isGroupMutationList);
-								callEnableDisableOtherFunc();
+								callEnableDisableOtherFunc(
+									model.now.mutation_list || model.init.mutation_list);
 								reserveCheckboxState();
 							}
 						}
@@ -1202,7 +1195,7 @@ function landscape ()	{
 						model.exclusive.now.data.indexOf(val)] = val;
 					});
 
-					bio.iteration.loop(model.now.mutation_list, function (m)	{
+					bio.iteration.loop(model.init.mutation_list, function (m)	{
 						if (exclusivedArr.indexOf(m.participant_id) > -1)	{
 							exclusivedData.push(m);
 						}
@@ -1213,6 +1206,14 @@ function landscape ()	{
 					model.data.axis.group.x = exclusivedArr;
 
 					changeSampleStack(exclusivedData);
+
+					model.now.heatmap = exclusivedData.map(function (ex)	{
+						ex.x = ex.participant_id;
+						ex.y = ex.gene;
+						ex.value = ex.type;
+
+						return ex;
+					});
 					// TODO.
 					// 1. 선택된 Gene 을 포함하지 않는 mutation list 와 x axis list 를 구한다.
 					// 2. stack value 를 다시 구하고 exclusive 를 다시 구현한다.
@@ -1245,11 +1246,12 @@ function landscape ()	{
 						drawHeatmap('patientGroup', 
 											 [model.data.group.patient[idx]], patient);
 					});	
-
+					
 					enableDisableBlur();
 					enabledDisabeldMaximumElement(
 						model.now.geneline.groupList ? 
 						model.now.geneline.pidList.data : undefined);
+					callEnableDisableOtherFunc(exclusivedData)
 
 					d3.event.stopPropagation();
 				});
@@ -1522,7 +1524,8 @@ function landscape ()	{
 		drawExclusivityLandscape('1');
 		makeGeneLineDataList();
 		// 초기에 한번 불러온다.
-		callEnableDisableOtherFunc();
+		callEnableDisableOtherFunc(
+			model.now.mutation_list || model.init.mutation_list);
 		if (model.clinicalFunc)	{
 			model.clinicalFunc(model.data.group, 
 				bio.boilerPlate.clinicalInfo);
