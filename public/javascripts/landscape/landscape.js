@@ -1148,8 +1148,8 @@ function landscape ()	{
 					model.now.geneline.shownValuesData = {};
 					model.now.geneline.hiddenValuesData = {};
 
-					model.now.mutation_list = 
-					model.now.mutation_list.filter(function (m)	{
+					model.init.mutation_list = 
+					model.init.mutation_list.filter(function (m)	{
 						if (model.now.checkboxState[m.gene])	{
 							if (!model.now.geneline.shownValues[m.gene])	{
 								model.now.geneline.shownValues[m.gene] = [m.participant_id];
@@ -1170,6 +1170,9 @@ function landscape ()	{
 
 						return m;
 					});
+					// TODO.
+					// 체크하고 disable 한다음 체크를 해제하면 스케일이 이상해진다.
+					// 체크 후 disable 할 때, 값이 제대로 안넘어간다. divisionFunction 으로.
 
 					var removingArr = model.data.clinicalList.map(function (ra)	{
 						return '.landscape_group_group_' + ra.replace(' ', '') + 
@@ -1185,6 +1188,10 @@ function landscape ()	{
 							emptyObj = {},
 							exclusivedArr = [],
 							exclusivedData = [];
+
+					console.log(
+						model.now.geneline.shownValues,
+						model.now.geneline.hiddenValues)
 
 					bio.iteration.loop(model.now.geneline.shownValues, 
 					function (k, v)	{
@@ -1238,7 +1245,7 @@ function landscape ()	{
 
 						return ex;
 					});
-					
+
 					drawAxis('sample', 'Y');
 					drawHeatmap('heatmap', model.now.heatmap || model.data.heatmap, 
 									model.data.axis.heatmap);
