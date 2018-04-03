@@ -1203,6 +1203,13 @@ function landscape ()	{
 						}
 					});
 
+					if (Object.keys(model.now.geneline.shownValues).length === 0)	{
+						bio.iteration.loop(model.now.geneline.hiddenValues, 
+						function (k, v)	{
+							emptyArr = emptyArr.concat(v);
+						});
+					}
+
 					bio.iteration.loop(emptyArr, function (val)	{
 						exclusivedArr[
 						model.exclusive.now.data.indexOf(val)] = val;
@@ -1218,10 +1225,6 @@ function landscape ()	{
 						return ex;
 					});
 
-					console.log(
-						model.now.geneline.shownValues,
-						model.now.geneline.hiddenValues)
-
 					model.data.axis.heatmap.x = exclusivedArr;
 					model.data.axis.sample.x = exclusivedArr;
 					model.data.axis.group.x = exclusivedArr;
@@ -1235,11 +1238,7 @@ function landscape ()	{
 
 						return ex;
 					});
-					// TODO.
-					// 1. 선택된 Gene 을 포함하지 않는 mutation list 와 x axis list 를 구한다.
-					// 2. stack value 를 다시 구하고 exclusive 를 다시 구현한다.
-					// 3. 지워진 것은 model 에 저장해 놓고, 체크박스를 해제할때 사용한다.
-					// 4. 체크박스 후 & 전 다른 동작에도 interactive 하게 동작해야한다.
+					
 					drawAxis('sample', 'Y');
 					drawHeatmap('heatmap', model.now.heatmap || model.data.heatmap, 
 									model.data.axis.heatmap);
