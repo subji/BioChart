@@ -106,44 +106,44 @@
  /*
     Landscape
   */
- // $.ajax({
- //    'type': 'POST',
- //    'url': '/files/datas',
- //    data: {
- //     name: 'landscape',
- //    },
- //    beforeSend: function () {
- //      // bio.loading().start(document.querySelector('#main'), 900, 600);
- //    },
- //    success: function (d) {
- //      bio.landscape({
-	// 			element: '#main',
-	// 			width: 1200,
-	// 			height: 800,
-	// 			data: {
-	// 				pq: 'p',
-	// 				type: 'LUAD',
-	// 				data: d[0].data,
-	// 				title:d[0].data.name,
-	// 			},
- //        plot: {
- //          patient: false, // true
- //          pq: false, // true
- //        },
- //        divisionFunc: function (enable, disable, others)  {
- //          // console.log(enable, disable, others);
- //        },
- //        clinicalFunc: function (data, colors) {
- //          // console.log(data, colors);
- //        },
- //        onClickClinicalName: function (clinicalName)  {
- //          // console.log(clinicalName)
- //        },
-	// 		});
+ $.ajax({
+    'type': 'POST',
+    'url': '/files/datas',
+    data: {
+     name: 'landscape',
+    },
+    beforeSend: function () {
+      // bio.loading().start(document.querySelector('#main'), 900, 600);
+    },
+    success: function (d) {
+      bio.landscape({
+				element: '#main',
+				width: 1200,
+				height: 800,
+				data: {
+					pq: 'p',
+					type: 'LUAD',
+					data: d[0].data,
+					title:d[0].data.name,
+				},
+        plot: {
+          patient: false, // true
+          pq: false, // true
+        },
+        divisionFunc: function (enable, disable, others)  {
+          // console.log(enable, disable, others);
+        },
+        clinicalFunc: function (data, colors) {
+          // console.log(data, colors);
+        },
+        onClickClinicalName: function (clinicalName)  {
+          // console.log(clinicalName)
+        },
+			});
 
- //      // bio.loading().end();
- //    },
- //  });
+      // bio.loading().end();
+    },
+  });
 
 
 /* Variants */

@@ -1182,12 +1182,25 @@ function landscape ()	{
 					bio.layout().removeGroupTag(removingArr);
 
 					var emptyArr = [],
+							emptyObj = {},
 							exclusivedArr = [],
 							exclusivedData = [];
 
 					bio.iteration.loop(model.now.geneline.shownValues, 
 					function (k, v)	{
 						emptyArr = emptyArr.concat(v);
+					});
+
+					bio.iteration.loop(emptyArr, function (ea)	{
+						!emptyObj[ea] ? emptyObj[ea] = 1 : emptyObj[ea] += 1;
+					});
+
+					emptyArr = [];
+
+					bio.iteration.loop(emptyObj, function (k, v)	{
+						if (Object.keys(model.now.geneline.shownValues).length === v)	{
+							emptyArr.push(k);
+						}
 					});
 
 					bio.iteration.loop(emptyArr, function (val)	{
@@ -1200,6 +1213,14 @@ function landscape ()	{
 							exclusivedData.push(m);
 						}
 					});
+
+					exclusivedArr = exclusivedArr.filter(function (ex)	{
+						return ex;
+					});
+
+					console.log(
+						model.now.geneline.shownValues,
+						model.now.geneline.hiddenValues)
 
 					model.data.axis.heatmap.x = exclusivedArr;
 					model.data.axis.sample.x = exclusivedArr;
