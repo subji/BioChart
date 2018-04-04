@@ -33,6 +33,22 @@ function landscape ()	{
 		model.data.axis.sample.y = reloadSampleAxis;
 		model.data.stack.sample = changeSampleStacks.data;
 	};
+
+	function changeGeneStack (mutationList)	{
+		var changedGeneStack = model.data.iterMut([
+			{ 
+				obj: {}, data: 'gene', 
+				type: 'type', keyName: 'gene' 
+			}
+		], mutationList, true);
+		var changeGeneStacks = model.data.byStack([], 'gene', 
+					changedGeneStack.result.gene),
+				reloadGeneAxis = model.data.makeLinearAxis(
+					'gene', changeGeneStacks.axis);
+
+		model.data.axis.gene.x = reloadGeneAxis;
+		model.data.stack.gene = changeGeneStacks.data;
+	}
 	/*
 		Landscape scale option group 을 그리는 함수.
 	 */
@@ -83,8 +99,7 @@ function landscape ()	{
 
 					drawExclusivityLandscape(
 						model.now.exclusivity_opt);
-					callEnableDisableOtherFunc(
-						model.now.mutation_list || model.init.mutation_list);
+					callEnableDisableOtherFunc(model.init.mutation_list);
 
 					model.onClickClinicalName(null);
 
@@ -412,7 +427,23 @@ function landscape ()	{
 		var divX = 0,
 				maximum = 0,
 				divWidth = 0,
-				divisionLineElement = undefined;
+				divisionLineElement = undefined,
+				concatRemovedObj = [];
+
+		bio.iteration.loop(model.now.geneline.removedMutationObj, 
+		function (k, v)	{
+			concatRemovedObj = concatRemovedObj.concat(k);
+		});
+
+		list = list.filter(function (l)	{
+			if (Object.keys(model.now.geneline.removedMutationObj).length > 0)	{
+				if (concatRemovedObj.indexOf(l.gene) < 0)	{
+					return l;
+				}
+			} else {
+				return l;
+			}
+		});
 
 		bio.iteration.loop(list, function (l)	{
 			var idx = model.data.axis.heatmap.x.indexOf(
@@ -625,6 +656,23 @@ function landscape ()	{
 	 */
 	function callEnableDisableOtherFunc (list)	{
 		if (model.divisionFunc)	{
+			if (Object.keys(model.now.geneline.removedMutationObj).length > 0)	{
+				var exceptKeys = [];
+
+				bio.iteration.loop(model.now.geneline.removedMutationObj, 
+				function (k, v)	{
+					if (v)	{
+						exceptKeys.push(k);
+					}
+				});
+
+				list = list.filter(function (l)	{
+					if (exceptKeys.indexOf(l.gene) < 0)	{
+						return l;
+					}
+				});
+			}
+
 			var enableSample = uniqueParticipantId(list),
 					disableSample = model.init.axis.x.filter(function (s)	{
 						return enableSample.indexOf(s) < 0;
@@ -876,8 +924,27 @@ function landscape ()	{
 								model.exclusive.now = 
 								bio.landscapeSort().exclusive(
 									model.now.heatmap || model.data.heatmap, model.data.gene, type, model.data.type);
-								// ward2
+
+								if (Object.keys(model.now.geneline.shownValues).length > 0)	{
+									var tempShownArr = [];
+
+									bio.iteration.loop(model.now.geneline.shownValues, 
+									function (k, v)	{
+										tempShownArr = tempShownArr.concat(v);
+									});
+
+									model.now.mutation_list = 
+									model.init.mutation_list.filter(function (m)	{
+										if (tempShownArr.indexOf(m.participant_id) > -1)	{
+											return m;
+										}
+									});
+								} else {
+									model.now.mutation_list = model.init.mutation_list;
+								}
+								
 								changeSampleStack(model.now.mutation_list);
+								changeGeneStack(model.now.mutation_list);
 								// Group 별로 정렬된 상태에서 enable / disable 을 할때,
 								// Group 정렬을 유지한다.
 								if (model.now.geneline.groupList)	{
@@ -1134,6 +1201,17 @@ function landscape ()	{
 											  .style('stroke', '#333333')
 											  .style('stroke-width', 2);
 
+				eachBorder
+				.on('mouseover', function (d)	{
+					bio.tooltip({ 
+						element: this, 
+						contents: '<b>Show altered patients only</b>', 
+					});
+				})
+				.on('mouseout', function (d)	{
+					bio.tooltip('hide');
+				});
+
 				eachBorder.on('click', function (d)	{
 					d.checked = !(model.now.checkboxState[d.gene] || d.checked);
 					model.now.checkboxState[d.gene] = d.checked;
@@ -1148,7 +1226,7 @@ function landscape ()	{
 					model.now.geneline.shownValuesData = {};
 					model.now.geneline.hiddenValuesData = {};
 
-					model.init.mutation_list = 
+					model.now.mutation_list = 
 					model.init.mutation_list.filter(function (m)	{
 						if (model.now.checkboxState[m.gene])	{
 							if (!model.now.geneline.shownValues[m.gene])	{
@@ -1178,8 +1256,10 @@ function landscape ()	{
 						return '.landscape_group_group_' + ra.replace(' ', '') + 
 									'_svg.heatmap-g-tag';
 					});
+					removingArr.push('.landscape_gene_svg.bar-g-tag');
 					removingArr.push('.landscape_sample_svg.bar-g-tag');
 					removingArr.push('.landscape_heatmap_svg.heatmap-g-tag');
+					removingArr.push('.landscape_axis_sample_svg.left-axis-g-tag');
 					removingArr.push('.landscape_axis_sample_svg.left-axis-g-tag');
 
 					bio.layout().removeGroupTag(removingArr);
@@ -1188,10 +1268,6 @@ function landscape ()	{
 							emptyObj = {},
 							exclusivedArr = [],
 							exclusivedData = [];
-
-					console.log(
-						model.now.geneline.shownValues,
-						model.now.geneline.hiddenValues)
 
 					bio.iteration.loop(model.now.geneline.shownValues, 
 					function (k, v)	{
@@ -1219,7 +1295,7 @@ function landscape ()	{
 
 					bio.iteration.loop(emptyArr, function (val)	{
 						exclusivedArr[
-						model.exclusive.now.data.indexOf(val)] = val;
+						model.exclusive.init.data.indexOf(val)] = val;
 					});
 
 					bio.iteration.loop(model.init.mutation_list, function (m)	{
@@ -1237,6 +1313,7 @@ function landscape ()	{
 					model.data.axis.group.x = exclusivedArr;
 
 					changeSampleStack(exclusivedData);
+					changeGeneStack(exclusivedData);
 
 					model.now.heatmap = exclusivedData.map(function (ex)	{
 						ex.x = ex.participant_id;
@@ -1246,10 +1323,12 @@ function landscape ()	{
 						return ex;
 					});
 
+					drawAxis('gene', 'X');
 					drawAxis('sample', 'Y');
 					drawHeatmap('heatmap', model.now.heatmap || model.data.heatmap, 
 									model.data.axis.heatmap);
-
+					drawBar('gene', model.data.stack.gene,
+													model.data.axis.gene, ['top', 'left']);
 					drawBar('sample', model.data.stack.sample, 
 														model.data.axis.sample, ['top', 'left']);
 					drawHeatmap('patientHeatmap', 
@@ -1259,9 +1338,7 @@ function landscape ()	{
 								group = { x: model.data.axis.group.x, y: yaxis },
 								patient = { x: model.data.axis.patient.group.x, y: yaxis },
 								zipGroup = [];
-						// Clinical data 가 x-axis 의 양보다 많아지면
-						// 맨앞에 중첩되어서 정렬이 잘못 나온다. 그래서 x-axis 의 개수에 맞춰
-						// clinical data 를 축소 한다.
+
 						bio.iteration.loop(model.data.group.group[idx], 
 						function (g)	{
 							if (model.data.axis.group.x.indexOf(g.x) > -1)	{
