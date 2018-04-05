@@ -886,11 +886,11 @@ function landscape ()	{
 									model.now.geneline.axis[data].isGene = 'disable';
 
 									bio.iteration.loop(tempGeneList, function (tg)	{
-										if (model.now.geneline.axis[tg].isGene === 'enable')	{
-											model.now.geneline.geneIndexList[tg].push(
-												tempGeneList.indexOf(tg));
-										}
+										model.now.geneline.geneIndexList[tg].push(
+											tempGeneList.indexOf(tg));
 									});
+
+									model.now.geneline.deHistory.push(data);
 
 									model.now.mutation_list = model.now.mutation_list ? 
 									model.now.mutation_list : model.init.mutation_list;
@@ -931,25 +931,15 @@ function landscape ()	{
 									nowGeneLineValue();
 								} else {
 									var isTerminated = false,
-											subsIndex = model.now.geneline.geneIndexList[data].pop();
+											historyIndex = model.now.geneline.deHistory.indexOf(data);
 
-									model.now.geneline.geneIndexList[tempGeneList[subsIndex]].pop();
-
-									bio.iteration.loop(model.init.axis.y, function (g, i)	{
-										if (subsIndex < i)	{
-											model.now.geneline.geneIndexList[g].pop();
-										}
-									});
+									tempGeneList = []
 
 									bio.iteration.loop(model.now.geneline.geneIndexList, 
-									function (k, v)	{
-										if (k === data)	{
-											tempGeneList[subsIndex] = data;
-										} else {
-											tempGeneList[v[v.length - 1]] = k;
-										}
+									function (gi, giv)	{
+										tempGeneList[giv[historyIndex]] = gi;
 									});
-
+									
 									model.data.gene = tempGeneList;
 									model.now.geneline.axis[data].isGene = 'enable';
 
@@ -1135,6 +1125,7 @@ function landscape ()	{
 		Heatmap 차트를 그려주는 함수.
 	 */
 	function drawHeatmap (part, data, axis)	{
+		// Error.
 		var add = getGroupTitle(part, axis);
 		var parts = {
 			group: { id: 'p_group_', config: 'group' }, 
@@ -1614,8 +1605,8 @@ function landscape ()	{
 		// 최대 위치가 모든 데이터에서의 최대위치 보다 작을때는
 		// 나눔선을 표시하지 않기 위해서 이다.
 		model.now.geneline = bio.objects.clone(model.init.geneline);
-		// Gene Disable 클릭 횟수 저장 변수.
-		model.now.geneline.countDisabled = 0;
+		// Gene Disable 순서를 저장해놓는 변수.
+		model.now.geneline.deHistory = [];
 		// Gene list 순서를 저장해놓는 변수.
 		model.now.geneline.geneIndexList = {};
 
