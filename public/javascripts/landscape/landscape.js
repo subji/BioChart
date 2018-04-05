@@ -563,21 +563,6 @@ function landscape ()	{
 		}
 	}
 	/*
-		removed 된 쪽과 enable 쪽의 중복이 되지 않는
-		participant - id 리스트를 반환.
-	 */
-	function uniqueParticipantId (list)	{
-		var result = [];
-
-		bio.iteration.loop(list, function (l)	{
-			if (result.indexOf(l.participant_id) < 0)	{
-				result.push(l.participant_id);
-			}
-		});
-
-		return result;
-	};
-	/*
 		Group 정렬된 상태에서 enable / disable 을 적용하기 위한
 		함수.
 	 */
@@ -650,44 +635,118 @@ function landscape ()	{
 		};
 	};
 	/*
+		removed 된 쪽과 enable 쪽의 중복이 되지 않는
+		participant - id 리스트를 반환.
+	 */
+	function uniqueParticipantId (list)	{
+		var result = [];
+
+		bio.iteration.loop(list, function (l)	{
+			if (result.indexOf(l.participant_id) < 0)	{
+				result.push(l.participant_id);
+			}
+		});
+
+		return result;
+	};
+	/*
 		Enable / Disable / Others 를 반환하는 함수.
+		disable / enable 의 경우 disable / enable 하지만,
+		hidden / show 의 경우에는 hidden 데이터는 others 로 분류된다.
 	 */
 	function callEnableDisableOtherFunc (list, what)	{
 		if (model.divisionFunc)	{
-			if (Object.keys(model.now.geneline.removedMutationObj).length > 0)	{
-				var exceptKeys = [];
+			list = model.init.mutation_list;
 
-				bio.iteration.loop(model.now.geneline.removedMutationObj, 
-				function (k, v)	{
-					if (v)	{
-						exceptKeys.push(k);
-					}
-				});
-
-				list = list.filter(function (l)	{
-					if (exceptKeys.indexOf(l.gene) < 0)	{
-						return l;
-					}
-				});
-			}
-
-			var enableSample = uniqueParticipantId(list),
-					disableSample = model.init.axis.x.filter(function (s)	{
-						return enableSample.indexOf(s) < 0;
-					}),
+			var enableSample = [],
+					disableSample = [],
 					otherSample = model.data.group.group[0].map(function (g)	{
 						return g.x;
 					});
 
-			otherSample = otherSample.filter(function (o)	{
-				if (enableSample.indexOf(o) < 0 && 
-						disableSample.indexOf(o) < 0)	{
-					return o;
-				}
-			});
+			var hiddenList = [],
+					shownList = [];
 
-			otherSample = !otherSample ? [] : otherSample;
+			if (Object.keys(model.now.geneline.shownValues).length > 0)	{
+				var shkeys = [];
 
+				bio.iteration.loop(model.now.geneline.shownValues, 
+				function (k , v)	{
+					shkeys = shkeys.concat(v);
+				});
+
+				list.forEach(function (l)	{
+					if (shkeys.indexOf(l.participant_id) > -1)	{
+						shownList.push(l);
+					} else {
+						hiddenList.push(l);
+					}
+				});
+
+				enableSample = uniqueParticipantId(shownList);
+				disableSample = uniqueParticipantId(hiddenList);
+				otherSample = otherSample.filter(function (o)	{
+					if (enableSample.indexOf(o) < 0 && 
+							disableSample.indexOf(o) < 0)	{
+						return o;
+					}	
+				});
+				otherSample = otherSample.concat(disableSample);
+				disableSample = [];
+			}
+
+			if (Object.keys(model.now.geneline.removedMutationObj).length > 0)	{
+				var dekeys = []; // disable / enable keys.
+
+				list = shownList.length > 0 ? shownList : list;
+
+				bio.iteration.loop(model.now.geneline.removedMutationObj, 
+				function (k, v)	{
+					if (v)	{
+						dekeys.push(k);
+					}
+				});
+
+				list = list.filter(function (l)	{
+					if (dekeys.indexOf(l.gene) < 0)	{
+						return l;
+					}
+				});
+
+				enableSample = uniqueParticipantId(list);
+				disableSample = shownList.length > 0 ? 
+				uniqueParticipantId(shownList).filter(function (s)	{
+					return enableSample.indexOf(s) < 0;
+				}) : 
+				model.init.axis.x.filter(function (s)	{
+					return enableSample.indexOf(s) < 0;
+				});
+				otherSample = otherSample.filter(function (o)	{
+					if (enableSample.indexOf(o) < 0 && 
+							disableSample.indexOf(o) < 0)	{
+						return o;
+					}	
+				});
+
+				otherSample = !otherSample ? [] : otherSample;
+			}
+
+			if (Object.keys(model.now.geneline.removedMutationObj).length < 1 && 
+				Object.keys(model.now.geneline.shownValues).length < 1)	{
+				enableSample = uniqueParticipantId(list);
+				disableSample = model.init.axis.x.filter(function (s)	{
+					return enableSample.indexOf(s) < 0;
+				});
+				otherSample = otherSample.filter(function (o)	{
+					if (enableSample.indexOf(o) < 0 && 
+							disableSample.indexOf(o) < 0)	{
+						return o;
+					}	
+				});
+
+				otherSample = !otherSample ? [] : otherSample;
+			}
+			
 			model.divisionFunc(
 				enableSample, disableSample, otherSample);
 		}
@@ -1278,7 +1337,14 @@ function landscape ()	{
 					var emptyArr = [],
 							emptyObj = {},
 							exclusivedArr = [],
-							exclusivedData = [];
+							exclusivedData = [],
+							disabledArr = Object.keys(model.now.geneline.removedMutationObj),
+							enabledData = [],
+							disabledData = [],
+							exclusiveHeatmap = null,
+							enabledExclusive = null,
+							disabledExclusive = null,
+							combinedExclusive = [];
 
 					bio.iteration.loop(model.now.geneline.shownValues, 
 					function (k, v)	{
@@ -1304,9 +1370,29 @@ function landscape ()	{
 						});
 					}
 
+					exclusiveHeatmap = model.data.heatmap.filter(function (h)	{
+						if (emptyArr.indexOf(h.x) > -1)	{
+							return h;
+						}
+					});
+
+					bio.iteration.loop(exclusiveHeatmap, function (heat)	{
+						disabledArr.indexOf(heat.y) < 0 ? 
+						enabledData.push(heat) : disabledData.push(heat);
+					});
+
+					enabledExclusive = bio.landscapeSort().exclusive(
+						enabledData, model.data.gene, 
+						model.now.exclusivity_opt, model.data.type).data;
+					disabledExclusive = bio.landscapeSort().exclusive(
+						disabledData, model.data.gene, 
+						model.now.exclusivity_opt, model.data.type).data;
+
+					combinedExclusive = combinedExclusive.concat(enabledExclusive);
+					combinedExclusive = combinedExclusive.concat(disabledExclusive);
+
 					bio.iteration.loop(emptyArr, function (val)	{
-						exclusivedArr[
-						model.exclusive.init.data.indexOf(val)] = val;
+						exclusivedArr[combinedExclusive.indexOf(val)] = val;
 					});
 
 					bio.iteration.loop(model.init.mutation_list, function (m)	{
@@ -1315,19 +1401,13 @@ function landscape ()	{
 						}
 					});
 
-					var tempExclusive = 
-						bio.landscapeSort().exclusive(
-							exclusivedData, model.data.gene, model.now.exclusivity_opt, model.data.type);
-
-					console.log(tempExclusive)
-
 					exclusivedArr = exclusivedArr.filter(function (ex)	{
 						return ex;
 					});
 
-					model.data.axis.heatmap.x = exclusivedArr;
-					model.data.axis.sample.x = exclusivedArr;
-					model.data.axis.group.x = exclusivedArr;
+					model.data.axis.heatmap.x = combinedExclusive;
+					model.data.axis.sample.x = combinedExclusive;
+					model.data.axis.group.x = combinedExclusive;
 
 					changeSampleStack(exclusivedData);
 					changeGeneStack(exclusivedData);

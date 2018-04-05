@@ -170,7 +170,7 @@ function landscapeConfig ()	{
 				},
 			},
 			gene: {
-				margin: [5, 5, 13, 125],
+				margin: [5, 5, 13, 135],
 				attr: {
 					rx: 3, ry: 3,
 					x: function (data, idx, that) {
