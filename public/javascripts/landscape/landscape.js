@@ -80,8 +80,8 @@ function landscape ()	{
 					model.now.geneline.sortedSiblings = 
 					model.init.geneline.sortedSiblings;
 
-					model.now.geneline.countDisabled = 0;
-					model.now.geneline.geneList = [];
+					model.now.geneline.deHistory = [];
+					model.now.geneline.geneIndexList = {};
 
 					model.now.heatmap = model.init.heatmap;
 					model.now.geneline.groupList = undefined;
