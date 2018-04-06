@@ -108,7 +108,7 @@ function landscape ()	{
 
 					drawExclusivityLandscape(
 						model.now.exclusivity_opt);
-					callEnableDisableOtherFunc(model.init.mutation_list, 'de');
+					callEnableDisableOtherFunc(model.init.mutation_list);
 
 					model.onClickClinicalName(null);
 
@@ -660,7 +660,7 @@ function landscape ()	{
 		disable / enable 의 경우 disable / enable 하지만,
 		hidden / show 의 경우에는 hidden 데이터는 others 로 분류된다.
 	 */
-	function callEnableDisableOtherFunc (list, what)	{
+	function callEnableDisableOtherFunc (list)	{
 		if (model.divisionFunc)	{
 			list = model.init.mutation_list;
 
@@ -767,7 +767,6 @@ function landscape ()	{
 				enableSample, disableSample, otherSample);
 		}
 	}
-
 	/*
 		Landscape 축들을 그려주는 함수.
 	 */
@@ -1039,7 +1038,7 @@ function landscape ()	{
 								enableDisableBlur();
 								enabledDisabeldMaximumElement(isGroupMutationList);
 								callEnableDisableOtherFunc(
-									model.now.mutation_list || model.init.mutation_list, 'de');
+									model.now.mutation_list || model.init.mutation_list);
 								reserveCheckboxState();
 							}
 						}
@@ -1459,7 +1458,7 @@ function landscape ()	{
 					enabledDisabeldMaximumElement(
 						model.now.geneline.groupList ? 
 						model.now.geneline.pidList.data : undefined);
-					callEnableDisableOtherFunc(exclusivedData, 'sh')
+					callEnableDisableOtherFunc(exclusivedData)
 
 					d3.event.stopPropagation();
 				});
@@ -1741,7 +1740,7 @@ function landscape ()	{
 		makeGeneLineDataList();
 		// 초기에 한번 불러온다.
 		callEnableDisableOtherFunc(
-			model.now.mutation_list || model.init.mutation_list, 'de');
+			model.now.mutation_list || model.init.mutation_list);
 		if (model.clinicalFunc)	{
 			model.clinicalFunc(model.data.group, 
 				bio.boilerPlate.clinicalInfo);
