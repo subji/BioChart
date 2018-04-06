@@ -82,6 +82,9 @@ function landscape ()	{
 
 					model.now.geneline.deHistory = [];
 					model.now.geneline.geneIndexList = {};
+					bio.iteration.loop(model.data.gene, function (g, i)	{
+						model.now.geneline.geneIndexList[g] = [i];
+					});
 
 					model.now.heatmap = model.init.heatmap;
 					model.now.geneline.groupList = undefined;
@@ -662,17 +665,27 @@ function landscape ()	{
 					disableSample = [],
 					otherSample = model.data.group.group[0].map(function (g)	{
 						return g.x;
-					});
+					}),
+					shownValueLen = Object.keys(model.now.geneline.shownValues).length;
 
 			var hiddenList = [],
 					shownList = [];
 
-			if (Object.keys(model.now.geneline.shownValues).length > 0)	{
-				var shkeys = [];
+			if (shownValueLen > 0)	{
+				var shkeys = [],
+						shkeysObj = {};
 
 				bio.iteration.loop(model.now.geneline.shownValues, 
 				function (k , v)	{
-					shkeys = shkeys.concat(v);
+					bio.iteration.loop(v, function (vval)	{
+						!shkeysObj[vval] ? shkeysObj[vval] = 1 : shkeysObj[vval] += 1;
+					});
+				});
+
+				bio.iteration.loop(shkeysObj, function (key, val)	{
+					if (shownValueLen == val)	{
+						shkeys.push(key);
+					} 
 				});
 
 				list.forEach(function (l)	{
