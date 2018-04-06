@@ -63,6 +63,7 @@ function landscape ()	{
 					changeAxis({ axis: 'x', data: model.init.axis.x });
 					changeAxis({ axis: 'y', data: Object.keys(model.init.geneline.axis) });
 					changeSampleStack(model.init.mutation_list);
+					changeGeneStack(model.init.mutation_list);
 
 					model.data.gene = Object.keys(model.init.geneline.axis);
 					model.now.exclusivity_opt = 
@@ -90,6 +91,8 @@ function landscape ()	{
 					model.now.geneline.groupList = undefined;
 					model.now.geneline.mutationList = undefined;
 					model.now.geneline.pidList = undefined;
+					model.now.geneline.shownValues = {};
+					model.now.geneline.hiddenValues = {};
 					model.now.geneline.removedMutationArr = {};
 					model.now.geneline.removedMutationObj = {};
 					model.now.exclusive = undefined;
