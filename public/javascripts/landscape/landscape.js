@@ -1237,17 +1237,7 @@ function landscape ()	{
 										translate.indexOf(',') + 1, 
 										translate.indexOf(')'))),
 						x = 0,
-						y = textY - 5.5,
-						eachBorder = chkGroup.append('rect')
-															.data([{ gene: gene, checked: false }])
-															.attr('width', borderSize)
-															.attr('height', borderSize)
-															.attr('x', x)
-															.attr('y', y)
-															.style('cursor', 'pointer')
-															.style('fill-opacity', 0.05)
-															.style('stroke-width', 2)
-															.style('stroke', '#333333');
+						y = textY - 5.5;
 
 				var coord = [
 					{ 
@@ -1267,201 +1257,206 @@ function landscape ()	{
 				var mark = chkGroup.append('path')
 												.data([{ gene: gene, checked: false }])
 												.attr('d', line(coord))
-												.style('display', function (d)	{
-													return d.checked ? 'block' : 'none';
-												})
 												.style('fill', 'none')
-											  // .style('opacity', function (d)	{
-											  // 	return d.checked ? 1 : 0;
-											  // })
+											  .style('opacity', function (d)	{
+											  	return d.checked ? 1 : 0;
+											  })
 											  .style('stroke', '#333333')
 											  .style('stroke-width', 2);
 
-				eachBorder
-				.on('mouseover', function (d)	{
-					bio.tooltip({ 
-						element: this, 
-						contents: '<b>Show altered patients only</b>', 
-					});
-				})
-				.on('mouseout', function (d)	{
-					bio.tooltip('hide');
-				});
+				
+				var eachBorder = chkGroup.append('rect')
+						.data([{ gene: gene, checked: false }])
+						.attr('width', borderSize)
+						.attr('height', borderSize)
+						.attr('x', x)
+						.attr('y', y)
+						.style('cursor', 'pointer')
+						.style('fill-opacity', 0.00)
+						.style('stroke-width', 2)
+						.style('stroke', '#333333')
+						.on('mouseover', function (d)	{
+							bio.tooltip({ 
+								element: this, 
+								contents: '<b>Show altered patients only</b>', 
+							});
+						})
+						.on('mouseout', function (d)	{
+							bio.tooltip('hide');
+						})
+						.on('click', function (d)	{
+							d.checked = !(model.now.checkboxState[d.gene] || d.checked);
+							model.now.checkboxState[d.gene] = d.checked;
 
-				eachBorder.on('click', function (d)	{
-					d.checked = !(model.now.checkboxState[d.gene] || d.checked);
-					model.now.checkboxState[d.gene] = d.checked;
+							mark.style('opacity', d.checked ? 1 : 0);
 
-					// mark.style('opacity', d.checked ? 1 : 0);
-					mark.style('display', d.checked ? 'block' : 'none');
+							model.now.mutation_list = !model.now.mutation_list ? 
+							model.init.mutation_list : model.now.mutation_list;
 
-					model.now.mutation_list = !model.now.mutation_list ? 
-					model.init.mutation_list : model.now.mutation_list;
+							model.now.geneline.shownValues = {};
+							model.now.geneline.hiddenValues = {};
+							model.now.geneline.shownValuesData = {};
+							model.now.geneline.hiddenValuesData = {};
 
-					model.now.geneline.shownValues = {};
-					model.now.geneline.hiddenValues = {};
-					model.now.geneline.shownValuesData = {};
-					model.now.geneline.hiddenValuesData = {};
-
-					model.now.mutation_list = 
-					model.init.mutation_list.filter(function (m)	{
-						if (model.now.checkboxState[m.gene])	{
-							if (!model.now.geneline.shownValues[m.gene])	{
-								model.now.geneline.shownValues[m.gene] = [m.participant_id];
-							} else {
-								if (model.now.geneline.shownValues[m.gene].indexOf(m.participant_id) < 0)	{
-									model.now.geneline.shownValues[m.gene].push(m.participant_id);
+							model.now.mutation_list = 
+							model.init.mutation_list.filter(function (m)	{
+								if (model.now.checkboxState[m.gene])	{
+									if (!model.now.geneline.shownValues[m.gene])	{
+										model.now.geneline.shownValues[m.gene] = [m.participant_id];
+									} else {
+										if (model.now.geneline.shownValues[m.gene].indexOf(m.participant_id) < 0)	{
+											model.now.geneline.shownValues[m.gene].push(m.participant_id);
+										}
+									}
+								} else {
+									if (!model.now.geneline.hiddenValues[m.gene])	{
+										model.now.geneline.hiddenValues[m.gene] = [m.participant_id];
+									} else {
+										if (model.now.geneline.hiddenValues[m.gene].indexOf(m.participant_id) < 0)	{
+											model.now.geneline.hiddenValues[m.gene].push(m.participant_id);
+										}
+									}
 								}
-							}
-						} else {
-							if (!model.now.geneline.hiddenValues[m.gene])	{
-								model.now.geneline.hiddenValues[m.gene] = [m.participant_id];
-							} else {
-								if (model.now.geneline.hiddenValues[m.gene].indexOf(m.participant_id) < 0)	{
-									model.now.geneline.hiddenValues[m.gene].push(m.participant_id);
+
+								return m;
+							});
+							// TODO.
+							// 체크하고 disable 한다음 체크를 해제하면 스케일이 이상해진다.
+							// 체크 후 disable 할 때, 값이 제대로 안넘어간다. divisionFunction 으로.
+
+							var removingArr = model.data.clinicalList.map(function (ra)	{
+								return '.landscape_group_group_' + ra.replace(' ', '') + 
+											'_svg.heatmap-g-tag';
+							});
+							removingArr.push('.landscape_gene_svg.bar-g-tag');
+							removingArr.push('.landscape_sample_svg.bar-g-tag');
+							removingArr.push('.landscape_heatmap_svg.heatmap-g-tag');
+							removingArr.push('.landscape_axis_sample_svg.left-axis-g-tag');
+							removingArr.push('.landscape_axis_sample_svg.left-axis-g-tag');
+
+							bio.layout().removeGroupTag(removingArr);
+
+							var emptyArr = [],
+									emptyObj = {},
+									exclusivedArr = [],
+									exclusivedData = [],
+									disabledArr = Object.keys(model.now.geneline.removedMutationObj),
+									enabledData = [],
+									disabledData = [],
+									exclusiveHeatmap = null,
+									enabledExclusive = null,
+									disabledExclusive = null,
+									combinedExclusive = [];
+
+							bio.iteration.loop(model.now.geneline.shownValues, 
+							function (k, v)	{
+								emptyArr = emptyArr.concat(v);
+							});
+
+							bio.iteration.loop(emptyArr, function (ea)	{
+								!emptyObj[ea] ? emptyObj[ea] = 1 : emptyObj[ea] += 1;
+							});
+
+							emptyArr = [];
+
+							bio.iteration.loop(emptyObj, function (k, v)	{
+								if (Object.keys(model.now.geneline.shownValues).length === v)	{
+									emptyArr.push(k);
 								}
+							});
+
+							if (Object.keys(model.now.geneline.shownValues).length === 0)	{
+								bio.iteration.loop(model.now.geneline.hiddenValues, 
+								function (k, v)	{
+									emptyArr = emptyArr.concat(v);
+								});
 							}
-						}
 
-						return m;
-					});
-					// TODO.
-					// 체크하고 disable 한다음 체크를 해제하면 스케일이 이상해진다.
-					// 체크 후 disable 할 때, 값이 제대로 안넘어간다. divisionFunction 으로.
+							exclusiveHeatmap = model.data.heatmap.filter(function (h)	{
+								if (emptyArr.indexOf(h.x) > -1)	{
+									return h;
+								}
+							});
 
-					var removingArr = model.data.clinicalList.map(function (ra)	{
-						return '.landscape_group_group_' + ra.replace(' ', '') + 
-									'_svg.heatmap-g-tag';
-					});
-					removingArr.push('.landscape_gene_svg.bar-g-tag');
-					removingArr.push('.landscape_sample_svg.bar-g-tag');
-					removingArr.push('.landscape_heatmap_svg.heatmap-g-tag');
-					removingArr.push('.landscape_axis_sample_svg.left-axis-g-tag');
-					removingArr.push('.landscape_axis_sample_svg.left-axis-g-tag');
+							bio.iteration.loop(exclusiveHeatmap, function (heat)	{
+								disabledArr.indexOf(heat.y) < 0 ? 
+								enabledData.push(heat) : disabledData.push(heat);
+							});
 
-					bio.layout().removeGroupTag(removingArr);
+							enabledExclusive = bio.landscapeSort().exclusive(
+								enabledData, model.data.gene, 
+								model.now.exclusivity_opt, model.data.type).data;
+							disabledExclusive = bio.landscapeSort().exclusive(
+								disabledData, model.data.gene, 
+								model.now.exclusivity_opt, model.data.type).data;
 
-					var emptyArr = [],
-							emptyObj = {},
-							exclusivedArr = [],
-							exclusivedData = [],
-							disabledArr = Object.keys(model.now.geneline.removedMutationObj),
-							enabledData = [],
-							disabledData = [],
-							exclusiveHeatmap = null,
-							enabledExclusive = null,
-							disabledExclusive = null,
-							combinedExclusive = [];
+							combinedExclusive = combinedExclusive.concat(enabledExclusive);
+							combinedExclusive = combinedExclusive.concat(disabledExclusive);
 
-					bio.iteration.loop(model.now.geneline.shownValues, 
-					function (k, v)	{
-						emptyArr = emptyArr.concat(v);
-					});
+							bio.iteration.loop(emptyArr, function (val)	{
+								exclusivedArr[combinedExclusive.indexOf(val)] = val;
+							});
 
-					bio.iteration.loop(emptyArr, function (ea)	{
-						!emptyObj[ea] ? emptyObj[ea] = 1 : emptyObj[ea] += 1;
-					});
+							bio.iteration.loop(model.init.mutation_list, function (m)	{
+								if (exclusivedArr.indexOf(m.participant_id) > -1)	{
+									exclusivedData.push(m);
+								}
+							});
 
-					emptyArr = [];
+							exclusivedArr = exclusivedArr.filter(function (ex)	{
+								return ex;
+							});
 
-					bio.iteration.loop(emptyObj, function (k, v)	{
-						if (Object.keys(model.now.geneline.shownValues).length === v)	{
-							emptyArr.push(k);
-						}
-					});
+							model.data.axis.heatmap.x = combinedExclusive;
+							model.data.axis.sample.x = combinedExclusive;
+							model.data.axis.group.x = combinedExclusive;
 
-					if (Object.keys(model.now.geneline.shownValues).length === 0)	{
-						bio.iteration.loop(model.now.geneline.hiddenValues, 
-						function (k, v)	{
-							emptyArr = emptyArr.concat(v);
-						});
-					}
+							changeSampleStack(exclusivedData);
+							changeGeneStack(exclusivedData);
 
-					exclusiveHeatmap = model.data.heatmap.filter(function (h)	{
-						if (emptyArr.indexOf(h.x) > -1)	{
-							return h;
-						}
-					});
+							model.now.heatmap = exclusivedData.map(function (ex)	{
+								ex.x = ex.participant_id;
+								ex.y = ex.gene;
+								ex.value = ex.type;
 
-					bio.iteration.loop(exclusiveHeatmap, function (heat)	{
-						disabledArr.indexOf(heat.y) < 0 ? 
-						enabledData.push(heat) : disabledData.push(heat);
-					});
+								return ex;
+							});
 
-					enabledExclusive = bio.landscapeSort().exclusive(
-						enabledData, model.data.gene, 
-						model.now.exclusivity_opt, model.data.type).data;
-					disabledExclusive = bio.landscapeSort().exclusive(
-						disabledData, model.data.gene, 
-						model.now.exclusivity_opt, model.data.type).data;
+							drawAxis('gene', 'X');
+							drawAxis('sample', 'Y');
+							drawHeatmap('heatmap', model.now.heatmap || model.data.heatmap, 
+											model.data.axis.heatmap);
+							drawBar('gene', model.data.stack.gene,
+															model.data.axis.gene, ['top', 'left']);
+							drawBar('sample', model.data.stack.sample, 
+																model.data.axis.sample, ['top', 'left']);
+							drawHeatmap('patientHeatmap', 
+								model.data.patient, model.data.axis.patient.heatmap);
+							bio.iteration.loop(model.data.axis.group.y, function (g, idx)	{
+								var yaxis = model.data.axis.group.y[idx],
+										group = { x: model.data.axis.group.x, y: yaxis },
+										patient = { x: model.data.axis.patient.group.x, y: yaxis },
+										zipGroup = [];
 
-					combinedExclusive = combinedExclusive.concat(enabledExclusive);
-					combinedExclusive = combinedExclusive.concat(disabledExclusive);
+								bio.iteration.loop(model.data.group.group[idx], 
+								function (g)	{
+									if (model.data.axis.group.x.indexOf(g.x) > -1)	{
+										zipGroup.push(g);
+									}
+								});
 
-					bio.iteration.loop(emptyArr, function (val)	{
-						exclusivedArr[combinedExclusive.indexOf(val)] = val;
-					});
+								drawHeatmap('group', zipGroup, group);
+								drawHeatmap('patientGroup', 
+													 [model.data.group.patient[idx]], patient);
+							});	
+							
+							enableDisableBlur();
+							enabledDisabeldMaximumElement(
+								model.now.geneline.groupList ? 
+								model.now.geneline.pidList.data : undefined);
+							callEnableDisableOtherFunc(exclusivedData)
 
-					bio.iteration.loop(model.init.mutation_list, function (m)	{
-						if (exclusivedArr.indexOf(m.participant_id) > -1)	{
-							exclusivedData.push(m);
-						}
-					});
-
-					exclusivedArr = exclusivedArr.filter(function (ex)	{
-						return ex;
-					});
-
-					model.data.axis.heatmap.x = combinedExclusive;
-					model.data.axis.sample.x = combinedExclusive;
-					model.data.axis.group.x = combinedExclusive;
-
-					changeSampleStack(exclusivedData);
-					changeGeneStack(exclusivedData);
-
-					model.now.heatmap = exclusivedData.map(function (ex)	{
-						ex.x = ex.participant_id;
-						ex.y = ex.gene;
-						ex.value = ex.type;
-
-						return ex;
-					});
-
-					drawAxis('gene', 'X');
-					drawAxis('sample', 'Y');
-					drawHeatmap('heatmap', model.now.heatmap || model.data.heatmap, 
-									model.data.axis.heatmap);
-					drawBar('gene', model.data.stack.gene,
-													model.data.axis.gene, ['top', 'left']);
-					drawBar('sample', model.data.stack.sample, 
-														model.data.axis.sample, ['top', 'left']);
-					drawHeatmap('patientHeatmap', 
-						model.data.patient, model.data.axis.patient.heatmap);
-					bio.iteration.loop(model.data.axis.group.y, function (g, idx)	{
-						var yaxis = model.data.axis.group.y[idx],
-								group = { x: model.data.axis.group.x, y: yaxis },
-								patient = { x: model.data.axis.patient.group.x, y: yaxis },
-								zipGroup = [];
-
-						bio.iteration.loop(model.data.group.group[idx], 
-						function (g)	{
-							if (model.data.axis.group.x.indexOf(g.x) > -1)	{
-								zipGroup.push(g);
-							}
-						});
-
-						drawHeatmap('group', zipGroup, group);
-						drawHeatmap('patientGroup', 
-											 [model.data.group.patient[idx]], patient);
-					});	
-					
-					enableDisableBlur();
-					enabledDisabeldMaximumElement(
-						model.now.geneline.groupList ? 
-						model.now.geneline.pidList.data : undefined);
-					callEnableDisableOtherFunc(exclusivedData)
-
-					d3.event.stopPropagation();
+							d3.event.stopPropagation();
 				});
 			});
 	};
