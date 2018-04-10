@@ -1198,7 +1198,7 @@ function landscape ()	{
 		상태를 유지해주게 하는 함수.
 	 */
 	function reserveCheckboxState ()	{
-		d3.selectAll('.landscape_gene_svg.checkbox-group path')
+		d3.selectAll('.landscape_gene_svg.chkGroup path')
 			.style('opacity', function (d)	{
 				return model.now.checkboxState[d.gene] ? 1 : 0;
 			});
@@ -1238,16 +1238,12 @@ function landscape ()	{
 										translate.indexOf(')'))),
 						x = 0,
 						y = textY - 5.5,
-						eachG = chkGroup.append('g')
-														.attr('class', 'landscape_gene_svg checkbox-group')
-														.data([{ gene: gene, checked: false }]),
-						eachBorder = eachG.append('rect')
+						eachBorder = chkGroup.append('rect')
+															.data([{ gene: gene, checked: false }])
 															.attr('width', borderSize)
 															.attr('height', borderSize)
 															.attr('x', x)
 															.attr('y', y)
-															.attr('rx', 3)
-															.attr('ry', 3)
 															.style('cursor', 'pointer')
 															.style('fill-opacity', 0.05)
 															.style('stroke-width', 2)
@@ -1268,12 +1264,16 @@ function landscape ()	{
 					}
 				];
 
-				var mark = eachG.append('path')
+				var mark = chkGroup.append('path')
+												.data([{ gene: gene, checked: false }])
 												.attr('d', line(coord))
+												.style('display', function (d)	{
+													return d.checked ? 'block' : 'none';
+												})
 												.style('fill', 'none')
-											  .style('opacity', function (d)	{
-											  	return d.checked ? 1 : 0;
-											  })
+											  // .style('opacity', function (d)	{
+											  // 	return d.checked ? 1 : 0;
+											  // })
 											  .style('stroke', '#333333')
 											  .style('stroke-width', 2);
 
@@ -1292,7 +1292,8 @@ function landscape ()	{
 					d.checked = !(model.now.checkboxState[d.gene] || d.checked);
 					model.now.checkboxState[d.gene] = d.checked;
 
-					mark.style('opacity', d.checked ? 1 : 0);
+					// mark.style('opacity', d.checked ? 1 : 0);
+					mark.style('display', d.checked ? 'block' : 'none');
 
 					model.now.mutation_list = !model.now.mutation_list ? 
 					model.init.mutation_list : model.now.mutation_list;
