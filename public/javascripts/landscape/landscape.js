@@ -1100,7 +1100,9 @@ function landscape ()	{
 				function (d, i, mark)	{ 
 					var gene = d.gene;
 
-					d.checked = !(model.now.checkboxState.ed[d.gene] || d.checked);
+					d.checked = model.now.checkboxState.ed[d.gene] !== undefined ? 
+					!model.now.checkboxState.ed[d.gene] : d.checked
+
 					model.now.checkboxState.ed[d.gene] = d.checked;
 
 					mark.style('opacity', d.checked ? 1 : 0);
