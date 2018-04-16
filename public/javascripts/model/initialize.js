@@ -137,7 +137,7 @@ function initialize ()	{
 			width: 0,
 			height: 0,
 			geneline: [],
-			checkboxState: {},
+			checkboxState: { hs: {}, ed: {} },
 		},
 		now: {
 			sort: {
@@ -150,7 +150,7 @@ function initialize ()	{
 			width: 0,
 			height: 0,
 			geneline: [],
-			checkboxState: {},
+			checkboxState: { hs: {}, ed: {} },
 		},
 		exclusive: { init: null },
 	};

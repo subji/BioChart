@@ -9,6 +9,10 @@
 	padding: 10px;
 	border-radius: 5px;
 	border-width: 4px;
+  /* 
+    D3 에서 mouseover 이벤트가 div 위에 올려질 경우 flink 현상이 발생한다.
+    그래서 이를 방지하기 위해서 tooltip div 마우스 이벤트를 막아놓는다. 
+  */
   pointer-events: none;
 }
 

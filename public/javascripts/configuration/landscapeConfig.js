@@ -17,25 +17,6 @@ function landscapeConfig ()	{
 		if (part === 'common')	{
 			return {
 				on: {
-					mouseover: function (data, idx, that)	{
-						var id = this.parentNode
-												 .parentNode.className.baseVal;
-						if (id.indexOf('gene') > -1 && 
-								id.indexOf('right') > -1 || 
-								id.indexOf('group') > -1)	{
-							var txt = id.indexOf('gene') > -1 ? 
-							'Sort by alt + <b>' + this.innerHTML + '</b>' : 
-											'<b>' + this.innerHTML + '</b></br>' + 
-											'Click to sort </br> Alt + Click ' + 
-											// 'add to key';
-// 
-							bio.tooltip({ element: this, contents: txt });
-
-							d3.select(this).transition()
-								.style('font-size', 11)
-								.style('font-weight', 'bold');
-						}
-					},
 					mouseout: function (data, idx)	{
 						bio.tooltip('hide');
 
@@ -100,7 +81,7 @@ function landscapeConfig ()	{
 			},
 			geneY: {
 				top: 0,
-				left: w - 85,
+				left: w - 100,
 				direction: 'right', 
 				range: [10, h - 45],
 				exclude: 'path, line',
@@ -129,9 +110,9 @@ function landscapeConfig ()	{
 			geneX: {
 				left: 15,
 				top: h - 45,
-				range: [15, w - 100],
+				range: [15, w - 115],
 				direction: 'bottom',
-				margin: [0, 15, 0, 100], 
+				margin: [0, 15, 0, 115], 
 			},
 			pqX: {
 				left: 5,
@@ -170,7 +151,7 @@ function landscapeConfig ()	{
 				},
 			},
 			gene: {
-				margin: [5, 5, 13, 135],
+				margin: [5, 5, 13, 150],
 				attr: {
 					rx: 3, ry: 3,
 					x: function (data, idx, that) {
@@ -301,7 +282,7 @@ function landscapeConfig ()	{
 				},
 			},
 			gene: {
-				margin: [10, 30, 45.5, 85],
+				margin: [10, 30, 45.5, 100],
 				attr: {
 					id: function (data, idx, that)	{
 						return 'landscape_gene_' + data.y + 

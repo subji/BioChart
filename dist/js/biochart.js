@@ -1,650 +1,3 @@
-function boilerPlate ()	{
-	'use strict';
-
-	var model = {};
-
-	model.variantInfo = {
-		// Mutation.
-		'Amplification': { color: '#FFBDE0', order: 0},
-		'Homozygous_deletion': { color: '#BDE0FF', order: 1},
-		'Nonsense_mutation': { color: '#EA3B29', order: 2},
-		'Splice_site': { color: '#800080', order: 3},
-		'Translation_start_site': { color: '#AAA8AA', order: 4},
-		'De_novo_start_inframe': { color: '#AAA8AA', order: 4},
-		'De_novo_start_outofframe': { color: '#AAA8AA', order: 4},
-		'Missense_mutation': { color: '#3E87C2', order: 5},
-		'Start_codon_snp': { color: '#3E87C2', order: 5 },
-		'Start_codon_indel': { color: '#3E87C2', order: 5 },
-		'Nonstop_mutation': { color: '#070078', order: 6},
-		'Frame_shift_indel': { color: '#F68D3B', order: 7},
-		'Stop_codon_indel':{ color:  'F68D3B', order: 7},
-		'In_frame_indel': { color: '#F2EE7E', order: 8},
-		'Silent': { color: '#5CB755', order: 9},
-		'Rna': { color: '#FFDF97', order: 10},
-		'Lincrna': { color: '#FFDF97', order: 10},
-		'Intron': { color: '#A9A9A9', order: 11},
-		'5\'utr': { color: '#A9A9A9', order: 11},
-		'3\'utr': { color: '#A9A9A9', order: 11},
-		'Igr': { color: '#A9A9A9', order: 11},
-		'5\'flank': { color: '#A9A9A9', order: 11},
-	};
-	// Clinical 관련 색상 및 순서 정의 객체.
-	model.clinicalInfo = {};
-
-	// model.clinicalInfo = {
-	// 	// Group.
-	// 	// Vital Status of Group.
-	// 	'alive': { color: '#04CDA4', order: 1 },
-	// 	'dead': { color: '#C50E36', order: 2 },
-	// 	// Gender of Group.
-	// 	'female':{ color:  'E0A4E5', order: 1 },
-	// 	'male': { color: '#0F67B6', order: 2 },
-	// 	// Race of Group.
-	// 	'american indian or alaska native': { color: '#38120B', order: 1 },
-	// 	'asian': { color: '#CB771F', order: 2 },
-	// 	'black or african american': { color: '#302F24', order: 3 },
-	// 	'white': { color: '#9CB1CE', order: 4 },
-	// 	// Ethnicity of Group.
-	// 	'hispanic or latino': { color: '#B8642F', order: 1 },
-	// 	'not hispanic or latino': { color: '#55C53E', order: 2 },
-	// 	// Histological Type of LUAD Group.
-	// 	'lung acinar adenocarcinoma': { color: '#716190', order: 1 },
-	// 	'lung adenocarcinoma mixed subtype': { color: '#5154DE', order: 2 },
-	// 	'lung adenocarcinoma- not otherwise specified (nos)': { color: '#8E9A7E', order: 3 },
-	// 	'lung bronchioloalveolar carcinoma mucinous': { color: '#2F91DE', order: 4 },
-	// 	'lung bronchioloalveolar carcinoma nonmucinous': { color: '#ED6EBD', order: 5 },
-	// 	'lung clear cell adenocarcinoma': { color: '#1C8D7A', order: 6 },
-	// 	'lung micropapillary adenocarcinoma': { color: '#B2EE86', order: 7 },
-	// 	'lung mucinous adenocarcinoma': { color: '#785E54', order: 8 },
-	// 	'lung papillary adenocarcinoma': { color: '#69B4C4', order: 9 },
-	// 	'lung signet ring adenocarcinoma': { color: '#C1386E', order: 10 },
-	// 	'lung solid pattern predominant adenocarcinoma': { color: '#D7A355', order: 11 },
-	// 	'mucinous (colloid) carcinoma': { color: '#243833', order: 12 },
-	// 	// Histological Type of GBM Group
-	// 	'glioblastoma multiforme (gbm)': { color: '#716190', order: 1 },
-	// 	'treated primary gbm': { color: '#5154DE', order: 2 },
-	// 	'untreated primary (de novo) gbm': { color: '#8E9A7E', order: 3 },
-	// 	// Histological Type of BRCA Group
-	// 	'infiltrating carcinoma nos': { color: '#716190', order: 1 },
-	// 	'infiltrating ductal carcinoma': { color: '#5154DE', order: 2 },
-	// 	'infiltrating lobular carcinoma': { color: '#8E9A7E', order: 3 },
-	// 	'medullary carcinoma': { color: '#2F91DE', order: 4 },
-	// 	'metaplastic carcinoma': { color: '#ED6EBD', order: 5 },
-	// 	'mixed histology (please specify)': { color: '#1C8D7A', order: 6 },
-	// 	'mucinous carcinoma': { color: '#B2EE86', order: 7 },
-	// 	'other, specify': { color: '#785E54', order: 8 },
-	// 	// Anatomic Neoplasm Subdivision of Group.
-	// 	'bronchial': { color: '#F9E3B9', order: 1 },
-	// 	'l-lower': { color: '#FBA2A3', order: 2 },
-	// 	'l-upper': { color: '#0CA3C7', order: 3 },
-	// 	'other (please specify)': { color: '#D3A16C', order: 4 },
-	// 	'r-lower': { color: '#388A4E', order: 5 },
-	// 	'r-middle': { color: '#D61E43', order: 6 },
-	// 	'r-upper': { color: '#B81BCC', order: 7 },
-	// 	// Other Dx of Group.
-	// 	'no': { color: '#D73A64', order: 1 },
-	// 	'yes': { color: '#1990AA', order: 2 },
-	// 	'yes, history of prior malignancy': { color: '#3BDB11', order: 3 },
-	// 	'yes, history of synchronous/bilateral malignancy': { color: '#803F11', order: 4 },
-	// 	// History of Neoadjuvant Treatment of Group.
-	// 	'no': { color: '#D73A64', order: 1 },
-	// 	'yes': { color: '#1990AA', order: 2 },
-	// 	// Radiation Therapy of Group.
-	// 	'no': { color: '#D73A64', order: 1 },
-	// 	'yes': { color: '#1990AA', order: 2 },
-	// 	// Pathologic T of Group.
-	// 	't1': { color: '#060CDB', order: 1 },
-	// 	't1a': { color: '#696DE9', order: 2 },
-	// 	't1b': { color: '#CDCEF7', order: 3 },
-	// 	't2': { color: '#F6251D', order: 4 },
-	// 	't2a': { color: '#F96D69', order: 5 },
-	// 	't2b': { color: '#FDCECD', order: 6 },
-	// 	't3': { color: '#1AEB42', order: 7 },
-	// 	't4': { color: '#EBBD34', order: 8 },
-	// 	'tx': { color: '#9943DE', order: 9 },
-	// 	// Pathologic N of Group.
-	// 	'n0': { color: '#DC5B35', order: 1 },
-	// 	'n1': { color: '#217C1F', order: 2 },
-	// 	'n2': { color: '#18A6F3', order: 3 },
-	// 	'n3': { color: '#EA68C3', order: 4 },
-	// 	'nx': { color: '#F4E831', order: 5 },
-	// 	// Pathologic M of Group.
-	// 	'm0': { color: '#F0820D', order: 1 },
-	// 	'm1': { color: '#C45A43', order: 2 },
-	// 	'm1a': { color: '#A523C2', order: 3 },
-	// 	'm1b': { color: '#C97BDA', order: 4 },
-	// 	'mx': { color: '#EDD3F2', order: 5 },
-	// 	// Pathologic Stage of Group.
-	// 	'stage i': { color: '#01C606', order: 1 },
-	// 	'stage ia': { color: '#018404', order: 2 },
-	// 	'stage ib': { color: '#002C01', order: 3 },
-	// 	'stage ii': { color: '#0E22C3', order: 4 },
-	// 	'stage iia': { color: '#08136C', order: 5 },
-	// 	'stage iib': { color: '#040B41', order: 6 },
-	// 	'stage iiia': { color: '#BB0C2E', order: 7 },
-	// 	'stage iiib': { color: '#75081D', order: 8 },
-	// 	'stage iv': { color: '#F0CA53', order: 9 },
-	// 	// Residual Tumor of Group.
-	// 	'r0': { color: '#DB8EC0', order: 1 },
-	// 	'r1': { color: '#FFD046', order: 2 },
-	// 	'r2': { color: '#495C50', order: 3 },
-	// 	'rx': { color: '#0E5F8A', order: 4 },
-	// 	// EGFR Mutation Result.
-	// 	'exon 19 deletion': { color: '#4A312A', order: 1 },
-	// 	'l858r': { color: '#74C04C', order: 2 },
-	// 	'l861q': { color: '#FBED09', order: 3 },
-	// 	'other': { color: '#C91DAB', order: 4 },
-	// 	't790m': { color: '#2C517B', order: 5 },
-	// 	// KRAS Mutation Result.
-	// 	'g12a': { color: '#DED0D1', order: 1 },
-	// 	'g12c': { color: '#AE8A8E', order: 2 },
-	// 	'g12d': { color: '#5D161D', order: 3 },
-	// 	'g12s': { color: '#410F14', order: 4 },
-	// 	'g12v': { color: '#25080B', order: 5 },
-	// 	'other': { color: '#C91DAB', order: 6 },
-	// 	// Primary Therapy Outcome Success.
-	// 	// Treatment outcome of primary therapy.
-	// 	// Followup Treatment Success.
-	// 	'complete remission/response': { color: '#BDED73', order: 1 },
-	// 	'partial remission/response': { color: '#8649F3', order: 2 },
-	// 	'progressive disease': { color: '#C1746B', order: 3 },
-	// 	'stable disease': { color: '#CD4C2A', order: 4 },
-	// 	// Tobacco Smoking History.
-	// 	'Lifelong Non-Smoker': { color: '#C4B5BB', order: 1 },
-	// 	'Current Smoker': { color: '#896C78', order: 2 },
-	// 	'Current Reformed Smoker for > 15 yrs': { color: '#3B0A1E', order: 3 },
-	// 	'Current Reformed Smoker for < or = 15 yrs': { color: '#2F0818', order: 4 },
-	// 	'Current Reformed Smoker, Duration Not Specified': { color: '#17040C', order: 5 },
-	// 	'NA': { color: '#D6E2E3', order: 6 },
-	// 	// ER Status
-	// 	// PR Status
-	// 	// HER2/neu Status
-	// 	'equivocal': { color: '#C4B5BB', order: 1 },
-	// 	'indeterminate': { color: '#896C78', order: 2 },
-	// 	'negative': { color: '#3B0A1E', order: 3 },
-	// 	'positive': { color: '#CD4C2A', order: 4 },
-	// };
-
-	model.exclusivityInfo = {
-		'Amplification': '#FFBDE0',
-		'Deletion': '#BDE0FF',
-		'Mutation': '#5CB755',
-		'None': '#D3D3D3',
-	};
-	
-	return model;
-};
-function layout ()	{
-	'use strict';
-
-	var model = {
-		svg: {
-			pathway: {},
-			variants: {},
-			landscape: {},
-			expression: {},
-			exclusivity: {},
-		},
-	};
-	/*
-		ID 목록에 포함된 (Except 파라미터를 제외한) svg 엘리먼트를 만든다.
-	 */
-	function create (expt, chart, ids, isPlotted)	{
-		if (!ids)	return;
-
-		bio.iteration.loop(ids, function (id)	{
-			var isId = true,
-					isDraw = true;
-
-			bio.iteration.loop(expt, function (e)	{
-				if (id.indexOf(e) > -1)	{
-					isId = !isId;
-				}
-			});
-
-			if (isId)	{
-				id = id.replace('/', '');
-
-				if (isPlotted)	{
-					bio.iteration.loop(isPlotted, function (isP)	{
-						if (id.indexOf(isP) > -1 && !isPlotted[isP])	{
-							if (isP === 'patient')	{
-								$('#landscape_patient_group, #landscape_patient_sample, #landscape_patient_heatmap').css('box-shadow', 'None').css('background', '#fff')
-							}
-							
-							isDraw = false;
-						}
-					});
-				}
-
-				if (isDraw)	{
-					model.svg[chart][id] = bio.rendering().createSVG(id);
-				}
-			}
-		});
-
-		return model.svg[chart];
-	};
-	// 배열의 원소에 해당하는 DIV 태그를 제외한 나머지 태그에 svg 를 생성한다.
-	model.landscape = function (ids, isPlotted)	{
-		return create(['option', 'title'], 'landscape', ids, isPlotted);
-	};
-	
-	model.variants = function (ids)	{
-		return create(['title'], 'variants', ids);
-	};
-	
-	model.expression = function (ids)	{
-		return create(
-			['title', 'function', 'color_mapping', 'signature'], 
-			'expression', ids);
-	};
-	
-	model.exclusivity = function (ids)	{
-		return create(
-			['title', 'geneset', 'survival', 'empty'], 
-			'exclusivity', ids);
-	};
-
-	model.pathway = function (ids)	{
-		return create(['title'], 'pathway', ids);
-	};
-	/*
-		SVG 관련 에러 핸들러.
-	 */
-	function getSVGError (args)	{
-		args = Array.prototype.slice.call(args);
-
-		var typeArr = args.map(function (a)	{
-			return bio.objects.getType(a);
-		});
-
-		if (typeArr.indexOf('Object') < 0)	{
-			throw new Error('Not found svg set');
-		} else if (typeArr.indexOf('Function') < 0)	{
-			throw new Error('Not found callback');
-		}
-	};
-	/*
-		SVG 파라미터에서 id 목록과 맞는 svg 만 반환해주는 함수.
-	 */
-	model.get = function (svgs, ids, callback)	{
-		getSVGError(arguments);
-
-		ids = bio.objects.getType(ids) === 'Array' ? 
-		ids : [ids];
-
-		bio.iteration.loop(svgs, function (id, value)	{
-			bio.iteration.loop(ids, function (i)	{
-				if (id.indexOf(i) > -1)	{
-					return callback(id, value);
-				}
-			});
-		});
-	};
-	/*
-		Specific 된 svg 가 없을 경우,
-		'g-tag' 클래스를 가진 g tag 를 모두 지워주는 함수.
-	 */
-	model.removeGroupTag = function (classify)	{
-		if (classify && typeof classify !== 'string')	{
-			classify = bio.objects.getType(classify) === 'Array' ? 
-			classify : [classify];
-
-			bio.iteration.loop(classify, function (d)	{
-				d3.selectAll((d.indexOf('.') > -1 ? d : '.' + d))
-					.remove();
-			});
-		} else if (typeof classify === 'string')	{
-			bio.iteration.loop(d3.selectAll('svg').nodes(), 
-			function (svg)	{
-				if (svg.id.indexOf(classify) >= 0)	{
-					d3.select(svg).select('.' + classify).remove();
-				} else {
-					d3.select(svg).selectAll('g').remove();
-				}
-			});
-		} else {
-			d3.selectAll('svg g').remove();
-		}
-	};
-
-	return function ()	{
-		return model;
-	};
-};
-function setting ()	{
-	'use strict';
-
-	var model = null;	
-	/*
-		ID 또는 ClassName 으로 된 노드를 찾아
-		DOM 객체로 반환해주는 함수.
-	 */
-	function setTargetedElement (element)	{
-		return model.dom = bio.dom().get(element), model.dom;
-	};
-	/*
-		파라미터에 width, height 값이 있으면 그 값을 
-		없는 경우 전달 된 Dom 의 가로, 세로 길이를 반환하는 함수.
-	 */
-	function setTargetedElementSize (opts)	{
-		model.size.width = opts.width || 
-		parseFloat(model.dom.style.width),
-		model.size.height = opts.height || 
-		parseFloat(model.dom.style.height)
-
-		return { 
-			width: model.size.width, 
-			height: model.size.height,
-		};
-	};
-	/*
-		Layout 의 ID 목록 데이터를 만들어주는 함수.
-		여기서 각각의 Layout 의 크기도 설정해준다.
-	 */
-	function setLayoutIdData (chart, element, width, height, add, isPlotted, geneList)	{
-		model.ids = 
-		bio.sizing.chart[chart](element, width, height, add, isPlotted, geneList);
-
-		return model.ids;
-	};
-	/*
-		구성된 Layout 에 svg 엘리먼트를 만들어준다.
-	 */
-	function setSVGElement (chart, ids, isPlotted)	{
-		return bio.layout()[chart](ids, isPlotted);
-	};
-
-	return function (chart, opts)	{
-		model = bio.initialize('setting');
-
-		var groupLayout = null,
-				isPlotted = opts.plot ? opts.plot : null,
-				geneList = opts.data.data ? opts.data.data.gene_list : undefined;
-
-		if (opts.data.data && opts.data.data.name)	{
-			groupLayout = opts.data.data.group_list;
-		}
-
-		return {
-			defaultData: opts.data,
-			targetedElement: setTargetedElement(opts.element),
-			targetedElementSize: setTargetedElementSize(opts),
-			preprocessData: bio.preprocess(chart)(opts.data, isPlotted),
-			layoutIds: setLayoutIdData(
-									chart,
-									model.dom, 
-									model.size.width, 
-									model.size.height, groupLayout, isPlotted,
-									geneList),
-			svgs: setSVGElement(chart, model.ids, isPlotted),
-		};
-	};
-};
-function sizing ()	{
-	'use strict';
-
-	var model = { chart: {}, ids: [] };
-	/*
-		Tooltip Tag 를 만드는 함수.
-	 */
-	function makeTooltipNode ()	{
-		if (document.getElementById('biochart_tooltip'))	{		
-			document.body.removeChild(
-			document.getElementById('biochart_tooltip'));
-		}
-		
-		var div = document.createElement('div');
-
-		div.id = 'biochart_tooltip';
-		div.className = 'biochart-tooltip';
-
-		document.body.appendChild(div);
-	};
-	/*
-		Chart 별 알맞는 layout 을 구성해주는 함수.
-	 */
-	function makeLayout (ids)	{
-		// 초기 화면 구성 시 Tooltip 도 추가해준다.
-		makeTooltipNode();
-
-		bio.iteration.loop.call(this, ids, function (id, size) {
-			var div = document.createElement('div');
-					div.id = id;
-					div.style.width = size.width + 'px';
-					div.style.height = size.height + 'px';
-			// 각 layout 에 구성된 div 태그들의 id 값들을 리스트에 넣어준다.
-			model.ids.push(id);	
-
-			this.appendChild(div);
-		});
-	};
-	/*
-		Sizing 객체의 model 객체를 초기화하고 (나중에 ajax 재 요청시,
-		svg 가 사라지지 않는 문제를 해결하기 위해) 
-		전체 element 의 가로, 세로 크기를 설정한다.
-	 */
-	function setSize (ele, width, height)	{
-		model = bio.initialize('sizing');
-
-		ele.style.width = width + 'px';
-		ele.style.height = height + 'px';
-
-		return ele;
-	};
-	/*
-		배열로 전달 받은 margin 값을 객체 형태의 margin
-		값으로 변환하여 반환해주는 함수.
-	 */
-	model.setMargin = function (margin)	{
-		if (!margin.length && 
-				typeof(margin) === 'string')	{
-			return { 
-				top: margin, left: margin, 
-				bottom: margin, right: margin 
-			};
-		} else if (bio.objects.getType(margin) === 
-							'Object')	{
-			return margin;
-		} else {
-			var len = margin.length;
-			// Margin 리스트의 개수에 따라 알맞은 객체를 생성한다.
-			return {
-				top: margin[0],
-				left: len > 1 ? margin[1] : margin[0],
-				bottom: len > 2 ? margin[2] : margin[0],
-				right: len === 1 ? margin[0] : 
-							 len > 3 ? margin[3] : margin[1],
-			};
-		}
-	};
-	/*
-		Title 과 Contents 부분으로 나눈다.
-	 */
-	function makeDivide (type, ele, w, h, tr)	{
-		var title = document.createElement('div'),
-				contents = document.createElement('div');
-
-		title.id = type + '_title';
-		contents.id = type + '_contents';
-
-		title.style.width = w + 'px';
-		title.style.height = h * tr + 'px';
-
-		contents.style.width = w + 'px';
-		contents.style.height = h * (100 - tr) + 'px';
-
-		ele.appendChild(title);
-		ele.appendChild(contents);
-
-		return { title: title, contents: contents };
-	};
-	/*
-		landscape 의 그룹 레이아웃을 만들어준다.
-	 */
-	function landGroupLayout (groups, id, width, height, type)	{
-		var h = height * 0.16 / groups.length,
-				prefixes = {
-					patient: { w: width * 0.01, h: h },
-					axis: { w: width * 0.14, h: h },
-					group: { w: width * 0.65, h: h },
-				};
-
-		bio.iteration.loop(groups, function (group)	{
-			var name = group.name.removeWhiteSpace().replace('/', ''),
-					prefix = prefixes[type] === 'group' ? '' : type;
-
-			id['landscape_' + prefix + '_group_' + name] = 
-				{ 
-					width: prefixes[type].w.toFixed(1), 
-					height: prefixes[type].h.toFixed(1), 
-				};
-		});
-
-		return id;
-	};
-	// Chart 별 영역의 크기 설정 및 ID List 생성.
-	model.chart.landscape = function (ele, w, h, group, isPlotted, geneList)	{
-		var geneLenght = geneList.length,
-				stdSign = geneLenght >= 40 ? 1 : -1,
-				stdGeneCount = Math.abs(40 - geneLenght),
-				stdGeneHeight = 0.01,
-				stdContentsHeight = 0.0095;
-		// Gene list 의 개수에 따라 크기를 지정.
-		var geneHeight = h * (0.62 + (geneLenght * stdGeneHeight * stdSign)),
-				contHeight = (0.95 + (geneLenght * stdContentsHeight * stdSign));
-				contHeight = contHeight < 0.61 ? h * 0.6 : h * contHeight;
-
-		geneHeight = geneLenght < 5 ? 360 : geneHeight;
-		contHeight = geneLenght < 5 ? 630 : contHeight;
-
-		var id = {
-			landscape_temp_sample: { width: w * 0.12, height: h * 0.15 },
-			landscape_axis_sample: { width: w * 0.17, height: h * 0.15 },
-			landscape_patient_sample: { width: w * 0.01, height: h * 0.15 },
-			landscape_sample: { width: w * 0.60, height: h * 0.15 },
-			landscape_scale_option: { width: w * 0.1, height: h * 0.15 },
-			landscape_option: { width: w * 0.12, height: h * 0.16 },
-			landscape_axis_group: { width: w * 0.17, height: h * 0.15 },
-			landscape_patient_group: { width: w * 0.01, height: h * 0.16 },
-			landscape_group: { width: w * 0.60, height: h * 0.16 },
-			landscape_temp_group: { width: w * 0.1, height: h * 0.16 },
-			landscape_legend: { width: w * 0.12, height: geneHeight},
-			landscape_gene: { width: w * 0.17, height: geneHeight },
-			landscape_patient_heatmap: { width: w * 0.01, height: geneHeight },
-			landscape_heatmap: { width: w * 0.60, height: geneHeight },
-			landscape_pq: { width: w * 0.1, height: geneHeight },
-		};
-
-		bio.iteration.loop(isPlotted, function (isP)	{
-			if (isP.indexOf('pq') > -1 || isP.indexOf('gene') > -1)	{
-				id.landscape_sample.width = w * 0.69;
-				id.landscape_heatmap.width = w * 0.69;
-				id.landscape_group.width = w * 0.69;
-				id.landscape_pq.width = w * 0.01;
-				id.landscape_temp_group.width = w * 0.01;
-				id.landscape_scale_option.width = w * 0.01;
-			}
-		});
-
-		var divs = makeDivide('landscape', ele, w, h, 0.05);
-
-		var ga = landGroupLayout(group, {}, w, h, 'axis'),
-				gc = landGroupLayout(group, {}, w, h, 'group'),
-				gp = landGroupLayout(group, {}, w, h, 'patient');
-
-		makeLayout.call(setSize(divs.contents, w, contHeight), id);
-		makeLayout.call(bio.dom().get('#landscape_group'), gc);
-		makeLayout.call(bio.dom().get('#landscape_axis_group'), ga);
-		makeLayout.call(bio.dom().get('#landscape_patient_group'), gp)
-
-		return model.ids;
-	};
-	
-	model.chart.variants = function (ele, w, h)	{
-		var id = {
-			variants_needle: {width: w * 0.82, height: h * 0.825},
-			variants_legend: {width: w * 0.175, height: h * 0.5},
-			variants_patient_legend: {width: w * 0.175, height: h * 0.42},
-			variants_navi: {width: w * 0.82, height: h * 0.1},
-		};
-
-		var divs = makeDivide('variants', ele, w, h, 0.075);
-
-		makeLayout.call(setSize(divs.contents, w, h * 0.925), id);
-
-		return model.ids;
-	};
-
-	model.chart.expression = function (ele, w, h)	{
-		var id = {
-			expression_survival: {width: w * 0.4, height: h * 0.925},
-			expression_bar_plot: {width: w * 0.4, height: h * 0.32},
-			expression_function: {width: w * 0.2, height: h * 0.05},
-			expression_color_mapping: {width: w * 0.2, height: h * 0.05},
-			expression_bar_legend: {width: w * 0.2, height: h * 0.35},
-			expression_division: {width: w * 0.4, height: h * 0.04},
-			expression_scatter_plot: {width: w * 0.4, height: h * 0.3},
-			expression_scatter_empty: {width: w * 0.2, height: h * 0.08},
-			expression_scatter_legend: {width: w * 0.2, height: h * 0.2},
-			expression_heatmap: {width: w * 0.4, height: h * 0.25},
-			expression_signature: {width: w * 0.2, height: h * 0.05},
-			expression_color_gradient: {width: w * 0.194, height: h * 0.075},
-		};
-
-		var divs = makeDivide('expression', ele, w, h, 0.075);
-
-		makeLayout.call(setSize(divs.contents, w, h * 0.925), id);
-
-		return model.ids;
-	};
-	
-	model.chart.exclusivity = function (ele, w, h)	{
-		var id =  {
-			exclusivity_select_geneset: {width: w * 0.59, height: h * 0.12},
-			exclusivity_survival: {width: w * 0.4, height: h * 0.925},
-			exclusivity_network: {width: w * 0.25, height: h * 0.65},
-			exclusivity_heatmap: {width: w * 0.35, height: h * 0.45},
-			exclusivity_legend: {width: w * 0.35, height: h * 0.05},
-			exclusivity_sample_legend: {width: w * 0.35, height: h * 0.05},
-		};
-
-		var divs = makeDivide('exclusivity', ele, w, h, 0.075);
-
-		makeLayout.call(setSize(divs.contents, w, h * 0.925), id);
-
-		return model.ids;
-	};
-
-	model.chart.pathway = function (ele, w, h)	{
-		var id =  {};
-		var divs = makeDivide('pathway', ele, w, h, 0.075);
-
-		makeLayout.call(setSize(divs.contents, w, h * 0.925), id);
-
-		return model.ids;
-	};
-	/*
-		각 chart 별 기본 설정 반환함수.
-	 */
-	model.chart.default = function (that, opts)	{
-		that.id = opts.element.attr('id');
-		that.margin = opts.margin ? 
-									bio.sizing.setMargin(opts.margin) : null;
-		that.width = parseFloat(opts.element.attr('width'));
-		that.height = parseFloat(opts.element.attr('height'));
-		that.element = bio.objects.getType(opts.element) === 'Object' || 
-									 bio.objects.getType(opts.element) === 'Array' ? 
-									 opts.element : (/\W/).test(opts.element[0]) ? 
-									 d3.select(opts.element) : 
-									 d3.select('#' + opts.element);
-
-		return that;
-	};
-
-	return model;
-};
 function axises ()	{
 	'use strict';
 
@@ -2599,6 +1952,653 @@ function triangle ()	{
 		});
 	};
 };
+function boilerPlate ()	{
+	'use strict';
+
+	var model = {};
+
+	model.variantInfo = {
+		// Mutation.
+		'Amplification': { color: '#FFBDE0', order: 0},
+		'Homozygous_deletion': { color: '#BDE0FF', order: 1},
+		'Nonsense_mutation': { color: '#EA3B29', order: 2},
+		'Splice_site': { color: '#800080', order: 3},
+		'Translation_start_site': { color: '#AAA8AA', order: 4},
+		'De_novo_start_inframe': { color: '#AAA8AA', order: 4},
+		'De_novo_start_outofframe': { color: '#AAA8AA', order: 4},
+		'Missense_mutation': { color: '#3E87C2', order: 5},
+		'Start_codon_snp': { color: '#3E87C2', order: 5 },
+		'Start_codon_indel': { color: '#3E87C2', order: 5 },
+		'Nonstop_mutation': { color: '#070078', order: 6},
+		'Frame_shift_indel': { color: '#F68D3B', order: 7},
+		'Stop_codon_indel':{ color:  'F68D3B', order: 7},
+		'In_frame_indel': { color: '#F2EE7E', order: 8},
+		'Silent': { color: '#5CB755', order: 9},
+		'Rna': { color: '#FFDF97', order: 10},
+		'Lincrna': { color: '#FFDF97', order: 10},
+		'Intron': { color: '#A9A9A9', order: 11},
+		'5\'utr': { color: '#A9A9A9', order: 11},
+		'3\'utr': { color: '#A9A9A9', order: 11},
+		'Igr': { color: '#A9A9A9', order: 11},
+		'5\'flank': { color: '#A9A9A9', order: 11},
+	};
+	// Clinical 관련 색상 및 순서 정의 객체.
+	model.clinicalInfo = {};
+
+	// model.clinicalInfo = {
+	// 	// Group.
+	// 	// Vital Status of Group.
+	// 	'alive': { color: '#04CDA4', order: 1 },
+	// 	'dead': { color: '#C50E36', order: 2 },
+	// 	// Gender of Group.
+	// 	'female':{ color:  'E0A4E5', order: 1 },
+	// 	'male': { color: '#0F67B6', order: 2 },
+	// 	// Race of Group.
+	// 	'american indian or alaska native': { color: '#38120B', order: 1 },
+	// 	'asian': { color: '#CB771F', order: 2 },
+	// 	'black or african american': { color: '#302F24', order: 3 },
+	// 	'white': { color: '#9CB1CE', order: 4 },
+	// 	// Ethnicity of Group.
+	// 	'hispanic or latino': { color: '#B8642F', order: 1 },
+	// 	'not hispanic or latino': { color: '#55C53E', order: 2 },
+	// 	// Histological Type of LUAD Group.
+	// 	'lung acinar adenocarcinoma': { color: '#716190', order: 1 },
+	// 	'lung adenocarcinoma mixed subtype': { color: '#5154DE', order: 2 },
+	// 	'lung adenocarcinoma- not otherwise specified (nos)': { color: '#8E9A7E', order: 3 },
+	// 	'lung bronchioloalveolar carcinoma mucinous': { color: '#2F91DE', order: 4 },
+	// 	'lung bronchioloalveolar carcinoma nonmucinous': { color: '#ED6EBD', order: 5 },
+	// 	'lung clear cell adenocarcinoma': { color: '#1C8D7A', order: 6 },
+	// 	'lung micropapillary adenocarcinoma': { color: '#B2EE86', order: 7 },
+	// 	'lung mucinous adenocarcinoma': { color: '#785E54', order: 8 },
+	// 	'lung papillary adenocarcinoma': { color: '#69B4C4', order: 9 },
+	// 	'lung signet ring adenocarcinoma': { color: '#C1386E', order: 10 },
+	// 	'lung solid pattern predominant adenocarcinoma': { color: '#D7A355', order: 11 },
+	// 	'mucinous (colloid) carcinoma': { color: '#243833', order: 12 },
+	// 	// Histological Type of GBM Group
+	// 	'glioblastoma multiforme (gbm)': { color: '#716190', order: 1 },
+	// 	'treated primary gbm': { color: '#5154DE', order: 2 },
+	// 	'untreated primary (de novo) gbm': { color: '#8E9A7E', order: 3 },
+	// 	// Histological Type of BRCA Group
+	// 	'infiltrating carcinoma nos': { color: '#716190', order: 1 },
+	// 	'infiltrating ductal carcinoma': { color: '#5154DE', order: 2 },
+	// 	'infiltrating lobular carcinoma': { color: '#8E9A7E', order: 3 },
+	// 	'medullary carcinoma': { color: '#2F91DE', order: 4 },
+	// 	'metaplastic carcinoma': { color: '#ED6EBD', order: 5 },
+	// 	'mixed histology (please specify)': { color: '#1C8D7A', order: 6 },
+	// 	'mucinous carcinoma': { color: '#B2EE86', order: 7 },
+	// 	'other, specify': { color: '#785E54', order: 8 },
+	// 	// Anatomic Neoplasm Subdivision of Group.
+	// 	'bronchial': { color: '#F9E3B9', order: 1 },
+	// 	'l-lower': { color: '#FBA2A3', order: 2 },
+	// 	'l-upper': { color: '#0CA3C7', order: 3 },
+	// 	'other (please specify)': { color: '#D3A16C', order: 4 },
+	// 	'r-lower': { color: '#388A4E', order: 5 },
+	// 	'r-middle': { color: '#D61E43', order: 6 },
+	// 	'r-upper': { color: '#B81BCC', order: 7 },
+	// 	// Other Dx of Group.
+	// 	'no': { color: '#D73A64', order: 1 },
+	// 	'yes': { color: '#1990AA', order: 2 },
+	// 	'yes, history of prior malignancy': { color: '#3BDB11', order: 3 },
+	// 	'yes, history of synchronous/bilateral malignancy': { color: '#803F11', order: 4 },
+	// 	// History of Neoadjuvant Treatment of Group.
+	// 	'no': { color: '#D73A64', order: 1 },
+	// 	'yes': { color: '#1990AA', order: 2 },
+	// 	// Radiation Therapy of Group.
+	// 	'no': { color: '#D73A64', order: 1 },
+	// 	'yes': { color: '#1990AA', order: 2 },
+	// 	// Pathologic T of Group.
+	// 	't1': { color: '#060CDB', order: 1 },
+	// 	't1a': { color: '#696DE9', order: 2 },
+	// 	't1b': { color: '#CDCEF7', order: 3 },
+	// 	't2': { color: '#F6251D', order: 4 },
+	// 	't2a': { color: '#F96D69', order: 5 },
+	// 	't2b': { color: '#FDCECD', order: 6 },
+	// 	't3': { color: '#1AEB42', order: 7 },
+	// 	't4': { color: '#EBBD34', order: 8 },
+	// 	'tx': { color: '#9943DE', order: 9 },
+	// 	// Pathologic N of Group.
+	// 	'n0': { color: '#DC5B35', order: 1 },
+	// 	'n1': { color: '#217C1F', order: 2 },
+	// 	'n2': { color: '#18A6F3', order: 3 },
+	// 	'n3': { color: '#EA68C3', order: 4 },
+	// 	'nx': { color: '#F4E831', order: 5 },
+	// 	// Pathologic M of Group.
+	// 	'm0': { color: '#F0820D', order: 1 },
+	// 	'm1': { color: '#C45A43', order: 2 },
+	// 	'm1a': { color: '#A523C2', order: 3 },
+	// 	'm1b': { color: '#C97BDA', order: 4 },
+	// 	'mx': { color: '#EDD3F2', order: 5 },
+	// 	// Pathologic Stage of Group.
+	// 	'stage i': { color: '#01C606', order: 1 },
+	// 	'stage ia': { color: '#018404', order: 2 },
+	// 	'stage ib': { color: '#002C01', order: 3 },
+	// 	'stage ii': { color: '#0E22C3', order: 4 },
+	// 	'stage iia': { color: '#08136C', order: 5 },
+	// 	'stage iib': { color: '#040B41', order: 6 },
+	// 	'stage iiia': { color: '#BB0C2E', order: 7 },
+	// 	'stage iiib': { color: '#75081D', order: 8 },
+	// 	'stage iv': { color: '#F0CA53', order: 9 },
+	// 	// Residual Tumor of Group.
+	// 	'r0': { color: '#DB8EC0', order: 1 },
+	// 	'r1': { color: '#FFD046', order: 2 },
+	// 	'r2': { color: '#495C50', order: 3 },
+	// 	'rx': { color: '#0E5F8A', order: 4 },
+	// 	// EGFR Mutation Result.
+	// 	'exon 19 deletion': { color: '#4A312A', order: 1 },
+	// 	'l858r': { color: '#74C04C', order: 2 },
+	// 	'l861q': { color: '#FBED09', order: 3 },
+	// 	'other': { color: '#C91DAB', order: 4 },
+	// 	't790m': { color: '#2C517B', order: 5 },
+	// 	// KRAS Mutation Result.
+	// 	'g12a': { color: '#DED0D1', order: 1 },
+	// 	'g12c': { color: '#AE8A8E', order: 2 },
+	// 	'g12d': { color: '#5D161D', order: 3 },
+	// 	'g12s': { color: '#410F14', order: 4 },
+	// 	'g12v': { color: '#25080B', order: 5 },
+	// 	'other': { color: '#C91DAB', order: 6 },
+	// 	// Primary Therapy Outcome Success.
+	// 	// Treatment outcome of primary therapy.
+	// 	// Followup Treatment Success.
+	// 	'complete remission/response': { color: '#BDED73', order: 1 },
+	// 	'partial remission/response': { color: '#8649F3', order: 2 },
+	// 	'progressive disease': { color: '#C1746B', order: 3 },
+	// 	'stable disease': { color: '#CD4C2A', order: 4 },
+	// 	// Tobacco Smoking History.
+	// 	'Lifelong Non-Smoker': { color: '#C4B5BB', order: 1 },
+	// 	'Current Smoker': { color: '#896C78', order: 2 },
+	// 	'Current Reformed Smoker for > 15 yrs': { color: '#3B0A1E', order: 3 },
+	// 	'Current Reformed Smoker for < or = 15 yrs': { color: '#2F0818', order: 4 },
+	// 	'Current Reformed Smoker, Duration Not Specified': { color: '#17040C', order: 5 },
+	// 	'NA': { color: '#D6E2E3', order: 6 },
+	// 	// ER Status
+	// 	// PR Status
+	// 	// HER2/neu Status
+	// 	'equivocal': { color: '#C4B5BB', order: 1 },
+	// 	'indeterminate': { color: '#896C78', order: 2 },
+	// 	'negative': { color: '#3B0A1E', order: 3 },
+	// 	'positive': { color: '#CD4C2A', order: 4 },
+	// };
+
+	model.exclusivityInfo = {
+		'Amplification': '#FFBDE0',
+		'Deletion': '#BDE0FF',
+		'Mutation': '#5CB755',
+		'None': '#D3D3D3',
+	};
+	
+	return model;
+};
+function layout ()	{
+	'use strict';
+
+	var model = {
+		svg: {
+			pathway: {},
+			variants: {},
+			landscape: {},
+			expression: {},
+			exclusivity: {},
+		},
+	};
+	/*
+		ID 목록에 포함된 (Except 파라미터를 제외한) svg 엘리먼트를 만든다.
+	 */
+	function create (expt, chart, ids, isPlotted)	{
+		if (!ids)	return;
+
+		bio.iteration.loop(ids, function (id)	{
+			var isId = true,
+					isDraw = true;
+
+			bio.iteration.loop(expt, function (e)	{
+				if (id.indexOf(e) > -1)	{
+					isId = !isId;
+				}
+			});
+
+			if (isId)	{
+				id = id.replace('/', '');
+
+				if (isPlotted)	{
+					bio.iteration.loop(isPlotted, function (isP)	{
+						if (id.indexOf(isP) > -1 && !isPlotted[isP])	{
+							if (isP === 'patient')	{
+								$('#landscape_patient_group, #landscape_patient_sample, #landscape_patient_heatmap').css('box-shadow', 'None').css('background', '#fff')
+							}
+							
+							isDraw = false;
+						}
+					});
+				}
+
+				if (isDraw)	{
+					model.svg[chart][id] = bio.rendering().createSVG(id);
+				}
+			}
+		});
+
+		return model.svg[chart];
+	};
+	// 배열의 원소에 해당하는 DIV 태그를 제외한 나머지 태그에 svg 를 생성한다.
+	model.landscape = function (ids, isPlotted)	{
+		return create(['option', 'title'], 'landscape', ids, isPlotted);
+	};
+	
+	model.variants = function (ids)	{
+		return create(['title'], 'variants', ids);
+	};
+	
+	model.expression = function (ids)	{
+		return create(
+			['title', 'function', 'color_mapping', 'signature'], 
+			'expression', ids);
+	};
+	
+	model.exclusivity = function (ids)	{
+		return create(
+			['title', 'geneset', 'survival', 'empty'], 
+			'exclusivity', ids);
+	};
+
+	model.pathway = function (ids)	{
+		return create(['title'], 'pathway', ids);
+	};
+	/*
+		SVG 관련 에러 핸들러.
+	 */
+	function getSVGError (args)	{
+		args = Array.prototype.slice.call(args);
+
+		var typeArr = args.map(function (a)	{
+			return bio.objects.getType(a);
+		});
+
+		if (typeArr.indexOf('Object') < 0)	{
+			throw new Error('Not found svg set');
+		} else if (typeArr.indexOf('Function') < 0)	{
+			throw new Error('Not found callback');
+		}
+	};
+	/*
+		SVG 파라미터에서 id 목록과 맞는 svg 만 반환해주는 함수.
+	 */
+	model.get = function (svgs, ids, callback)	{
+		getSVGError(arguments);
+
+		ids = bio.objects.getType(ids) === 'Array' ? 
+		ids : [ids];
+
+		bio.iteration.loop(svgs, function (id, value)	{
+			bio.iteration.loop(ids, function (i)	{
+				if (id.indexOf(i) > -1)	{
+					return callback(id, value);
+				}
+			});
+		});
+	};
+	/*
+		Specific 된 svg 가 없을 경우,
+		'g-tag' 클래스를 가진 g tag 를 모두 지워주는 함수.
+	 */
+	model.removeGroupTag = function (classify)	{
+		if (classify && typeof classify !== 'string')	{
+			classify = bio.objects.getType(classify) === 'Array' ? 
+			classify : [classify];
+
+			bio.iteration.loop(classify, function (d)	{
+				d3.selectAll((d.indexOf('.') > -1 ? d : '.' + d))
+					.remove();
+			});
+		} else if (typeof classify === 'string')	{
+			bio.iteration.loop(d3.selectAll('svg').nodes(), 
+			function (svg)	{
+				if (svg.id.indexOf(classify) >= 0)	{
+					d3.select(svg).select('.' + classify).remove();
+				} else {
+					d3.select(svg).selectAll('g').remove();
+				}
+			});
+		} else {
+			d3.selectAll('svg g').remove();
+		}
+	};
+
+	return function ()	{
+		return model;
+	};
+};
+function setting ()	{
+	'use strict';
+
+	var model = null;	
+	/*
+		ID 또는 ClassName 으로 된 노드를 찾아
+		DOM 객체로 반환해주는 함수.
+	 */
+	function setTargetedElement (element)	{
+		return model.dom = bio.dom().get(element), model.dom;
+	};
+	/*
+		파라미터에 width, height 값이 있으면 그 값을 
+		없는 경우 전달 된 Dom 의 가로, 세로 길이를 반환하는 함수.
+	 */
+	function setTargetedElementSize (opts)	{
+		model.size.width = opts.width || 
+		parseFloat(model.dom.style.width),
+		model.size.height = opts.height || 
+		parseFloat(model.dom.style.height)
+
+		return { 
+			width: model.size.width, 
+			height: model.size.height,
+		};
+	};
+	/*
+		Layout 의 ID 목록 데이터를 만들어주는 함수.
+		여기서 각각의 Layout 의 크기도 설정해준다.
+	 */
+	function setLayoutIdData (chart, element, width, height, add, isPlotted, geneList)	{
+		model.ids = 
+		bio.sizing.chart[chart](element, width, height, add, isPlotted, geneList);
+
+		return model.ids;
+	};
+	/*
+		구성된 Layout 에 svg 엘리먼트를 만들어준다.
+	 */
+	function setSVGElement (chart, ids, isPlotted)	{
+		return bio.layout()[chart](ids, isPlotted);
+	};
+
+	return function (chart, opts)	{
+		model = bio.initialize('setting');
+
+		var groupLayout = null,
+				isPlotted = opts.plot ? opts.plot : null,
+				geneList = opts.data.data ? opts.data.data.gene_list : undefined;
+
+		if (opts.data.data && opts.data.data.name)	{
+			groupLayout = opts.data.data.group_list;
+		}
+
+		return {
+			defaultData: opts.data,
+			targetedElement: setTargetedElement(opts.element),
+			targetedElementSize: setTargetedElementSize(opts),
+			preprocessData: bio.preprocess(chart)(opts.data, isPlotted),
+			layoutIds: setLayoutIdData(
+									chart,
+									model.dom, 
+									model.size.width, 
+									model.size.height, groupLayout, isPlotted,
+									geneList),
+			svgs: setSVGElement(chart, model.ids, isPlotted),
+		};
+	};
+};
+function sizing ()	{
+	'use strict';
+
+	var model = { chart: {}, ids: [] };
+	/*
+		Tooltip Tag 를 만드는 함수.
+	 */
+	function makeTooltipNode ()	{
+		if (document.getElementById('biochart_tooltip'))	{		
+			document.body.removeChild(
+			document.getElementById('biochart_tooltip'));
+		}
+		
+		var div = document.createElement('div');
+
+		div.id = 'biochart_tooltip';
+		div.className = 'biochart-tooltip';
+
+		document.body.appendChild(div);
+	};
+	/*
+		Chart 별 알맞는 layout 을 구성해주는 함수.
+	 */
+	function makeLayout (ids)	{
+		// 초기 화면 구성 시 Tooltip 도 추가해준다.
+		makeTooltipNode();
+
+		bio.iteration.loop.call(this, ids, function (id, size) {
+			var div = document.createElement('div');
+					div.id = id;
+					div.style.width = size.width + 'px';
+					div.style.height = size.height + 'px';
+			// 각 layout 에 구성된 div 태그들의 id 값들을 리스트에 넣어준다.
+			model.ids.push(id);	
+
+			this.appendChild(div);
+		});
+	};
+	/*
+		Sizing 객체의 model 객체를 초기화하고 (나중에 ajax 재 요청시,
+		svg 가 사라지지 않는 문제를 해결하기 위해) 
+		전체 element 의 가로, 세로 크기를 설정한다.
+	 */
+	function setSize (ele, width, height)	{
+		model = bio.initialize('sizing');
+
+		ele.style.width = width + 'px';
+		ele.style.height = height + 'px';
+
+		return ele;
+	};
+	/*
+		배열로 전달 받은 margin 값을 객체 형태의 margin
+		값으로 변환하여 반환해주는 함수.
+	 */
+	model.setMargin = function (margin)	{
+		if (!margin.length && 
+				typeof(margin) === 'string')	{
+			return { 
+				top: margin, left: margin, 
+				bottom: margin, right: margin 
+			};
+		} else if (bio.objects.getType(margin) === 
+							'Object')	{
+			return margin;
+		} else {
+			var len = margin.length;
+			// Margin 리스트의 개수에 따라 알맞은 객체를 생성한다.
+			return {
+				top: margin[0],
+				left: len > 1 ? margin[1] : margin[0],
+				bottom: len > 2 ? margin[2] : margin[0],
+				right: len === 1 ? margin[0] : 
+							 len > 3 ? margin[3] : margin[1],
+			};
+		}
+	};
+	/*
+		Title 과 Contents 부분으로 나눈다.
+	 */
+	function makeDivide (type, ele, w, h, tr)	{
+		var title = document.createElement('div'),
+				contents = document.createElement('div');
+
+		title.id = type + '_title';
+		contents.id = type + '_contents';
+
+		title.style.width = w + 'px';
+		title.style.height = h * tr + 'px';
+
+		contents.style.width = w + 'px';
+		contents.style.height = h * (100 - tr) + 'px';
+
+		ele.appendChild(title);
+		ele.appendChild(contents);
+
+		return { title: title, contents: contents };
+	};
+	/*
+		landscape 의 그룹 레이아웃을 만들어준다.
+	 */
+	function landGroupLayout (groups, id, width, height, type)	{
+		var h = height * 0.16 / groups.length,
+				prefixes = {
+					patient: { w: width * 0.01, h: h },
+					axis: { w: width * 0.14, h: h },
+					group: { w: width * 0.65, h: h },
+				};
+
+		bio.iteration.loop(groups, function (group)	{
+			var name = group.name.removeWhiteSpace().replace('/', ''),
+					prefix = prefixes[type] === 'group' ? '' : type;
+
+			id['landscape_' + prefix + '_group_' + name] = 
+				{ 
+					width: prefixes[type].w.toFixed(1), 
+					height: prefixes[type].h.toFixed(1), 
+				};
+		});
+
+		return id;
+	};
+	// Chart 별 영역의 크기 설정 및 ID List 생성.
+	model.chart.landscape = function (ele, w, h, group, isPlotted, geneList)	{
+		var geneLenght = geneList.length,
+				stdSign = geneLenght >= 40 ? 1 : -1,
+				stdGeneCount = Math.abs(40 - geneLenght),
+				stdGeneHeight = 0.01,
+				stdContentsHeight = 0.0095;
+		// Gene list 의 개수에 따라 크기를 지정.
+		var geneHeight = h * (0.62 + (geneLenght * stdGeneHeight * stdSign)),
+				contHeight = (0.95 + (geneLenght * stdContentsHeight * stdSign));
+				contHeight = contHeight < 0.61 ? h * 0.6 : h * contHeight;
+
+		geneHeight = geneLenght < 5 ? 360 : geneHeight;
+		contHeight = geneLenght < 5 ? 630 : contHeight;
+
+		var id = {
+			landscape_temp_sample: { width: w * 0.12, height: h * 0.15 },
+			landscape_axis_sample: { width: w * 0.20, height: h * 0.15 },
+			landscape_patient_sample: { width: w * 0.01, height: h * 0.15 },
+			landscape_sample: { width: w * 0.57, height: h * 0.15 },
+			landscape_scale_option: { width: w * 0.1, height: h * 0.15 },
+			landscape_option: { width: w * 0.12, height: h * 0.16 },
+			landscape_axis_group: { width: w * 0.20, height: h * 0.15 },
+			landscape_patient_group: { width: w * 0.01, height: h * 0.16 },
+			landscape_group: { width: w * 0.57, height: h * 0.16 },
+			landscape_temp_group: { width: w * 0.1, height: h * 0.16 },
+			landscape_legend: { width: w * 0.12, height: geneHeight},
+			landscape_gene: { width: w * 0.20, height: geneHeight },
+			landscape_patient_heatmap: { width: w * 0.01, height: geneHeight },
+			landscape_heatmap: { width: w * 0.57, height: geneHeight },
+			landscape_pq: { width: w * 0.1, height: geneHeight },
+		};
+
+		bio.iteration.loop(isPlotted, function (isP)	{
+			if (isP.indexOf('pq') > -1 || isP.indexOf('gene') > -1)	{
+				id.landscape_sample.width = w * 0.66;
+				id.landscape_heatmap.width = w * 0.66;
+				id.landscape_group.width = w * 0.66;
+				id.landscape_pq.width = w * 0.01;
+				id.landscape_temp_group.width = w * 0.01;
+				id.landscape_scale_option.width = w * 0.01;
+			}
+		});
+
+		var divs = makeDivide('landscape', ele, w, h, 0.05);
+
+		var ga = landGroupLayout(group, {}, w, h, 'axis'),
+				gc = landGroupLayout(group, {}, w, h, 'group'),
+				gp = landGroupLayout(group, {}, w, h, 'patient');
+
+		makeLayout.call(setSize(divs.contents, w, contHeight), id);
+		makeLayout.call(bio.dom().get('#landscape_group'), gc);
+		makeLayout.call(bio.dom().get('#landscape_axis_group'), ga);
+		makeLayout.call(bio.dom().get('#landscape_patient_group'), gp)
+
+		return model.ids;
+	};
+	
+	model.chart.variants = function (ele, w, h)	{
+		var id = {
+			variants_needle: {width: w * 0.82, height: h * 0.825},
+			variants_legend: {width: w * 0.175, height: h * 0.5},
+			variants_patient_legend: {width: w * 0.175, height: h * 0.42},
+			variants_navi: {width: w * 0.82, height: h * 0.1},
+		};
+
+		var divs = makeDivide('variants', ele, w, h, 0.075);
+
+		makeLayout.call(setSize(divs.contents, w, h * 0.925), id);
+
+		return model.ids;
+	};
+
+	model.chart.expression = function (ele, w, h)	{
+		var id = {
+			expression_survival: {width: w * 0.4, height: h * 0.925},
+			expression_bar_plot: {width: w * 0.4, height: h * 0.32},
+			expression_function: {width: w * 0.2, height: h * 0.05},
+			expression_color_mapping: {width: w * 0.2, height: h * 0.05},
+			expression_bar_legend: {width: w * 0.2, height: h * 0.35},
+			expression_division: {width: w * 0.4, height: h * 0.04},
+			expression_scatter_plot: {width: w * 0.4, height: h * 0.3},
+			expression_scatter_empty: {width: w * 0.2, height: h * 0.08},
+			expression_scatter_legend: {width: w * 0.2, height: h * 0.2},
+			expression_heatmap: {width: w * 0.4, height: h * 0.25},
+			expression_signature: {width: w * 0.2, height: h * 0.05},
+			expression_color_gradient: {width: w * 0.194, height: h * 0.075},
+		};
+
+		var divs = makeDivide('expression', ele, w, h, 0.075);
+
+		makeLayout.call(setSize(divs.contents, w, h * 0.925), id);
+
+		return model.ids;
+	};
+	
+	model.chart.exclusivity = function (ele, w, h)	{
+		var id =  {
+			exclusivity_select_geneset: {width: w * 0.59, height: h * 0.12},
+			exclusivity_survival: {width: w * 0.4, height: h * 0.925},
+			exclusivity_network: {width: w * 0.25, height: h * 0.65},
+			exclusivity_heatmap: {width: w * 0.35, height: h * 0.45},
+			exclusivity_legend: {width: w * 0.35, height: h * 0.05},
+			exclusivity_sample_legend: {width: w * 0.35, height: h * 0.05},
+		};
+
+		var divs = makeDivide('exclusivity', ele, w, h, 0.075);
+
+		makeLayout.call(setSize(divs.contents, w, h * 0.925), id);
+
+		return model.ids;
+	};
+
+	model.chart.pathway = function (ele, w, h)	{
+		var id =  {};
+		var divs = makeDivide('pathway', ele, w, h, 0.075);
+
+		makeLayout.call(setSize(divs.contents, w, h * 0.925), id);
+
+		return model.ids;
+	};
+	/*
+		각 chart 별 기본 설정 반환함수.
+	 */
+	model.chart.default = function (that, opts)	{
+		that.id = opts.element.attr('id');
+		that.margin = opts.margin ? 
+									bio.sizing.setMargin(opts.margin) : null;
+		that.width = parseFloat(opts.element.attr('width'));
+		that.height = parseFloat(opts.element.attr('height'));
+		that.element = bio.objects.getType(opts.element) === 'Object' || 
+									 bio.objects.getType(opts.element) === 'Array' ? 
+									 opts.element : (/\W/).test(opts.element[0]) ? 
+									 d3.select(opts.element) : 
+									 d3.select('#' + opts.element);
+
+		return that;
+	};
+
+	return model;
+};
 function commonConfig ()	{
 	'use strict';
 
@@ -3414,25 +3414,6 @@ function landscapeConfig ()	{
 		if (part === 'common')	{
 			return {
 				on: {
-					mouseover: function (data, idx, that)	{
-						var id = this.parentNode
-												 .parentNode.className.baseVal;
-						if (id.indexOf('gene') > -1 && 
-								id.indexOf('right') > -1 || 
-								id.indexOf('group') > -1)	{
-							var txt = id.indexOf('gene') > -1 ? 
-							'Sort by alt + <b>' + this.innerHTML + '</b>' : 
-											'<b>' + this.innerHTML + '</b></br>' + 
-											'Click to sort </br> Alt + Click ' + 
-											// 'add to key';
-// 
-							bio.tooltip({ element: this, contents: txt });
-
-							d3.select(this).transition()
-								.style('font-size', 11)
-								.style('font-weight', 'bold');
-						}
-					},
 					mouseout: function (data, idx)	{
 						bio.tooltip('hide');
 
@@ -3497,7 +3478,7 @@ function landscapeConfig ()	{
 			},
 			geneY: {
 				top: 0,
-				left: w - 85,
+				left: w - 100,
 				direction: 'right', 
 				range: [10, h - 45],
 				exclude: 'path, line',
@@ -3526,9 +3507,9 @@ function landscapeConfig ()	{
 			geneX: {
 				left: 15,
 				top: h - 45,
-				range: [15, w - 100],
+				range: [15, w - 115],
 				direction: 'bottom',
-				margin: [0, 15, 0, 100], 
+				margin: [0, 15, 0, 115], 
 			},
 			pqX: {
 				left: 5,
@@ -3567,7 +3548,7 @@ function landscapeConfig ()	{
 				},
 			},
 			gene: {
-				margin: [5, 5, 13, 135],
+				margin: [5, 5, 13, 150],
 				attr: {
 					rx: 3, ry: 3,
 					x: function (data, idx, that) {
@@ -3698,7 +3679,7 @@ function landscapeConfig ()	{
 				},
 			},
 			gene: {
-				margin: [10, 30, 45.5, 85],
+				margin: [10, 30, 45.5, 100],
 				attr: {
 					id: function (data, idx, that)	{
 						return 'landscape_gene_' + data.y + 
@@ -6162,7 +6143,7 @@ function landscape ()	{
 					model.now.geneline.removedMutationObj = {};
 					model.now.exclusive = undefined;
 					// Hide & Show checkbox 초기화.
-					model.now.checkboxState = {};
+					model.now.checkboxState = { hs: {}, ed: {} };
 					// 타입 버튼 변화.
 					var labels = document.querySelectorAll('label');
 
@@ -6422,7 +6403,8 @@ function landscape ()	{
 				'.landscape_heatmap_svg.heatmap-g-tag',
 				'.landscape_gene_svg.bar-g-tag',
 				'.landscape_gene_svg.right-axis-g-tag',
-				'.landscape_gene_svg.chkGroup'
+				'.landscape_gene_svg.hs-chkGroup',
+				'.landscape_gene_svg.ed-chkGroup',
 			]);
 
 			model.exclusive.now = bio.landscapeSort().exclusive(
@@ -6457,8 +6439,10 @@ function landscape ()	{
 									model.data.axis.heatmap);	
 
 			genelineSortedSiblings();
-			drawGeneCheckbox(model.data);
-			reserveCheckboxState();
+			drawGeneHSCheckbox(model.data);
+			drawGeneEDCheckBox(model.data);
+			reserveCheckboxState('hs');
+			reserveCheckboxState('ed');
 
 			if (Object.keys(model.now.geneline.removedMutationObj).length > 0)	{
 				enableDisableBlur();
@@ -6877,7 +6861,6 @@ function landscape ()	{
 
 			axises.selectAll('text')
 				.on('mouseout', common.on ? common.on.mouseout : false)
-				// .on('mouseover', common.on ? common.on.mouseover : false)
 				.on('mouseover', function (data, idx)	{
 					var id = this.parentNode
 											 .parentNode.className.baseVal;
@@ -6888,11 +6871,9 @@ function landscape ()	{
 
 						if (id.indexOf('gene') > -1)	{
 							if (model.now.geneline.removedMutationObj[data])	{
-								txt = '<b>Click to Enable</b></br>Sort by alt + <b>' + 
-											this.innerHTML + '</b>'; 
+								txt = 'Sort by <b>' + this.innerHTML + '</b>'; 
 							} else {
-								txt = '<b>Click to Disable</b></br>Sort by alt + <b>' + 
-											this.innerHTML + '</b>'; 
+								txt = 'Sort by <b>' + this.innerHTML + '</b>'; 
 							}
 						} else {
 							txt = '<b>' + this.innerHTML + '</b></br>' + 
@@ -6937,7 +6918,8 @@ function landscape ()	{
 						redraw(res, model.now.geneline.pidList.isRemovable ? 
 												model.now.geneline.pidList.data : undefined);
 
-						reserveCheckboxState();
+						reserveCheckboxState('hs');
+						reserveCheckboxState('ed');
 
 						if (!d3.event.altKey)	{
 							model.onClickClinicalName(data);
@@ -6946,166 +6928,12 @@ function landscape ()	{
 
 					if (part === 'gene' && direction === 'Y')	{
 						if (!model.now.geneline.isDraggable)	{
-							if (d3.event.altKey)	{
-								var res = config.on ? 
-													config.on.click.call(this, data, idx, model) : false;
+							var res = config.on ? 
+												config.on.click.call(this, data, idx, model) : false;
 
-								model.now.geneline.mutationList = undefined;
+							model.now.geneline.mutationList = undefined;
 
-								redraw(res);
-							} else {
-								var tempGeneList = [].concat(model.data.gene),
-										isGroupMutationList = undefined,
-										isNewPidGroupList = undefined;
-
-								if (model.now.geneline.axis[data].isGene === 'enable')	{
-									tempGeneList.splice(tempGeneList.indexOf(data), 1);
-									tempGeneList.push(data);
-									// 현재 라인 disable 
-									model.data.gene = tempGeneList;
-									model.now.geneline.axis[data].isGene = 'disable';
-
-									bio.iteration.loop(tempGeneList, function (tg)	{
-										model.now.geneline.geneIndexList[tg].push(
-											tempGeneList.indexOf(tg));
-									});
-
-									model.now.geneline.deHistory.push(data);
-
-									model.now.mutation_list = model.now.mutation_list ? 
-									model.now.mutation_list : model.init.mutation_list;
-									// Disable 된 gene 을 포함하는 sample 을 제거.
-									// 지금은 mutation_list 만 제거하지만
-									// 나중에는 patient_list 도 제거해야 한다.
-									model.now.mutation_list = 
-									model.now.mutation_list.filter(function (d)	{
-										if (d.gene !== data)	{
-											return d;
-										} else {
-											if (!model.now.geneline.removedMutationObj[d.gene])	{
-												model.now.geneline.removedMutationObj[d.gene] = [d.participant_id];
-											} else {
-												if (model.now.geneline.removedMutationObj[d.gene]
-																 .indexOf(d.participant_id) < 0)	{
-													model.now.geneline.removedMutationObj[d.gene]
-															 .push(d.participant_id);
-												} 
-											}
-
-											if (!model.now.geneline.removedMutationArr[d.gene])	{
-												model.now.geneline.removedMutationArr[d.gene] = [d];
-											} else {
-												if (model.now.geneline.removedMutationArr[d.gene]
-																 .indexOf(d.participant_id) < 0)	{
-													model.now.geneline.removedMutationArr[d.gene].push(d);
-												}
-											}
-										}
-									});
-
-									model.now.geneline.pidList = remakeMutationList(
-										model.now.geneline.removedMutationObj);
-									isGroupMutationList = model.now.geneline.pidList.data; 
-									isNewPidGroupList = model.now.geneline.pidList.arr;
-
-									nowGeneLineValue();
-								} else {
-									var isTerminated = false,
-											historyIndex = model.now.geneline.deHistory.indexOf(data);
-
-									tempGeneList = []
-
-									bio.iteration.loop(model.now.geneline.geneIndexList, 
-									function (gi, giv)	{
-										tempGeneList[giv[historyIndex]] = gi;
-									});
-									
-									model.data.gene = tempGeneList;
-									model.now.geneline.axis[data].isGene = 'enable';
-
-									model.now.mutation_list = 
-									model.now.mutation_list.concat(
-										model.now.geneline.removedMutationArr[data]);
-
-									delete model.now.geneline.removedMutationObj[data];
-									delete model.now.geneline.removedMutationArr[data];
-
-									model.now.geneline.pidList = remakeMutationList(
-										model.now.geneline.removedMutationObj);
-
-									bio.iteration.loop(model.now.geneline.axis,
-									function (key, value)	{
-										if (value.isGene === 'disable')	{
-											isTerminated = true;
-										}
-									});
-
-									isGroupMutationList = !isTerminated ? undefined : 
-																				model.now.geneline.pidList.data;
-									isNewPidGroupList = model.now.geneline.pidList.arr;
-
-									nowGeneLineValue();
-								}
-
-								model.data.axis.gene.y = model.data.gene;
-								model.data.axis.heatmap.y = model.data.gene;
-								model.data.axis.pq.y = model.data.gene;	
-
-								var type = model.now.exclusivity_opt ? 
-													 model.now.exclusivity_opt : 
-													 model.init.exclusivity_opt;
-
-								bio.layout().removeGroupTag('survival');
-								// ward3 
-								// TODO. Hidden/Shown 이 적용된 상태에서 
-								// model.data.heamap 이 아닌, 새로운 스케일 값이 적용된
-								// heatmap 데이터를 가져와야 한다.
-								model.exclusive.now = 
-								bio.landscapeSort().exclusive(
-									model.now.heatmap || model.data.heatmap, 
-									model.data.gene, type, model.data.type);
-
-								if (Object.keys(model.now.geneline.shownValues).length > 0)	{
-									var tempShownArr = [];
-
-									bio.iteration.loop(model.now.geneline.shownValues, 
-									function (k, v)	{
-										tempShownArr = tempShownArr.concat(v);
-									});
-
-									model.now.mutation_list = 
-									model.init.mutation_list.filter(function (m)	{
-										if (tempShownArr.indexOf(m.participant_id) > -1)	{
-											return m;
-										}
-									});
-								} else {
-									model.now.mutation_list = model.init.mutation_list;
-								}
-								
-								changeSampleStack(model.now.mutation_list);
-								changeGeneStack(model.now.mutation_list);
-								// Group 별로 정렬된 상태에서 enable / disable 을 할때,
-								// Group 정렬을 유지한다.
-								if (model.now.geneline.groupList)	{
-									var groups = [];
-
-									bio.iteration.loop(isNewPidGroupList, function (gl)	{
-										groups = groups.concat(gl.data);
-									});
-
-									changeAxis({ axis: 'x', data: groups });
-								} else {
-									changeAxis(model.exclusive.now);
-								}
-
-								drawLandscape(model.data, model.now.width);
-								enableDisableBlur();
-								enabledDisabeldMaximumElement(isGroupMutationList);
-								callEnableDisableOtherFunc(
-									model.now.mutation_list || model.init.mutation_list);
-								reserveCheckboxState();
-							}
+							redraw(res);
 						}
 					}
 				})
@@ -7262,40 +7090,22 @@ function landscape ()	{
 		Gene 클릭 및 드래그 등의 이벤트에서도 체크박스의
 		상태를 유지해주게 하는 함수.
 	 */
-	function reserveCheckboxState ()	{
-		d3.selectAll('.landscape_gene_svg.chkGroup path')
+	function reserveCheckboxState (type)	{
+		d3.selectAll('.landscape_gene_svg.' + type + '-chkGroup path')
 			.style('opacity', function (d)	{
-				return model.now.checkboxState[d.gene] ? 1 : 0;
+				return model.now.checkboxState[type][d.gene] ? 1 : 0;
 			});
 	};
 	/*
-		Gene Bar Plot 옆 checkbox 표기 함수.
+		gene bar 옆 check box 추가 할때 위치 지정 함수. 
 	 */
-	function drawGeneCheckbox (data)	{
-		var borderSize = 10,
-				strokeSize = 2,
-				geneSVG = d3.select('#landscape_gene_svg'),
-				geneWidth = parseFloat(geneSVG.attr('width')),
-				chkGroup = geneSVG.append('g')
-													.attr('class', 'landscape_gene_svg chkGroup')
-													.attr('transform', 
-																'translate(' + 
-																(geneWidth - (borderSize + 
-																 strokeSize * 2)) + ', 0)');
-
-		var line = (bio.dependencies.version.d3v4() ? 
-								d3.line() : d3.svg.line())
-								.x(function (d)	{ return d.x; })
-								.y(function (d)	{ return d.y; });
-
-		bio.dependencies.version.d3v4() ? 
-		line.curve(d3.curveLinear) : line.interpolate('basic');
-
+	function locatedCheckbox (type, callback)	{
 		d3.selectAll('.landscape_gene_svg.right-axis-g-tag g')
 			.each(function (gene)	{
-				model.now.checkboxState[gene] = 
-				model.now.checkboxState[gene] === undefined ? false : 
-				model.now.checkboxState[gene];
+				model.now.checkboxState[type][gene] = 
+				model.now.checkboxState[type][gene] !== undefined ? 
+				model.now.checkboxState[type][gene] : 
+				type === 'ed' ? true : false;
 
 				var translate = d3.select(this).attr('transform'),
 						textY = parseFloat(translate.substring(
@@ -7304,226 +7114,398 @@ function landscape ()	{
 						x = 0,
 						y = textY - 5.5;
 
-				var coord = [
-					{ 
-						x: x + borderSize / 8, 
-						y: y + (borderSize / 3) 
-					},
-					{ 
-						x: x + borderSize / 2.2, 
-						y: (y + borderSize) - (borderSize / 4) 
-					},
-					{ 
-						x: (x + borderSize) - borderSize / 8, 
-						y: y + (borderSize / 10) 
-					}
-				];
-
-				var mark = chkGroup.append('path')
-												.data([{ gene: gene, checked: false }])
-												.attr('d', line(coord))
-												.style('fill', 'none')
-											  .style('opacity', function (d)	{
-											  	return d.checked ? 1 : 0;
-											  })
-											  .style('stroke', '#333333')
-											  .style('stroke-width', 2);
-
-				
-				var eachBorder = chkGroup.append('rect')
-						.data([{ gene: gene, checked: false }])
-						.attr('width', borderSize)
-						.attr('height', borderSize)
-						.attr('x', x)
-						.attr('y', y)
-						.style('cursor', 'pointer')
-						.style('fill-opacity', 0.00)
-						.style('stroke-width', 2)
-						.style('stroke', '#333333')
-						.on('mouseover', function (d)	{
-							bio.tooltip({ 
-								element: this, 
-								contents: '<b>Show altered patients only</b>', 
-							});
-						})
-						.on('mouseout', function (d)	{
-							bio.tooltip('hide');
-						})
-						.on('click', function (d)	{
-							d.checked = !(model.now.checkboxState[d.gene] || d.checked);
-							model.now.checkboxState[d.gene] = d.checked;
-
-							mark.style('opacity', d.checked ? 1 : 0);
-
-							model.now.mutation_list = !model.now.mutation_list ? 
-							model.init.mutation_list : model.now.mutation_list;
-
-							model.now.geneline.shownValues = {};
-							model.now.geneline.hiddenValues = {};
-							model.now.geneline.shownValuesData = {};
-							model.now.geneline.hiddenValuesData = {};
-
-							model.now.mutation_list = 
-							model.init.mutation_list.filter(function (m)	{
-								if (model.now.checkboxState[m.gene])	{
-									if (!model.now.geneline.shownValues[m.gene])	{
-										model.now.geneline.shownValues[m.gene] = [m.participant_id];
-									} else {
-										if (model.now.geneline.shownValues[m.gene].indexOf(m.participant_id) < 0)	{
-											model.now.geneline.shownValues[m.gene].push(m.participant_id);
-										}
-									}
-								} else {
-									if (!model.now.geneline.hiddenValues[m.gene])	{
-										model.now.geneline.hiddenValues[m.gene] = [m.participant_id];
-									} else {
-										if (model.now.geneline.hiddenValues[m.gene].indexOf(m.participant_id) < 0)	{
-											model.now.geneline.hiddenValues[m.gene].push(m.participant_id);
-										}
-									}
-								}
-
-								return m;
-							});
-							// TODO.
-							// 체크하고 disable 한다음 체크를 해제하면 스케일이 이상해진다.
-							// 체크 후 disable 할 때, 값이 제대로 안넘어간다. divisionFunction 으로.
-
-							var removingArr = model.data.clinicalList.map(function (ra)	{
-								return '.landscape_group_group_' + ra.replace(' ', '') + 
-											'_svg.heatmap-g-tag';
-							});
-							removingArr.push('.landscape_gene_svg.bar-g-tag');
-							removingArr.push('.landscape_sample_svg.bar-g-tag');
-							removingArr.push('.landscape_heatmap_svg.heatmap-g-tag');
-							removingArr.push('.landscape_axis_sample_svg.left-axis-g-tag');
-							removingArr.push('.landscape_axis_sample_svg.left-axis-g-tag');
-
-							bio.layout().removeGroupTag(removingArr);
-
-							var emptyArr = [],
-									emptyObj = {},
-									exclusivedArr = [],
-									exclusivedData = [],
-									disabledArr = Object.keys(model.now.geneline.removedMutationObj),
-									enabledData = [],
-									disabledData = [],
-									exclusiveHeatmap = null,
-									enabledExclusive = null,
-									disabledExclusive = null,
-									combinedExclusive = [];
-
-							bio.iteration.loop(model.now.geneline.shownValues, 
-							function (k, v)	{
-								emptyArr = emptyArr.concat(v);
-							});
-
-							bio.iteration.loop(emptyArr, function (ea)	{
-								!emptyObj[ea] ? emptyObj[ea] = 1 : emptyObj[ea] += 1;
-							});
-
-							emptyArr = [];
-
-							bio.iteration.loop(emptyObj, function (k, v)	{
-								if (Object.keys(model.now.geneline.shownValues).length === v)	{
-									emptyArr.push(k);
-								}
-							});
-
-							if (Object.keys(model.now.geneline.shownValues).length === 0)	{
-								bio.iteration.loop(model.now.geneline.hiddenValues, 
-								function (k, v)	{
-									emptyArr = emptyArr.concat(v);
-								});
-							}
-
-							exclusiveHeatmap = model.data.heatmap.filter(function (h)	{
-								if (emptyArr.indexOf(h.x) > -1)	{
-									return h;
-								}
-							});
-
-							bio.iteration.loop(exclusiveHeatmap, function (heat)	{
-								disabledArr.indexOf(heat.y) < 0 ? 
-								enabledData.push(heat) : disabledData.push(heat);
-							});
-
-							enabledExclusive = bio.landscapeSort().exclusive(
-								enabledData, model.data.gene, 
-								model.now.exclusivity_opt, model.data.type).data;
-							disabledExclusive = bio.landscapeSort().exclusive(
-								disabledData, model.data.gene, 
-								model.now.exclusivity_opt, model.data.type).data;
-
-							combinedExclusive = combinedExclusive.concat(enabledExclusive);
-							combinedExclusive = combinedExclusive.concat(disabledExclusive);
-
-							bio.iteration.loop(emptyArr, function (val)	{
-								exclusivedArr[combinedExclusive.indexOf(val)] = val;
-							});
-
-							bio.iteration.loop(model.init.mutation_list, function (m)	{
-								if (exclusivedArr.indexOf(m.participant_id) > -1)	{
-									exclusivedData.push(m);
-								}
-							});
-
-							exclusivedArr = exclusivedArr.filter(function (ex)	{
-								return ex;
-							});
-
-							model.data.axis.heatmap.x = combinedExclusive;
-							model.data.axis.sample.x = combinedExclusive;
-							model.data.axis.group.x = combinedExclusive;
-
-							changeSampleStack(exclusivedData);
-							changeGeneStack(exclusivedData);
-
-							model.now.heatmap = exclusivedData.map(function (ex)	{
-								ex.x = ex.participant_id;
-								ex.y = ex.gene;
-								ex.value = ex.type;
-
-								return ex;
-							});
-
-							drawAxis('gene', 'X');
-							drawAxis('sample', 'Y');
-							drawHeatmap('heatmap', model.now.heatmap || model.data.heatmap, 
-											model.data.axis.heatmap);
-							drawBar('gene', model.data.stack.gene,
-															model.data.axis.gene, ['top', 'left']);
-							drawBar('sample', model.data.stack.sample, 
-																model.data.axis.sample, ['top', 'left']);
-							drawHeatmap('patientHeatmap', 
-								model.data.patient, model.data.axis.patient.heatmap);
-							bio.iteration.loop(model.data.axis.group.y, function (g, idx)	{
-								var yaxis = model.data.axis.group.y[idx],
-										group = { x: model.data.axis.group.x, y: yaxis },
-										patient = { x: model.data.axis.patient.group.x, y: yaxis },
-										zipGroup = [];
-
-								bio.iteration.loop(model.data.group.group[idx], 
-								function (g)	{
-									if (model.data.axis.group.x.indexOf(g.x) > -1)	{
-										zipGroup.push(g);
-									}
-								});
-
-								drawHeatmap('group', zipGroup, group);
-								drawHeatmap('patientGroup', 
-													 [model.data.group.patient[idx]], patient);
-							});	
-							
-							enableDisableBlur();
-							enabledDisabeldMaximumElement(
-								model.now.geneline.groupList ? 
-								model.now.geneline.pidList.data : undefined);
-							callEnableDisableOtherFunc(exclusivedData)
-
-							d3.event.stopPropagation();
-				});
+				callback(gene, x, y);
 			});
+	};
+	/*
+		Gene Bar Plot 옆 checkbox (Enable/Disable) 표기 함수.
+	 */
+	function drawGeneEDCheckBox (data)	{
+		var size = 10,
+				stroke = 2,
+				geneSVG = d3.select('#landscape_gene_svg'),
+				geneWidth = parseFloat(geneSVG.attr('width')),
+				group = geneSVG.append('g')
+				.attr('class', 'landscape_gene_svg ed-chkGroup')
+				.attr('transform', 'translate(' + 
+							(geneWidth - ((size * 2) + stroke * 4)) + ', 0)');
+
+		locatedCheckbox('ed', function (gene, x, y)	{
+			bio.checkBox(
+				group, 
+				{ x: x, y: y, len: size },
+				[{ gene: gene, checked: true }],
+				function (d)	{ return d.checked ? 1 : 0; },
+				function (d)	{
+					bio.tooltip({ 
+						element: this, 
+						contents: '<b>In the altered group</b>', 
+					});
+				},
+				function (d)	{ bio.tooltip('hide'); },
+				function (d, i, mark)	{ 
+					var gene = d.gene;
+
+					d.checked = !(model.now.checkboxState.ed[d.gene] || d.checked);
+					model.now.checkboxState.ed[d.gene] = d.checked;
+
+					mark.style('opacity', d.checked ? 1 : 0);
+
+					var tempGeneList = [].concat(model.data.gene),
+							isGroupMutationList = undefined,
+							isNewPidGroupList = undefined;
+
+					if (!d.checked)	{
+						tempGeneList.splice(tempGeneList.indexOf(gene), 1);
+						tempGeneList.push(gene);
+						// 현재 라인 disable 
+						model.data.gene = tempGeneList;
+						model.now.geneline.axis[gene].isGene = 'disable';
+
+						bio.iteration.loop(tempGeneList, function (tg)	{
+							model.now.geneline.geneIndexList[tg].push(
+								tempGeneList.indexOf(tg));
+						});
+
+						model.now.geneline.deHistory.push(gene);
+
+						model.now.mutation_list = model.now.mutation_list ? 
+						model.now.mutation_list : model.init.mutation_list;
+						// Disable 된 gene 을 포함하는 sample 을 제거.
+						// 지금은 mutation_list 만 제거하지만
+						// 나중에는 patient_list 도 제거해야 한다.
+						model.now.mutation_list = 
+						model.now.mutation_list.filter(function (d)	{
+							if (d.gene !== gene)	{
+								return d;
+							} else {
+								if (!model.now.geneline.removedMutationObj[d.gene])	{
+									model.now.geneline.removedMutationObj[d.gene] = [d.participant_id];
+								} else {
+									if (model.now.geneline.removedMutationObj[d.gene]
+													 .indexOf(d.participant_id) < 0)	{
+										model.now.geneline.removedMutationObj[d.gene]
+												 .push(d.participant_id);
+									} 
+								}
+
+								if (!model.now.geneline.removedMutationArr[d.gene])	{
+									model.now.geneline.removedMutationArr[d.gene] = [d];
+								} else {
+									if (model.now.geneline.removedMutationArr[d.gene]
+													 .indexOf(d.participant_id) < 0)	{
+										model.now.geneline.removedMutationArr[d.gene].push(d);
+									}
+								}
+							}
+						});
+
+						model.now.geneline.pidList = remakeMutationList(
+							model.now.geneline.removedMutationObj);
+						isGroupMutationList = model.now.geneline.pidList.data; 
+						isNewPidGroupList = model.now.geneline.pidList.arr;
+
+						nowGeneLineValue();
+					} else {
+						var isTerminated = false,
+								historyIndex = model.now.geneline.deHistory.indexOf(gene);
+
+						tempGeneList = []
+
+						bio.iteration.loop(model.now.geneline.geneIndexList, 
+						function (gi, giv)	{
+							tempGeneList[giv[historyIndex]] = gi;
+						});
+						
+						model.data.gene = tempGeneList;
+						model.now.geneline.axis[gene].isGene = 'enable';
+
+						model.now.mutation_list = 
+						model.now.mutation_list.concat(
+							model.now.geneline.removedMutationArr[gene]);
+
+						delete model.now.geneline.removedMutationObj[gene];
+						delete model.now.geneline.removedMutationArr[gene];
+
+						model.now.geneline.pidList = remakeMutationList(
+							model.now.geneline.removedMutationObj);
+
+						bio.iteration.loop(model.now.geneline.axis,
+						function (key, value)	{
+							if (value.isGene === 'disable')	{
+								isTerminated = true;
+							}
+						});
+
+						isGroupMutationList = !isTerminated ? undefined : 
+																	model.now.geneline.pidList.data;
+						isNewPidGroupList = model.now.geneline.pidList.arr;
+
+						nowGeneLineValue();
+					}
+
+					model.data.axis.gene.y = model.data.gene;
+					model.data.axis.heatmap.y = model.data.gene;
+					model.data.axis.pq.y = model.data.gene;	
+
+					var type = model.now.exclusivity_opt ? 
+										 model.now.exclusivity_opt : 
+										 model.init.exclusivity_opt;
+
+					bio.layout().removeGroupTag('survival');
+					// ward3 
+					// TODO. Hidden/Shown 이 적용된 상태에서 
+					// model.data.heamap 이 아닌, 새로운 스케일 값이 적용된
+					// heatmap 데이터를 가져와야 한다.
+					model.exclusive.now = 
+					bio.landscapeSort().exclusive(
+						model.now.heatmap || model.data.heatmap, 
+						model.data.gene, type, model.data.type);
+
+					if (Object.keys(model.now.geneline.shownValues).length > 0)	{
+						var tempShownArr = [];
+
+						bio.iteration.loop(model.now.geneline.shownValues, 
+						function (k, v)	{
+							tempShownArr = tempShownArr.concat(v);
+						});
+
+						model.now.mutation_list = 
+						model.init.mutation_list.filter(function (m)	{
+							if (tempShownArr.indexOf(m.participant_id) > -1)	{
+								return m;
+							}
+						});
+					} else {
+						model.now.mutation_list = model.init.mutation_list;
+					}
+					
+					changeSampleStack(model.now.mutation_list);
+					changeGeneStack(model.now.mutation_list);
+					// Group 별로 정렬된 상태에서 enable / disable 을 할때,
+					// Group 정렬을 유지한다.
+					if (model.now.geneline.groupList)	{
+						var groups = [];
+
+						bio.iteration.loop(isNewPidGroupList, function (gl)	{
+							groups = groups.concat(gl.data);
+						});
+
+						changeAxis({ axis: 'x', data: groups });
+					} else {
+						changeAxis(model.exclusive.now);
+					}
+
+					drawLandscape(model.data, model.now.width);
+					enableDisableBlur();
+					enabledDisabeldMaximumElement(isGroupMutationList);
+					callEnableDisableOtherFunc(
+						model.now.mutation_list || model.init.mutation_list);
+					reserveCheckboxState('hs');
+					reserveCheckboxState('ed');
+
+					d3.event.stopPropagation();
+				});
+		});
+	};
+	/*
+		Gene Bar Plot 옆 checkbox (Hidden/Shown) 표기 함수.
+	 */
+	function drawGeneHSCheckbox (data)	{
+		var size = 10,
+				stroke = 2,
+				geneSVG = d3.select('#landscape_gene_svg'),
+				geneWidth = parseFloat(geneSVG.attr('width')),
+				group = geneSVG.append('g')
+				.attr('class', 'landscape_gene_svg hs-chkGroup')
+				.attr('transform', 'translate(' + 
+							(geneWidth - (size + stroke * 2)) + ', 0)');
+
+		locatedCheckbox('hs', function (gene, x, y)	{
+			bio.checkBox(
+				group, 
+				{ x: x, y: y, len: size },
+				[{ gene: gene, checked: false }],
+				function (d)	{ return d.checked ? 1 : 0; },
+				function (d)	{
+					bio.tooltip({ 
+						element: this, 
+						contents: '<b>Show altered patients only</b>', 
+					});
+				},
+				function (d)	{ bio.tooltip('hide'); },
+				function (d, i, mark)	{
+				d.checked = !(model.now.checkboxState.hs[d.gene] || d.checked);
+				model.now.checkboxState.hs[d.gene] = d.checked;
+
+				mark.style('opacity', d.checked ? 1 : 0);
+
+				model.now.mutation_list = !model.now.mutation_list ? 
+				model.init.mutation_list : model.now.mutation_list;
+
+				model.now.geneline.shownValues = {};
+				model.now.geneline.hiddenValues = {};
+				model.now.geneline.shownValuesData = {};
+				model.now.geneline.hiddenValuesData = {};
+
+				model.now.mutation_list = 
+				model.init.mutation_list.filter(function (m)	{
+					if (model.now.checkboxState.hs[m.gene])	{
+						if (!model.now.geneline.shownValues[m.gene])	{
+							model.now.geneline.shownValues[m.gene] = [m.participant_id];
+						} else {
+							if (model.now.geneline.shownValues[m.gene].indexOf(m.participant_id) < 0)	{
+								model.now.geneline.shownValues[m.gene].push(m.participant_id);
+							}
+						}
+					} else {
+						if (!model.now.geneline.hiddenValues[m.gene])	{
+							model.now.geneline.hiddenValues[m.gene] = [m.participant_id];
+						} else {
+							if (model.now.geneline.hiddenValues[m.gene].indexOf(m.participant_id) < 0)	{
+								model.now.geneline.hiddenValues[m.gene].push(m.participant_id);
+							}
+						}
+					}
+
+					return m;
+				})
+
+				var removingArr = model.data.clinicalList.map(function (ra)	{
+					return '.landscape_group_group_' + ra.replace(' ', '') + 
+								'_svg.heatmap-g-tag';
+				});
+				removingArr.push('.landscape_gene_svg.bar-g-tag');
+				removingArr.push('.landscape_sample_svg.bar-g-tag');
+				removingArr.push('.landscape_heatmap_svg.heatmap-g-tag');
+				removingArr.push('.landscape_axis_sample_svg.left-axis-g-tag');
+				removingArr.push('.landscape_axis_sample_svg.left-axis-g-tag');
+
+				bio.layout().removeGroupTag(removingArr);
+
+				var emptyArr = [],
+						emptyObj = {},
+						exclusivedArr = [],
+						exclusivedData = [],
+						disabledArr = Object.keys(model.now.geneline.removedMutationObj),
+						enabledData = [],
+						disabledData = [],
+						exclusiveHeatmap = null,
+						enabledExclusive = null,
+						disabledExclusive = null,
+						combinedExclusive = [];
+
+				bio.iteration.loop(model.now.geneline.shownValues, 
+				function (k, v)	{
+					emptyArr = emptyArr.concat(v);
+				});
+
+				bio.iteration.loop(emptyArr, function (ea)	{
+					!emptyObj[ea] ? emptyObj[ea] = 1 : emptyObj[ea] += 1;
+				});
+
+				emptyArr = [];
+
+				bio.iteration.loop(emptyObj, function (k, v)	{
+					if (Object.keys(model.now.geneline.shownValues).length === v)	{
+						emptyArr.push(k);
+					}
+				});
+
+				if (Object.keys(model.now.geneline.shownValues).length === 0)	{
+					bio.iteration.loop(model.now.geneline.hiddenValues, 
+					function (k, v)	{
+						emptyArr = emptyArr.concat(v);
+					});
+				}
+
+				exclusiveHeatmap = model.data.heatmap.filter(function (h)	{
+					if (emptyArr.indexOf(h.x) > -1)	{
+						return h;
+					}
+				});
+
+				bio.iteration.loop(exclusiveHeatmap, function (heat)	{
+					disabledArr.indexOf(heat.y) < 0 ? 
+					enabledData.push(heat) : disabledData.push(heat);
+				});
+
+				enabledExclusive = bio.landscapeSort().exclusive(
+					enabledData, model.data.gene, 
+					model.now.exclusivity_opt, model.data.type).data;
+				disabledExclusive = bio.landscapeSort().exclusive(
+					disabledData, model.data.gene, 
+					model.now.exclusivity_opt, model.data.type).data;
+
+				combinedExclusive = combinedExclusive.concat(enabledExclusive);
+				combinedExclusive = combinedExclusive.concat(disabledExclusive);
+
+				bio.iteration.loop(emptyArr, function (val)	{
+					exclusivedArr[combinedExclusive.indexOf(val)] = val;
+				});
+
+				bio.iteration.loop(model.init.mutation_list, function (m)	{
+					if (exclusivedArr.indexOf(m.participant_id) > -1)	{
+						exclusivedData.push(m);
+					}
+				});
+
+				exclusivedArr = exclusivedArr.filter(function (ex)	{
+					return ex;
+				});
+
+				model.data.axis.heatmap.x = combinedExclusive;
+				model.data.axis.sample.x = combinedExclusive;
+				model.data.axis.group.x = combinedExclusive;
+
+				changeSampleStack(exclusivedData);
+				changeGeneStack(exclusivedData);
+
+				model.now.heatmap = exclusivedData.map(function (ex)	{
+					ex.x = ex.participant_id;
+					ex.y = ex.gene;
+					ex.value = ex.type;
+
+					return ex;
+				});
+
+				drawAxis('gene', 'X');
+				drawAxis('sample', 'Y');
+				drawHeatmap('heatmap', model.now.heatmap || model.data.heatmap, 
+								model.data.axis.heatmap);
+				drawBar('gene', model.data.stack.gene,
+												model.data.axis.gene, ['top', 'left']);
+				drawBar('sample', model.data.stack.sample, 
+													model.data.axis.sample, ['top', 'left']);
+				drawHeatmap('patientHeatmap', 
+					model.data.patient, model.data.axis.patient.heatmap);
+				bio.iteration.loop(model.data.axis.group.y, function (g, idx)	{
+					var yaxis = model.data.axis.group.y[idx],
+							group = { x: model.data.axis.group.x, y: yaxis },
+							patient = { x: model.data.axis.patient.group.x, y: yaxis },
+							zipGroup = [];
+
+					bio.iteration.loop(model.data.group.group[idx], 
+					function (g)	{
+						if (model.data.axis.group.x.indexOf(g.x) > -1)	{
+							zipGroup.push(g);
+						}
+					});
+
+					drawHeatmap('group', zipGroup, group);
+					drawHeatmap('patientGroup', 
+										 [model.data.group.patient[idx]], patient);
+				});	
+				
+				enableDisableBlur();
+				enabledDisabeldMaximumElement(
+					model.now.geneline.groupList ? 
+					model.now.geneline.pidList.data : undefined);
+				callEnableDisableOtherFunc(exclusivedData)
+
+				d3.event.stopPropagation();
+			});
+		});
 	};
 	/*
 		Landscape 전체를 그려주는 함수.
@@ -7567,7 +7549,8 @@ function landscape ()	{
 								 [model.data.group.patient[idx]], patient);
 		});
 		drawLegend(model.data.type);
-		drawGeneCheckbox(model.data);
+		drawGeneHSCheckbox(model.data);
+		drawGeneEDCheckBox(model.data);
 	};
 
 	function geneAxisTermHeight ()	{
@@ -7814,10 +7797,6 @@ function landscape ()	{
 			sample.scrollLeft = this.scrollLeft;
 			group.scrollLeft = this.scrollLeft;
 		});
-
-		// console.log('>>> Landscape reponse data: ', opts);
-		// console.log('>>> Landscape setting data: ', model.setting);
-		// console.log('>>> Landscape model data: ', model);
 	};
 };
 function landscapeSort ()	{
@@ -8432,6 +8411,7 @@ function sortTitle ()	{
 		table: table(),
 		loading: loading(),
 		tooltip: tooltip(),
+		checkBox: checkBox(),
 		selectBox: selectBox(),
 		clinicalGenerator: clinicalGenerator(),
 		// >>> Drawing.
@@ -8624,7 +8604,7 @@ function initialize ()	{
 			width: 0,
 			height: 0,
 			geneline: [],
-			checkboxState: {},
+			checkboxState: { hs: {}, ed: {} },
 		},
 		now: {
 			sort: {
@@ -8637,7 +8617,7 @@ function initialize ()	{
 			width: 0,
 			height: 0,
 			geneline: [],
-			checkboxState: {},
+			checkboxState: { hs: {}, ed: {} },
 		},
 		exclusive: { init: null },
 	};
@@ -12232,6 +12212,47 @@ var SurvivalTab = (function() {
 //     }
 // });
 
+function checkBox ()	{
+	'use strict';
+
+	return function (base, size, data, opacityEvt, mouseoverEvt, mouseoutEvt, clickEvt)	{
+		var line = (bio.dependencies.version.d3v4() ? 
+								d3.line() : d3.svg.line())
+								.x(function (d)	{ return d.x; })
+								.y(function (d)	{ return d.y; });
+
+		var coord = [
+			{ x: size.x + size.len / 8, y: size.y + (size.len / 3) },
+			{ x: size.x + size.len / 2.2, y: (size.y + size.len) - (size.len / 4) },
+			{ x: (size.x + size.len) - size.len / 8, y: size.y + (size.len / 10) }
+		];
+		// v 체크 그림을 먼저 그린 후 rectangle 을 그려야 마우스오버 이벤트가
+		// 사각형 전반에 영향을 미치게 된다.
+		var mark = base.append('path')
+		.data(data)
+		.attr('d', line(coord))
+		.style('fill', 'none')
+	  .style('opacity', opacityEvt)
+	  .style('stroke', '#333333')
+	  .style('stroke-width', 2);
+		
+		var border = base.append('rect')
+		.data(data)
+		.attr('width', size.len)
+		.attr('height', size.len)
+		.attr('x', size.x)
+		.attr('y', size.y)
+		.style('cursor', 'pointer')
+		.style('fill-opacity', 0.00)
+		.style('stroke-width', 2)
+		.style('stroke', '#333333')
+		.on('mouseover', function (d, i)	{ mouseoverEvt.call(this, d, i, mark); })
+		.on('mouseout', function (d, i) { mouseoutEvt.call(this, d, i, mark); })
+		.on('click', function (d, i) { clickEvt.call(this, d, i, mark); })
+
+		return { mark: mark, border: border };
+	};
+}
 function clinicalGenerator ()	{
 	'use strict';
 

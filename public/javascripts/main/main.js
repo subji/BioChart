@@ -35,6 +35,7 @@
 		table: table(),
 		loading: loading(),
 		tooltip: tooltip(),
+		checkBox: checkBox(),
 		selectBox: selectBox(),
 		clinicalGenerator: clinicalGenerator(),
 		// >>> Drawing.
