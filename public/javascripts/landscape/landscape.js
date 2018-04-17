@@ -1093,7 +1093,7 @@ function landscape ()	{
 				function (d)	{
 					bio.tooltip({ 
 						element: this, 
-						contents: '<b>In the altered group</b>', 
+						contents: '<b>Choose whether to count patients with alterations in the altered group or not</b>', 
 					});
 				},
 				function (d)	{ bio.tooltip('hide'); },
