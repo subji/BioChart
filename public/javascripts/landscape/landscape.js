@@ -854,7 +854,22 @@ function landscape ()	{
 
 							group.filter(function (gp)	{
 								if (res.sorted.data.indexOf(gp.x) > -1)	{
-									temp[res.sorted.data.indexOf(gp.x)] = (gp.x);
+									if (Object.keys(model.now.geneline.shownValues).length > 0)	{
+										var isShown = true;
+
+										bio.iteration.loop(model.now.geneline.shownValues, 
+										function (k, v)	{
+											if (v.indexOf(gp.x) < 0)	{
+												isShown = false;
+											}
+										});
+
+										if (isShown)	{
+											temp[res.sorted.data.indexOf(gp.x)] = (gp.x);	
+										}
+									} else {
+										temp[res.sorted.data.indexOf(gp.x)] = (gp.x);	
+									}
 								}
 							});
 
@@ -868,6 +883,18 @@ function landscape ()	{
 							model.now.geneline.removedMutationObj);
 						model.now.geneline.mutationList = 
 						model.now.geneline.pidList.data;
+
+						var newGroupList = [];
+
+						bio.iteration.loop(groupList, function (group)	{
+							newGroupList = newGroupList.concat(group);
+						});
+
+						res.sorted.data = res.sorted.data.filter(function (pid)	{
+							if (newGroupList.indexOf(pid) > -1)	{
+								return pid;
+							}
+						});
 
 						redraw(res, model.now.geneline.pidList.isRemovable ? 
 												model.now.geneline.pidList.data : undefined);
@@ -1093,7 +1120,8 @@ function landscape ()	{
 				function (d)	{
 					bio.tooltip({ 
 						element: this, 
-						contents: '<b>Choose whether to count patients with alterations in the altered group or not</b>', 
+						contents: 
+						'<b>Choose whether to count patients with alterations in the altered group or not</b>', 
 					});
 				},
 				function (d)	{ bio.tooltip('hide'); },
@@ -1263,6 +1291,50 @@ function landscape ()	{
 					d3.event.stopPropagation();
 				});
 		});
+
+		var additional = geneSVG.append('g')
+		.attr('class', 'landscape_gene_svg f-name-g-tag')
+		.attr('transform', 'translate(0, 0)');
+
+		additional
+		.append('rect')
+		.attr('x', 224)
+		.attr('y', 314.8)
+		.attr('rx', 3)
+		.attr('ry', 3)
+		.attr('width', 16)
+		.attr('height', 16)
+		.style('fill', '#333')
+		.style('fill-opacity', 0.8)
+		.style('cursor', 'pointer')
+		.on('mouseover', function (d)	{
+			bio.tooltip({ 
+				element: this, 
+				contents: '<b>Choose whether to count patients with alterations in the altered group or not</b>', 
+			});
+		})
+		.on('mouseout', function (d)	{
+			bio.tooltip('hide');
+		});
+
+		additional
+		.append('text')
+		.attr('x', 228)
+		.attr('y', 328)
+		.style('font-size', 14)
+		.style('font-weight', 'bold')
+		.style('fill', '#FFF')
+		.style('cursor', 'pointer')
+		.text('F')
+		.on('mouseover', function (d)	{
+			bio.tooltip({ 
+				element: this, 
+				contents: '<b>Choose whether to count patients with alterations in the altered group or not</b>', 
+			});
+		})
+		.on('mouseout', function (d)	{
+			bio.tooltip('hide');
+		});
 	};
 	/*
 		Gene Bar Plot 옆 checkbox (Hidden/Shown) 표기 함수.
@@ -1286,7 +1358,7 @@ function landscape ()	{
 				function (d)	{
 					bio.tooltip({ 
 						element: this, 
-						contents: '<b>Show altered patients only</b>', 
+						contents: '<b>Choose whether to show altered patients only or all</b>', 
 					});
 				},
 				function (d)	{ bio.tooltip('hide'); },
@@ -1461,6 +1533,50 @@ function landscape ()	{
 
 				d3.event.stopPropagation();
 			});
+		});
+
+		var additional = geneSVG.append('g')
+		.attr('class', 'landscape_gene_svg g-name-g-tag')
+		.attr('transform', 'translate(0, 0)');
+
+		additional
+		.append('rect')
+		.attr('x', 207.5)
+		.attr('y', 314.8)
+		.attr('rx', 3)
+		.attr('ry', 3)
+		.attr('width', 16)
+		.attr('height', 16)
+		.style('fill', '#333')
+		.style('fill-opacity', 0.8)
+		.style('cursor', 'pointer')
+		.on('mouseover', function (d)	{
+			bio.tooltip({ 
+				element: this, 
+				contents: '<b>Choose whether to show altered patients only or all</b>', 
+			});
+		})
+		.on('mouseout', function (d)	{
+			bio.tooltip('hide');
+		});
+
+		additional
+		.append('text')
+		.attr('x', 210)
+		.attr('y', 328)
+		.style('font-size', 14)
+		.style('font-weight', 'bold')
+		.style('fill', '#FFF')
+		.style('cursor', 'pointer')
+		.text('G')
+		.on('mouseover', function (d)	{
+			bio.tooltip({ 
+				element: this, 
+				contents: '<b>Choose whether to show altered patients only or all</b>', 
+			});
+		})
+		.on('mouseout', function (d)	{
+			bio.tooltip('hide');
 		});
 	};
 	/*
