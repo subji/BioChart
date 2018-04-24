@@ -1293,12 +1293,12 @@ function landscape ()	{
 		});
 
 		var additional = geneSVG.append('g')
-		.attr('class', 'landscape_gene_svg f-name-g-tag')
+		.attr('class', 'landscape_gene_svg g-name-g-tag')
 		.attr('transform', 'translate(0, 0)');
 
 		additional
 		.append('rect')
-		.attr('x', 224)
+		.attr('x', 207.5)
 		.attr('y', 314.8)
 		.attr('rx', 3)
 		.attr('ry', 3)
@@ -1319,13 +1319,13 @@ function landscape ()	{
 
 		additional
 		.append('text')
-		.attr('x', 228)
+		.attr('x', 210)
 		.attr('y', 328)
 		.style('font-size', 14)
 		.style('font-weight', 'bold')
 		.style('fill', '#FFF')
 		.style('cursor', 'pointer')
-		.text('F')
+		.text('G')
 		.on('mouseover', function (d)	{
 			bio.tooltip({ 
 				element: this, 
@@ -1368,8 +1368,7 @@ function landscape ()	{
 
 				mark.style('opacity', d.checked ? 1 : 0);
 
-				model.now.mutation_list = !model.now.mutation_list ? 
-				model.init.mutation_list : model.now.mutation_list;
+				model.now.mutation_list = model.init.mutation_list;
 
 				model.now.geneline.shownValues = {};
 				model.now.geneline.hiddenValues = {};
@@ -1465,6 +1464,12 @@ function landscape ()	{
 					disabledData, model.data.gene, 
 					model.now.exclusivity_opt, model.data.type).data;
 
+				disabledExclusive = disabledExclusive.filter(function (d)	{
+					if (enabledExclusive.indexOf(d) < 0)	{
+						return d;
+					}
+				});
+
 				combinedExclusive = combinedExclusive.concat(enabledExclusive);
 				combinedExclusive = combinedExclusive.concat(disabledExclusive);
 
@@ -1481,6 +1486,22 @@ function landscape ()	{
 				exclusivedArr = exclusivedArr.filter(function (ex)	{
 					return ex;
 				});
+
+				if (Object.keys(model.now.group).length > 0)	{
+					var shGroup = [];
+
+					bio.iteration.loop(model.now.group.axis.data, function (g)	{
+						var tempArr = [];
+
+						bio.iteration.loop(combinedExclusive, function (ce)	{
+							tempArr[g.indexOf(ce)] = ce;
+						});
+
+						shGroup = shGroup.concat(tempArr.filter(function (d) { return d; }));
+					});
+
+					combinedExclusive = shGroup;
+				}
 
 				model.data.axis.heatmap.x = combinedExclusive;
 				model.data.axis.sample.x = combinedExclusive;
@@ -1529,19 +1550,19 @@ function landscape ()	{
 				enabledDisabeldMaximumElement(
 					model.now.geneline.groupList ? 
 					model.now.geneline.pidList.data : undefined);
-				callEnableDisableOtherFunc(exclusivedData)
+				callEnableDisableOtherFunc(exclusivedData);
 
 				d3.event.stopPropagation();
 			});
 		});
 
 		var additional = geneSVG.append('g')
-		.attr('class', 'landscape_gene_svg g-name-g-tag')
+		.attr('class', 'landscape_gene_svg f-name-g-tag')
 		.attr('transform', 'translate(0, 0)');
 
 		additional
 		.append('rect')
-		.attr('x', 207.5)
+		.attr('x', 224)
 		.attr('y', 314.8)
 		.attr('rx', 3)
 		.attr('ry', 3)
@@ -1562,13 +1583,13 @@ function landscape ()	{
 
 		additional
 		.append('text')
-		.attr('x', 210)
+		.attr('x', 228)
 		.attr('y', 328)
 		.style('font-size', 14)
 		.style('font-weight', 'bold')
 		.style('fill', '#FFF')
 		.style('cursor', 'pointer')
-		.text('G')
+		.text('F')
 		.on('mouseover', function (d)	{
 			bio.tooltip({ 
 				element: this, 

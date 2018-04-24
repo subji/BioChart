@@ -138,7 +138,7 @@ function exclusivity ()	{
 
 		bio.text({
 			element: legend,
-			text: config.text,
+			// text: config.text,
 			attr: {
 				x: function (d, i) { return config.attr.x(d, i, model); },
 				y: function (d, i) { return config.attr.y(d, i, model); },
