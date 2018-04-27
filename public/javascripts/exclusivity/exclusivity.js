@@ -233,7 +233,7 @@ function exclusivity ()	{
 			if (sd)	{
 				result[sd.participant_id] = 
 				i <= data.divisionIdx[geneset].idx ? 
-				'altered' : 'unaltered';
+				'unaltered' : 'altered';
 			}
 		});
 
@@ -251,13 +251,13 @@ function exclusivity ()	{
 			data: data.survival.data[model.now.geneset],
 			division: divideForSurvival(model.now.geneset, data),
 			legends: {
-		    high: {
-		      text: 'Unaltered group',
-		      color: '#FF6252',
-		    },
 		    low: {
-		      text: 'Altered group',
+		      text: 'Unaltered group',
 		      color: '#00AC52',
+		    },
+		    high: {
+		      text: 'Altered group',
+		      color: '#FF6252',
 		    }
 		  },
 		  styles: {
