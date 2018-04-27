@@ -1106,6 +1106,7 @@ function landscape ()	{
 				stroke = 2,
 				geneSVG = d3.select('#landscape_gene_svg'),
 				geneWidth = parseFloat(geneSVG.attr('width')),
+				geneHeight = parseFloat(geneSVG.attr('height')),
 				group = geneSVG.append('g')
 				.attr('class', 'landscape_gene_svg ed-chkGroup')
 				.attr('transform', 'translate(' + 
@@ -1296,10 +1297,11 @@ function landscape ()	{
 		.attr('class', 'landscape_gene_svg g-name-g-tag')
 		.attr('transform', 'translate(0, 0)');
 
+		console.log(geneWidth, geneHeight)
 		additional
 		.append('rect')
-		.attr('x', 207.5)
-		.attr('y', 314.8)
+		.attr('x', geneWidth - 32.5)
+		.attr('y', geneHeight - 45)
 		.attr('rx', 3)
 		.attr('ry', 3)
 		.attr('width', 16)
@@ -1319,8 +1321,8 @@ function landscape ()	{
 
 		additional
 		.append('text')
-		.attr('x', 210)
-		.attr('y', 328)
+		.attr('x', geneWidth - 30.5)
+		.attr('y', geneHeight - 32)
 		.style('font-size', 14)
 		.style('font-weight', 'bold')
 		.style('fill', '#FFF')
@@ -1344,6 +1346,7 @@ function landscape ()	{
 				stroke = 2,
 				geneSVG = d3.select('#landscape_gene_svg'),
 				geneWidth = parseFloat(geneSVG.attr('width')),
+				geneHeight = parseFloat(geneSVG.attr('height')),
 				group = geneSVG.append('g')
 				.attr('class', 'landscape_gene_svg hs-chkGroup')
 				.attr('transform', 'translate(' + 
@@ -1562,8 +1565,8 @@ function landscape ()	{
 
 		additional
 		.append('rect')
-		.attr('x', 224)
-		.attr('y', 314.8)
+		.attr('x', geneWidth - 15)
+		.attr('y', geneHeight - 45)
 		.attr('rx', 3)
 		.attr('ry', 3)
 		.attr('width', 16)
@@ -1583,8 +1586,8 @@ function landscape ()	{
 
 		additional
 		.append('text')
-		.attr('x', 228)
-		.attr('y', 328)
+		.attr('x', geneWidth - 12)
+		.attr('y', geneHeight - 32)
 		.style('font-size', 14)
 		.style('font-weight', 'bold')
 		.style('fill', '#FFF')
