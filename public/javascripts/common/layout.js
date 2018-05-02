@@ -116,12 +116,16 @@ function layout ()	{
 			classify : [classify];
 
 			bio.iteration.loop(classify, function (d)	{
-				d3.selectAll((d.indexOf('.') > -1 ? d : '.' + d))
+				var id = d.replace('/', '');
+
+				d3.selectAll((id.indexOf('.') > -1 ? id : '.' + id))
 					.remove();
 			});
 		} else if (typeof classify === 'string')	{
 			bio.iteration.loop(d3.selectAll('svg').nodes(), 
 			function (svg)	{
+				classify = classify.replace('/', '');
+
 				if (svg.id.indexOf(classify) >= 0)	{
 					d3.select(svg).select('.' + classify).remove();
 				} else {

@@ -31,7 +31,7 @@ function rendering ()	{
 		var id = svg.attr('id'),
 				isExist = d3.selectAll('.' + id + 
 															 '.' + classify + '-g-tag');
-
+		
 		return (isExist.node() ? isExist : svg).append('g')
 			 		.attr('class', id + ' ' + classify + '-g-tag')
 			 		.attr('transform', 

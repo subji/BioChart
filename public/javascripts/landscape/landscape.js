@@ -1297,7 +1297,6 @@ function landscape ()	{
 		.attr('class', 'landscape_gene_svg g-name-g-tag')
 		.attr('transform', 'translate(0, 0)');
 
-		console.log(geneWidth, geneHeight)
 		additional
 		.append('rect')
 		.attr('x', geneWidth - 32.5)
