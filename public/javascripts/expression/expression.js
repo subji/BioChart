@@ -494,8 +494,6 @@ function expression ()	{
 							val = data.value === 0 ? 'Disease Free' : 'Relapsed';
 						} 
 
-						console.log(data.y, parseFloat(data.y).toFixed(2))
-
 						bio.tooltip({
 							element: this,
 							contents: 'ID: <b>' + data.x + '</b></br>' + 
@@ -512,8 +510,6 @@ function expression ()	{
 				margin: shapeCnf.margin,
 				data: scatterData(data.scatter[osdfs], axis.x),
 			});
-
-			console.log(scatterData(data.scatter[osdfs], axis.x))
 
 			bio.axises().left({
 				ticks: 15,

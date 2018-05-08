@@ -331,7 +331,6 @@ function preprocExpression ()	{
 			b.y = model.axis.bar.y[1];
 		});
 
-		console.log(model.axis)
 		model.axisMargin = getAxisMargin(model.axis.heatmap.y, model.axis.scatter.y, model.axis.bar.y);
 
 		// console.log('>>> Preprocess variants data: ', data);

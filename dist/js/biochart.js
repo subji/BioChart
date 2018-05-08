@@ -4281,6 +4281,8 @@ function survival ()	{
 		function forPatient (id, month, status, array)	{
 			var obj = {};
 
+			// console.log(month)
+
 			obj[id] = {
 				case_id: id,
 				months: month,
@@ -4294,8 +4296,8 @@ function survival ()	{
 			if (d)	{
 				// if ((d.os_days !== 0 && d.os_days !== null && d.os_status !== null) && 
 				// 		(d.dfs_days !== 0 && d.dfs_days !== null && d.dfs_status !== null))	{
-					var osm = (d.os_days / 30),
-						dfsm = (d.dfs_days / 30);
+					var osm = d.os_days === null ? null : (d.os_days / 30),
+						dfsm = d.dfs_days === null ? null : (d.dfs_days / 30);
 
 					month.os.push(osm);
 					month.dfs.push(dfsm);
@@ -5619,8 +5621,6 @@ function expression ()	{
 							val = data.value === 0 ? 'Disease Free' : 'Relapsed';
 						} 
 
-						console.log(data.y, parseFloat(data.y).toFixed(2))
-
 						bio.tooltip({
 							element: this,
 							contents: 'ID: <b>' + data.x + '</b></br>' + 
@@ -5637,8 +5637,6 @@ function expression ()	{
 				margin: shapeCnf.margin,
 				data: scatterData(data.scatter[osdfs], axis.x),
 			});
-
-			console.log(scatterData(data.scatter[osdfs], axis.x))
 
 			bio.axises().left({
 				ticks: 15,
@@ -9679,7 +9677,6 @@ function preprocExpression ()	{
 			b.y = model.axis.bar.y[1];
 		});
 
-		console.log(model.axis)
 		model.axisMargin = getAxisMargin(model.axis.heatmap.y, model.axis.scatter.y, model.axis.bar.y);
 
 		// console.log('>>> Preprocess variants data: ', data);

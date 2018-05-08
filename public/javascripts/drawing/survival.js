@@ -13,6 +13,8 @@ function survival ()	{
 		function forPatient (id, month, status, array)	{
 			var obj = {};
 
+			// console.log(month)
+
 			obj[id] = {
 				case_id: id,
 				months: month,
@@ -26,8 +28,8 @@ function survival ()	{
 			if (d)	{
 				// if ((d.os_days !== 0 && d.os_days !== null && d.os_status !== null) && 
 				// 		(d.dfs_days !== 0 && d.dfs_days !== null && d.dfs_status !== null))	{
-					var osm = (d.os_days / 30),
-						dfsm = (d.dfs_days / 30);
+					var osm = d.os_days === null ? null : (d.os_days / 30),
+						dfsm = d.dfs_days === null ? null : (d.dfs_days / 30);
 
 					month.os.push(osm);
 					month.dfs.push(dfsm);
