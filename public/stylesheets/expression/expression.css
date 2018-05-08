@@ -25,6 +25,7 @@
 
 #expression_survival { 
 	float: left; 
+	margin-right: -20px;
 }
 
 #os,

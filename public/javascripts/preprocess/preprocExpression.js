@@ -293,7 +293,7 @@ function preprocExpression ()	{
 			most = most > hyWidth ? most : hyWidth;
 		});
 
-		most = bio.math.max([smost, hmost, bmost]) * 1.25;
+		most = bio.math.max([smost, hmost, bmost]) * 1.5;
 
 		return most < 30 ? 30 : most;	
 	};
