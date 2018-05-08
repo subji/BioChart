@@ -124,18 +124,14 @@ function expressionConfig ()	{
 				margin: [10, leftMargin, 30, 20],
 				attr: {
 					cx: function (data, idx, that)	{ 
-						if (data.value === null || data.y === null)	{
-							return;
+						if (data.value !== null && data.y !== null)	{
+							return that.scaleX(data.x);
 						}
-
-						return that.scaleX(data.x); 
 					},
 					cy: function (data, idx, that)	{ 
-						if (data.value === null || data.y === null)	{
-							return;
-						}
-
-						return that.scaleY(data.y); 
+						if (data.value !== null && data.y !== null)	{
+							return that.scaleY(data.y); 
+						} 
 					},
 					r: 5,
 				},
