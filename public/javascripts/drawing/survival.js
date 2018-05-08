@@ -24,8 +24,8 @@ function survival ()	{
 
 		bio.iteration.loop(data, function (d)	{
 			if (d)	{
-				if ((d.os_days !== 0 && d.os_days !== null && d.os_status !== null) && 
-						(d.dfs_days !== 0 && d.dfs_days !== null && d.dfs_status !== null))	{
+				// if ((d.os_days !== 0 && d.os_days !== null && d.os_status !== null) && 
+				// 		(d.dfs_days !== 0 && d.dfs_days !== null && d.dfs_status !== null))	{
 					var osm = (d.os_days / 30),
 						dfsm = (d.dfs_days / 30);
 
@@ -42,7 +42,7 @@ function survival ()	{
 
 					forPatient(d.participant_id, osm, d.os_status, all.os);
 					forPatient(d.participant_id, dfsm, d.dfs_status, all.dfs);
-				}
+				// }
 			}
 		});
 

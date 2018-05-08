@@ -124,14 +124,16 @@ function expressionConfig ()	{
 				margin: [10, leftMargin, 30, 20],
 				attr: {
 					cx: function (data, idx, that)	{ 
-						if (data.value === undefined || data.value === null)	{
+						if ((data.value === undefined || data.value === null) && 
+								(data.y === undefined || data.y === null))	{
 							return false;
 						}
 
 						return that.scaleX(data.x); 
 					},
 					cy: function (data, idx, that)	{ 
-						if (data.value === undefined || data.value === null)	{
+						if ((data.value === undefined || data.value === null) && 
+								(data.y === undefined || data.y === null))	{
 							return false;
 						}
 
@@ -141,7 +143,8 @@ function expressionConfig ()	{
 				},
 				style: {
 					fill: function (data, idx, that)	{
-						if (data.value === undefined || data.value === null)	{
+						if ((data.value === undefined || data.value === null) && 
+								(data.y === undefined || data.y === null))	{
 							return false;
 						}
 

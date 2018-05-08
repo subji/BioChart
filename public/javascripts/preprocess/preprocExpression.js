@@ -269,18 +269,33 @@ function preprocExpression ()	{
 	/*
 		Axis 중 가장 긴 문자열을 왼쪽 여백 값으로 한다.
 	 */
-	function getAxisMargin (yaxis)	{
+	function getAxisMargin (hy, sy, by)	{
 		var most = 0;
+		var hmost = 0, smost = 0, bmost;
 
-		bio.iteration.loop(yaxis, function (ya)	{
-			var textWidth = bio.drawing().textSize.width(ya, '10px');
-			
-			most = most > textWidth ? most : textWidth;
+		bio.iteration.loop(by, function (ya) {
+			var byWidth = bio.drawing().textSize.width(ya.toFixed(1).toString(), '10px');
+
+			bmost = bmost > byWidth ? bmost : byWidth;			
 		});
 
-		most = most === 0 ? 1 : most;
+		bio.iteration.loop(sy, function (key, val)	{
+			var syWidth = bio.drawing().textSize.width(val[1].toString(), '10px');
 
-		return most * 2.5;
+			smost = smost > syWidth ? smost : syWidth;
+		});
+
+		bio.iteration.loop(hy, function (ya)	{
+			var hyWidth = bio.drawing().textSize.width(ya, '10px');
+				
+			hmost = hmost > hyWidth ? hmost : hyWidth;
+
+			most = most > hyWidth ? most : hyWidth;
+		});
+
+		most = bio.math.max([smost, hmost, bmost]);
+
+		return most + 10;
 	};
 
 	function addRiskFunctions (funcs)	{
@@ -316,7 +331,8 @@ function preprocExpression ()	{
 			b.y = model.axis.bar.y[1];
 		});
 
-		model.axisMargin = getAxisMargin(model.axis.heatmap.y);
+		console.log(model.axis)
+		model.axisMargin = getAxisMargin(model.axis.heatmap.y, model.axis.scatter.y, model.axis.bar.y);
 
 		// console.log('>>> Preprocess variants data: ', data);
 		// console.log('>>> Preprocess data: ', model);
