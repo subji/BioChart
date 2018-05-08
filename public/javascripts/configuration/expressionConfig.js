@@ -124,25 +124,26 @@ function expressionConfig ()	{
 				margin: [10, leftMargin, 30, 20],
 				attr: {
 					cx: function (data, idx, that)	{ 
-						if (data.value !== null && data.y !== null)	{
+						if (data.y !== null && data.value !== null)	{
 							return that.scaleX(data.x);
-						}
+						} 
 					},
 					cy: function (data, idx, that)	{ 
-						if (data.value !== null && data.y !== null)	{
+						if (data.y !== null && data.value !== null)	{
 							return that.scaleY(data.y); 
 						} 
 					},
-					r: 5,
+					r: function (data, idx, that)	{
+						if (data.y !== null && data.value !== null)	{
+							return 5;
+						}
+					},
 				},
 				style: {
 					fill: function (data, idx, that)	{
-						if ((data.value === undefined || data.value === null) && 
-								(data.y === undefined || data.y === null))	{
-							return false;
-						}
-
-						return data.value === 0 ? '#5D5DD8': '#D86561';
+						if (data.y !== null && data.value !== null)	{
+							return data.value === 0 ? '#5D5DD8': '#D86561';
+						} 
 					},
 					fillOpacity: 0.6,
 				},
