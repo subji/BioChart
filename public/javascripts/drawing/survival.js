@@ -155,7 +155,7 @@ function survival ()	{
 			};
 		}
 
-		SurvivalTab.init(opts.division, model.survival_data.pure);
+		SurvivalTab.init(opts.division, model.survival_data.all);
 
 		return model;
 	};
