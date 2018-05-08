@@ -53,7 +53,7 @@ var SurvivalCurve = function() {
         elem.svg = d3.select("#" + divs.curveDivId)
             .append("svg")
             .attr('id', 'survival_plot')
-            .attr("width", settings.canvas_width)
+            .attr("width", settings.canvas_width + 20)
             .attr("height", settings.canvas_height);
         elem.curve = elem.svg.append("g");
         //elem.dots = elem.svg.append("g"); //the invisible dots
@@ -576,7 +576,7 @@ var SurvivalCurve = function() {
                     }
             } else {
                 $("#" + divs.infoTableDivId).empty();
-                $("#" + divs.infoTableDivId).append("<span style='margin: 20px; color: grey;'>Survival data not available</span>");
+                $("#" + divs.infoTableDivId).append("<span style='margin: 0px; color: grey;'>Survival data not available</span>");
             }
 
         },

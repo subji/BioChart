@@ -412,7 +412,7 @@ function expression ()	{
 		var divide = divideSurvivalData(data.bar, data.axis.bar.y[1]),
 				plot = bio.survival({
 					element: '#expression_survival',
-					margin: [20, 20, 20, 20],
+					margin: [0, 20, 20, 0],
 					data: (model.divide.patient_list || 
 								 model.setting.defaultData.patient_list),
 					division: (model.divide.divide || data.survival.divide),
@@ -429,14 +429,14 @@ function expression ()	{
 					},
 					styles: {
 						size: {
-							chartWidth: width * 0.9,
-							chartHeight: height * 0.9,
+							chartWidth: width * 0.92,
+							chartHeight: height * 0.92,
 						},
 						position: {
-							chartTop: 15,
+							chartTop: 10,
 							chartLeft: 50,
-							axisXtitlePosX: width / 2,
-							axisXtitlePosY: height / 1.125,
+							axisXtitlePosX: width / 1.9,
+							axisXtitlePosY: height / 1.1,
 							axisYtitlePosX: -(width / 2),
 							axisYtitlePosY: 10,
 							pvalX: width / 1.95,

@@ -293,9 +293,9 @@ function preprocExpression ()	{
 			most = most > hyWidth ? most : hyWidth;
 		});
 
-		most = bio.math.max([smost, hmost, bmost]);
+		most = bio.math.max([smost, hmost, bmost]) * 1.2;
 
-		return most + 10;
+		return most < 30 ? 30 : most;	
 	};
 
 	function addRiskFunctions (funcs)	{
