@@ -487,20 +487,14 @@ function expression ()	{
 						var val = '';
 						
 						if (model.now.osdfs === 'os')	{
-							if (data.value === 0)	{
-								val = 'Alive';
-							} else {
-								val = 'Dead';
-							}
+							val = data.value === 0 ? 'Alive' : 'Dead';
 						} 
 
 						if (model.now.osdfs === 'dfs')	{
-							if (data.value === 0)	{
-								val = 'Disease Free';
-							}	else {
-								val = 'Relapsed';
-							}
+							val = data.value === 0 ? 'Disease Free' : 'Relapsed';
 						} 
+
+						console.log(data.y, parseFloat(data.y).toFixed(2))
 
 						bio.tooltip({
 							element: this,
@@ -518,6 +512,8 @@ function expression ()	{
 				margin: shapeCnf.margin,
 				data: scatterData(data.scatter[osdfs], axis.x),
 			});
+
+			console.log(scatterData(data.scatter[osdfs], axis.x))
 
 			bio.axises().left({
 				ticks: 15,
