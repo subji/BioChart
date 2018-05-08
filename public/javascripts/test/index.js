@@ -79,11 +79,11 @@
  //                  // score: 1, 
  //                  // score: i === data.length - 1 ? 0 : 1,
  //                  // score: i === data.length - 1 ? 1 : 0,
- //                  // score: sum / d.values.length,
+ //                  score: sum / d.values.length,
  //                  // score: i <= 300 ? 1 : i > 300 && i <= 350 ? 1.2 : 1.5,
  //                  // score: i <= 100 ? 1 : i > 100 && i <= 150 ? 1.2 : 1.5,
  //                  // score: i <= 100 ? 1 : i > 100 && i <= 150 ? 1.2 : i <= 350 ? 1.5 : 2,
- //                  score: Math.floor(Math.random() * 5) % i === 0 ? 0 : 5,
+ //                  // score: Math.floor(Math.random() * 5) % i === 0 ? 0 : 5,
  //                });
  //              });
 

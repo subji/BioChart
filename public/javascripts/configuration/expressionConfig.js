@@ -84,7 +84,7 @@ function expressionConfig ()	{
 				},
 				style: {
 					fill: function (data, idx, that)	{
-						return data === 'Alive' ? '#5D5DD8' : '#D86561';
+						return (data === 'Alive' || data === 'Disease Free') ? '#5D5DD8' : '#D86561';
 					},
 					fontSize: '11px',
 				},
@@ -94,7 +94,7 @@ function expressionConfig ()	{
 								rect = bio.drawing().nthChild(c, nIdx),
 								text = bio.drawing().nthChild(t2, nIdx),
 								rgba = bio.rendering().opacity(
-											 data === 'Alive' ? 
+											 (data === 'Alive' || data === 'Disease Free') ? 
 											 '#5D5DD8' : '#D86561', 0.3);
 
 						d3.select(rect).transition(10)
@@ -107,8 +107,7 @@ function expressionConfig ()	{
 								text = bio.drawing().nthChild(t2, nIdx);
 
 						d3.select(rect).transition(10)
-													 .style('fill', data === 'Alive' ? 
-													 						'#5D5DD8' : '#D86561');
+													 .style('fill', (data === 'Alive' || data === 'Disease Free') ? '#5D5DD8' : '#D86561');
 						d3.select(text).style('font-weight', 'normal');
 					},
 				},
@@ -124,31 +123,47 @@ function expressionConfig ()	{
 			shape: {
 				margin: [10, leftMargin, 30, 20],
 				attr: {
-					cx: function (data, idx, that)	{ return that.scaleX(data.x); },
-					cy: function (data, idx, that)	{ return that.scaleY(data.y); },
+					cx: function (data, idx, that)	{ 
+						if (data.value === undefined || data.value === null)	{
+							return false;
+						}
+
+						return that.scaleX(data.x); 
+					},
+					cy: function (data, idx, that)	{ 
+						if (data.value === undefined || data.value === null)	{
+							return false;
+						}
+
+						return that.scaleY(data.y); 
+					},
 					r: 5,
 				},
 				style: {
 					fill: function (data, idx, that)	{
-						return data.value === undefined ? '#333333' : 
-									 data.value === 1 ? '#D86561': '#5D5DD8';
+						if (data.value === undefined || data.value === null)	{
+							return false;
+						}
+
+						return data.value === 1 ? '#5D5DD8': '#D86561';
 					},
 					fillOpacity: 0.6,
 				},
-				on: {
-					mouseover: function (data, idx, that)	{
-						bio.tooltip({
-							element: this,
-							contents: 'ID: <b>' + data.x + '</b></br>' + 
-												'Months: <b>' + data.y + '</b></br>' + 
-												'Status: <b>' + (data.value === '0' ? 
-												'Alive' : 'Dead') + '</b>',
-						});
-					},
-					mouseout: function (data, idx, that)	{
-						bio.tooltip('hide');
-					},
-				},
+				// on: {
+					// mouseover: function (data, idx, that)	{
+					// 	console.log(data, that);
+					// 	bio.tooltip({
+					// 		element: this,
+					// 		contents: 'ID: <b>' + data.x + '</b></br>' + 
+					// 							'Months: <b>' + data.y + '</b></br>' + 
+					// 							'Status: <b>' + (data.value === 1 ? 
+					// 							'Alive' : 'Dead') + '</b>',
+					// 	});
+					// },
+					// mouseout: function (data, idx, that)	{
+					// 	bio.tooltip('hide');
+					// },
+				// },
 			},
 			axis: {
 				top: 0,
@@ -330,7 +345,7 @@ function expressionConfig ()	{
 				left: 0,
 				margin: [0, 5, 0, 10],
 				exclude: 'path, line',
-				range: [5, svgAttr.width - 10],
+				range: [10, svgAttr.width - 10],
 			},
 			shape: {
 				attr: {

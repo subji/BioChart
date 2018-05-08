@@ -196,17 +196,17 @@ function sizing ()	{
 	model.chart.expression = function (ele, w, h)	{
 		var id = {
 			expression_survival: {width: w * 0.4, height: h * 0.925},
-			expression_bar_plot: {width: w * 0.4, height: h * 0.32},
+			expression_bar_plot: {width: w * 0.38, height: h * 0.32},
 			expression_function: {width: w * 0.2, height: h * 0.05},
 			expression_color_mapping: {width: w * 0.2, height: h * 0.05},
 			expression_bar_legend: {width: w * 0.2, height: h * 0.35},
-			expression_division: {width: w * 0.4, height: h * 0.04},
-			expression_scatter_plot: {width: w * 0.4, height: h * 0.3},
+			expression_division: {width: w * 0.38, height: h * 0.04},
+			expression_scatter_plot: {width: w * 0.38, height: h * 0.3},
 			expression_scatter_empty: {width: w * 0.2, height: h * 0.08},
 			expression_scatter_legend: {width: w * 0.2, height: h * 0.2},
-			expression_heatmap: {width: w * 0.4, height: h * 0.25},
+			expression_heatmap: {width: w * 0.38, height: h * 0.25},
 			expression_signature: {width: w * 0.2, height: h * 0.05},
-			expression_color_gradient: {width: w * 0.194, height: h * 0.075},
+			expression_color_gradient: {width: w * 0.2, height: h * 0.075},
 		};
 
 		var divs = makeDivide('expression', ele, w, h, 0.075);

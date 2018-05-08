@@ -223,7 +223,7 @@ function preprocExpression ()	{
 		var func = model.func.now || model.func.default;
 
 		bio.iteration.loop(alls, function (a)	{
-			a.tpm = toLog(a.tpm + 1);
+			a.tpm = toLog(a.tpm);
 
 			tpmBySample(a);
 
@@ -278,7 +278,7 @@ function preprocExpression ()	{
 			most = most > textWidth ? most : textWidth;
 		});
 
-		return most * 1.5;
+		return most * 2;
 	};
 
 	function addRiskFunctions (funcs)	{

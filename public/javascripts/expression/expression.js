@@ -266,7 +266,7 @@ function expression ()	{
 				range: axisCnf.range,
 				margin: axisCnf.margin,
 				exclude: axisCnf.exclude,
-				tickValues: axis,
+				tickValues: [axis[0], axis[2]],
 				domain: [axis[0], axis[2]],
 			}).selectAll('text').style('fill', '#999999');
 		});
@@ -374,6 +374,18 @@ function expression ()	{
 
 			drawScatter(data, data.axis.scatter, model.now.osdfs);
 
+			if (tab === 'dfs')	{
+				bio.layout().removeGroupTag([
+					'expression_scatter_legend_svg']);
+
+				drawLegend('scatter', ['Disease Free', 'Relapsed']);
+			} else {
+				bio.layout().removeGroupTag([
+					'expression_scatter_legend_svg']);
+
+				drawLegend('scatter', ['Alive', 'Dead']);
+			}
+
 			if (model.divide.low_arr || model.divide.high_arr)	{
 				toBlur(
 				d3.selectAll('#expression_scatter_plot_svg_scatter_shape_circle'),
@@ -470,7 +482,37 @@ function expression ()	{
 				element: svg,
 				yaxis: yaxis,
 				xaxis: axis.x,
-				on: shapeCnf.on,
+				on: {
+					mouseover: function (data, idx, that)	{
+						var val = '';
+						
+						if (model.now.osdfs === 'os')	{
+							if (data.value === 1)	{
+								val = 'Alive';
+							} else {
+								val = 'Dead';
+							}
+						} 
+
+						if (model.now.osdfs === 'dfs')	{
+							if (data.value === 1)	{
+								val = 'Disease Free';
+							}	else {
+								val = 'Relapsed';
+							}
+						} 
+
+						bio.tooltip({
+							element: this,
+							contents: 'ID: <b>' + data.x + '</b></br>' + 
+												'Months: <b>' + data.y + '</b></br>' + 
+												'Status: <b>' + val + '</b>',
+						});
+					},
+					mouseout: function (data, idx, that)	{
+						bio.tooltip('hide');
+					},
+				},
 				attr: shapeCnf.attr,
 				style: shapeCnf.style,
 				margin: shapeCnf.margin,
