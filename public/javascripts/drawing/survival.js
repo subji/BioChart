@@ -48,6 +48,8 @@ function survival ()	{
 			}
 		});
 
+		console.log(all, pure)
+
 		return { month: month, pure: pure, all: all };
 	};
 	/*
@@ -155,7 +157,7 @@ function survival ()	{
 			};
 		}
 
-		SurvivalTab.init(opts.division, model.survival_data.all);
+		SurvivalTab.init(opts.division, model.survival_data.pure);
 
 		return model;
 	};
