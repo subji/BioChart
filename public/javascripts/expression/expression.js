@@ -505,7 +505,7 @@ function expression ()	{
 						bio.tooltip({
 							element: this,
 							contents: 'ID: <b>' + data.x + '</b></br>' + 
-												'Months: <b>' + data.y + '</b></br>' + 
+												'Months: <b>' + parseFloat(data.y).toFixed(2) + '</b></br>' + 
 												'Status: <b>' + val + '</b>',
 						});
 					},

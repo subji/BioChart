@@ -278,7 +278,9 @@ function preprocExpression ()	{
 			most = most > textWidth ? most : textWidth;
 		});
 
-		return most * 2;
+		most = most === 0 ? 1 : most;
+
+		return most * 2.5;
 	};
 
 	function addRiskFunctions (funcs)	{
