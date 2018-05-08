@@ -145,7 +145,7 @@ function expressionConfig ()	{
 							return false;
 						}
 
-						return data.value === 1 ? '#5D5DD8': '#D86561';
+						return data.value === 0 ? '#5D5DD8': '#D86561';
 					},
 					fillOpacity: 0.6,
 				},

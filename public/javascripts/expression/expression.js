@@ -487,7 +487,7 @@ function expression ()	{
 						var val = '';
 						
 						if (model.now.osdfs === 'os')	{
-							if (data.value === 1)	{
+							if (data.value === 0)	{
 								val = 'Alive';
 							} else {
 								val = 'Dead';
@@ -495,7 +495,7 @@ function expression ()	{
 						} 
 
 						if (model.now.osdfs === 'dfs')	{
-							if (data.value === 1)	{
+							if (data.value === 0)	{
 								val = 'Disease Free';
 							}	else {
 								val = 'Relapsed';
