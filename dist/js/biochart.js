@@ -12303,74 +12303,74 @@ var SurvivalTab = (function() {
  /*
     Expression
   */
- $.ajax({
-    'type': 'POST',
-    'url': '/files/datas',
-    data: {
-     name: 'expression',
-    },
-    beforeSend: function () {
-      // bio.loading().start(document.querySelector('#main'), 900, 600);
-    },
-    success: function (d) {
-      bio.expression({
-        element: '#main',
-        width: 1200,
-        height: 800,
-        requestData: {
-          source: 'GDAC',
-          cancer_type: 'luad',
-          // sample_id: 'SMCLUAD1705230001',
-          // signature: 'PAM50',
-          // signature: '180117',
-          signature: '180125',
-          filter: ':'
-        },
-        data: d[0].data,
-        riskFunctions: [
-          { 
-            name: 'Test', 
-            isDefault: true, // default false
-            func: function (data)  {
-              var result = [];
+ // $.ajax({
+ //    'type': 'POST',
+ //    'url': '/files/datas',
+ //    data: {
+ //     name: 'expression',
+ //    },
+ //    beforeSend: function () {
+ //      // bio.loading().start(document.querySelector('#main'), 900, 600);
+ //    },
+ //    success: function (d) {
+ //      bio.expression({
+ //        element: '#main',
+ //        width: 1200,
+ //        height: 800,
+ //        requestData: {
+ //          source: 'GDAC',
+ //          cancer_type: 'luad',
+ //          // sample_id: 'SMCLUAD1705230001',
+ //          // signature: 'PAM50',
+ //          // signature: '180117',
+ //          signature: '180125',
+ //          filter: ':'
+ //        },
+ //        data: d[0].data,
+ //        riskFunctions: [
+ //          { 
+ //            name: 'Test', 
+ //            isDefault: true, // default false
+ //            func: function (data)  {
+ //              var result = [];
 
-              data.forEach(function (d, i) {
-                var sum = 0, avg = 0;
+ //              data.forEach(function (d, i) {
+ //                var sum = 0, avg = 0;
 
-                bio.iteration.loop(d.values, 
-                function (v)  {
-                  sum += v.tpm;
-                });
+ //                bio.iteration.loop(d.values, 
+ //                function (v)  {
+ //                  sum += v.tpm;
+ //                });
 
-                result.push({
-                  pid: d.pid,
-                  // score: 0,
-                  // score: 1, 
-                  // score: i === data.length - 1 ? 0 : 1,
-                  // score: i === data.length - 1 ? 1 : 0,
-                  score: sum / d.values.length,
-                  // score: i <= 300 ? 1 : i > 300 && i <= 350 ? 1.2 : 1.5,
-                  // score: i <= 100 ? 1 : i > 100 && i <= 150 ? 1.2 : 1.5,
-                  // score: i <= 100 ? 1 : i > 100 && i <= 150 ? 1.2 : i <= 350 ? 1.5 : 2,
-                  // score: Math.floor(Math.random() * 5) % i === 0 ? 0 : 5,
-                });
-              });
+ //                result.push({
+ //                  pid: d.pid,
+ //                  // score: 0,
+ //                  // score: 1, 
+ //                  // score: i === data.length - 1 ? 0 : 1,
+ //                  // score: i === data.length - 1 ? 1 : 0,
+ //                  score: sum / d.values.length,
+ //                  // score: i <= 300 ? 1 : i > 300 && i <= 350 ? 1.2 : 1.5,
+ //                  // score: i <= 100 ? 1 : i > 100 && i <= 150 ? 1.2 : 1.5,
+ //                  // score: i <= 100 ? 1 : i > 100 && i <= 150 ? 1.2 : i <= 350 ? 1.5 : 2,
+ //                  // score: Math.floor(Math.random() * 5) % i === 0 ? 0 : 5,
+ //                });
+ //              });
 
-              return result;
-            },
-          }
-        ],
-        divisionFunc: function (left, mid, right, geneList, allRnaList) {
-          // console.log(left, mid, right, geneList, allRnaList)
-        },
-        onSubtypeSelection: function (subtypeName, subtypeColors, model) {
-          // console.log(subtypeName, subtypeColors, model)
-        },
-      });
+ //              return result;
+ //            },
+ //          }
+ //        ],
+ //        divisionFunc: function (left, mid, right, geneList, allRnaList) {
+ //          // console.log(left, mid, right, geneList, allRnaList)
+ //        },
+ //        onSubtypeSelection: function (subtypeName, subtypeColors, model) {
+ //          // console.log(subtypeName, subtypeColors, model)
+ //        },
+ //      });
 
-      // bio.loading().end();
-    },
-  });
+ //      // bio.loading().end();
+ //    },
+ //  });
 
  /*
     Landscape
