@@ -280,7 +280,7 @@ function preprocExpression ()	{
 		});
 
 		bio.iteration.loop(sy, function (key, val)	{
-			var syWidth = bio.drawing().textSize.width(val[1].toString(), '10px');
+			var syWidth = bio.drawing().textSize.width(val[1].toFixed(0).toString(), '10px');
 
 			smost = smost > syWidth ? smost : syWidth;
 		});
