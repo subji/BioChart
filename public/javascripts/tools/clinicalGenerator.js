@@ -20,10 +20,18 @@ function clinicalGenerator ()	{
 		색상을 정해준다.
 	 */
 	function colors (clinicals)	{
-		// console.log(clinicals);
-		bio.iteration.loop(clinicals, 
-		function (clinical, values)	{
-			var i = 0;
+		bio.iteration.loop(clinicals, function (clinical, values)	{
+			var i = 0,
+				beforeValue = '',
+				sameLength = 1;
+
+			bio.iteration.loop(values, function (v)	{
+				if (beforeValue.length === v.length)	{
+					sameLength += 1;
+				} else {
+					beforeValue = v;
+				}
+			});
 
 			bio.iteration.loop(values, function (val, idx)	{
 				var result = '#';
@@ -35,7 +43,9 @@ function clinicalGenerator ()	{
 
 					for (var len = i + 3; i < len; i++)	{
 						var first = i.toString(16),
-								secnd = val.charCodeAt(i).toString(16).split('')[1];
+							secnd = isNaN(val.charCodeAt(i)) === true ? 
+							val.charCodeAt(Math.abs(valueLen - i + (sameLength - 3))).toString(16).split('')[1] : 
+							val.charCodeAt(i).toString(16).split('')[1];
 
 						result += (secnd + first);
 					}

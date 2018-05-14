@@ -8,6 +8,7 @@ function boilerPlate ()	{
 		'Amplification': { color: '#FFBDE0', order: 0},
 		'Homozygous_deletion': { color: '#BDE0FF', order: 1},
 		'Nonsense_mutation': { color: '#EA3B29', order: 2},
+		'Splice_region': { color: '#800080', order: 3 },
 		'Splice_site': { color: '#800080', order: 3},
 		'Translation_start_site': { color: '#AAA8AA', order: 4},
 		'De_novo_start_inframe': { color: '#AAA8AA', order: 4},
@@ -26,6 +27,7 @@ function boilerPlate ()	{
 		'5\'utr': { color: '#A9A9A9', order: 11},
 		'3\'utr': { color: '#A9A9A9', order: 11},
 		'Igr': { color: '#A9A9A9', order: 11},
+		'3\'flank': { color: '#A9A9A9', order: 11 },
 		'5\'flank': { color: '#A9A9A9', order: 11},
 	};
 	// Clinical 관련 색상 및 순서 정의 객체.
