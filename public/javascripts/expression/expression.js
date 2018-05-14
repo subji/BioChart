@@ -89,6 +89,10 @@ function expression ()	{
 					state = data.info[key];
 				} 
 			});
+			
+			if (state === null)	{
+				return '#333333';
+			}
 
 			return state === 'NA' ? '#D6E2E3' : 
 							bio.boilerPlate.clinicalInfo[state].color;

@@ -1,0 +1,3945 @@
+{
+    "status": 0,
+    "message": "OK",
+    "data": {
+        "subtype_list": [{
+                "subtype": "Smoking",
+                "column_type": "value",
+                "value": "No"
+            },
+            {
+                "subtype": "Smoking",
+                "column_type": "value",
+                "value": "Yes"
+            },
+            {
+                "subtype": "Pathologic stage",
+                "column_type": "value",
+                "value": "1A"
+            },
+            {
+                "subtype": "Pathologic stage",
+                "column_type": "value",
+                "value": "1B"
+            },
+            {
+                "subtype": "Pathologic stage",
+                "column_type": "value",
+                "value": "2A"
+            },
+            {
+                "subtype": "Pathologic stage",
+                "column_type": "value",
+                "value": "2B"
+            },
+            {
+                "subtype": "Pathologic stage",
+                "column_type": "value",
+                "value": "3A"
+            },
+            {
+                "subtype": "Pathologic stage",
+                "column_type": "value",
+                "value": "4"
+            },
+            {
+                "subtype": "Ewha expression subtype",
+                "column_type": "value",
+                "value": "1"
+            },
+            {
+                "subtype": "Ewha expression subtype",
+                "column_type": "value",
+                "value": "2"
+            },
+            {
+                "subtype": "Ewha expression subtype",
+                "column_type": "value",
+                "value": "3"
+            },
+            {
+                "subtype": "NBS cluster",
+                "column_type": "value",
+                "value": "1"
+            },
+            {
+                "subtype": "NBS cluster",
+                "column_type": "value",
+                "value": "2"
+            },
+            {
+                "subtype": "NBS cluster",
+                "column_type": "value",
+                "value": "3"
+            },
+            {
+                "subtype": "NBS cluster",
+                "column_type": "value",
+                "value": "4"
+            },
+            {
+                "subtype": "ConcensusCluster",
+                "column_type": "value",
+                "value": "1"
+            },
+            {
+                "subtype": "ConcensusCluster",
+                "column_type": "value",
+                "value": "2"
+            },
+            {
+                "subtype": "ConcensusCluster",
+                "column_type": "value",
+                "value": "3"
+            },
+            {
+                "subtype": "ConcensusCluster",
+                "column_type": "value",
+                "value": "4"
+            },
+            {
+                "subtype": "ConcensusCluster",
+                "column_type": "value",
+                "value": "5"
+            },
+            {
+                "subtype": "ConcensusCluster",
+                "column_type": "value",
+                "value": "6"
+            },
+            {
+                "subtype": "iCluster",
+                "column_type": "value",
+                "value": "1"
+            },
+            {
+                "subtype": "iCluster",
+                "column_type": "value",
+                "value": "2"
+            },
+            {
+                "subtype": "iCluster",
+                "column_type": "value",
+                "value": "3"
+            },
+            {
+                "subtype": "iCluster",
+                "column_type": "value",
+                "value": "4"
+            },
+            {
+                "subtype": "iCluster",
+                "column_type": "value",
+                "value": "5"
+            },
+            {
+                "subtype": "iCluster",
+                "column_type": "value",
+                "value": "6"
+            }
+        ],
+        "patient_list": [{
+                "ConcensusCluster": 1,
+                "dfs_status": 0,
+                "NBS cluster": 2,
+                "Pathologic stage": "1A",
+                "os_status": 0,
+                "Ewha expression subtype": 1,
+                "iCluster": 3,
+                "participant_id": "Pat01",
+                "Smoking": "No",
+                "dfs_days": 393,
+                "os_days": 1567
+            },
+            {
+                "ConcensusCluster": 1,
+                "dfs_status": 0,
+                "NBS cluster": 3,
+                "Pathologic stage": "1B",
+                "os_status": 0,
+                "Ewha expression subtype": 1,
+                "iCluster": 6,
+                "participant_id": "Pat02",
+                "Smoking": "No",
+                "dfs_days": 1500,
+                "os_days": 1506
+            },
+            {
+                "ConcensusCluster": 2,
+                "dfs_status": 1,
+                "NBS cluster": 4,
+                "Pathologic stage": "1B",
+                "os_status": 1,
+                "Ewha expression subtype": 3,
+                "iCluster": 5,
+                "participant_id": "Pat03",
+                "Smoking": "No",
+                "dfs_days": 511,
+                "os_days": 708
+            },
+            {
+                "ConcensusCluster": 3,
+                "dfs_status": 0,
+                "NBS cluster": 4,
+                "Pathologic stage": "1A",
+                "os_status": 0,
+                "Ewha expression subtype": 2,
+                "iCluster": 3,
+                "participant_id": "Pat04",
+                "Smoking": "No",
+                "dfs_days": 1566,
+                "os_days": 1595
+            },
+            {
+                "ConcensusCluster": 3,
+                "dfs_status": 0,
+                "NBS cluster": 4,
+                "Pathologic stage": "1A",
+                "os_status": 0,
+                "Ewha expression subtype": 1,
+                "iCluster": 2,
+                "participant_id": "Pat05",
+                "Smoking": "No",
+                "dfs_days": 1326,
+                "os_days": 1541
+            },
+            {
+                "ConcensusCluster": 2,
+                "dfs_status": 0,
+                "NBS cluster": 3,
+                "Pathologic stage": "3A",
+                "os_status": 0,
+                "Ewha expression subtype": 3,
+                "iCluster": 2,
+                "participant_id": "Pat08",
+                "Smoking": "No",
+                "dfs_days": 1426,
+                "os_days": 1474
+            },
+            {
+                "ConcensusCluster": 2,
+                "dfs_status": 1,
+                "NBS cluster": 2,
+                "Pathologic stage": "2A",
+                "os_status": 0,
+                "Ewha expression subtype": 3,
+                "iCluster": 2,
+                "participant_id": "Pat10",
+                "Smoking": "No",
+                "dfs_days": 1171,
+                "os_days": 1470
+            },
+            {
+                "ConcensusCluster": 6,
+                "dfs_status": 0,
+                "NBS cluster": 4,
+                "Pathologic stage": "1B",
+                "os_status": 0,
+                "Ewha expression subtype": 2,
+                "iCluster": 5,
+                "participant_id": "Pat100",
+                "Smoking": "No",
+                "dfs_days": 868,
+                "os_days": 972
+            },
+            {
+                "ConcensusCluster": 4,
+                "dfs_status": 0,
+                "NBS cluster": 3,
+                "Pathologic stage": "1A",
+                "os_status": 0,
+                "Ewha expression subtype": 2,
+                "iCluster": 4,
+                "participant_id": "Pat101",
+                "Smoking": "No",
+                "dfs_days": 949,
+                "os_days": 1034
+            },
+            {
+                "ConcensusCluster": 5,
+                "dfs_status": 1,
+                "NBS cluster": 1,
+                "Pathologic stage": "3A",
+                "os_status": 1,
+                "Ewha expression subtype": 1,
+                "iCluster": 2,
+                "participant_id": "Pat102",
+                "Smoking": "No",
+                "dfs_days": 339,
+                "os_days": 959
+            },
+            {
+                "ConcensusCluster": 5,
+                "dfs_status": 0,
+                "NBS cluster": 1,
+                "Pathologic stage": "1A",
+                "os_status": 0,
+                "Ewha expression subtype": 1,
+                "iCluster": 2,
+                "participant_id": "Pat103",
+                "Smoking": "No",
+                "dfs_days": 992,
+                "os_days": 1105
+            },
+            {
+                "ConcensusCluster": 3,
+                "dfs_status": 0,
+                "NBS cluster": 2,
+                "Pathologic stage": "1A",
+                "os_status": 0,
+                "Ewha expression subtype": 2,
+                "iCluster": 5,
+                "participant_id": "Pat104",
+                "Smoking": "No",
+                "dfs_days": 943,
+                "os_days": 958
+            },
+            {
+                "ConcensusCluster": 4,
+                "dfs_status": 1,
+                "NBS cluster": 3,
+                "Pathologic stage": "2A",
+                "os_status": 0,
+                "Ewha expression subtype": 2,
+                "iCluster": 5,
+                "participant_id": "Pat105",
+                "Smoking": "No",
+                "dfs_days": 497,
+                "os_days": 946
+            },
+            {
+                "ConcensusCluster": 6,
+                "dfs_status": 0,
+                "NBS cluster": 4,
+                "Pathologic stage": "1B",
+                "os_status": 0,
+                "Ewha expression subtype": 2,
+                "iCluster": 4,
+                "participant_id": "Pat106",
+                "Smoking": "No",
+                "dfs_days": 878,
+                "os_days": 932
+            },
+            {
+                "ConcensusCluster": 6,
+                "dfs_status": 0,
+                "NBS cluster": 2,
+                "Pathologic stage": "1B",
+                "os_status": 0,
+                "Ewha expression subtype": 2,
+                "iCluster": 5,
+                "participant_id": "Pat107",
+                "Smoking": "No",
+                "dfs_days": 918,
+                "os_days": 923
+            },
+            {
+                "ConcensusCluster": 6,
+                "dfs_status": null,
+                "NBS cluster": 3,
+                "Pathologic stage": "3A",
+                "os_status": null,
+                "Ewha expression subtype": 2,
+                "iCluster": 4,
+                "participant_id": "Pat108",
+                "Smoking": "Yes",
+                "dfs_days": null,
+                "os_days": null
+            },
+            {
+                "ConcensusCluster": 4,
+                "dfs_status": null,
+                "NBS cluster": 2,
+                "Pathologic stage": "1A",
+                "os_status": null,
+                "Ewha expression subtype": 2,
+                "iCluster": 4,
+                "participant_id": "Pat109",
+                "Smoking": "Yes",
+                "dfs_days": null,
+                "os_days": null
+            },
+            {
+                "ConcensusCluster": 3,
+                "dfs_status": 0,
+                "NBS cluster": 2,
+                "Pathologic stage": "1B",
+                "os_status": 0,
+                "Ewha expression subtype": 1,
+                "iCluster": 3,
+                "participant_id": "Pat11",
+                "Smoking": "No",
+                "dfs_days": 773,
+                "os_days": 1467
+            },
+            {
+                "ConcensusCluster": 5,
+                "dfs_status": null,
+                "NBS cluster": 1,
+                "Pathologic stage": "1A",
+                "os_status": null,
+                "Ewha expression subtype": 1,
+                "iCluster": 1,
+                "participant_id": "Pat110",
+                "Smoking": "Yes",
+                "dfs_days": null,
+                "os_days": null
+            },
+            {
+                "ConcensusCluster": 6,
+                "dfs_status": null,
+                "NBS cluster": 3,
+                "Pathologic stage": "1B",
+                "os_status": null,
+                "Ewha expression subtype": 2,
+                "iCluster": 5,
+                "participant_id": "Pat111",
+                "Smoking": "Yes",
+                "dfs_days": null,
+                "os_days": null
+            },
+            {
+                "ConcensusCluster": 5,
+                "dfs_status": null,
+                "NBS cluster": 1,
+                "Pathologic stage": "1A",
+                "os_status": null,
+                "Ewha expression subtype": 2,
+                "iCluster": 3,
+                "participant_id": "Pat112",
+                "Smoking": "Yes",
+                "dfs_days": null,
+                "os_days": null
+            },
+            {
+                "ConcensusCluster": 4,
+                "dfs_status": null,
+                "NBS cluster": 4,
+                "Pathologic stage": "1B",
+                "os_status": null,
+                "Ewha expression subtype": 2,
+                "iCluster": 6,
+                "participant_id": "Pat113",
+                "Smoking": "Yes",
+                "dfs_days": null,
+                "os_days": null
+            },
+            {
+                "ConcensusCluster": 5,
+                "dfs_status": null,
+                "NBS cluster": 2,
+                "Pathologic stage": "1A",
+                "os_status": null,
+                "Ewha expression subtype": 2,
+                "iCluster": 3,
+                "participant_id": "Pat114",
+                "Smoking": "Yes",
+                "dfs_days": null,
+                "os_days": null
+            },
+            {
+                "ConcensusCluster": null,
+                "dfs_status": null,
+                "NBS cluster": 1,
+                "Pathologic stage": "1B",
+                "os_status": null,
+                "Ewha expression subtype": 3,
+                "iCluster": null,
+                "participant_id": "Pat115",
+                "Smoking": "Yes",
+                "dfs_days": null,
+                "os_days": null
+            },
+            {
+                "ConcensusCluster": 4,
+                "dfs_status": 0,
+                "NBS cluster": 2,
+                "Pathologic stage": "1A",
+                "os_status": 0,
+                "Ewha expression subtype": 2,
+                "iCluster": 2,
+                "participant_id": "Pat12",
+                "Smoking": "No",
+                "dfs_days": 1461,
+                "os_days": 1467
+            },
+            {
+                "ConcensusCluster": 1,
+                "dfs_status": 0,
+                "NBS cluster": 4,
+                "Pathologic stage": "1A",
+                "os_status": 0,
+                "Ewha expression subtype": 1,
+                "iCluster": 2,
+                "participant_id": "Pat13",
+                "Smoking": "No",
+                "dfs_days": 1114,
+                "os_days": 1464
+            },
+            {
+                "ConcensusCluster": 1,
+                "dfs_status": 1,
+                "NBS cluster": 4,
+                "Pathologic stage": "1B",
+                "os_status": 0,
+                "Ewha expression subtype": 1,
+                "iCluster": 2,
+                "participant_id": "Pat15",
+                "Smoking": "No",
+                "dfs_days": 840,
+                "os_days": 1569
+            },
+            {
+                "ConcensusCluster": 1,
+                "dfs_status": 0,
+                "NBS cluster": 2,
+                "Pathologic stage": "2B",
+                "os_status": 0,
+                "Ewha expression subtype": 1,
+                "iCluster": 2,
+                "participant_id": "Pat16",
+                "Smoking": "No",
+                "dfs_days": 957,
+                "os_days": 1532
+            },
+            {
+                "ConcensusCluster": 1,
+                "dfs_status": 0,
+                "NBS cluster": 4,
+                "Pathologic stage": "1B",
+                "os_status": 0,
+                "Ewha expression subtype": 1,
+                "iCluster": 3,
+                "participant_id": "Pat17",
+                "Smoking": "No",
+                "dfs_days": 1562,
+                "os_days": 1744
+            },
+            {
+                "ConcensusCluster": 1,
+                "dfs_status": 0,
+                "NBS cluster": 2,
+                "Pathologic stage": "1A",
+                "os_status": 0,
+                "Ewha expression subtype": 1,
+                "iCluster": 3,
+                "participant_id": "Pat18",
+                "Smoking": "No",
+                "dfs_days": 1392,
+                "os_days": 1461
+            },
+            {
+                "ConcensusCluster": 1,
+                "dfs_status": 0,
+                "NBS cluster": 2,
+                "Pathologic stage": "1A",
+                "os_status": 0,
+                "Ewha expression subtype": 1,
+                "iCluster": 2,
+                "participant_id": "Pat19",
+                "Smoking": "No",
+                "dfs_days": 1380,
+                "os_days": 1461
+            },
+            {
+                "ConcensusCluster": 1,
+                "dfs_status": 0,
+                "NBS cluster": 2,
+                "Pathologic stage": "1A",
+                "os_status": 0,
+                "Ewha expression subtype": 1,
+                "iCluster": 2,
+                "participant_id": "Pat20",
+                "Smoking": "No",
+                "dfs_days": 1352,
+                "os_days": 1457
+            },
+            {
+                "ConcensusCluster": 5,
+                "dfs_status": 0,
+                "NBS cluster": 2,
+                "Pathologic stage": "2B",
+                "os_status": 0,
+                "Ewha expression subtype": 1,
+                "iCluster": 3,
+                "participant_id": "Pat21",
+                "Smoking": "No",
+                "dfs_days": 1405,
+                "os_days": 1448
+            },
+            {
+                "ConcensusCluster": 5,
+                "dfs_status": 0,
+                "NBS cluster": 3,
+                "Pathologic stage": "1A",
+                "os_status": 0,
+                "Ewha expression subtype": 1,
+                "iCluster": 2,
+                "participant_id": "Pat22",
+                "Smoking": "No",
+                "dfs_days": 721,
+                "os_days": 1443
+            },
+            {
+                "ConcensusCluster": 1,
+                "dfs_status": 0,
+                "NBS cluster": 2,
+                "Pathologic stage": "1A",
+                "os_status": 0,
+                "Ewha expression subtype": 1,
+                "iCluster": 2,
+                "participant_id": "Pat23",
+                "Smoking": "No",
+                "dfs_days": 1134,
+                "os_days": 1455
+            },
+            {
+                "ConcensusCluster": 1,
+                "dfs_status": 1,
+                "NBS cluster": 1,
+                "Pathologic stage": "3A",
+                "os_status": 1,
+                "Ewha expression subtype": 1,
+                "iCluster": 3,
+                "participant_id": "Pat24",
+                "Smoking": "No",
+                "dfs_days": 278,
+                "os_days": 858
+            },
+            {
+                "ConcensusCluster": 3,
+                "dfs_status": 1,
+                "NBS cluster": 2,
+                "Pathologic stage": "3A",
+                "os_status": 1,
+                "Ewha expression subtype": 1,
+                "iCluster": 2,
+                "participant_id": "Pat25",
+                "Smoking": "No",
+                "dfs_days": 728,
+                "os_days": 1301
+            },
+            {
+                "ConcensusCluster": 1,
+                "dfs_status": 0,
+                "NBS cluster": 2,
+                "Pathologic stage": "1A",
+                "os_status": 0,
+                "Ewha expression subtype": 1,
+                "iCluster": 2,
+                "participant_id": "Pat26",
+                "Smoking": "No",
+                "dfs_days": 1429,
+                "os_days": 1442
+            },
+            {
+                "ConcensusCluster": 1,
+                "dfs_status": null,
+                "NBS cluster": 2,
+                "Pathologic stage": "1A",
+                "os_status": 0,
+                "Ewha expression subtype": 1,
+                "iCluster": 5,
+                "participant_id": "Pat27",
+                "Smoking": "No",
+                "dfs_days": null,
+                "os_days": 1427
+            },
+            {
+                "ConcensusCluster": 2,
+                "dfs_status": 0,
+                "NBS cluster": 3,
+                "Pathologic stage": "1A",
+                "os_status": 0,
+                "Ewha expression subtype": 3,
+                "iCluster": 2,
+                "participant_id": "Pat28",
+                "Smoking": "No",
+                "dfs_days": 1062,
+                "os_days": 1569
+            },
+            {
+                "ConcensusCluster": 5,
+                "dfs_status": 0,
+                "NBS cluster": 1,
+                "Pathologic stage": "3A",
+                "os_status": 0,
+                "Ewha expression subtype": 2,
+                "iCluster": 6,
+                "participant_id": "Pat29",
+                "Smoking": "No",
+                "dfs_days": 1481,
+                "os_days": 1489
+            },
+            {
+                "ConcensusCluster": 1,
+                "dfs_status": 0,
+                "NBS cluster": 2,
+                "Pathologic stage": "1A",
+                "os_status": 0,
+                "Ewha expression subtype": 1,
+                "iCluster": 3,
+                "participant_id": "Pat30",
+                "Smoking": "No",
+                "dfs_days": 1359,
+                "os_days": 1407
+            },
+            {
+                "ConcensusCluster": 3,
+                "dfs_status": 1,
+                "NBS cluster": 2,
+                "Pathologic stage": "3A",
+                "os_status": 0,
+                "Ewha expression subtype": 1,
+                "iCluster": 2,
+                "participant_id": "Pat31",
+                "Smoking": "No",
+                "dfs_days": 594,
+                "os_days": 1419
+            },
+            {
+                "ConcensusCluster": 2,
+                "dfs_status": 1,
+                "NBS cluster": 3,
+                "Pathologic stage": "2B",
+                "os_status": 1,
+                "Ewha expression subtype": 3,
+                "iCluster": 3,
+                "participant_id": "Pat32",
+                "Smoking": "No",
+                "dfs_days": 539,
+                "os_days": 1314
+            },
+            {
+                "ConcensusCluster": 3,
+                "dfs_status": 1,
+                "NBS cluster": 2,
+                "Pathologic stage": "1A",
+                "os_status": 0,
+                "Ewha expression subtype": 1,
+                "iCluster": 2,
+                "participant_id": "Pat33",
+                "Smoking": "No",
+                "dfs_days": 1144,
+                "os_days": 1408
+            },
+            {
+                "ConcensusCluster": 4,
+                "dfs_status": 1,
+                "NBS cluster": 1,
+                "Pathologic stage": "1A",
+                "os_status": 0,
+                "Ewha expression subtype": 2,
+                "iCluster": 5,
+                "participant_id": "Pat34",
+                "Smoking": "No",
+                "dfs_days": 458,
+                "os_days": 1492
+            },
+            {
+                "ConcensusCluster": 1,
+                "dfs_status": 0,
+                "NBS cluster": 4,
+                "Pathologic stage": "2A",
+                "os_status": 0,
+                "Ewha expression subtype": 1,
+                "iCluster": 2,
+                "participant_id": "Pat36",
+                "Smoking": "No",
+                "dfs_days": 1394,
+                "os_days": 1414
+            },
+            {
+                "ConcensusCluster": 1,
+                "dfs_status": 0,
+                "NBS cluster": 1,
+                "Pathologic stage": "3A",
+                "os_status": 1,
+                "Ewha expression subtype": 1,
+                "iCluster": 6,
+                "participant_id": "Pat37",
+                "Smoking": "No",
+                "dfs_days": 22,
+                "os_days": 1042
+            },
+            {
+                "ConcensusCluster": 1,
+                "dfs_status": 0,
+                "NBS cluster": 2,
+                "Pathologic stage": "1A",
+                "os_status": 0,
+                "Ewha expression subtype": 1,
+                "iCluster": 3,
+                "participant_id": "Pat38",
+                "Smoking": "No",
+                "dfs_days": 1054,
+                "os_days": 1429
+            },
+            {
+                "ConcensusCluster": 6,
+                "dfs_status": 1,
+                "NBS cluster": 2,
+                "Pathologic stage": "1A",
+                "os_status": 0,
+                "Ewha expression subtype": 2,
+                "iCluster": 5,
+                "participant_id": "Pat39",
+                "Smoking": "No",
+                "dfs_days": 1414,
+                "os_days": 1450
+            },
+            {
+                "ConcensusCluster": 1,
+                "dfs_status": 0,
+                "NBS cluster": 3,
+                "Pathologic stage": "1B",
+                "os_status": 0,
+                "Ewha expression subtype": 1,
+                "iCluster": 2,
+                "participant_id": "Pat40",
+                "Smoking": "No",
+                "dfs_days": 1457,
+                "os_days": 1519
+            },
+            {
+                "ConcensusCluster": 2,
+                "dfs_status": 1,
+                "NBS cluster": 4,
+                "Pathologic stage": "2A",
+                "os_status": 0,
+                "Ewha expression subtype": 3,
+                "iCluster": 2,
+                "participant_id": "Pat41",
+                "Smoking": "No",
+                "dfs_days": 356,
+                "os_days": 1419
+            },
+            {
+                "ConcensusCluster": 3,
+                "dfs_status": 0,
+                "NBS cluster": 3,
+                "Pathologic stage": "1A",
+                "os_status": 0,
+                "Ewha expression subtype": 1,
+                "iCluster": 2,
+                "participant_id": "Pat42",
+                "Smoking": "No",
+                "dfs_days": 1359,
+                "os_days": 1406
+            },
+            {
+                "ConcensusCluster": 1,
+                "dfs_status": 0,
+                "NBS cluster": 2,
+                "Pathologic stage": "1A",
+                "os_status": 0,
+                "Ewha expression subtype": 1,
+                "iCluster": 1,
+                "participant_id": "Pat43",
+                "Smoking": "No",
+                "dfs_days": 1270,
+                "os_days": 1393
+            },
+            {
+                "ConcensusCluster": 3,
+                "dfs_status": 0,
+                "NBS cluster": 4,
+                "Pathologic stage": "1A",
+                "os_status": 0,
+                "Ewha expression subtype": 2,
+                "iCluster": 3,
+                "participant_id": "Pat44",
+                "Smoking": "No",
+                "dfs_days": 1303,
+                "os_days": 1391
+            },
+            {
+                "ConcensusCluster": 3,
+                "dfs_status": 1,
+                "NBS cluster": 1,
+                "Pathologic stage": "2A",
+                "os_status": 0,
+                "Ewha expression subtype": 2,
+                "iCluster": 5,
+                "participant_id": "Pat45",
+                "Smoking": "No",
+                "dfs_days": 1291,
+                "os_days": 1387
+            },
+            {
+                "ConcensusCluster": 5,
+                "dfs_status": 1,
+                "NBS cluster": 1,
+                "Pathologic stage": "3A",
+                "os_status": 0,
+                "Ewha expression subtype": 1,
+                "iCluster": 1,
+                "participant_id": "Pat46",
+                "Smoking": "No",
+                "dfs_days": 327,
+                "os_days": 1385
+            },
+            {
+                "ConcensusCluster": 4,
+                "dfs_status": 0,
+                "NBS cluster": 2,
+                "Pathologic stage": "1A",
+                "os_status": 0,
+                "Ewha expression subtype": 2,
+                "iCluster": 2,
+                "participant_id": "Pat47",
+                "Smoking": "No",
+                "dfs_days": 1224,
+                "os_days": 1336
+            },
+            {
+                "ConcensusCluster": 1,
+                "dfs_status": 0,
+                "NBS cluster": 2,
+                "Pathologic stage": "1B",
+                "os_status": 0,
+                "Ewha expression subtype": 1,
+                "iCluster": 3,
+                "participant_id": "Pat48",
+                "Smoking": "No",
+                "dfs_days": 1034,
+                "os_days": 1334
+            },
+            {
+                "ConcensusCluster": 5,
+                "dfs_status": 0,
+                "NBS cluster": 1,
+                "Pathologic stage": "1A",
+                "os_status": 0,
+                "Ewha expression subtype": 1,
+                "iCluster": 2,
+                "participant_id": "Pat49",
+                "Smoking": "No",
+                "dfs_days": 1060,
+                "os_days": 1331
+            },
+            {
+                "ConcensusCluster": 3,
+                "dfs_status": 0,
+                "NBS cluster": 4,
+                "Pathologic stage": "1A",
+                "os_status": 0,
+                "Ewha expression subtype": 1,
+                "iCluster": 2,
+                "participant_id": "Pat50",
+                "Smoking": "No",
+                "dfs_days": 1380,
+                "os_days": 1421
+            },
+            {
+                "ConcensusCluster": 1,
+                "dfs_status": 0,
+                "NBS cluster": 2,
+                "Pathologic stage": "1A",
+                "os_status": 0,
+                "Ewha expression subtype": 1,
+                "iCluster": 6,
+                "participant_id": "Pat51",
+                "Smoking": "No",
+                "dfs_days": 2121,
+                "os_days": 2141
+            },
+            {
+                "ConcensusCluster": 2,
+                "dfs_status": 1,
+                "NBS cluster": 4,
+                "Pathologic stage": "3A",
+                "os_status": 1,
+                "Ewha expression subtype": 3,
+                "iCluster": 2,
+                "participant_id": "Pat52",
+                "Smoking": "No",
+                "dfs_days": 300,
+                "os_days": 1129
+            },
+            {
+                "ConcensusCluster": 5,
+                "dfs_status": 1,
+                "NBS cluster": 4,
+                "Pathologic stage": "1B",
+                "os_status": 1,
+                "Ewha expression subtype": 2,
+                "iCluster": 2,
+                "participant_id": "Pat53",
+                "Smoking": "No",
+                "dfs_days": 336,
+                "os_days": 1880
+            },
+            {
+                "ConcensusCluster": 1,
+                "dfs_status": 1,
+                "NBS cluster": null,
+                "Pathologic stage": "3A",
+                "os_status": 1,
+                "Ewha expression subtype": 1,
+                "iCluster": 3,
+                "participant_id": "Pat54",
+                "Smoking": "No",
+                "dfs_days": 283,
+                "os_days": 1516
+            },
+            {
+                "ConcensusCluster": 2,
+                "dfs_status": 1,
+                "NBS cluster": 1,
+                "Pathologic stage": "3A",
+                "os_status": 0,
+                "Ewha expression subtype": 3,
+                "iCluster": 2,
+                "participant_id": "Pat55",
+                "Smoking": "No",
+                "dfs_days": 883,
+                "os_days": 1925
+            },
+            {
+                "ConcensusCluster": 1,
+                "dfs_status": 0,
+                "NBS cluster": 2,
+                "Pathologic stage": "2A",
+                "os_status": 0,
+                "Ewha expression subtype": 1,
+                "iCluster": 3,
+                "participant_id": "Pat56",
+                "Smoking": "No",
+                "dfs_days": 1314,
+                "os_days": 1420
+            },
+            {
+                "ConcensusCluster": 1,
+                "dfs_status": 0,
+                "NBS cluster": 2,
+                "Pathologic stage": "1A",
+                "os_status": 0,
+                "Ewha expression subtype": 1,
+                "iCluster": 1,
+                "participant_id": "Pat57",
+                "Smoking": "No",
+                "dfs_days": 1335,
+                "os_days": 1405
+            },
+            {
+                "ConcensusCluster": 1,
+                "dfs_status": 0,
+                "NBS cluster": 1,
+                "Pathologic stage": "1A",
+                "os_status": 0,
+                "Ewha expression subtype": 1,
+                "iCluster": 1,
+                "participant_id": "Pat58",
+                "Smoking": "No",
+                "dfs_days": 1144,
+                "os_days": 1324
+            },
+            {
+                "ConcensusCluster": 1,
+                "dfs_status": 0,
+                "NBS cluster": 3,
+                "Pathologic stage": "1A",
+                "os_status": 0,
+                "Ewha expression subtype": 1,
+                "iCluster": 1,
+                "participant_id": "Pat59",
+                "Smoking": "No",
+                "dfs_days": 1310,
+                "os_days": 1317
+            },
+            {
+                "ConcensusCluster": 1,
+                "dfs_status": 1,
+                "NBS cluster": 2,
+                "Pathologic stage": "1A",
+                "os_status": 0,
+                "Ewha expression subtype": 1,
+                "iCluster": 3,
+                "participant_id": "Pat60",
+                "Smoking": "No",
+                "dfs_days": 1272,
+                "os_days": 1301
+            },
+            {
+                "ConcensusCluster": 6,
+                "dfs_status": 0,
+                "NBS cluster": 4,
+                "Pathologic stage": "1A",
+                "os_status": 0,
+                "Ewha expression subtype": 2,
+                "iCluster": 3,
+                "participant_id": "Pat61",
+                "Smoking": "No",
+                "dfs_days": 1079,
+                "os_days": 1301
+            },
+            {
+                "ConcensusCluster": 3,
+                "dfs_status": 0,
+                "NBS cluster": 4,
+                "Pathologic stage": "1B",
+                "os_status": 0,
+                "Ewha expression subtype": 2,
+                "iCluster": 4,
+                "participant_id": "Pat62",
+                "Smoking": "No",
+                "dfs_days": 434,
+                "os_days": 1300
+            },
+            {
+                "ConcensusCluster": 4,
+                "dfs_status": 0,
+                "NBS cluster": 3,
+                "Pathologic stage": "1A",
+                "os_status": 0,
+                "Ewha expression subtype": 2,
+                "iCluster": 2,
+                "participant_id": "Pat63",
+                "Smoking": "No",
+                "dfs_days": 1099,
+                "os_days": 1296
+            },
+            {
+                "ConcensusCluster": 1,
+                "dfs_status": 1,
+                "NBS cluster": 4,
+                "Pathologic stage": "2A",
+                "os_status": 0,
+                "Ewha expression subtype": 1,
+                "iCluster": 3,
+                "participant_id": "Pat64",
+                "Smoking": "No",
+                "dfs_days": 733,
+                "os_days": 1294
+            },
+            {
+                "ConcensusCluster": 1,
+                "dfs_status": 0,
+                "NBS cluster": 1,
+                "Pathologic stage": "3A",
+                "os_status": 0,
+                "Ewha expression subtype": 1,
+                "iCluster": 1,
+                "participant_id": "Pat65",
+                "Smoking": "No",
+                "dfs_days": 126,
+                "os_days": 126
+            },
+            {
+                "ConcensusCluster": 3,
+                "dfs_status": 0,
+                "NBS cluster": 1,
+                "Pathologic stage": "1A",
+                "os_status": 0,
+                "Ewha expression subtype": 1,
+                "iCluster": 2,
+                "participant_id": "Pat66",
+                "Smoking": "No",
+                "dfs_days": 1272,
+                "os_days": 1280
+            },
+            {
+                "ConcensusCluster": 5,
+                "dfs_status": 0,
+                "NBS cluster": 2,
+                "Pathologic stage": "1A",
+                "os_status": 0,
+                "Ewha expression subtype": 2,
+                "iCluster": 6,
+                "participant_id": "Pat67",
+                "Smoking": "No",
+                "dfs_days": 998,
+                "os_days": 1264
+            },
+            {
+                "ConcensusCluster": 5,
+                "dfs_status": 1,
+                "NBS cluster": 2,
+                "Pathologic stage": "2A",
+                "os_status": 0,
+                "Ewha expression subtype": 2,
+                "iCluster": 5,
+                "participant_id": "Pat68",
+                "Smoking": "No",
+                "dfs_days": 238,
+                "os_days": 1352
+            },
+            {
+                "ConcensusCluster": 3,
+                "dfs_status": 1,
+                "NBS cluster": 3,
+                "Pathologic stage": "3A",
+                "os_status": 0,
+                "Ewha expression subtype": 2,
+                "iCluster": 5,
+                "participant_id": "Pat69",
+                "Smoking": "No",
+                "dfs_days": 679,
+                "os_days": 1244
+            },
+            {
+                "ConcensusCluster": 1,
+                "dfs_status": 0,
+                "NBS cluster": 1,
+                "Pathologic stage": "1A",
+                "os_status": 0,
+                "Ewha expression subtype": 1,
+                "iCluster": 2,
+                "participant_id": "Pat70",
+                "Smoking": "No",
+                "dfs_days": 1191,
+                "os_days": 1212
+            },
+            {
+                "ConcensusCluster": 2,
+                "dfs_status": 0,
+                "NBS cluster": 2,
+                "Pathologic stage": "1B",
+                "os_status": 0,
+                "Ewha expression subtype": 3,
+                "iCluster": 3,
+                "participant_id": "Pat71",
+                "Smoking": "No",
+                "dfs_days": 1189,
+                "os_days": 1210
+            },
+            {
+                "ConcensusCluster": 1,
+                "dfs_status": 1,
+                "NBS cluster": 4,
+                "Pathologic stage": "1B",
+                "os_status": 0,
+                "Ewha expression subtype": 1,
+                "iCluster": 3,
+                "participant_id": "Pat72",
+                "Smoking": "No",
+                "dfs_days": 848,
+                "os_days": 1464
+            },
+            {
+                "ConcensusCluster": 4,
+                "dfs_status": 0,
+                "NBS cluster": 3,
+                "Pathologic stage": "1B",
+                "os_status": 0,
+                "Ewha expression subtype": 2,
+                "iCluster": 5,
+                "participant_id": "Pat73",
+                "Smoking": "No",
+                "dfs_days": 1363,
+                "os_days": 1488
+            },
+            {
+                "ConcensusCluster": 4,
+                "dfs_status": 1,
+                "NBS cluster": 2,
+                "Pathologic stage": "3A",
+                "os_status": 0,
+                "Ewha expression subtype": 2,
+                "iCluster": 5,
+                "participant_id": "Pat74",
+                "Smoking": "No",
+                "dfs_days": 1070,
+                "os_days": 1426
+            },
+            {
+                "ConcensusCluster": 1,
+                "dfs_status": 0,
+                "NBS cluster": 2,
+                "Pathologic stage": "1A",
+                "os_status": 0,
+                "Ewha expression subtype": 1,
+                "iCluster": 1,
+                "participant_id": "Pat75",
+                "Smoking": "No",
+                "dfs_days": 1376,
+                "os_days": 1377
+            },
+            {
+                "ConcensusCluster": 1,
+                "dfs_status": 0,
+                "NBS cluster": 1,
+                "Pathologic stage": "1B",
+                "os_status": 0,
+                "Ewha expression subtype": 1,
+                "iCluster": 1,
+                "participant_id": "Pat76",
+                "Smoking": "No",
+                "dfs_days": 1045,
+                "os_days": 1317
+            },
+            {
+                "ConcensusCluster": 1,
+                "dfs_status": 1,
+                "NBS cluster": 2,
+                "Pathologic stage": "4",
+                "os_status": 0,
+                "Ewha expression subtype": 1,
+                "iCluster": 3,
+                "participant_id": "Pat77",
+                "Smoking": "No",
+                "dfs_days": 1302,
+                "os_days": 1308
+            },
+            {
+                "ConcensusCluster": 1,
+                "dfs_status": 0,
+                "NBS cluster": 3,
+                "Pathologic stage": "3A",
+                "os_status": 0,
+                "Ewha expression subtype": 1,
+                "iCluster": 6,
+                "participant_id": "Pat78",
+                "Smoking": "No",
+                "dfs_days": 1054,
+                "os_days": 1222
+            },
+            {
+                "ConcensusCluster": 2,
+                "dfs_status": 1,
+                "NBS cluster": 1,
+                "Pathologic stage": "3A",
+                "os_status": 1,
+                "Ewha expression subtype": 3,
+                "iCluster": 3,
+                "participant_id": "Pat79",
+                "Smoking": "No",
+                "dfs_days": 201,
+                "os_days": 399
+            },
+            {
+                "ConcensusCluster": 5,
+                "dfs_status": 1,
+                "NBS cluster": 2,
+                "Pathologic stage": "2B",
+                "os_status": 0,
+                "Ewha expression subtype": 2,
+                "iCluster": 3,
+                "participant_id": "Pat80",
+                "Smoking": "No",
+                "dfs_days": 889,
+                "os_days": 2118
+            },
+            {
+                "ConcensusCluster": 5,
+                "dfs_status": 0,
+                "NBS cluster": 2,
+                "Pathologic stage": "1A",
+                "os_status": 0,
+                "Ewha expression subtype": 1,
+                "iCluster": 1,
+                "participant_id": "Pat81",
+                "Smoking": "No",
+                "dfs_days": 1712,
+                "os_days": 2048
+            },
+            {
+                "ConcensusCluster": 1,
+                "dfs_status": 0,
+                "NBS cluster": 2,
+                "Pathologic stage": "1A",
+                "os_status": 0,
+                "Ewha expression subtype": 1,
+                "iCluster": 3,
+                "participant_id": "Pat82",
+                "Smoking": "No",
+                "dfs_days": 1729,
+                "os_days": 2038
+            },
+            {
+                "ConcensusCluster": 1,
+                "dfs_status": 1,
+                "NBS cluster": 2,
+                "Pathologic stage": "1B",
+                "os_status": 0,
+                "Ewha expression subtype": 1,
+                "iCluster": 2,
+                "participant_id": "Pat83",
+                "Smoking": "No",
+                "dfs_days": 830,
+                "os_days": 1369
+            },
+            {
+                "ConcensusCluster": 4,
+                "dfs_status": 0,
+                "NBS cluster": 4,
+                "Pathologic stage": "1A",
+                "os_status": 0,
+                "Ewha expression subtype": 2,
+                "iCluster": 4,
+                "participant_id": "Pat84",
+                "Smoking": "No",
+                "dfs_days": 1805,
+                "os_days": 2091
+            },
+            {
+                "ConcensusCluster": 4,
+                "dfs_status": 1,
+                "NBS cluster": 3,
+                "Pathologic stage": "2A",
+                "os_status": 1,
+                "Ewha expression subtype": 2,
+                "iCluster": 4,
+                "participant_id": "Pat85",
+                "Smoking": "No",
+                "dfs_days": 210,
+                "os_days": 1138
+            },
+            {
+                "ConcensusCluster": 6,
+                "dfs_status": 0,
+                "NBS cluster": 1,
+                "Pathologic stage": "2A",
+                "os_status": 0,
+                "Ewha expression subtype": 2,
+                "iCluster": 5,
+                "participant_id": "Pat86",
+                "Smoking": "No",
+                "dfs_days": 1897,
+                "os_days": 1985
+            },
+            {
+                "ConcensusCluster": 5,
+                "dfs_status": 0,
+                "NBS cluster": 2,
+                "Pathologic stage": "1A",
+                "os_status": 0,
+                "Ewha expression subtype": 1,
+                "iCluster": 3,
+                "participant_id": "Pat87",
+                "Smoking": "No",
+                "dfs_days": 1338,
+                "os_days": 1365
+            },
+            {
+                "ConcensusCluster": 4,
+                "dfs_status": 1,
+                "NBS cluster": 2,
+                "Pathologic stage": "3A",
+                "os_status": 0,
+                "Ewha expression subtype": 2,
+                "iCluster": 2,
+                "participant_id": "Pat88",
+                "Smoking": "No",
+                "dfs_days": 790,
+                "os_days": 1182
+            },
+            {
+                "ConcensusCluster": 2,
+                "dfs_status": 1,
+                "NBS cluster": 2,
+                "Pathologic stage": "3A",
+                "os_status": 1,
+                "Ewha expression subtype": 3,
+                "iCluster": 3,
+                "participant_id": "Pat89",
+                "Smoking": "No",
+                "dfs_days": 672,
+                "os_days": 1001
+            },
+            {
+                "ConcensusCluster": null,
+                "dfs_status": 0,
+                "NBS cluster": null,
+                "Pathologic stage": "1B",
+                "os_status": 0,
+                "Ewha expression subtype": 3,
+                "iCluster": null,
+                "participant_id": "Pat90",
+                "Smoking": "No",
+                "dfs_days": 1140,
+                "os_days": 1469
+            },
+            {
+                "ConcensusCluster": null,
+                "dfs_status": 0,
+                "NBS cluster": null,
+                "Pathologic stage": "1A",
+                "os_status": 0,
+                "Ewha expression subtype": 2,
+                "iCluster": null,
+                "participant_id": "Pat91",
+                "Smoking": "No",
+                "dfs_days": 382,
+                "os_days": 2146
+            },
+            {
+                "ConcensusCluster": 2,
+                "dfs_status": 1,
+                "NBS cluster": 2,
+                "Pathologic stage": "3A",
+                "os_status": 0,
+                "Ewha expression subtype": 3,
+                "iCluster": 2,
+                "participant_id": "Pat92",
+                "Smoking": "No",
+                "dfs_days": 432,
+                "os_days": 1231
+            },
+            {
+                "ConcensusCluster": 2,
+                "dfs_status": 0,
+                "NBS cluster": 3,
+                "Pathologic stage": "2A",
+                "os_status": 0,
+                "Ewha expression subtype": 3,
+                "iCluster": 3,
+                "participant_id": "Pat93",
+                "Smoking": "No",
+                "dfs_days": 1050,
+                "os_days": 1079
+            },
+            {
+                "ConcensusCluster": 5,
+                "dfs_status": 1,
+                "NBS cluster": 2,
+                "Pathologic stage": "1B",
+                "os_status": 0,
+                "Ewha expression subtype": 1,
+                "iCluster": 6,
+                "participant_id": "Pat94",
+                "Smoking": "No",
+                "dfs_days": 187,
+                "os_days": 1061
+            },
+            {
+                "ConcensusCluster": 6,
+                "dfs_status": 1,
+                "NBS cluster": 4,
+                "Pathologic stage": "3A",
+                "os_status": 1,
+                "Ewha expression subtype": 2,
+                "iCluster": 3,
+                "participant_id": "Pat95",
+                "Smoking": "No",
+                "dfs_days": 252,
+                "os_days": 575
+            },
+            {
+                "ConcensusCluster": 4,
+                "dfs_status": 0,
+                "NBS cluster": 4,
+                "Pathologic stage": "1A",
+                "os_status": 0,
+                "Ewha expression subtype": 2,
+                "iCluster": 5,
+                "participant_id": "Pat96",
+                "Smoking": "No",
+                "dfs_days": 371,
+                "os_days": 1044
+            },
+            {
+                "ConcensusCluster": null,
+                "dfs_status": 1,
+                "NBS cluster": 3,
+                "Pathologic stage": "3A",
+                "os_status": 0,
+                "Ewha expression subtype": 3,
+                "iCluster": null,
+                "participant_id": "Pat97",
+                "Smoking": "No",
+                "dfs_days": 771,
+                "os_days": 1776
+            },
+            {
+                "ConcensusCluster": 6,
+                "dfs_status": 0,
+                "NBS cluster": 2,
+                "Pathologic stage": "1A",
+                "os_status": 0,
+                "Ewha expression subtype": 2,
+                "iCluster": 3,
+                "participant_id": "Pat98",
+                "Smoking": "No",
+                "dfs_days": 988,
+                "os_days": 988
+            },
+            {
+                "ConcensusCluster": 2,
+                "dfs_status": 0,
+                "NBS cluster": null,
+                "Pathologic stage": "1A",
+                "os_status": 0,
+                "Ewha expression subtype": 3,
+                "iCluster": 6,
+                "participant_id": "Pat99",
+                "Smoking": "No",
+                "dfs_days": 124,
+                "os_days": 972
+            }
+        ],
+        "gene_list": [{
+                "hugo_symbol": "CDKN2A"
+            },
+            {
+                "hugo_symbol": "CDKN2B"
+            },
+            {
+                "hugo_symbol": "CDK4"
+            },
+            {
+                "hugo_symbol": "RB1"
+            }
+        ],
+        "cohort_rna_list": [{
+                "participant_id": "Pat01",
+                "hugo_symbol": "CDK4",
+                "tpm": 168.44
+            },
+            {
+                "participant_id": "Pat01",
+                "hugo_symbol": "CDKN2A",
+                "tpm": 16.91
+            },
+            {
+                "participant_id": "Pat01",
+                "hugo_symbol": "CDKN2B",
+                "tpm": 11.79
+            },
+            {
+                "participant_id": "Pat01",
+                "hugo_symbol": "RB1",
+                "tpm": 22.92
+            },
+            {
+                "participant_id": "Pat02",
+                "hugo_symbol": "CDK4",
+                "tpm": 807.91
+            },
+            {
+                "participant_id": "Pat02",
+                "hugo_symbol": "CDKN2A",
+                "tpm": 23.07
+            },
+            {
+                "participant_id": "Pat02",
+                "hugo_symbol": "CDKN2B",
+                "tpm": 20.17
+            },
+            {
+                "participant_id": "Pat02",
+                "hugo_symbol": "RB1",
+                "tpm": 19.26
+            },
+            {
+                "participant_id": "Pat03",
+                "hugo_symbol": "CDK4",
+                "tpm": 395.3
+            },
+            {
+                "participant_id": "Pat03",
+                "hugo_symbol": "CDKN2A",
+                "tpm": 8.28
+            },
+            {
+                "participant_id": "Pat03",
+                "hugo_symbol": "CDKN2B",
+                "tpm": 20.45
+            },
+            {
+                "participant_id": "Pat03",
+                "hugo_symbol": "RB1",
+                "tpm": 25.45
+            },
+            {
+                "participant_id": "Pat04",
+                "hugo_symbol": "CDK4",
+                "tpm": 52.07
+            },
+            {
+                "participant_id": "Pat04",
+                "hugo_symbol": "CDKN2A",
+                "tpm": 1.7
+            },
+            {
+                "participant_id": "Pat04",
+                "hugo_symbol": "CDKN2B",
+                "tpm": 3.87
+            },
+            {
+                "participant_id": "Pat04",
+                "hugo_symbol": "RB1",
+                "tpm": 32.22
+            },
+            {
+                "participant_id": "Pat05",
+                "hugo_symbol": "CDK4",
+                "tpm": 58.02
+            },
+            {
+                "participant_id": "Pat05",
+                "hugo_symbol": "CDKN2A",
+                "tpm": 17.52
+            },
+            {
+                "participant_id": "Pat05",
+                "hugo_symbol": "CDKN2B",
+                "tpm": 24.01
+            },
+            {
+                "participant_id": "Pat05",
+                "hugo_symbol": "RB1",
+                "tpm": 17.73
+            },
+            {
+                "participant_id": "Pat08",
+                "hugo_symbol": "CDK4",
+                "tpm": 169.77
+            },
+            {
+                "participant_id": "Pat08",
+                "hugo_symbol": "CDKN2A",
+                "tpm": 8.39
+            },
+            {
+                "participant_id": "Pat08",
+                "hugo_symbol": "CDKN2B",
+                "tpm": 9.89
+            },
+            {
+                "participant_id": "Pat08",
+                "hugo_symbol": "RB1",
+                "tpm": 21.88
+            },
+            {
+                "participant_id": "Pat10",
+                "hugo_symbol": "CDK4",
+                "tpm": 140.77
+            },
+            {
+                "participant_id": "Pat10",
+                "hugo_symbol": "CDKN2A",
+                "tpm": 69.59
+            },
+            {
+                "participant_id": "Pat10",
+                "hugo_symbol": "CDKN2B",
+                "tpm": 40.94
+            },
+            {
+                "participant_id": "Pat10",
+                "hugo_symbol": "RB1",
+                "tpm": 17.64
+            },
+            {
+                "participant_id": "Pat100",
+                "hugo_symbol": "CDK4",
+                "tpm": 68.13
+            },
+            {
+                "participant_id": "Pat100",
+                "hugo_symbol": "CDKN2A",
+                "tpm": 56.62
+            },
+            {
+                "participant_id": "Pat100",
+                "hugo_symbol": "CDKN2B",
+                "tpm": 13.74
+            },
+            {
+                "participant_id": "Pat100",
+                "hugo_symbol": "RB1",
+                "tpm": 17.88
+            },
+            {
+                "participant_id": "Pat101",
+                "hugo_symbol": "CDK4",
+                "tpm": 58.73
+            },
+            {
+                "participant_id": "Pat101",
+                "hugo_symbol": "CDKN2A",
+                "tpm": 1.96
+            },
+            {
+                "participant_id": "Pat101",
+                "hugo_symbol": "CDKN2B",
+                "tpm": 12.62
+            },
+            {
+                "participant_id": "Pat101",
+                "hugo_symbol": "RB1",
+                "tpm": 28.77
+            },
+            {
+                "participant_id": "Pat102",
+                "hugo_symbol": "CDK4",
+                "tpm": 80.94
+            },
+            {
+                "participant_id": "Pat102",
+                "hugo_symbol": "CDKN2A",
+                "tpm": 18.09
+            },
+            {
+                "participant_id": "Pat102",
+                "hugo_symbol": "CDKN2B",
+                "tpm": 4.12
+            },
+            {
+                "participant_id": "Pat102",
+                "hugo_symbol": "RB1",
+                "tpm": 4.38
+            },
+            {
+                "participant_id": "Pat103",
+                "hugo_symbol": "CDK4",
+                "tpm": 81.52
+            },
+            {
+                "participant_id": "Pat103",
+                "hugo_symbol": "CDKN2A",
+                "tpm": 59.66
+            },
+            {
+                "participant_id": "Pat103",
+                "hugo_symbol": "CDKN2B",
+                "tpm": 2.01
+            },
+            {
+                "participant_id": "Pat103",
+                "hugo_symbol": "RB1",
+                "tpm": 5.11
+            },
+            {
+                "participant_id": "Pat104",
+                "hugo_symbol": "CDK4",
+                "tpm": 68.19
+            },
+            {
+                "participant_id": "Pat104",
+                "hugo_symbol": "CDKN2A",
+                "tpm": 21.75
+            },
+            {
+                "participant_id": "Pat104",
+                "hugo_symbol": "CDKN2B",
+                "tpm": 32.78
+            },
+            {
+                "participant_id": "Pat104",
+                "hugo_symbol": "RB1",
+                "tpm": 22.86
+            },
+            {
+                "participant_id": "Pat105",
+                "hugo_symbol": "CDK4",
+                "tpm": 101.42
+            },
+            {
+                "participant_id": "Pat105",
+                "hugo_symbol": "CDKN2A",
+                "tpm": 3.01
+            },
+            {
+                "participant_id": "Pat105",
+                "hugo_symbol": "CDKN2B",
+                "tpm": 3
+            },
+            {
+                "participant_id": "Pat105",
+                "hugo_symbol": "RB1",
+                "tpm": 10.65
+            },
+            {
+                "participant_id": "Pat106",
+                "hugo_symbol": "CDK4",
+                "tpm": 74.16
+            },
+            {
+                "participant_id": "Pat106",
+                "hugo_symbol": "CDKN2A",
+                "tpm": 1.94
+            },
+            {
+                "participant_id": "Pat106",
+                "hugo_symbol": "CDKN2B",
+                "tpm": 6.11
+            },
+            {
+                "participant_id": "Pat106",
+                "hugo_symbol": "RB1",
+                "tpm": 24.34
+            },
+            {
+                "participant_id": "Pat107",
+                "hugo_symbol": "CDK4",
+                "tpm": 60.15
+            },
+            {
+                "participant_id": "Pat107",
+                "hugo_symbol": "CDKN2A",
+                "tpm": 16.27
+            },
+            {
+                "participant_id": "Pat107",
+                "hugo_symbol": "CDKN2B",
+                "tpm": 8.48
+            },
+            {
+                "participant_id": "Pat107",
+                "hugo_symbol": "RB1",
+                "tpm": 10.94
+            },
+            {
+                "participant_id": "Pat108",
+                "hugo_symbol": "CDK4",
+                "tpm": 75.23
+            },
+            {
+                "participant_id": "Pat108",
+                "hugo_symbol": "CDKN2A",
+                "tpm": 2.27
+            },
+            {
+                "participant_id": "Pat108",
+                "hugo_symbol": "CDKN2B",
+                "tpm": 1.62
+            },
+            {
+                "participant_id": "Pat108",
+                "hugo_symbol": "RB1",
+                "tpm": 35.95
+            },
+            {
+                "participant_id": "Pat109",
+                "hugo_symbol": "CDK4",
+                "tpm": 66.42
+            },
+            {
+                "participant_id": "Pat109",
+                "hugo_symbol": "CDKN2A",
+                "tpm": 9.54
+            },
+            {
+                "participant_id": "Pat109",
+                "hugo_symbol": "CDKN2B",
+                "tpm": 5.74
+            },
+            {
+                "participant_id": "Pat109",
+                "hugo_symbol": "RB1",
+                "tpm": 10.89
+            },
+            {
+                "participant_id": "Pat11",
+                "hugo_symbol": "CDK4",
+                "tpm": 42.97
+            },
+            {
+                "participant_id": "Pat11",
+                "hugo_symbol": "CDKN2A",
+                "tpm": 15.29
+            },
+            {
+                "participant_id": "Pat11",
+                "hugo_symbol": "CDKN2B",
+                "tpm": 16.63
+            },
+            {
+                "participant_id": "Pat11",
+                "hugo_symbol": "RB1",
+                "tpm": 27.65
+            },
+            {
+                "participant_id": "Pat110",
+                "hugo_symbol": "CDK4",
+                "tpm": 95.35
+            },
+            {
+                "participant_id": "Pat110",
+                "hugo_symbol": "CDKN2A",
+                "tpm": 34.95
+            },
+            {
+                "participant_id": "Pat110",
+                "hugo_symbol": "CDKN2B",
+                "tpm": 6.25
+            },
+            {
+                "participant_id": "Pat110",
+                "hugo_symbol": "RB1",
+                "tpm": 12.28
+            },
+            {
+                "participant_id": "Pat111",
+                "hugo_symbol": "CDK4",
+                "tpm": 55.56
+            },
+            {
+                "participant_id": "Pat111",
+                "hugo_symbol": "CDKN2A",
+                "tpm": 2.13
+            },
+            {
+                "participant_id": "Pat111",
+                "hugo_symbol": "CDKN2B",
+                "tpm": 5.72
+            },
+            {
+                "participant_id": "Pat111",
+                "hugo_symbol": "RB1",
+                "tpm": 20.83
+            },
+            {
+                "participant_id": "Pat112",
+                "hugo_symbol": "CDK4",
+                "tpm": 191.34
+            },
+            {
+                "participant_id": "Pat112",
+                "hugo_symbol": "CDKN2A",
+                "tpm": 222.48
+            },
+            {
+                "participant_id": "Pat112",
+                "hugo_symbol": "CDKN2B",
+                "tpm": 10.63
+            },
+            {
+                "participant_id": "Pat112",
+                "hugo_symbol": "RB1",
+                "tpm": 3.36
+            },
+            {
+                "participant_id": "Pat113",
+                "hugo_symbol": "CDK4",
+                "tpm": 103.84
+            },
+            {
+                "participant_id": "Pat113",
+                "hugo_symbol": "CDKN2A",
+                "tpm": 117.1
+            },
+            {
+                "participant_id": "Pat113",
+                "hugo_symbol": "CDKN2B",
+                "tpm": 38.27
+            },
+            {
+                "participant_id": "Pat113",
+                "hugo_symbol": "RB1",
+                "tpm": 14.02
+            },
+            {
+                "participant_id": "Pat114",
+                "hugo_symbol": "CDK4",
+                "tpm": 80.22
+            },
+            {
+                "participant_id": "Pat114",
+                "hugo_symbol": "CDKN2A",
+                "tpm": 7.49
+            },
+            {
+                "participant_id": "Pat114",
+                "hugo_symbol": "CDKN2B",
+                "tpm": 4.73
+            },
+            {
+                "participant_id": "Pat114",
+                "hugo_symbol": "RB1",
+                "tpm": 4.67
+            },
+            {
+                "participant_id": "Pat115",
+                "hugo_symbol": "CDK4",
+                "tpm": 59.2
+            },
+            {
+                "participant_id": "Pat115",
+                "hugo_symbol": "CDKN2A",
+                "tpm": 2.32
+            },
+            {
+                "participant_id": "Pat115",
+                "hugo_symbol": "CDKN2B",
+                "tpm": 0.58
+            },
+            {
+                "participant_id": "Pat115",
+                "hugo_symbol": "RB1",
+                "tpm": 2.23
+            },
+            {
+                "participant_id": "Pat12",
+                "hugo_symbol": "CDK4",
+                "tpm": 79.32
+            },
+            {
+                "participant_id": "Pat12",
+                "hugo_symbol": "CDKN2A",
+                "tpm": 11.64
+            },
+            {
+                "participant_id": "Pat12",
+                "hugo_symbol": "CDKN2B",
+                "tpm": 10.27
+            },
+            {
+                "participant_id": "Pat12",
+                "hugo_symbol": "RB1",
+                "tpm": 16.78
+            },
+            {
+                "participant_id": "Pat13",
+                "hugo_symbol": "CDK4",
+                "tpm": 157.31
+            },
+            {
+                "participant_id": "Pat13",
+                "hugo_symbol": "CDKN2A",
+                "tpm": 19.33
+            },
+            {
+                "participant_id": "Pat13",
+                "hugo_symbol": "CDKN2B",
+                "tpm": 9.57
+            },
+            {
+                "participant_id": "Pat13",
+                "hugo_symbol": "RB1",
+                "tpm": 29.21
+            },
+            {
+                "participant_id": "Pat15",
+                "hugo_symbol": "CDK4",
+                "tpm": 81.78
+            },
+            {
+                "participant_id": "Pat15",
+                "hugo_symbol": "CDKN2A",
+                "tpm": 0.44
+            },
+            {
+                "participant_id": "Pat15",
+                "hugo_symbol": "CDKN2B",
+                "tpm": 2.9
+            },
+            {
+                "participant_id": "Pat15",
+                "hugo_symbol": "RB1",
+                "tpm": 18.29
+            },
+            {
+                "participant_id": "Pat16",
+                "hugo_symbol": "CDK4",
+                "tpm": 65
+            },
+            {
+                "participant_id": "Pat16",
+                "hugo_symbol": "CDKN2A",
+                "tpm": 0.62
+            },
+            {
+                "participant_id": "Pat16",
+                "hugo_symbol": "CDKN2B",
+                "tpm": 2.93
+            },
+            {
+                "participant_id": "Pat16",
+                "hugo_symbol": "RB1",
+                "tpm": 14.74
+            },
+            {
+                "participant_id": "Pat17",
+                "hugo_symbol": "CDK4",
+                "tpm": 51.8
+            },
+            {
+                "participant_id": "Pat17",
+                "hugo_symbol": "CDKN2A",
+                "tpm": 10.43
+            },
+            {
+                "participant_id": "Pat17",
+                "hugo_symbol": "CDKN2B",
+                "tpm": 16.37
+            },
+            {
+                "participant_id": "Pat17",
+                "hugo_symbol": "RB1",
+                "tpm": 14.7
+            },
+            {
+                "participant_id": "Pat18",
+                "hugo_symbol": "CDK4",
+                "tpm": 74.79
+            },
+            {
+                "participant_id": "Pat18",
+                "hugo_symbol": "CDKN2A",
+                "tpm": 5.87
+            },
+            {
+                "participant_id": "Pat18",
+                "hugo_symbol": "CDKN2B",
+                "tpm": 17.84
+            },
+            {
+                "participant_id": "Pat18",
+                "hugo_symbol": "RB1",
+                "tpm": 28.1
+            },
+            {
+                "participant_id": "Pat19",
+                "hugo_symbol": "CDK4",
+                "tpm": 64.18
+            },
+            {
+                "participant_id": "Pat19",
+                "hugo_symbol": "CDKN2A",
+                "tpm": 2.67
+            },
+            {
+                "participant_id": "Pat19",
+                "hugo_symbol": "CDKN2B",
+                "tpm": 4.14
+            },
+            {
+                "participant_id": "Pat19",
+                "hugo_symbol": "RB1",
+                "tpm": 21.78
+            },
+            {
+                "participant_id": "Pat20",
+                "hugo_symbol": "CDK4",
+                "tpm": 75.03
+            },
+            {
+                "participant_id": "Pat20",
+                "hugo_symbol": "CDKN2A",
+                "tpm": 10.62
+            },
+            {
+                "participant_id": "Pat20",
+                "hugo_symbol": "CDKN2B",
+                "tpm": 11.37
+            },
+            {
+                "participant_id": "Pat20",
+                "hugo_symbol": "RB1",
+                "tpm": 29.11
+            },
+            {
+                "participant_id": "Pat21",
+                "hugo_symbol": "CDK4",
+                "tpm": 66.63
+            },
+            {
+                "participant_id": "Pat21",
+                "hugo_symbol": "CDKN2A",
+                "tpm": 5.66
+            },
+            {
+                "participant_id": "Pat21",
+                "hugo_symbol": "CDKN2B",
+                "tpm": 9.11
+            },
+            {
+                "participant_id": "Pat21",
+                "hugo_symbol": "RB1",
+                "tpm": 22.16
+            },
+            {
+                "participant_id": "Pat22",
+                "hugo_symbol": "CDK4",
+                "tpm": 59.48
+            },
+            {
+                "participant_id": "Pat22",
+                "hugo_symbol": "CDKN2A",
+                "tpm": 59.77
+            },
+            {
+                "participant_id": "Pat22",
+                "hugo_symbol": "CDKN2B",
+                "tpm": 29.74
+            },
+            {
+                "participant_id": "Pat22",
+                "hugo_symbol": "RB1",
+                "tpm": 15.18
+            },
+            {
+                "participant_id": "Pat23",
+                "hugo_symbol": "CDK4",
+                "tpm": 60.36
+            },
+            {
+                "participant_id": "Pat23",
+                "hugo_symbol": "CDKN2A",
+                "tpm": 8.18
+            },
+            {
+                "participant_id": "Pat23",
+                "hugo_symbol": "CDKN2B",
+                "tpm": 9.22
+            },
+            {
+                "participant_id": "Pat23",
+                "hugo_symbol": "RB1",
+                "tpm": 23.6
+            },
+            {
+                "participant_id": "Pat24",
+                "hugo_symbol": "CDK4",
+                "tpm": 71.5
+            },
+            {
+                "participant_id": "Pat24",
+                "hugo_symbol": "CDKN2A",
+                "tpm": 2.19
+            },
+            {
+                "participant_id": "Pat24",
+                "hugo_symbol": "CDKN2B",
+                "tpm": 6.3
+            },
+            {
+                "participant_id": "Pat24",
+                "hugo_symbol": "RB1",
+                "tpm": 37.91
+            },
+            {
+                "participant_id": "Pat25",
+                "hugo_symbol": "CDK4",
+                "tpm": 55.4
+            },
+            {
+                "participant_id": "Pat25",
+                "hugo_symbol": "CDKN2A",
+                "tpm": 16.81
+            },
+            {
+                "participant_id": "Pat25",
+                "hugo_symbol": "CDKN2B",
+                "tpm": 22.53
+            },
+            {
+                "participant_id": "Pat25",
+                "hugo_symbol": "RB1",
+                "tpm": 35.22
+            },
+            {
+                "participant_id": "Pat26",
+                "hugo_symbol": "CDK4",
+                "tpm": 60.47
+            },
+            {
+                "participant_id": "Pat26",
+                "hugo_symbol": "CDKN2A",
+                "tpm": 19.73
+            },
+            {
+                "participant_id": "Pat26",
+                "hugo_symbol": "CDKN2B",
+                "tpm": 27.23
+            },
+            {
+                "participant_id": "Pat26",
+                "hugo_symbol": "RB1",
+                "tpm": 22.36
+            },
+            {
+                "participant_id": "Pat27",
+                "hugo_symbol": "CDK4",
+                "tpm": 51.78
+            },
+            {
+                "participant_id": "Pat27",
+                "hugo_symbol": "CDKN2A",
+                "tpm": 0.7
+            },
+            {
+                "participant_id": "Pat27",
+                "hugo_symbol": "CDKN2B",
+                "tpm": 3.12
+            },
+            {
+                "participant_id": "Pat27",
+                "hugo_symbol": "RB1",
+                "tpm": 12.74
+            },
+            {
+                "participant_id": "Pat28",
+                "hugo_symbol": "CDK4",
+                "tpm": 107.41
+            },
+            {
+                "participant_id": "Pat28",
+                "hugo_symbol": "CDKN2A",
+                "tpm": 23.6
+            },
+            {
+                "participant_id": "Pat28",
+                "hugo_symbol": "CDKN2B",
+                "tpm": 13.61
+            },
+            {
+                "participant_id": "Pat28",
+                "hugo_symbol": "RB1",
+                "tpm": 30.6
+            },
+            {
+                "participant_id": "Pat29",
+                "hugo_symbol": "CDK4",
+                "tpm": 78.53
+            },
+            {
+                "participant_id": "Pat29",
+                "hugo_symbol": "CDKN2A",
+                "tpm": 5.61
+            },
+            {
+                "participant_id": "Pat29",
+                "hugo_symbol": "CDKN2B",
+                "tpm": 12.1
+            },
+            {
+                "participant_id": "Pat29",
+                "hugo_symbol": "RB1",
+                "tpm": 22.99
+            },
+            {
+                "participant_id": "Pat30",
+                "hugo_symbol": "CDK4",
+                "tpm": 71.73
+            },
+            {
+                "participant_id": "Pat30",
+                "hugo_symbol": "CDKN2A",
+                "tpm": 15.45
+            },
+            {
+                "participant_id": "Pat30",
+                "hugo_symbol": "CDKN2B",
+                "tpm": 36.7
+            },
+            {
+                "participant_id": "Pat30",
+                "hugo_symbol": "RB1",
+                "tpm": 15.99
+            },
+            {
+                "participant_id": "Pat31",
+                "hugo_symbol": "CDK4",
+                "tpm": 77.97
+            },
+            {
+                "participant_id": "Pat31",
+                "hugo_symbol": "CDKN2A",
+                "tpm": 4.97
+            },
+            {
+                "participant_id": "Pat31",
+                "hugo_symbol": "CDKN2B",
+                "tpm": 13.53
+            },
+            {
+                "participant_id": "Pat31",
+                "hugo_symbol": "RB1",
+                "tpm": 24.95
+            },
+            {
+                "participant_id": "Pat32",
+                "hugo_symbol": "CDK4",
+                "tpm": 47.46
+            },
+            {
+                "participant_id": "Pat32",
+                "hugo_symbol": "CDKN2A",
+                "tpm": 84.13
+            },
+            {
+                "participant_id": "Pat32",
+                "hugo_symbol": "CDKN2B",
+                "tpm": 45.73
+            },
+            {
+                "participant_id": "Pat32",
+                "hugo_symbol": "RB1",
+                "tpm": 28.48
+            },
+            {
+                "participant_id": "Pat33",
+                "hugo_symbol": "CDK4",
+                "tpm": 63.35
+            },
+            {
+                "participant_id": "Pat33",
+                "hugo_symbol": "CDKN2A",
+                "tpm": 3.25
+            },
+            {
+                "participant_id": "Pat33",
+                "hugo_symbol": "CDKN2B",
+                "tpm": 8.04
+            },
+            {
+                "participant_id": "Pat33",
+                "hugo_symbol": "RB1",
+                "tpm": 15.28
+            },
+            {
+                "participant_id": "Pat34",
+                "hugo_symbol": "CDK4",
+                "tpm": 62.53
+            },
+            {
+                "participant_id": "Pat34",
+                "hugo_symbol": "CDKN2A",
+                "tpm": 81.68
+            },
+            {
+                "participant_id": "Pat34",
+                "hugo_symbol": "CDKN2B",
+                "tpm": 43.63
+            },
+            {
+                "participant_id": "Pat34",
+                "hugo_symbol": "RB1",
+                "tpm": 10.86
+            },
+            {
+                "participant_id": "Pat35",
+                "hugo_symbol": "CDK4",
+                "tpm": 84.53
+            },
+            {
+                "participant_id": "Pat35",
+                "hugo_symbol": "CDKN2A",
+                "tpm": 2.18
+            },
+            {
+                "participant_id": "Pat35",
+                "hugo_symbol": "CDKN2B",
+                "tpm": 4.26
+            },
+            {
+                "participant_id": "Pat35",
+                "hugo_symbol": "RB1",
+                "tpm": 29.93
+            },
+            {
+                "participant_id": "Pat36",
+                "hugo_symbol": "CDK4",
+                "tpm": 101.84
+            },
+            {
+                "participant_id": "Pat36",
+                "hugo_symbol": "CDKN2A",
+                "tpm": 8.92
+            },
+            {
+                "participant_id": "Pat36",
+                "hugo_symbol": "CDKN2B",
+                "tpm": 14.8
+            },
+            {
+                "participant_id": "Pat36",
+                "hugo_symbol": "RB1",
+                "tpm": 26.37
+            },
+            {
+                "participant_id": "Pat37",
+                "hugo_symbol": "CDK4",
+                "tpm": 63.49
+            },
+            {
+                "participant_id": "Pat37",
+                "hugo_symbol": "CDKN2A",
+                "tpm": 1.2
+            },
+            {
+                "participant_id": "Pat37",
+                "hugo_symbol": "CDKN2B",
+                "tpm": 2.23
+            },
+            {
+                "participant_id": "Pat37",
+                "hugo_symbol": "RB1",
+                "tpm": 21.16
+            },
+            {
+                "participant_id": "Pat38",
+                "hugo_symbol": "CDK4",
+                "tpm": 66.62
+            },
+            {
+                "participant_id": "Pat38",
+                "hugo_symbol": "CDKN2A",
+                "tpm": 7.23
+            },
+            {
+                "participant_id": "Pat38",
+                "hugo_symbol": "CDKN2B",
+                "tpm": 13.2
+            },
+            {
+                "participant_id": "Pat38",
+                "hugo_symbol": "RB1",
+                "tpm": 15.48
+            },
+            {
+                "participant_id": "Pat39",
+                "hugo_symbol": "CDK4",
+                "tpm": 63.36
+            },
+            {
+                "participant_id": "Pat39",
+                "hugo_symbol": "CDKN2A",
+                "tpm": 1.86
+            },
+            {
+                "participant_id": "Pat39",
+                "hugo_symbol": "CDKN2B",
+                "tpm": 7.96
+            },
+            {
+                "participant_id": "Pat39",
+                "hugo_symbol": "RB1",
+                "tpm": 33.22
+            },
+            {
+                "participant_id": "Pat40",
+                "hugo_symbol": "CDK4",
+                "tpm": 75.16
+            },
+            {
+                "participant_id": "Pat40",
+                "hugo_symbol": "CDKN2A",
+                "tpm": 1.2
+            },
+            {
+                "participant_id": "Pat40",
+                "hugo_symbol": "CDKN2B",
+                "tpm": 1.98
+            },
+            {
+                "participant_id": "Pat40",
+                "hugo_symbol": "RB1",
+                "tpm": 15.13
+            },
+            {
+                "participant_id": "Pat41",
+                "hugo_symbol": "CDK4",
+                "tpm": 46.83
+            },
+            {
+                "participant_id": "Pat41",
+                "hugo_symbol": "CDKN2A",
+                "tpm": 2.96
+            },
+            {
+                "participant_id": "Pat41",
+                "hugo_symbol": "CDKN2B",
+                "tpm": 22.88
+            },
+            {
+                "participant_id": "Pat41",
+                "hugo_symbol": "RB1",
+                "tpm": 26.18
+            },
+            {
+                "participant_id": "Pat42",
+                "hugo_symbol": "CDK4",
+                "tpm": 72.86
+            },
+            {
+                "participant_id": "Pat42",
+                "hugo_symbol": "CDKN2A",
+                "tpm": 9.78
+            },
+            {
+                "participant_id": "Pat42",
+                "hugo_symbol": "CDKN2B",
+                "tpm": 17
+            },
+            {
+                "participant_id": "Pat42",
+                "hugo_symbol": "RB1",
+                "tpm": 19.27
+            },
+            {
+                "participant_id": "Pat43",
+                "hugo_symbol": "CDK4",
+                "tpm": 71.97
+            },
+            {
+                "participant_id": "Pat43",
+                "hugo_symbol": "CDKN2A",
+                "tpm": 5.54
+            },
+            {
+                "participant_id": "Pat43",
+                "hugo_symbol": "CDKN2B",
+                "tpm": 2.73
+            },
+            {
+                "participant_id": "Pat43",
+                "hugo_symbol": "RB1",
+                "tpm": 6.74
+            },
+            {
+                "participant_id": "Pat44",
+                "hugo_symbol": "CDK4",
+                "tpm": 62.66
+            },
+            {
+                "participant_id": "Pat44",
+                "hugo_symbol": "CDKN2A",
+                "tpm": 5.07
+            },
+            {
+                "participant_id": "Pat44",
+                "hugo_symbol": "CDKN2B",
+                "tpm": 13.87
+            },
+            {
+                "participant_id": "Pat44",
+                "hugo_symbol": "RB1",
+                "tpm": 18.01
+            },
+            {
+                "participant_id": "Pat45",
+                "hugo_symbol": "CDK4",
+                "tpm": 92.4
+            },
+            {
+                "participant_id": "Pat45",
+                "hugo_symbol": "CDKN2A",
+                "tpm": 1.8
+            },
+            {
+                "participant_id": "Pat45",
+                "hugo_symbol": "CDKN2B",
+                "tpm": 6.09
+            },
+            {
+                "participant_id": "Pat45",
+                "hugo_symbol": "RB1",
+                "tpm": 29.63
+            },
+            {
+                "participant_id": "Pat46",
+                "hugo_symbol": "CDK4",
+                "tpm": 80.47
+            },
+            {
+                "participant_id": "Pat46",
+                "hugo_symbol": "CDKN2A",
+                "tpm": 75.35
+            },
+            {
+                "participant_id": "Pat46",
+                "hugo_symbol": "CDKN2B",
+                "tpm": 5.92
+            },
+            {
+                "participant_id": "Pat46",
+                "hugo_symbol": "RB1",
+                "tpm": 3.52
+            },
+            {
+                "participant_id": "Pat47",
+                "hugo_symbol": "CDK4",
+                "tpm": 532.83
+            },
+            {
+                "participant_id": "Pat47",
+                "hugo_symbol": "CDKN2A",
+                "tpm": 29.1
+            },
+            {
+                "participant_id": "Pat47",
+                "hugo_symbol": "CDKN2B",
+                "tpm": 20.35
+            },
+            {
+                "participant_id": "Pat47",
+                "hugo_symbol": "RB1",
+                "tpm": 28.67
+            },
+            {
+                "participant_id": "Pat48",
+                "hugo_symbol": "CDK4",
+                "tpm": 48.63
+            },
+            {
+                "participant_id": "Pat48",
+                "hugo_symbol": "CDKN2A",
+                "tpm": 3.27
+            },
+            {
+                "participant_id": "Pat48",
+                "hugo_symbol": "CDKN2B",
+                "tpm": 5.87
+            },
+            {
+                "participant_id": "Pat48",
+                "hugo_symbol": "RB1",
+                "tpm": 16.95
+            },
+            {
+                "participant_id": "Pat49",
+                "hugo_symbol": "CDK4",
+                "tpm": 59.57
+            },
+            {
+                "participant_id": "Pat49",
+                "hugo_symbol": "CDKN2A",
+                "tpm": 13.03
+            },
+            {
+                "participant_id": "Pat49",
+                "hugo_symbol": "CDKN2B",
+                "tpm": 10.99
+            },
+            {
+                "participant_id": "Pat49",
+                "hugo_symbol": "RB1",
+                "tpm": 14.71
+            },
+            {
+                "participant_id": "Pat50",
+                "hugo_symbol": "CDK4",
+                "tpm": 97.98
+            },
+            {
+                "participant_id": "Pat50",
+                "hugo_symbol": "CDKN2A",
+                "tpm": 3.91
+            },
+            {
+                "participant_id": "Pat50",
+                "hugo_symbol": "CDKN2B",
+                "tpm": 11.59
+            },
+            {
+                "participant_id": "Pat50",
+                "hugo_symbol": "RB1",
+                "tpm": 20.99
+            },
+            {
+                "participant_id": "Pat51",
+                "hugo_symbol": "CDK4",
+                "tpm": 72.14
+            },
+            {
+                "participant_id": "Pat51",
+                "hugo_symbol": "CDKN2A",
+                "tpm": 1.44
+            },
+            {
+                "participant_id": "Pat51",
+                "hugo_symbol": "CDKN2B",
+                "tpm": 0.98
+            },
+            {
+                "participant_id": "Pat51",
+                "hugo_symbol": "RB1",
+                "tpm": 27.67
+            },
+            {
+                "participant_id": "Pat52",
+                "hugo_symbol": "CDK4",
+                "tpm": 78.55
+            },
+            {
+                "participant_id": "Pat52",
+                "hugo_symbol": "CDKN2A",
+                "tpm": 4.58
+            },
+            {
+                "participant_id": "Pat52",
+                "hugo_symbol": "CDKN2B",
+                "tpm": 7.06
+            },
+            {
+                "participant_id": "Pat52",
+                "hugo_symbol": "RB1",
+                "tpm": 23.94
+            },
+            {
+                "participant_id": "Pat53",
+                "hugo_symbol": "CDK4",
+                "tpm": 86.72
+            },
+            {
+                "participant_id": "Pat53",
+                "hugo_symbol": "CDKN2A",
+                "tpm": 1.74
+            },
+            {
+                "participant_id": "Pat53",
+                "hugo_symbol": "CDKN2B",
+                "tpm": 2.99
+            },
+            {
+                "participant_id": "Pat53",
+                "hugo_symbol": "RB1",
+                "tpm": 38.8
+            },
+            {
+                "participant_id": "Pat54",
+                "hugo_symbol": "CDK4",
+                "tpm": 58.64
+            },
+            {
+                "participant_id": "Pat54",
+                "hugo_symbol": "CDKN2A",
+                "tpm": 2.26
+            },
+            {
+                "participant_id": "Pat54",
+                "hugo_symbol": "CDKN2B",
+                "tpm": 4.22
+            },
+            {
+                "participant_id": "Pat54",
+                "hugo_symbol": "RB1",
+                "tpm": 11.33
+            },
+            {
+                "participant_id": "Pat55",
+                "hugo_symbol": "CDK4",
+                "tpm": 99.44
+            },
+            {
+                "participant_id": "Pat55",
+                "hugo_symbol": "CDKN2A",
+                "tpm": 3.97
+            },
+            {
+                "participant_id": "Pat55",
+                "hugo_symbol": "CDKN2B",
+                "tpm": 14.48
+            },
+            {
+                "participant_id": "Pat55",
+                "hugo_symbol": "RB1",
+                "tpm": 29.01
+            },
+            {
+                "participant_id": "Pat56",
+                "hugo_symbol": "CDK4",
+                "tpm": 67.61
+            },
+            {
+                "participant_id": "Pat56",
+                "hugo_symbol": "CDKN2A",
+                "tpm": 1.21
+            },
+            {
+                "participant_id": "Pat56",
+                "hugo_symbol": "CDKN2B",
+                "tpm": 6.5
+            },
+            {
+                "participant_id": "Pat56",
+                "hugo_symbol": "RB1",
+                "tpm": 22.27
+            },
+            {
+                "participant_id": "Pat57",
+                "hugo_symbol": "CDK4",
+                "tpm": 64.38
+            },
+            {
+                "participant_id": "Pat57",
+                "hugo_symbol": "CDKN2A",
+                "tpm": 10.72
+            },
+            {
+                "participant_id": "Pat57",
+                "hugo_symbol": "CDKN2B",
+                "tpm": 8.25
+            },
+            {
+                "participant_id": "Pat57",
+                "hugo_symbol": "RB1",
+                "tpm": 11.64
+            },
+            {
+                "participant_id": "Pat58",
+                "hugo_symbol": "CDK4",
+                "tpm": 69.06
+            },
+            {
+                "participant_id": "Pat58",
+                "hugo_symbol": "CDKN2A",
+                "tpm": 7.55
+            },
+            {
+                "participant_id": "Pat58",
+                "hugo_symbol": "CDKN2B",
+                "tpm": 6.45
+            },
+            {
+                "participant_id": "Pat58",
+                "hugo_symbol": "RB1",
+                "tpm": 8.79
+            },
+            {
+                "participant_id": "Pat59",
+                "hugo_symbol": "CDK4",
+                "tpm": 82.55
+            },
+            {
+                "participant_id": "Pat59",
+                "hugo_symbol": "CDKN2A",
+                "tpm": 9.45
+            },
+            {
+                "participant_id": "Pat59",
+                "hugo_symbol": "CDKN2B",
+                "tpm": 7.05
+            },
+            {
+                "participant_id": "Pat59",
+                "hugo_symbol": "RB1",
+                "tpm": 8.89
+            },
+            {
+                "participant_id": "Pat60",
+                "hugo_symbol": "CDK4",
+                "tpm": 52.21
+            },
+            {
+                "participant_id": "Pat60",
+                "hugo_symbol": "CDKN2A",
+                "tpm": 1.94
+            },
+            {
+                "participant_id": "Pat60",
+                "hugo_symbol": "CDKN2B",
+                "tpm": 1.36
+            },
+            {
+                "participant_id": "Pat60",
+                "hugo_symbol": "RB1",
+                "tpm": 5.08
+            },
+            {
+                "participant_id": "Pat61",
+                "hugo_symbol": "CDK4",
+                "tpm": 58.41
+            },
+            {
+                "participant_id": "Pat61",
+                "hugo_symbol": "CDKN2A",
+                "tpm": 4.47
+            },
+            {
+                "participant_id": "Pat61",
+                "hugo_symbol": "CDKN2B",
+                "tpm": 17.97
+            },
+            {
+                "participant_id": "Pat61",
+                "hugo_symbol": "RB1",
+                "tpm": 34.99
+            },
+            {
+                "participant_id": "Pat62",
+                "hugo_symbol": "CDK4",
+                "tpm": 94.01
+            },
+            {
+                "participant_id": "Pat62",
+                "hugo_symbol": "CDKN2A",
+                "tpm": 5.37
+            },
+            {
+                "participant_id": "Pat62",
+                "hugo_symbol": "CDKN2B",
+                "tpm": 9.75
+            },
+            {
+                "participant_id": "Pat62",
+                "hugo_symbol": "RB1",
+                "tpm": 22.29
+            },
+            {
+                "participant_id": "Pat63",
+                "hugo_symbol": "CDK4",
+                "tpm": 63.02
+            },
+            {
+                "participant_id": "Pat63",
+                "hugo_symbol": "CDKN2A",
+                "tpm": 3.1
+            },
+            {
+                "participant_id": "Pat63",
+                "hugo_symbol": "CDKN2B",
+                "tpm": 18.26
+            },
+            {
+                "participant_id": "Pat63",
+                "hugo_symbol": "RB1",
+                "tpm": 27.76
+            },
+            {
+                "participant_id": "Pat64",
+                "hugo_symbol": "CDK4",
+                "tpm": 52.27
+            },
+            {
+                "participant_id": "Pat64",
+                "hugo_symbol": "CDKN2A",
+                "tpm": 3.5
+            },
+            {
+                "participant_id": "Pat64",
+                "hugo_symbol": "CDKN2B",
+                "tpm": 8.75
+            },
+            {
+                "participant_id": "Pat64",
+                "hugo_symbol": "RB1",
+                "tpm": 20.77
+            },
+            {
+                "participant_id": "Pat65",
+                "hugo_symbol": "CDK4",
+                "tpm": 243.84
+            },
+            {
+                "participant_id": "Pat65",
+                "hugo_symbol": "CDKN2A",
+                "tpm": 14.36
+            },
+            {
+                "participant_id": "Pat65",
+                "hugo_symbol": "CDKN2B",
+                "tpm": 6.84
+            },
+            {
+                "participant_id": "Pat65",
+                "hugo_symbol": "RB1",
+                "tpm": 12.99
+            },
+            {
+                "participant_id": "Pat66",
+                "hugo_symbol": "CDK4",
+                "tpm": 71.94
+            },
+            {
+                "participant_id": "Pat66",
+                "hugo_symbol": "CDKN2A",
+                "tpm": 2.82
+            },
+            {
+                "participant_id": "Pat66",
+                "hugo_symbol": "CDKN2B",
+                "tpm": 4.11
+            },
+            {
+                "participant_id": "Pat66",
+                "hugo_symbol": "RB1",
+                "tpm": 12.66
+            },
+            {
+                "participant_id": "Pat67",
+                "hugo_symbol": "CDK4",
+                "tpm": 159
+            },
+            {
+                "participant_id": "Pat67",
+                "hugo_symbol": "CDKN2A",
+                "tpm": 17.79
+            },
+            {
+                "participant_id": "Pat67",
+                "hugo_symbol": "CDKN2B",
+                "tpm": 5.51
+            },
+            {
+                "participant_id": "Pat67",
+                "hugo_symbol": "RB1",
+                "tpm": 5.98
+            },
+            {
+                "participant_id": "Pat68",
+                "hugo_symbol": "CDK4",
+                "tpm": 188.57
+            },
+            {
+                "participant_id": "Pat68",
+                "hugo_symbol": "CDKN2A",
+                "tpm": 0.64
+            },
+            {
+                "participant_id": "Pat68",
+                "hugo_symbol": "CDKN2B",
+                "tpm": 4.71
+            },
+            {
+                "participant_id": "Pat68",
+                "hugo_symbol": "RB1",
+                "tpm": 7.2
+            },
+            {
+                "participant_id": "Pat69",
+                "hugo_symbol": "CDK4",
+                "tpm": 96.99
+            },
+            {
+                "participant_id": "Pat69",
+                "hugo_symbol": "CDKN2A",
+                "tpm": 48.63
+            },
+            {
+                "participant_id": "Pat69",
+                "hugo_symbol": "CDKN2B",
+                "tpm": 9.28
+            },
+            {
+                "participant_id": "Pat69",
+                "hugo_symbol": "RB1",
+                "tpm": 9.85
+            },
+            {
+                "participant_id": "Pat70",
+                "hugo_symbol": "CDK4",
+                "tpm": 78.6
+            },
+            {
+                "participant_id": "Pat70",
+                "hugo_symbol": "CDKN2A",
+                "tpm": 4.5
+            },
+            {
+                "participant_id": "Pat70",
+                "hugo_symbol": "CDKN2B",
+                "tpm": 15.1
+            },
+            {
+                "participant_id": "Pat70",
+                "hugo_symbol": "RB1",
+                "tpm": 10.97
+            },
+            {
+                "participant_id": "Pat71",
+                "hugo_symbol": "CDK4",
+                "tpm": 81.63
+            },
+            {
+                "participant_id": "Pat71",
+                "hugo_symbol": "CDKN2A",
+                "tpm": 5.54
+            },
+            {
+                "participant_id": "Pat71",
+                "hugo_symbol": "CDKN2B",
+                "tpm": 2.21
+            },
+            {
+                "participant_id": "Pat71",
+                "hugo_symbol": "RB1",
+                "tpm": 21.19
+            },
+            {
+                "participant_id": "Pat72",
+                "hugo_symbol": "CDK4",
+                "tpm": 73.39
+            },
+            {
+                "participant_id": "Pat72",
+                "hugo_symbol": "CDKN2A",
+                "tpm": 4.22
+            },
+            {
+                "participant_id": "Pat72",
+                "hugo_symbol": "CDKN2B",
+                "tpm": 2.69
+            },
+            {
+                "participant_id": "Pat72",
+                "hugo_symbol": "RB1",
+                "tpm": 22.49
+            },
+            {
+                "participant_id": "Pat73",
+                "hugo_symbol": "CDK4",
+                "tpm": 82.88
+            },
+            {
+                "participant_id": "Pat73",
+                "hugo_symbol": "CDKN2A",
+                "tpm": 0.69
+            },
+            {
+                "participant_id": "Pat73",
+                "hugo_symbol": "CDKN2B",
+                "tpm": 0.41
+            },
+            {
+                "participant_id": "Pat73",
+                "hugo_symbol": "RB1",
+                "tpm": 9.69
+            },
+            {
+                "participant_id": "Pat74",
+                "hugo_symbol": "CDK4",
+                "tpm": 78.24
+            },
+            {
+                "participant_id": "Pat74",
+                "hugo_symbol": "CDKN2A",
+                "tpm": 2
+            },
+            {
+                "participant_id": "Pat74",
+                "hugo_symbol": "CDKN2B",
+                "tpm": 1.27
+            },
+            {
+                "participant_id": "Pat74",
+                "hugo_symbol": "RB1",
+                "tpm": 9.55
+            },
+            {
+                "participant_id": "Pat75",
+                "hugo_symbol": "CDK4",
+                "tpm": 100.59
+            },
+            {
+                "participant_id": "Pat75",
+                "hugo_symbol": "CDKN2A",
+                "tpm": 12.88
+            },
+            {
+                "participant_id": "Pat75",
+                "hugo_symbol": "CDKN2B",
+                "tpm": 8.33
+            },
+            {
+                "participant_id": "Pat75",
+                "hugo_symbol": "RB1",
+                "tpm": 4.61
+            },
+            {
+                "participant_id": "Pat76",
+                "hugo_symbol": "CDK4",
+                "tpm": 81.5
+            },
+            {
+                "participant_id": "Pat76",
+                "hugo_symbol": "CDKN2A",
+                "tpm": 18.68
+            },
+            {
+                "participant_id": "Pat76",
+                "hugo_symbol": "CDKN2B",
+                "tpm": 25.24
+            },
+            {
+                "participant_id": "Pat76",
+                "hugo_symbol": "RB1",
+                "tpm": 9.86
+            },
+            {
+                "participant_id": "Pat77",
+                "hugo_symbol": "CDK4",
+                "tpm": 101.44
+            },
+            {
+                "participant_id": "Pat77",
+                "hugo_symbol": "CDKN2A",
+                "tpm": 2.05
+            },
+            {
+                "participant_id": "Pat77",
+                "hugo_symbol": "CDKN2B",
+                "tpm": 4.98
+            },
+            {
+                "participant_id": "Pat77",
+                "hugo_symbol": "RB1",
+                "tpm": 13.98
+            },
+            {
+                "participant_id": "Pat78",
+                "hugo_symbol": "CDK4",
+                "tpm": 118.28
+            },
+            {
+                "participant_id": "Pat78",
+                "hugo_symbol": "CDKN2A",
+                "tpm": 2.3
+            },
+            {
+                "participant_id": "Pat78",
+                "hugo_symbol": "CDKN2B",
+                "tpm": 3.52
+            },
+            {
+                "participant_id": "Pat78",
+                "hugo_symbol": "RB1",
+                "tpm": 6.67
+            },
+            {
+                "participant_id": "Pat79",
+                "hugo_symbol": "CDK4",
+                "tpm": 71.98
+            },
+            {
+                "participant_id": "Pat79",
+                "hugo_symbol": "CDKN2A",
+                "tpm": 43.02
+            },
+            {
+                "participant_id": "Pat79",
+                "hugo_symbol": "CDKN2B",
+                "tpm": 29.34
+            },
+            {
+                "participant_id": "Pat79",
+                "hugo_symbol": "RB1",
+                "tpm": 27.25
+            },
+            {
+                "participant_id": "Pat80",
+                "hugo_symbol": "CDK4",
+                "tpm": 97.81
+            },
+            {
+                "participant_id": "Pat80",
+                "hugo_symbol": "CDKN2A",
+                "tpm": 10.23
+            },
+            {
+                "participant_id": "Pat80",
+                "hugo_symbol": "CDKN2B",
+                "tpm": 12.62
+            },
+            {
+                "participant_id": "Pat80",
+                "hugo_symbol": "RB1",
+                "tpm": 16.14
+            },
+            {
+                "participant_id": "Pat81",
+                "hugo_symbol": "CDK4",
+                "tpm": 94.56
+            },
+            {
+                "participant_id": "Pat81",
+                "hugo_symbol": "CDKN2A",
+                "tpm": 96.1
+            },
+            {
+                "participant_id": "Pat81",
+                "hugo_symbol": "CDKN2B",
+                "tpm": 6.65
+            },
+            {
+                "participant_id": "Pat81",
+                "hugo_symbol": "RB1",
+                "tpm": 3.26
+            },
+            {
+                "participant_id": "Pat82",
+                "hugo_symbol": "CDK4",
+                "tpm": 77.28
+            },
+            {
+                "participant_id": "Pat82",
+                "hugo_symbol": "CDKN2A",
+                "tpm": 5.6
+            },
+            {
+                "participant_id": "Pat82",
+                "hugo_symbol": "CDKN2B",
+                "tpm": 6.31
+            },
+            {
+                "participant_id": "Pat82",
+                "hugo_symbol": "RB1",
+                "tpm": 24.44
+            },
+            {
+                "participant_id": "Pat83",
+                "hugo_symbol": "CDK4",
+                "tpm": 74.23
+            },
+            {
+                "participant_id": "Pat83",
+                "hugo_symbol": "CDKN2A",
+                "tpm": 7.22
+            },
+            {
+                "participant_id": "Pat83",
+                "hugo_symbol": "CDKN2B",
+                "tpm": 5.02
+            },
+            {
+                "participant_id": "Pat83",
+                "hugo_symbol": "RB1",
+                "tpm": 14.05
+            },
+            {
+                "participant_id": "Pat84",
+                "hugo_symbol": "CDK4",
+                "tpm": 46.38
+            },
+            {
+                "participant_id": "Pat84",
+                "hugo_symbol": "CDKN2A",
+                "tpm": 7.74
+            },
+            {
+                "participant_id": "Pat84",
+                "hugo_symbol": "CDKN2B",
+                "tpm": 33.39
+            },
+            {
+                "participant_id": "Pat84",
+                "hugo_symbol": "RB1",
+                "tpm": 18.32
+            },
+            {
+                "participant_id": "Pat85",
+                "hugo_symbol": "CDK4",
+                "tpm": 118.93
+            },
+            {
+                "participant_id": "Pat85",
+                "hugo_symbol": "CDKN2A",
+                "tpm": 13.3
+            },
+            {
+                "participant_id": "Pat85",
+                "hugo_symbol": "CDKN2B",
+                "tpm": 11.51
+            },
+            {
+                "participant_id": "Pat85",
+                "hugo_symbol": "RB1",
+                "tpm": 18.75
+            },
+            {
+                "participant_id": "Pat86",
+                "hugo_symbol": "CDK4",
+                "tpm": 176.31
+            },
+            {
+                "participant_id": "Pat86",
+                "hugo_symbol": "CDKN2A",
+                "tpm": 135.88
+            },
+            {
+                "participant_id": "Pat86",
+                "hugo_symbol": "CDKN2B",
+                "tpm": 5.1
+            },
+            {
+                "participant_id": "Pat86",
+                "hugo_symbol": "RB1",
+                "tpm": 10.48
+            },
+            {
+                "participant_id": "Pat87",
+                "hugo_symbol": "CDK4",
+                "tpm": 84.82
+            },
+            {
+                "participant_id": "Pat87",
+                "hugo_symbol": "CDKN2A",
+                "tpm": 2.19
+            },
+            {
+                "participant_id": "Pat87",
+                "hugo_symbol": "CDKN2B",
+                "tpm": 1.16
+            },
+            {
+                "participant_id": "Pat87",
+                "hugo_symbol": "RB1",
+                "tpm": 11.46
+            },
+            {
+                "participant_id": "Pat88",
+                "hugo_symbol": "CDK4",
+                "tpm": 98.21
+            },
+            {
+                "participant_id": "Pat88",
+                "hugo_symbol": "CDKN2A",
+                "tpm": 1.39
+            },
+            {
+                "participant_id": "Pat88",
+                "hugo_symbol": "CDKN2B",
+                "tpm": 6.93
+            },
+            {
+                "participant_id": "Pat88",
+                "hugo_symbol": "RB1",
+                "tpm": 16.37
+            },
+            {
+                "participant_id": "Pat89",
+                "hugo_symbol": "CDK4",
+                "tpm": 86.14
+            },
+            {
+                "participant_id": "Pat89",
+                "hugo_symbol": "CDKN2A",
+                "tpm": 60.13
+            },
+            {
+                "participant_id": "Pat89",
+                "hugo_symbol": "CDKN2B",
+                "tpm": 16.89
+            },
+            {
+                "participant_id": "Pat89",
+                "hugo_symbol": "RB1",
+                "tpm": 14.11
+            },
+            {
+                "participant_id": "Pat90",
+                "hugo_symbol": "CDK4",
+                "tpm": 93.94
+            },
+            {
+                "participant_id": "Pat90",
+                "hugo_symbol": "CDKN2A",
+                "tpm": 47.74
+            },
+            {
+                "participant_id": "Pat90",
+                "hugo_symbol": "CDKN2B",
+                "tpm": 23.75
+            },
+            {
+                "participant_id": "Pat90",
+                "hugo_symbol": "RB1",
+                "tpm": 13.31
+            },
+            {
+                "participant_id": "Pat91",
+                "hugo_symbol": "CDK4",
+                "tpm": 52.12
+            },
+            {
+                "participant_id": "Pat91",
+                "hugo_symbol": "CDKN2A",
+                "tpm": 10.6
+            },
+            {
+                "participant_id": "Pat91",
+                "hugo_symbol": "CDKN2B",
+                "tpm": 13.83
+            },
+            {
+                "participant_id": "Pat91",
+                "hugo_symbol": "RB1",
+                "tpm": 14.6
+            },
+            {
+                "participant_id": "Pat92",
+                "hugo_symbol": "CDK4",
+                "tpm": 81.47
+            },
+            {
+                "participant_id": "Pat92",
+                "hugo_symbol": "CDKN2A",
+                "tpm": 2.65
+            },
+            {
+                "participant_id": "Pat92",
+                "hugo_symbol": "CDKN2B",
+                "tpm": 4.86
+            },
+            {
+                "participant_id": "Pat92",
+                "hugo_symbol": "RB1",
+                "tpm": 24.77
+            },
+            {
+                "participant_id": "Pat93",
+                "hugo_symbol": "CDK4",
+                "tpm": 149.55
+            },
+            {
+                "participant_id": "Pat93",
+                "hugo_symbol": "CDKN2A",
+                "tpm": 15.66
+            },
+            {
+                "participant_id": "Pat93",
+                "hugo_symbol": "CDKN2B",
+                "tpm": 24.04
+            },
+            {
+                "participant_id": "Pat93",
+                "hugo_symbol": "RB1",
+                "tpm": 20.66
+            },
+            {
+                "participant_id": "Pat94",
+                "hugo_symbol": "CDK4",
+                "tpm": 82.1
+            },
+            {
+                "participant_id": "Pat94",
+                "hugo_symbol": "CDKN2A",
+                "tpm": 5.3
+            },
+            {
+                "participant_id": "Pat94",
+                "hugo_symbol": "CDKN2B",
+                "tpm": 7
+            },
+            {
+                "participant_id": "Pat94",
+                "hugo_symbol": "RB1",
+                "tpm": 11.07
+            },
+            {
+                "participant_id": "Pat95",
+                "hugo_symbol": "CDK4",
+                "tpm": 168.09
+            },
+            {
+                "participant_id": "Pat95",
+                "hugo_symbol": "CDKN2A",
+                "tpm": 0.34
+            },
+            {
+                "participant_id": "Pat95",
+                "hugo_symbol": "CDKN2B",
+                "tpm": 2.56
+            },
+            {
+                "participant_id": "Pat95",
+                "hugo_symbol": "RB1",
+                "tpm": 19.9
+            },
+            {
+                "participant_id": "Pat96",
+                "hugo_symbol": "CDK4",
+                "tpm": 79.79
+            },
+            {
+                "participant_id": "Pat96",
+                "hugo_symbol": "CDKN2A",
+                "tpm": 23.55
+            },
+            {
+                "participant_id": "Pat96",
+                "hugo_symbol": "CDKN2B",
+                "tpm": 14.82
+            },
+            {
+                "participant_id": "Pat96",
+                "hugo_symbol": "RB1",
+                "tpm": 29.07
+            },
+            {
+                "participant_id": "Pat97",
+                "hugo_symbol": "CDK4",
+                "tpm": 131.96
+            },
+            {
+                "participant_id": "Pat97",
+                "hugo_symbol": "CDKN2A",
+                "tpm": 34.79
+            },
+            {
+                "participant_id": "Pat97",
+                "hugo_symbol": "CDKN2B",
+                "tpm": 9.6
+            },
+            {
+                "participant_id": "Pat97",
+                "hugo_symbol": "RB1",
+                "tpm": 10.4
+            },
+            {
+                "participant_id": "Pat98",
+                "hugo_symbol": "CDK4",
+                "tpm": 72.69
+            },
+            {
+                "participant_id": "Pat98",
+                "hugo_symbol": "CDKN2A",
+                "tpm": 1.59
+            },
+            {
+                "participant_id": "Pat98",
+                "hugo_symbol": "CDKN2B",
+                "tpm": 1.86
+            },
+            {
+                "participant_id": "Pat98",
+                "hugo_symbol": "RB1",
+                "tpm": 5.98
+            },
+            {
+                "participant_id": "Pat99",
+                "hugo_symbol": "CDK4",
+                "tpm": 159.4
+            },
+            {
+                "participant_id": "Pat99",
+                "hugo_symbol": "CDKN2A",
+                "tpm": 161.69
+            },
+            {
+                "participant_id": "Pat99",
+                "hugo_symbol": "CDKN2B",
+                "tpm": 15.26
+            },
+            {
+                "participant_id": "Pat99",
+                "hugo_symbol": "RB1",
+                "tpm": 8.23
+            }
+        ],
+        "sample_rna_list": []
+    },
+    "cox": {
+        "coefficients": [
+            0.0943648448961951,
+            0.21281615056094047, -0.21661689833663406,
+            0.9460597683370884
+        ],
+        "z-statistics": [
+            0.2409182480753947,
+            0.81377216766305, -0.6156688390286721,
+            1.7858626479498056
+        ],
+        "p-values": [
+            0.8096184787163025,
+            0.4157754823062332,
+            0.5381131074719652,
+            0.0741215000974107
+        ],
+        "genes": [
+            "CDK4",
+            "CDKN2A",
+            "CDKN2B",
+            "RB1"
+        ]
+    },
+    "fc": {
+        "Pat71": 0.0223314972,
+        "Pat67": 0.2869333129,
+        "Pat66": 0.0164531423,
+        "Pat94": 0.0665435936,
+        "Pat32": 1.4622333992,
+        "Pat114": 0.2123265096,
+        "Pat103": 0.6002694364,
+        "Pat62": 0.0250448469,
+        "Pat73": 0.0039167328,
+        "Pat89": 0.6433541824,
+        "Pat37": 0.0094822005,
+        "Pat57": 0.1152904545,
+        "Pat44": 0.0904423237,
+        "Pat54": 0.0221505004,
+        "Pat49": 0.1048275593,
+        "Pat29": 0.0410180932,
+        "Pat77": 0.0293859861,
+        "Pat60": 0.0450527433,
+        "Pat19": 0.0060181754,
+        "Pat80": 0.0892394189,
+        "Pat02": 0.176964045,
+        "Pat47": 0.1392472127,
+        "Pat31": 0.0589721586,
+        "Pat104": 0.2846246055,
+        "Pat85": 0.0800213348,
+        "Pat106": 0.032374713,
+        "Pat91": 0.1099442657,
+        "Pat98": 0.0407275035,
+        "Pat55": 0.0697059764,
+        "Pat63": 0.1601032722,
+        "Pat84": 0.4095149342,
+        "Pat101": 0.1283232318,
+        "Pat42": 0.0901150213,
+        "Pat45": 0.0313836583,
+        "Pat03": 0.0935523475,
+        "Pat35": 0.0135062473,
+        "Pat40": 0.0025313555,
+        "Pat50": 0.0578161324,
+        "Pat41": 0.2651067016,
+        "Pat70": 0.1746784844,
+        "Pat53": 0.021247702,
+        "Pat108": 0.0227801275,
+        "Pat20": 0.0021510236,
+        "Pat99": 0.819975784,
+        "Pat97": 0.3769244386,
+        "Pat39": 0.0713211236,
+        "Pat87": 0.0118435091,
+        "Pat112": 0.8676175518,
+        "Pat111": 0.0305848959,
+        "Pat88": 0.0552117783,
+        "Pat76": 0.4644702993,
+        "Pat24": 0.0453521157,
+        "Pat08": 0.0402727248,
+        "Pat13": 0.0629266842,
+        "Pat83": 0.0375981978,
+        "Pat105": 0.0285060078,
+        "Pat52": 0.007476742,
+        "Pat68": 0.084498348,
+        "Pat95": 0.0173697161,
+        "Pat22": 0.9608786569,
+        "Pat46": 0.7819285627,
+        "Pat23": 0.0024466858,
+        "Pat78": 0.0720795344,
+        "Pat11": 0.0020538108,
+        "Pat79": 0.4034891422,
+        "Pat05": 0.2523417493,
+        "Pat48": 0.0151446702,
+        "Pat01": 0.0810483055,
+        "Pat102": 0.3788508529,
+        "Pat25": 0.024313805,
+        "Pat56": 0.0581732812,
+        "Pat21": 0.0152569868,
+        "Pat107": 0.2218842812,
+        "Pat65": 0.1372900875,
+        "Pat74": 0.0148547067,
+        "Pat36": 0.0351939865,
+        "Pat34": 1.2006925274,
+        "Pat69": 0.5320822705,
+        "Pat113": 0.997750389,
+        "Pat17": 0.1481364447,
+        "Pat109": 0.0995670196,
+        "Pat92": 0.0091013699,
+        "Pat81": 0.815791422,
+        "Pat59": 0.1481870243,
+        "Pat33": 0.045928591,
+        "Pat15": 0.0254076023,
+        "Pat10": 0.6777763484,
+        "Pat30": 0.4277381224,
+        "Pat43": 0.0981222601,
+        "Pat38": 0.0865613458,
+        "Pat64": 0.0434481708,
+        "Pat58": 0.1162899339,
+        "Pat12": 0.06786831,
+        "Pat04": 0.0425913836,
+        "Pat96": 0.0713531495,
+        "Pat100": 0.6038229403,
+        "Pat115": 0.1266173341,
+        "Pat61": 0.1364281053,
+        "Pat86": 0.6226086918,
+        "Pat28": 0.0705537741,
+        "Pat75": 0.3412615061,
+        "Pat51": 0.0151262889,
+        "Pat16": 0.0237549789,
+        "Pat93": 0.1566643062,
+        "Pat27": 0.0283003602,
+        "Pat110": 0.3643507099,
+        "Pat90": 0.6140811491,
+        "Pat72": 0.0064125514,
+        "Pat18": 0.0887957861,
+        "Pat26": 0.2063451055,
+        "Pat82": 0.00070482
+    }
+}

@@ -5060,1050 +5060,6 @@ function exclusivity ()	{
 		// console.log('>>> Exclusivity model data: ', model);
 	};
 };
-function colorGradient ()	{
-	'use strict';
-
-	var model = {};
-	/*
-		offset 과 color 를 설정하고 배열에 추가하는 함수.
-	 */
-	function setOffset (offset, color)	{
-		model.offsets.show.push({ offset: offset, color: color });
-		model.offsets.data.push({ offset: offset, color: color });
-	};
-	/*
-		Gradient 색상과 비율을 설정하는 함수.
-	 */
-	function setColorRate (offset, colors)	{
-		var copyOffset = [].concat(offset)
-											 .splice(1, offset.length - 2);
-
-		setOffset('0%', colors[0]);
-
-		bio.iteration.loop(copyOffset, function (cp, idx)	{
-			var value = Math.round((bio.math.max(offset) - 
-															bio.math.min(offset)) / cp * 10);
-
-			model.offsets.show.push({
-				offset: value - model.adjustValue + '%',
-				color: colors[idx + 1]  
-			});
-
-			model.offsets.data.push({
-				offset: value + '%',
-				color: colors[idx + 1]
-			});
-		});
-
-		setOffset('100%', colors[offset.length - 1]);
-	};
-
-	return function (opts, that)	{
-		model = bio.objects.clone(that || {});
-		model = bio.sizing.chart.default(model, opts);
-		model.offsets = bio.initialize('colorGradient');
-
-		model.adjustValue = opts.adjustValue || 0;
-		model.id = opts.id || 'linear_gradient';
-		model.colors = opts.colors || ['#000000', '#FFFFFF'];
-		model.offset = opts.offset || [0, 100];
-		model.defs = model.element.append('defs');
-		model.lineGradient = model.defs.append('linearGradient')
-																	 .attr('id', model.id);
-
-		setColorRate(model.offset, model.colors);
-
-		model.lineGradient.selectAll('stop')
-		 .data(model.offsets.show).enter()
-		 .append('stop')
-		 .attr('offset', function (data, idx)	{ 
-		 		return data.offset; 
-		 })
-		 .attr('stop-color', function (data, idx)	{
-		 		return data.color;
-		 });
-
-		 return model;
-	};
-};
-function expression ()	{
-	'use strict';
-
-	var model = {};
-
-	function changedFunction (value)	{
-		model.now.function = value.toLowerCase();
-		model.data.bar = model.data.func.bar[value.toLowerCase()]
-		model.data.axis.bar.x = 
-		model.data.func.xaxis[value.toLowerCase()];
-		model.data.axis.bar.y = 
-		model.data.func.yaxis[value.toLowerCase()];
-		model.data.axis.scatter.x = 
-		model.data.func.xaxis[value.toLowerCase()];
-		model.data.axis.heatmap.x = 
-		model.data.func.xaxis[value.toLowerCase()];
-	};
-	
-	function drawFuncSelectBox ()	{
-		var funcNames = ['Average'],
-				defaultFunction = 'Average';
-
-		bio.iteration.loop(model.riskFunctions, 
-		function (risk)	{
-			funcNames.push(risk.name);
-			if (risk.isDefault)	{
-				defaultFunction = risk.name;
-			}
-		});
-
-		changedFunction(defaultFunction)
-		
-		bio.selectBox({
-			fontSize: '12px',
-			items: funcNames,
-			viewName: 'function',
-			margin: [3, 3, 0, 0],
-			defaultText: defaultFunction,
-			id: '#expression_function',
-			className: 'expression-function',
-			clickItem: function (value)	{
-				changedFunction(value);
-
-				bio.layout().removeGroupTag([
-					'.expression_bar_plot_svg.bar-g-tag',
-					'.expression_bar_plot_svg.left-axis-g-tag',
-					'.expression_bar_plot_svg.division-path-0-g-tag',
-					'.expression_bar_plot_svg.division-shape-0-g-tag',
-					'.expression_scatter_plot_svg.scatter-g-tag',
-					'.expression_scatter_plot_svg.left-axis-g-tag',
-					'.expression_scatter_plot_svg.division-path-1-g-tag',
-					'.expression_scatter_plot_svg.division-shape-1-g-tag',
-					'.expression_heatmap_svg.heatmap-g-tag',
-					'.expression_heatmap_svg.left-axis-g-tag',
-					'.expression_division_svg.division-shape-g-tag',
-					'.expression_division_svg.division-text-g-tag'
-				]);
-
-				// model.now.subtype_mapping = undefined;
-				// model.now.subtypeSet = undefined;
-				model.divide.divide = undefined;
-				model.divide.patient_list = undefined;
-				model.divide.scatter = undefined;
-				model.divide = {};
-				
-				drawHeatmap(model.data, model.data.axis.heatmap, model.data.axis.gradient.x);
-				drawFunctionBar(model.data, model.data.axis.bar);
-				drawColorMapSelectBox(model.data.subtype, model.now.subtype_mapping);
-				if (model.now.subtype_mapping)	{
-					drawLegendBySubtypeMapping(model.now.subtypeSet);
-				}
-				drawScatter(model.data, model.data.axis.scatter, model.now.osdfs);				
-				drawSurvivalPlot(model.data);
-				drawDivision(model.data);
-				getDivisionData();
-			},
-		});
-	};
-
-	function changeBarColor (data, idx, that)	{
-		if (!model.now.subtypeSet)	{ return '#62C2E0'; }
-
-		if (data.info)	{
-			var dataKeys = Object.keys(data.info),
-					state = 'NA';
-
-			bio.iteration.loop(dataKeys, function (key)	{
-				if (key.toLowerCase() === model.now.subtype_mapping.toLowerCase())	{
-					state = data.info[key];
-				} 
-			});
-
-			return state === 'NA' ? '#D6E2E3' : 
-							bio.boilerPlate.clinicalInfo[state].color;
-		}
-	};
-
-	function drawLegendBySubtypeMapping (nowSubtypeSet)	{
-		var barLegend = document.querySelector(
-									'#expression_bar_legend');
-
-		bio.layout().removeGroupTag([
-			'expression_bar_legend_svg']);
-
-		if (barLegend.className.indexOf('active') < 0)	{
-			barLegend.className += 'active';
-		}
-
-		d3.selectAll('#expression_bar_plot_rect')
-			.style('fill', changeBarColor)
-			.style('stroke', changeBarColor);
-
-		drawLegend('color_mapping', 
-			(nowSubtypeSet || model.now.subtypeSet));
-		// Scatter legend 의 위치가 유동적이게 되므로 이를 고정하기
-		// 위해서 아래 코드를 추가함.
-		barLegend.style.marginBottom = 
-		(parseFloat(model.init.bar_legend_height) - 
-		 parseFloat(barLegend.style.height) - 5) + 'px';
-	};
-	
-	function drawColorMapSelectBox (subtypes, title)	{
-		bio.selectBox({
-			fontSize: '12px',
-			margin: [3, 3, 0, 0],
-			viewName: 'subtype_mapping',
-			defaultText: (title || 'Subtype Mapping'),
-			id: '#expression_color_mapping',
-			className: 'expression-color-mapping',
-			items: subtypes.map(function (i)	{
-				return i.key;
-			}),
-			clickItem: function (value)	{
-				bio.iteration.loop(subtypes, function (item)	{
-					if (item.key.toLowerCase() === 
-							value.toLowerCase())	{
-						model.now.subtype_mapping = item.key;
-						model.now.subtypeSet = item.value;
-					}
-				});
-
-				drawLegendBySubtypeMapping(model.now.subtypeSet);
-
-				if (model.subtypeFunc)	{
-					model.subtypeFunc(model.now.subtype_mapping, 
-														bio.boilerPlate.clinicalInfo, model);
-				}
-			},
-		});
-	};
-	
-	function drawSigSelectBox (data)	{
-		bio.selectBox({
-			fontSize: '14px',
-			margin: [3, 3, 0, 0],
-			viewName: 'signature',
-			id: '#expression_signature',
-			className: 'expression-signature',
-			defaultText: model.now.signature,
-			items: data.map(function (d) { return d.signature; }),
-			clickItem: function (value)	{
-				if (!model.now.signature || 
-						 model.now.signature === value)	{ return; }
-
-				model.now.signature = value;
-				model.requestData.signature = model.now.signature;
-				
-				$.ajax({
-					type:'get',
-					url: model.requestURL,
-					data: model.requestData,
-					// type: 'post',
-					// url:'/files',
-					// data: {name: 'expression'},
-					beforeSend: function ()	{
-						bio.loading().start(
-							model.setting.targetedElement,
-							model.setting.targetedElementSize.width,
-							model.setting.targetedElementSize.height);
-					},
-					success: function (d)	{
-						var selectedData = '';
-
-						bio.dom().remove(
-							model.setting.targetedElement, 
-							[document.querySelector('#expression_title'), 
-							 document.querySelector('#expression_contents')]);
-
-						bio.layout().removeGroupTag();
-
-						bio.expression({
-							element: model.setting.targetedElement.id,
-							width: model.setting.targetedElementSize.width,
-							height: model.setting.targetedElementSize.height,
-							requestData: {
-								source: model.requestData.source,
-								cancer_type: model.requestData.cancer_type,
-								sample_id: model.requestData.sample_id,
-								signature: model.now.signature,
-								filter: model.requestData.filter,
-							},
-							// data: selectedData,
-							data: d.data,
-						});
-
-						bio.loading().end();
-					},
-				});
-			},
-		});
-	};
-	/*
-		Color mapping, Scatter plot 의 범례를 그리는 함수.
-	 */
-	function drawLegend (type, data)	{
-		var ids = type === 'scatter' ? 'scatter_leg' : 'bar_leg';
-
-		bio.layout().get(model.setting.svgs, [ids], 
-		function (id, svg)	{
-			var config = bio.expressionConfig().legend(type);
-
-			if (data)	{
-				if (data.indexOf('NA') > -1)	{
-					data.push(data.splice(data.indexOf('NA'), 1)[0]);
-				}
-
-				bio.legend({
-					data: data,
-					element: svg,
-					on: config.on,
-					attr: config.attr,
-					text: config.text,
-					style: config.style,
-					margin: config.margin,
-				});
-			}
-		});
-	}
-	/*
-		Gene x Sample 의 tpm 값 색 범례를 그려준다.
-	 */
-	function drawColorGradient (axis)	{
-		bio.layout().get(model.setting.svgs, ['gradient'], 
-		function (id, svg)	{
-			var shapeCnf = bio.expressionConfig().gradient('shape'),
-					axisCnf = bio.expressionConfig().gradient('axis', svg);
-
-			model.data.colorGradient = bio.colorGradient({
-				element: svg,
-				offset: axis,
-				adjustValue: 6,
-				colors: ['#00FF00', '#000000', '#FF0000'],
-			});
-
-			bio.rectangle({
-				element: bio.rendering()
-										.addGroup(svg, 0, 0, 'gradient-shape'),
-				attr: shapeCnf.attr,
-				style: shapeCnf.style,
-			}, model);
-
-			bio.axises().bottom({
-				element: svg,
-				top: axisCnf.top,
-				left: axisCnf.left,
-				range: axisCnf.range,
-				margin: axisCnf.margin,
-				exclude: axisCnf.exclude,
-				tickValues: [axis[0], axis[2]],
-				domain: [axis[0], axis[2]],
-			}).selectAll('text').style('fill', '#999999');
-		});
-	};
-
-	function drawHeatmap (data, axis, gradientAxis)	{
-		bio.layout().get(model.setting.svgs, ['heatmap'], 
-		function (id, svg)	{
-			var colorScale = bio.scales().get(gradientAxis, [
-								'#00FF00', '#000000', '#FF0000']),
-					config = bio.expressionConfig(),
-					shapeCnf = config.heatmap('shape', data.axisMargin),
-					axisCnf = config.heatmap('axis', data.axisMargin);
-
-			svg.attr('height', axis.y.length * 10);
-
-			bio.heat({
-				element: svg,
-				xaxis: axis.x,
-				yaxis: axis.y,
-				on: shapeCnf.on,
-				data: data.heatmap,
-				attr: shapeCnf.attr,
-				margin: shapeCnf.margin,
-				style: {
-					fill: function (data, idx, that)	{
-						return colorScale(data.value);
-					},
-				},
-			});
-
-			bio.axises().left({
-				element: svg,
-				domain: axis.y,
-				top: axisCnf.top,
-				left: axisCnf.left,
-				margin: axisCnf.margin,
-				exclude: axisCnf.exclude,
-				range: [0, axis.y.length * 10],
-			});
-		});
-	};
-
-	function drawFunctionBar (data, axis)	{
-		bio.layout().get(model.setting.svgs, ['bar_plot'], 
-		function (id, svg)	{
-			var config = bio.expressionConfig(),
-					shapeCnf = config.bar('shape', data.axisMargin),
-					axisCnf = config.bar('axis', data.axisMargin);
-			
-			bio.bar({
-				element: svg,
-				xaxis: axis.x,
-				data: data.bar,
-				on: shapeCnf.on,
-				attr: shapeCnf.attr,
-				style: shapeCnf.style,
-				margin: shapeCnf.margin,
-				yaxis: [axis.y[2], axis.y[0]],
-				allYaxis: axis.y,
-			});
-
-			bio.axises().left({
-				element: svg,
-				top: axisCnf.top,
-				left: axisCnf.left,
-				tickValues: axis.y,
-				margin: axisCnf.margin,
-				domain: [axis.y[2], axis.y[0]],
-				range: [20, svg.attr('height') - 15],
-			}).selectAll('path, line').style('stroke', '#999999');
-		});
-	};
-	/*
-		Survival 을 그리기 위해 Function 의 중간값을 기준으로
-		Altered / Unaltered 로 나눈다.
-	 */
-	function divideSurvivalData (bars, median)	{
-		model.data.survival.divide = {};
-
-		var temp = [].concat(bars);
-
-		temp.sort(function (a, b)	{
-			return a.value > b.value ? 1 : -1;
-		});
-
-		var idx = temp.length % 2 === 1 ? (temp.length + 1) / 2 : temp.length / 2;
-
-		bio.iteration.loop(temp, function (t, i)	{
-			i <= idx ? 
-			model.data.survival.divide[t.x] = 'unaltered' : 
-			model.data.survival.divide[t.x] = 'altered';
-		});
-	};
-	/*
-		선택된 Tab 의 Scatter 를 보여준다.
-	 */
-	function callScatter (tab, data)	{
-		if (model.now.osdfs !== tab)	{
-			bio.layout().removeGroupTag([
-				'.expression_scatter_plot_svg.scatter-g-tag', 
-				'.expression_scatter_plot_svg.left-axis-g-tag']);
-
-			model.now.osdfs = tab;
-
-			drawScatter(data, data.axis.scatter, model.now.osdfs);
-
-			if (tab === 'dfs')	{
-				bio.layout().removeGroupTag([
-					'expression_scatter_legend_svg']);
-
-				drawLegend('scatter', ['Disease Free', 'Relapsed']);
-			} else {
-				bio.layout().removeGroupTag([
-					'expression_scatter_legend_svg']);
-
-				drawLegend('scatter', ['Alive', 'Dead']);
-			}
-
-			if (model.divide.low_arr || model.divide.high_arr)	{
-				toBlur(
-				d3.selectAll('#expression_scatter_plot_svg_scatter_shape_circle'),
-				model.divide.low_arr, model.divide.high_arr);
-			}
-		}
-	};
-	/*
-		OS, DFS 탭 변경 함수.
-	 */
-	function tabChange (data)	{
-		var input = document.querySelector('#expression_survival')
-												.querySelectorAll('input');
-
-		input[0].onclick = function (e) { callScatter('os', data); };
-		input[1].onclick = function (e) { callScatter('dfs', data); };
-	};
-
-	function drawSurvivalPlot (data)	{
-		var element = document.querySelector('#expression_survival'),
-				width = parseFloat(element.style.width),
-				height = parseFloat(element.style.height) / 1.4;
-
-		var divide = divideSurvivalData(data.bar, data.axis.bar.y[1]),
-				plot = bio.survival({
-					element: '#expression_survival',
-					margin: [0, 20, 20, 0],
-					data: (model.divide.patient_list || 
-								 model.setting.defaultData.patient_list),
-					division: (model.divide.divide || data.survival.divide),
-					pvalueURL: undefined,
-					legends: {
-						high: {
-							text: 'High score group',
-							color: '#FF6252',
-						},
-						low: {
-							text: 'Low score group',
-							color: '#00AC52',
-						}
-					},
-					styles: {
-						size: {
-							chartWidth: width * 0.92,
-							chartHeight: height * 0.92,
-						},
-						position: {
-							chartTop: 10,
-							chartLeft: 50,
-							axisXtitlePosX: width / 1.9,
-							axisXtitlePosY: height / 1.1,
-							axisYtitlePosX: -(width / 2),
-							axisYtitlePosY: 10,
-							pvalX: width / 1.95,
-							pvalY: 40
-						},
-						pvalFontSize: 10,
-					},
-				});
-
-		model.data.survival.data = plot.survival_data;
-		model.data.scatter = 
-		Object.keys(model.data.scatter).length < 1 ? 
-		model.data.survival.data.all : model.data.scatter;
-
-		tabChange(data);
-	};
-	/*
-		For scatter plot data.
-	 */
-	function scatterData (data, xaxis)	{
-		var result = [];
-
-		bio.iteration.loop(data, function (d)	{
-			bio.iteration.loop(d, function (key, value)	{
-				if (xaxis.indexOf(key) > -1)	{
-					result.push({ x: key, y: value.months, value: value.status });
-				}
-			});
-		});
-
-		return result;
-	};
-
-	function drawScatter (data, axis, osdfs)	{
-		bio.layout().get(model.setting.svgs, ['scatter_p'], 
-		function (id, svg)	{
-			var config = bio.expressionConfig(),
-					shapeCnf = config.scatter('shape', data.axisMargin),
-					axisCnf = config.scatter('axis', data.axisMargin),
-					yaxis = [].concat(axis.y[osdfs]).reverse();
-
-			bio.scatter({
-				element: svg,
-				yaxis: yaxis,
-				xaxis: axis.x,
-				on: {
-					mouseover: function (data, idx, that)	{
-						var val = '';
-						
-						if (model.now.osdfs === 'os')	{
-							val = data.value === 0 ? 'Alive' : 'Dead';
-						} 
-
-						if (model.now.osdfs === 'dfs')	{
-							val = data.value === 0 ? 'Disease Free' : 'Relapsed';
-						} 
-
-						bio.tooltip({
-							element: this,
-							contents: 'ID: <b>' + data.x + '</b></br>' + 
-												'Months: <b>' + parseFloat(data.y).toFixed(2) + '</b></br>' + 
-												'Status: <b>' + val + '</b>',
-						});
-					},
-					mouseout: function (data, idx, that)	{
-						bio.tooltip('hide');
-					},
-				},
-				attr: shapeCnf.attr,
-				style: shapeCnf.style,
-				margin: shapeCnf.margin,
-				data: scatterData(data.scatter[osdfs], axis.x),
-			});
-
-			bio.axises().left({
-				ticks: 15,
-				element: svg,
-				domain: yaxis,
-				top: axisCnf.top,
-				left: axisCnf.left,
-				margin: axisCnf.margin,
-				range: [10, svg.attr('height') - 30],	
-			}).selectAll('path, line').style('stroke', '#999999');
-		});
-	};
-
-	function drawPatientOnSurvivalTable (ostable, dfstable)	{
-		for (var i = 0, l = ostable.length; i < l; i++)	{
-			var os = ostable[i],
-					dfs = dfstable[i];
-
-			if (model.data.patient.data === os.innerHTML)	{
-				os.innerHTML += ' **';
-				dfs.innerHTML += ' **';
-			}
-		}
-	};
-
-	function drawPatientOnSurvivalLegend (legend)	{
-		var config = bio.expressionConfig().survival('legend');
-
-		bio.text({
-			element: legend,
-			attr: {
-				x: function (d, i) { 
-					return config.attr.x(d, i, model); 
-				},
-				y: function (d, i) { 
-					return config.attr.y(d, i, model); 
-				},
-			},
-			style: {
-				fill: function (d, i) { 
-					return config.style.fill(d, i, model); 
-				},
-			},
-			text: function (d, i) { 
-				return config.text(d, i, model); 
-			},
-		});
-	};
-
-	function drawPatientOnSurvival ()	{
-		var obj = {},
-				isDoneSurvival = setInterval(function ()	{
-					obj.os_tb = document.querySelectorAll(
-						'#os_stat_table td b');
-					obj.dfs_tb = document.querySelectorAll(
-						'#dfs_stat_table td b');
-					obj.legend = d3.selectAll('.legend');
-
-					if (obj.os_tb.length > 0 && 
-							obj.dfs_tb.length > 0 && obj.legend.node())	{
-						drawPatientOnSurvivalTable(obj.os_tb, obj.dfs_tb);
-						drawPatientOnSurvivalLegend(obj.legend);
-						clearInterval(isDoneSurvival);
-					}
-				}, 10);
-	};
-
-	function drawPatient (data)	{
-		bio.layout().get(model.setting.svgs, ['bar_p', 'scatter_p'], 
-		function (id, svg)	{
-			var obj = {},
-					name = id.indexOf('bar') > -1 ? 'bar' : 'scatter',
-					config = bio.expressionConfig().patient(data.axisMargin);
-
-			obj.group = bio.rendering()
-										 .addGroup(svg, 0, 0, name + '-patient');
-			obj.id = id + '_' + name + '_patient';
-			obj.margin = bio.sizing.setMargin(config.margin);
-			obj.width = parseFloat(svg.attr('width'));
-			obj.height = parseFloat(svg.attr('height'));
-			obj.scaleX = bio.scales().get(data.axis.heatmap.x, [
-				obj.margin.left, obj.width - obj.margin.right]);
-			obj.scaleY = bio.scales().get(
-				[data.axis.bar.y[2], data.axis.bar.y[0]], 
-				[obj.margin.top, obj.height - obj.margin.bottom]);
-
-			bio.triangle({
-				element: obj.group.selectAll(
-					 '#' + obj.id + '_' + name + '_patient'),
-				data: data.bar.filter(function (b)	{
-					if (b.x === data.patient.name)	{ return b; }
-				}),
-				attr: {
-					id: function (d, i, t)	{
-						return obj.id + '_' + name + '_patient';
-					},
-					points: config.attr.points,
-				},
-				style: config.style,
-				on: config.on,
-			}, obj);
-		});
-
-		drawPatientOnSurvival();
-	};
-	/*
-		Drag 후에 선택되지 않은 부분을 blur 처리 한다.
-	 */
-	function toBlur (element, low, high)	{
-		element.style('fill-opacity', function (data, idx, that)	{
-			return low.indexOf(data.x) < 0 && 
-						 high.indexOf(data.x) < 0 ? 0.08 : 
-						 element.attr('id').indexOf('shape') > -1 ? 0.6 : 1;
-		})
-		.style('stroke-opacity', function (data, idx, that)	{
-			return low.indexOf(data.x) < 0 && 
-						 high.indexOf(data.x) < 0 ? 0.08 : 1;
-		});
-	};
-
-	function divideDivisionData (data)	{
-		var low = [], 
-				mid = [], 
-				high = [];
-
-		if (data.low_arr && data.high_arr)	{
-			bio.iteration.loop(model.data.axis.bar.x, 
-			function (xaxis) {
-				if (data.low_arr.indexOf(xaxis) < 0 && 
-						data.high_arr.indexOf(xaxis) < 0)	{
-					mid.push(xaxis);
-				}
-			});
-
-			low = data.low_arr;
-			high = data.high_arr;
-		} else {
-			bio.iteration.loop(data, function (k, v)	{
-				if (data[k] === 'altered')	{
-					high.push(k);
-				} else {
-					low.push(k);
-				}
-			});
-		}
-
-		return { low: low, mid: mid, high: high };
-	};
-	/*
-		division bar 를 움직여서 나오는 데이터를
-		초기 설정 시 받은 함수에 left, mid, right 값으로 반환
-		하는 함수이다.
-	 */
-	function getDivisionData ()	{
-		var data = Object.keys(model.divide).length > 0 ? 
-							 model.divide : model.data.survival.divide,
-				division = divideDivisionData(data);
-
-		if (model.divisionFunc)	{
-			model.divisionFunc(
-			division.low, division.mid, division.high, 
-			model.data.axis.heatmap.y, model.data.all_rna_list);
-		}
-	};
-
-	function drawDivision (data, lowHigh)	{
-		var low_path = '.division-path-0-g-tag path',
-				high_path = '.division-path-1-g-tag path',
-				rect = '#expression_division_svg_division_shape_rect';
-
-		function redrawMarker (marker, data, value)	{
-			marker.attr('points', function (d, i, t)	{
-				return bio.rendering().triangleStr(
-							value + data.additional, data.path_y, 10, data.direction);
-			});
-		};
-
-		function redrawLine (line, value)	{
-			var target = line.attr('d'),
-					linePos = target.substring(
-						target.indexOf('M') + 1, target.indexOf(','));
-			// Redraw line.
-			line.attr('d', target.replace(new RegExp(linePos,"gi"), value));
-		};
-		/*
-			Low, High 별로 환자 배열을 순환.
-		 */
-		function patientByDrag (arr, isAltered)	{
-			bio.iteration.loop(arr, function (a)	{
-				if (model.data.patient)	{
-					if (a !== model.data.patient.name)	{
-						bio.iteration.loop(model.setting.defaultData.patient_list, 
-						function (p)	{
-							if (p.participant_id === a)	{
-								model.divide.patient_list.push(p);
-							}
-						});
-
-						model.divide.divide[a] = isAltered;
-					}
-				} else {
-					bio.iteration.loop(model.setting.defaultData.patient_list, 
-						function (p)	{
-							if (p.participant_id === a)	{
-								model.divide.patient_list.push(p);
-							}
-						});
-
-						model.divide.divide[a] = isAltered;
-				}
-			});
-		};
-		/*
-			Drag 후 변경 된 데이터를 차트에 적용한다.
-		 */
-		function changeByDrag (low, high)	{
-			model.divide.divide = {};
-			model.divide.patient_list = [];
-			model.divide.scatter = { os: [], dfs: [] };
-			// Pick up patients.
-			patientByDrag(low, 'unaltered');
-			patientByDrag(high, 'altered');
-			// Survival chart update.
-			drawSurvivalPlot(data);
-			if (data.patient)	{
-				drawPatient(data);	
-			}
-			// to blur selected targets.
-			toBlur(
-				d3.selectAll('#expression_bar_plot_rect'),
-				low, high);
-			toBlur(
-				d3.selectAll('#expression_scatter_plot_svg_scatter_shape_circle'),
-				low, high);
-		};
-
-		var cnf = bio.expressionConfig().division;
-		// Disivion bar on disivion tag.
-		bio.layout().get(model.setting.svgs, ['division'], 
-		function (id, svg)	{
-			var divCnf = cnf('division', data.axisMargin);
-
-			bio.divisionLine({
-				element: svg,
-				pathElement: [
-					d3.select('#expression_bar_plot_svg'),
-					d3.select('#expression_scatter_plot_svg')
-				],
-				info: [
-					{ 
-						additional: -10,
-						color: '#00AC52', 
-						direction: 'right',
-						text: 'Low score group', 
-					},
-					{ 
-						additional: 10,
-						color: '#FF6252',
-						direction: 'left',
-						text: 'High score group', 
-					}
-				],
-				data: data.bar,
-				text: divCnf.text,
-				attr: divCnf.attr,
-				on: {
-					mouseover: function (data, idx, that)	{
-						if (!model.isDraggable)	{
-							if (data.text.indexOf('Low') > -1)	{
-								var nowLowPid = that.invert(
-									that.position.now.low || 
-									that.position.init.low),
-										nowScore = that.data.bar.filter(function (d)	{
-											if (d.x === nowLowPid)	{
-												return d.value;
-											};
-										})[0].value;
-
-								bio.tooltip({
-									element: this,
-									contents: '<b>' + nowScore + '</b>',
-								});
-							} else {
-								var nowHighPid = that.invert(
-									that.position.now.high || 
-									that.position.init.high),
-										nowScore = that.data.bar.filter(function (d)	{
-										if (d.x === nowHighPid)	{
-											return d.value;
-										};
-									})[0].value;
-
-								bio.tooltip({
-									element: this,
-									contents: '<b>' + nowScore + '</b>',
-								});
-							}
-						}
-					},
-					mouseout: function (data, idx, that)	{
-						bio.tooltip('hide');
-
-						model.isDraggable = false;
-					}
-				},
-				call: {
-					start: function (data, idx, that)	{
-						model.isDraggable = true;
-					},
-					drag: function (data, idx, that)	{
-						if (data.text.indexOf('Low') > -1)	{
-							that.position.init.low = that.position.init.low ? 
-							that.position.init.low : data.path_x;
-							that.position.now.low = that.position.now.low ? 
-							that.position.now.low += d3.event.dx: data.path_x;
-
-							var pos = that.position.now.low = 
-									Math.max(data.start, 
-									Math.min(that.position.now.high || data.path_x, 
-													 that.position.now.low));
-
-							redrawMarker(
-								d3.select(this), data, that.position.now.low);
-							redrawLine(d3.select(low_path), pos);
-							d3.selectAll(rect)
-								.attr('width', function (d, i, t)	{
-									return d.text === data.text ? pos - d.start : 
-												 d.end - that.position.now.high;
-							});
-
-						var nowLowPid = that.invert(that.position.now.low),
-								nowScore = that.data.bar.filter(function (d)	{
-									if (d.x === nowLowPid)	{
-										return d.value;
-									};
-								})[0].value;
-
-						bio.tooltip({
-							element: this,
-							contents: '<b>' + nowScore + '</b>',
-						});
-
-						} else {
-							that.position.init.high = that.position.init.high ? 
-							that.position.init.high : data.path_x;
-							that.position.now.high = that.position.now.high ? 
-							that.position.now.high += d3.event.dx: data.path_x;
-
-							var pos = that.position.now.high = 
-									Math.max(that.position.now.low || data.path_x, 
-									Math.min(data.end, that.position.now.high)),
-									line = d3.select(low_path).attr('d'),
-									linePos = line.substring(line.indexOf('M') + 1, 
-																					 line.indexOf(','));
-							
-							redrawMarker(
-								d3.select(this), data, that.position.now.high);
-							redrawLine(d3.select(high_path), pos);
-							d3.selectAll(rect)
-								.attr('x', function (d, i, t)	{
-									return d.text === data.text ? pos : d.start;
-								})
-								.attr('width', function (d, i, t)	{
-									return d.text === data.text ? d.end - pos : 
-												 that.position.now.low - d.start;
-							});
-
-						var nowHighPid = that.invert(that.position.now.high),
-								nowScore = that.data.bar.filter(function (d)	{
-								if (d.x === nowHighPid)	{
-									return d.value;
-								};
-							})[0].value;
-
-							bio.tooltip({
-								element: this,
-								contents: '<b>' + nowScore + '</b>',
-							});
-						}
-					},
-					end: function (data, idx, that)	{
-						var axis = [].concat(that.axis);
-						
-						model.divide.low_sample = 
-						that.invert(that.position.now.low);
-						model.divide.high_sample = 
-						that.invert(that.position.now.high);
-
-						model.divide.high_arr = axis.splice(
-							that.axis.indexOf(model.divide.high_sample), 
-							axis.length - 1);
-						model.divide.low_arr = axis.splice(0, 
-							that.axis.indexOf(model.divide.low_sample));
-
-						changeByDrag(model.divide.low_arr, model.divide.high_arr);
-						getDivisionData();
-
-						bio.tooltip('hide');
-					},
-				},
-				style: divCnf.style,
-				margin: divCnf.margin,
-				axis: data.axis.bar.x,
-				idxes: data.axis.bar.y,
-			}, model);
-		});
-	};
-	/*
-		초기 실행 또는 새 데이터를 받았을 때 실행되는 함수.
-	 */
-	function drawExpression (data, origin)	{
-		drawFuncSelectBox();
-		drawColorMapSelectBox(data.subtype);
-		if (origin.signature_list)	{
-			drawSigSelectBox(origin.signature_list);
-		}
-		drawLegend('color_mapping', model.now.subtypeSet || null);
-		drawLegend('scatter', ['Alive', 'Dead']);
-		drawColorGradient(data.axis.gradient.x);
-		drawHeatmap(data, data.axis.heatmap, data.axis.gradient.x);
-		drawFunctionBar(data, data.axis.bar);
-		drawSurvivalPlot(data);
-		drawScatter(data, data.axis.scatter, model.now.osdfs);
-
-		if (data.patient)	{
-			drawPatient(data);
-		}
-
-		drawDivision(data);
-		getDivisionData();
-	};
-
-	return function (opts)	{
-		model = {};
-		model = bio.initialize('expression');
-		model.isDraggable = false;
-		// Risk function 을 추가하는부분.
-		model.riskFunctions = opts.riskFunctions ? 
-		opts.riskFunctions : [];
-		opts.data.riskFunctions = model.riskFunctions;
-		model.setting = bio.setting('expression', opts);
-		model.data = model.setting.preprocessData;
-		bio.clinicalGenerator(model.data.subtype, 'expression');
-		model.divisionFunc = opts.divisionFunc ? 
-		opts.divisionFunc : null;
-		model.subtypeFunc = opts.onSubtypeSelection ? 
-		opts.onSubtypeSelection : null;
-		// About request configurations.
-		model.requestData = opts.requestData || {};
-		model.requestURL = opts.requestURL || '/rest/expressions';
-		// To initialize signature.
-		model.init.signature = opts.data.signature_list ? opts.data.signature_list[0].signature : [];
-		// model.now.signature = model.init.signature;
-		model.now.signature = model.requestData.signature;
-		model.init.bar_legend_height = 
-		document.querySelector('#expression_bar_legend').style.height;
-		// Make title of expression.
-		bio.title('#expression_title', 'Expressions');
-
-		drawExpression(model.data, model.setting.defaultData);
-
-		// console.log('>>> Expression reponse data: ', opts);
-		// console.log('>>> Expression setting data: ', model.setting);
-		// console.log('>>> Expression model data: ', model);
-	};
-};
 function landscape ()	{
 	'use strict';
 
@@ -8573,6 +7529,1054 @@ function sortTitle ()	{
 
 		bio.rectangle(model.opts.shape, model);
 		bio.text(model.opts.text, model);
+	};
+};
+function colorGradient ()	{
+	'use strict';
+
+	var model = {};
+	/*
+		offset 과 color 를 설정하고 배열에 추가하는 함수.
+	 */
+	function setOffset (offset, color)	{
+		model.offsets.show.push({ offset: offset, color: color });
+		model.offsets.data.push({ offset: offset, color: color });
+	};
+	/*
+		Gradient 색상과 비율을 설정하는 함수.
+	 */
+	function setColorRate (offset, colors)	{
+		var copyOffset = [].concat(offset)
+											 .splice(1, offset.length - 2);
+
+		setOffset('0%', colors[0]);
+
+		bio.iteration.loop(copyOffset, function (cp, idx)	{
+			var value = Math.round((bio.math.max(offset) - 
+															bio.math.min(offset)) / cp * 10);
+
+			model.offsets.show.push({
+				offset: value - model.adjustValue + '%',
+				color: colors[idx + 1]  
+			});
+
+			model.offsets.data.push({
+				offset: value + '%',
+				color: colors[idx + 1]
+			});
+		});
+
+		setOffset('100%', colors[offset.length - 1]);
+	};
+
+	return function (opts, that)	{
+		model = bio.objects.clone(that || {});
+		model = bio.sizing.chart.default(model, opts);
+		model.offsets = bio.initialize('colorGradient');
+
+		model.adjustValue = opts.adjustValue || 0;
+		model.id = opts.id || 'linear_gradient';
+		model.colors = opts.colors || ['#000000', '#FFFFFF'];
+		model.offset = opts.offset || [0, 100];
+		model.defs = model.element.append('defs');
+		model.lineGradient = model.defs.append('linearGradient')
+																	 .attr('id', model.id);
+
+		setColorRate(model.offset, model.colors);
+
+		model.lineGradient.selectAll('stop')
+		 .data(model.offsets.show).enter()
+		 .append('stop')
+		 .attr('offset', function (data, idx)	{ 
+		 		return data.offset; 
+		 })
+		 .attr('stop-color', function (data, idx)	{
+		 		return data.color;
+		 });
+
+		 return model;
+	};
+};
+function expression ()	{
+	'use strict';
+
+	var model = {};
+
+	function changedFunction (value)	{
+		model.now.function = value.toLowerCase();
+		model.data.bar = model.data.func.bar[value.toLowerCase()]
+		model.data.axis.bar.x = 
+		model.data.func.xaxis[value.toLowerCase()];
+		model.data.axis.bar.y = 
+		model.data.func.yaxis[value.toLowerCase()];
+		model.data.axis.scatter.x = 
+		model.data.func.xaxis[value.toLowerCase()];
+		model.data.axis.heatmap.x = 
+		model.data.func.xaxis[value.toLowerCase()];
+	};
+	
+	function drawFuncSelectBox ()	{
+		var funcNames = ['Average'],
+				defaultFunction = 'Average';
+
+		bio.iteration.loop(model.riskFunctions, 
+		function (risk)	{
+			funcNames.push(risk.name);
+			if (risk.isDefault)	{
+				defaultFunction = risk.name;
+			}
+		});
+
+		changedFunction(defaultFunction)
+		
+		bio.selectBox({
+			fontSize: '12px',
+			items: funcNames,
+			viewName: 'function',
+			margin: [3, 3, 0, 0],
+			defaultText: defaultFunction,
+			id: '#expression_function',
+			className: 'expression-function',
+			clickItem: function (value)	{
+				changedFunction(value);
+
+				bio.layout().removeGroupTag([
+					'.expression_bar_plot_svg.bar-g-tag',
+					'.expression_bar_plot_svg.left-axis-g-tag',
+					'.expression_bar_plot_svg.division-path-0-g-tag',
+					'.expression_bar_plot_svg.division-shape-0-g-tag',
+					'.expression_scatter_plot_svg.scatter-g-tag',
+					'.expression_scatter_plot_svg.left-axis-g-tag',
+					'.expression_scatter_plot_svg.division-path-1-g-tag',
+					'.expression_scatter_plot_svg.division-shape-1-g-tag',
+					'.expression_heatmap_svg.heatmap-g-tag',
+					'.expression_heatmap_svg.left-axis-g-tag',
+					'.expression_division_svg.division-shape-g-tag',
+					'.expression_division_svg.division-text-g-tag'
+				]);
+
+				// model.now.subtype_mapping = undefined;
+				// model.now.subtypeSet = undefined;
+				model.divide.divide = undefined;
+				model.divide.patient_list = undefined;
+				model.divide.scatter = undefined;
+				model.divide = {};
+				
+				drawHeatmap(model.data, model.data.axis.heatmap, model.data.axis.gradient.x);
+				drawFunctionBar(model.data, model.data.axis.bar);
+				drawColorMapSelectBox(model.data.subtype, model.now.subtype_mapping);
+				if (model.now.subtype_mapping)	{
+					drawLegendBySubtypeMapping(model.now.subtypeSet);
+				}
+				drawScatter(model.data, model.data.axis.scatter, model.now.osdfs);				
+				drawSurvivalPlot(model.data);
+				drawDivision(model.data);
+				getDivisionData();
+			},
+		});
+	};
+
+	function changeBarColor (data, idx, that)	{
+		if (!model.now.subtypeSet)	{ return '#62C2E0'; }
+
+		if (data.info)	{
+			var dataKeys = Object.keys(data.info),
+					state = 'NA';
+
+			bio.iteration.loop(dataKeys, function (key)	{
+				if (key.toLowerCase() === model.now.subtype_mapping.toLowerCase())	{
+					state = data.info[key];
+				} 
+			});
+			
+			if (state === null)	{
+				return '#333333';
+			}
+
+			return state === 'NA' ? '#D6E2E3' : 
+							bio.boilerPlate.clinicalInfo[state].color;
+		}
+	};
+
+	function drawLegendBySubtypeMapping (nowSubtypeSet)	{
+		var barLegend = document.querySelector(
+									'#expression_bar_legend');
+
+		bio.layout().removeGroupTag([
+			'expression_bar_legend_svg']);
+
+		if (barLegend.className.indexOf('active') < 0)	{
+			barLegend.className += 'active';
+		}
+
+		d3.selectAll('#expression_bar_plot_rect')
+			.style('fill', changeBarColor)
+			.style('stroke', changeBarColor);
+
+		drawLegend('color_mapping', 
+			(nowSubtypeSet || model.now.subtypeSet));
+		// Scatter legend 의 위치가 유동적이게 되므로 이를 고정하기
+		// 위해서 아래 코드를 추가함.
+		barLegend.style.marginBottom = 
+		(parseFloat(model.init.bar_legend_height) - 
+		 parseFloat(barLegend.style.height) - 5) + 'px';
+	};
+	
+	function drawColorMapSelectBox (subtypes, title)	{
+		bio.selectBox({
+			fontSize: '12px',
+			margin: [3, 3, 0, 0],
+			viewName: 'subtype_mapping',
+			defaultText: (title || 'Subtype Mapping'),
+			id: '#expression_color_mapping',
+			className: 'expression-color-mapping',
+			items: subtypes.map(function (i)	{
+				return i.key;
+			}),
+			clickItem: function (value)	{
+				bio.iteration.loop(subtypes, function (item)	{
+					if (item.key.toLowerCase() === 
+							value.toLowerCase())	{
+						model.now.subtype_mapping = item.key;
+						model.now.subtypeSet = item.value;
+					}
+				});
+
+				drawLegendBySubtypeMapping(model.now.subtypeSet);
+
+				if (model.subtypeFunc)	{
+					model.subtypeFunc(model.now.subtype_mapping, 
+														bio.boilerPlate.clinicalInfo, model);
+				}
+			},
+		});
+	};
+	
+	function drawSigSelectBox (data)	{
+		bio.selectBox({
+			fontSize: '14px',
+			margin: [3, 3, 0, 0],
+			viewName: 'signature',
+			id: '#expression_signature',
+			className: 'expression-signature',
+			defaultText: model.now.signature,
+			items: data.map(function (d) { return d.signature; }),
+			clickItem: function (value)	{
+				if (!model.now.signature || 
+						 model.now.signature === value)	{ return; }
+
+				model.now.signature = value;
+				model.requestData.signature = model.now.signature;
+				
+				$.ajax({
+					type:'get',
+					url: model.requestURL,
+					data: model.requestData,
+					// type: 'post',
+					// url:'/files',
+					// data: {name: 'expression'},
+					beforeSend: function ()	{
+						bio.loading().start(
+							model.setting.targetedElement,
+							model.setting.targetedElementSize.width,
+							model.setting.targetedElementSize.height);
+					},
+					success: function (d)	{
+						var selectedData = '';
+
+						bio.dom().remove(
+							model.setting.targetedElement, 
+							[document.querySelector('#expression_title'), 
+							 document.querySelector('#expression_contents')]);
+
+						bio.layout().removeGroupTag();
+
+						bio.expression({
+							element: model.setting.targetedElement.id,
+							width: model.setting.targetedElementSize.width,
+							height: model.setting.targetedElementSize.height,
+							requestData: {
+								source: model.requestData.source,
+								cancer_type: model.requestData.cancer_type,
+								sample_id: model.requestData.sample_id,
+								signature: model.now.signature,
+								filter: model.requestData.filter,
+							},
+							// data: selectedData,
+							data: d.data,
+						});
+
+						bio.loading().end();
+					},
+				});
+			},
+		});
+	};
+	/*
+		Color mapping, Scatter plot 의 범례를 그리는 함수.
+	 */
+	function drawLegend (type, data)	{
+		var ids = type === 'scatter' ? 'scatter_leg' : 'bar_leg';
+
+		bio.layout().get(model.setting.svgs, [ids], 
+		function (id, svg)	{
+			var config = bio.expressionConfig().legend(type);
+
+			if (data)	{
+				if (data.indexOf('NA') > -1)	{
+					data.push(data.splice(data.indexOf('NA'), 1)[0]);
+				}
+
+				bio.legend({
+					data: data,
+					element: svg,
+					on: config.on,
+					attr: config.attr,
+					text: config.text,
+					style: config.style,
+					margin: config.margin,
+				});
+			}
+		});
+	}
+	/*
+		Gene x Sample 의 tpm 값 색 범례를 그려준다.
+	 */
+	function drawColorGradient (axis)	{
+		bio.layout().get(model.setting.svgs, ['gradient'], 
+		function (id, svg)	{
+			var shapeCnf = bio.expressionConfig().gradient('shape'),
+					axisCnf = bio.expressionConfig().gradient('axis', svg);
+
+			model.data.colorGradient = bio.colorGradient({
+				element: svg,
+				offset: axis,
+				adjustValue: 6,
+				colors: ['#00FF00', '#000000', '#FF0000'],
+			});
+
+			bio.rectangle({
+				element: bio.rendering()
+										.addGroup(svg, 0, 0, 'gradient-shape'),
+				attr: shapeCnf.attr,
+				style: shapeCnf.style,
+			}, model);
+
+			bio.axises().bottom({
+				element: svg,
+				top: axisCnf.top,
+				left: axisCnf.left,
+				range: axisCnf.range,
+				margin: axisCnf.margin,
+				exclude: axisCnf.exclude,
+				tickValues: [axis[0], axis[2]],
+				domain: [axis[0], axis[2]],
+			}).selectAll('text').style('fill', '#999999');
+		});
+	};
+
+	function drawHeatmap (data, axis, gradientAxis)	{
+		bio.layout().get(model.setting.svgs, ['heatmap'], 
+		function (id, svg)	{
+			var colorScale = bio.scales().get(gradientAxis, [
+								'#00FF00', '#000000', '#FF0000']),
+					config = bio.expressionConfig(),
+					shapeCnf = config.heatmap('shape', data.axisMargin),
+					axisCnf = config.heatmap('axis', data.axisMargin);
+
+			svg.attr('height', axis.y.length * 10);
+
+			bio.heat({
+				element: svg,
+				xaxis: axis.x,
+				yaxis: axis.y,
+				on: shapeCnf.on,
+				data: data.heatmap,
+				attr: shapeCnf.attr,
+				margin: shapeCnf.margin,
+				style: {
+					fill: function (data, idx, that)	{
+						return colorScale(data.value);
+					},
+				},
+			});
+
+			bio.axises().left({
+				element: svg,
+				domain: axis.y,
+				top: axisCnf.top,
+				left: axisCnf.left,
+				margin: axisCnf.margin,
+				exclude: axisCnf.exclude,
+				range: [0, axis.y.length * 10],
+			});
+		});
+	};
+
+	function drawFunctionBar (data, axis)	{
+		bio.layout().get(model.setting.svgs, ['bar_plot'], 
+		function (id, svg)	{
+			var config = bio.expressionConfig(),
+					shapeCnf = config.bar('shape', data.axisMargin),
+					axisCnf = config.bar('axis', data.axisMargin);
+			
+			bio.bar({
+				element: svg,
+				xaxis: axis.x,
+				data: data.bar,
+				on: shapeCnf.on,
+				attr: shapeCnf.attr,
+				style: shapeCnf.style,
+				margin: shapeCnf.margin,
+				yaxis: [axis.y[2], axis.y[0]],
+				allYaxis: axis.y,
+			});
+
+			bio.axises().left({
+				element: svg,
+				top: axisCnf.top,
+				left: axisCnf.left,
+				tickValues: axis.y,
+				margin: axisCnf.margin,
+				domain: [axis.y[2], axis.y[0]],
+				range: [20, svg.attr('height') - 15],
+			}).selectAll('path, line').style('stroke', '#999999');
+		});
+	};
+	/*
+		Survival 을 그리기 위해 Function 의 중간값을 기준으로
+		Altered / Unaltered 로 나눈다.
+	 */
+	function divideSurvivalData (bars, median)	{
+		model.data.survival.divide = {};
+
+		var temp = [].concat(bars);
+
+		temp.sort(function (a, b)	{
+			return a.value > b.value ? 1 : -1;
+		});
+
+		var idx = temp.length % 2 === 1 ? (temp.length + 1) / 2 : temp.length / 2;
+
+		bio.iteration.loop(temp, function (t, i)	{
+			i <= idx ? 
+			model.data.survival.divide[t.x] = 'unaltered' : 
+			model.data.survival.divide[t.x] = 'altered';
+		});
+	};
+	/*
+		선택된 Tab 의 Scatter 를 보여준다.
+	 */
+	function callScatter (tab, data)	{
+		if (model.now.osdfs !== tab)	{
+			bio.layout().removeGroupTag([
+				'.expression_scatter_plot_svg.scatter-g-tag', 
+				'.expression_scatter_plot_svg.left-axis-g-tag']);
+
+			model.now.osdfs = tab;
+
+			drawScatter(data, data.axis.scatter, model.now.osdfs);
+
+			if (tab === 'dfs')	{
+				bio.layout().removeGroupTag([
+					'expression_scatter_legend_svg']);
+
+				drawLegend('scatter', ['Disease Free', 'Relapsed']);
+			} else {
+				bio.layout().removeGroupTag([
+					'expression_scatter_legend_svg']);
+
+				drawLegend('scatter', ['Alive', 'Dead']);
+			}
+
+			if (model.divide.low_arr || model.divide.high_arr)	{
+				toBlur(
+				d3.selectAll('#expression_scatter_plot_svg_scatter_shape_circle'),
+				model.divide.low_arr, model.divide.high_arr);
+			}
+		}
+	};
+	/*
+		OS, DFS 탭 변경 함수.
+	 */
+	function tabChange (data)	{
+		var input = document.querySelector('#expression_survival')
+												.querySelectorAll('input');
+
+		input[0].onclick = function (e) { callScatter('os', data); };
+		input[1].onclick = function (e) { callScatter('dfs', data); };
+	};
+
+	function drawSurvivalPlot (data)	{
+		var element = document.querySelector('#expression_survival'),
+				width = parseFloat(element.style.width),
+				height = parseFloat(element.style.height) / 1.4;
+
+		var divide = divideSurvivalData(data.bar, data.axis.bar.y[1]),
+				plot = bio.survival({
+					element: '#expression_survival',
+					margin: [0, 20, 20, 0],
+					data: (model.divide.patient_list || 
+								 model.setting.defaultData.patient_list),
+					division: (model.divide.divide || data.survival.divide),
+					pvalueURL: undefined,
+					legends: {
+						high: {
+							text: 'High score group',
+							color: '#FF6252',
+						},
+						low: {
+							text: 'Low score group',
+							color: '#00AC52',
+						}
+					},
+					styles: {
+						size: {
+							chartWidth: width * 0.92,
+							chartHeight: height * 0.92,
+						},
+						position: {
+							chartTop: 10,
+							chartLeft: 50,
+							axisXtitlePosX: width / 1.9,
+							axisXtitlePosY: height / 1.1,
+							axisYtitlePosX: -(width / 2),
+							axisYtitlePosY: 10,
+							pvalX: width / 1.95,
+							pvalY: 40
+						},
+						pvalFontSize: 10,
+					},
+				});
+
+		model.data.survival.data = plot.survival_data;
+		model.data.scatter = 
+		Object.keys(model.data.scatter).length < 1 ? 
+		model.data.survival.data.all : model.data.scatter;
+
+		tabChange(data);
+	};
+	/*
+		For scatter plot data.
+	 */
+	function scatterData (data, xaxis)	{
+		var result = [];
+
+		bio.iteration.loop(data, function (d)	{
+			bio.iteration.loop(d, function (key, value)	{
+				if (xaxis.indexOf(key) > -1)	{
+					result.push({ x: key, y: value.months, value: value.status });
+				}
+			});
+		});
+
+		return result;
+	};
+
+	function drawScatter (data, axis, osdfs)	{
+		bio.layout().get(model.setting.svgs, ['scatter_p'], 
+		function (id, svg)	{
+			var config = bio.expressionConfig(),
+					shapeCnf = config.scatter('shape', data.axisMargin),
+					axisCnf = config.scatter('axis', data.axisMargin),
+					yaxis = [].concat(axis.y[osdfs]).reverse();
+
+			bio.scatter({
+				element: svg,
+				yaxis: yaxis,
+				xaxis: axis.x,
+				on: {
+					mouseover: function (data, idx, that)	{
+						var val = '';
+						
+						if (model.now.osdfs === 'os')	{
+							val = data.value === 0 ? 'Alive' : 'Dead';
+						} 
+
+						if (model.now.osdfs === 'dfs')	{
+							val = data.value === 0 ? 'Disease Free' : 'Relapsed';
+						} 
+
+						bio.tooltip({
+							element: this,
+							contents: 'ID: <b>' + data.x + '</b></br>' + 
+												'Months: <b>' + parseFloat(data.y).toFixed(2) + '</b></br>' + 
+												'Status: <b>' + val + '</b>',
+						});
+					},
+					mouseout: function (data, idx, that)	{
+						bio.tooltip('hide');
+					},
+				},
+				attr: shapeCnf.attr,
+				style: shapeCnf.style,
+				margin: shapeCnf.margin,
+				data: scatterData(data.scatter[osdfs], axis.x),
+			});
+
+			bio.axises().left({
+				ticks: 15,
+				element: svg,
+				domain: yaxis,
+				top: axisCnf.top,
+				left: axisCnf.left,
+				margin: axisCnf.margin,
+				range: [10, svg.attr('height') - 30],	
+			}).selectAll('path, line').style('stroke', '#999999');
+		});
+	};
+
+	function drawPatientOnSurvivalTable (ostable, dfstable)	{
+		for (var i = 0, l = ostable.length; i < l; i++)	{
+			var os = ostable[i],
+					dfs = dfstable[i];
+
+			if (model.data.patient.data === os.innerHTML)	{
+				os.innerHTML += ' **';
+				dfs.innerHTML += ' **';
+			}
+		}
+	};
+
+	function drawPatientOnSurvivalLegend (legend)	{
+		var config = bio.expressionConfig().survival('legend');
+
+		bio.text({
+			element: legend,
+			attr: {
+				x: function (d, i) { 
+					return config.attr.x(d, i, model); 
+				},
+				y: function (d, i) { 
+					return config.attr.y(d, i, model); 
+				},
+			},
+			style: {
+				fill: function (d, i) { 
+					return config.style.fill(d, i, model); 
+				},
+			},
+			text: function (d, i) { 
+				return config.text(d, i, model); 
+			},
+		});
+	};
+
+	function drawPatientOnSurvival ()	{
+		var obj = {},
+				isDoneSurvival = setInterval(function ()	{
+					obj.os_tb = document.querySelectorAll(
+						'#os_stat_table td b');
+					obj.dfs_tb = document.querySelectorAll(
+						'#dfs_stat_table td b');
+					obj.legend = d3.selectAll('.legend');
+
+					if (obj.os_tb.length > 0 && 
+							obj.dfs_tb.length > 0 && obj.legend.node())	{
+						drawPatientOnSurvivalTable(obj.os_tb, obj.dfs_tb);
+						drawPatientOnSurvivalLegend(obj.legend);
+						clearInterval(isDoneSurvival);
+					}
+				}, 10);
+	};
+
+	function drawPatient (data)	{
+		bio.layout().get(model.setting.svgs, ['bar_p', 'scatter_p'], 
+		function (id, svg)	{
+			var obj = {},
+					name = id.indexOf('bar') > -1 ? 'bar' : 'scatter',
+					config = bio.expressionConfig().patient(data.axisMargin);
+
+			obj.group = bio.rendering()
+										 .addGroup(svg, 0, 0, name + '-patient');
+			obj.id = id + '_' + name + '_patient';
+			obj.margin = bio.sizing.setMargin(config.margin);
+			obj.width = parseFloat(svg.attr('width'));
+			obj.height = parseFloat(svg.attr('height'));
+			obj.scaleX = bio.scales().get(data.axis.heatmap.x, [
+				obj.margin.left, obj.width - obj.margin.right]);
+			obj.scaleY = bio.scales().get(
+				[data.axis.bar.y[2], data.axis.bar.y[0]], 
+				[obj.margin.top, obj.height - obj.margin.bottom]);
+
+			bio.triangle({
+				element: obj.group.selectAll(
+					 '#' + obj.id + '_' + name + '_patient'),
+				data: data.bar.filter(function (b)	{
+					if (b.x === data.patient.name)	{ return b; }
+				}),
+				attr: {
+					id: function (d, i, t)	{
+						return obj.id + '_' + name + '_patient';
+					},
+					points: config.attr.points,
+				},
+				style: config.style,
+				on: config.on,
+			}, obj);
+		});
+
+		drawPatientOnSurvival();
+	};
+	/*
+		Drag 후에 선택되지 않은 부분을 blur 처리 한다.
+	 */
+	function toBlur (element, low, high)	{
+		element.style('fill-opacity', function (data, idx, that)	{
+			return low.indexOf(data.x) < 0 && 
+						 high.indexOf(data.x) < 0 ? 0.08 : 
+						 element.attr('id').indexOf('shape') > -1 ? 0.6 : 1;
+		})
+		.style('stroke-opacity', function (data, idx, that)	{
+			return low.indexOf(data.x) < 0 && 
+						 high.indexOf(data.x) < 0 ? 0.08 : 1;
+		});
+	};
+
+	function divideDivisionData (data)	{
+		var low = [], 
+				mid = [], 
+				high = [];
+
+		if (data.low_arr && data.high_arr)	{
+			bio.iteration.loop(model.data.axis.bar.x, 
+			function (xaxis) {
+				if (data.low_arr.indexOf(xaxis) < 0 && 
+						data.high_arr.indexOf(xaxis) < 0)	{
+					mid.push(xaxis);
+				}
+			});
+
+			low = data.low_arr;
+			high = data.high_arr;
+		} else {
+			bio.iteration.loop(data, function (k, v)	{
+				if (data[k] === 'altered')	{
+					high.push(k);
+				} else {
+					low.push(k);
+				}
+			});
+		}
+
+		return { low: low, mid: mid, high: high };
+	};
+	/*
+		division bar 를 움직여서 나오는 데이터를
+		초기 설정 시 받은 함수에 left, mid, right 값으로 반환
+		하는 함수이다.
+	 */
+	function getDivisionData ()	{
+		var data = Object.keys(model.divide).length > 0 ? 
+							 model.divide : model.data.survival.divide,
+				division = divideDivisionData(data);
+
+		if (model.divisionFunc)	{
+			model.divisionFunc(
+			division.low, division.mid, division.high, 
+			model.data.axis.heatmap.y, model.data.all_rna_list);
+		}
+	};
+
+	function drawDivision (data, lowHigh)	{
+		var low_path = '.division-path-0-g-tag path',
+				high_path = '.division-path-1-g-tag path',
+				rect = '#expression_division_svg_division_shape_rect';
+
+		function redrawMarker (marker, data, value)	{
+			marker.attr('points', function (d, i, t)	{
+				return bio.rendering().triangleStr(
+							value + data.additional, data.path_y, 10, data.direction);
+			});
+		};
+
+		function redrawLine (line, value)	{
+			var target = line.attr('d'),
+					linePos = target.substring(
+						target.indexOf('M') + 1, target.indexOf(','));
+			// Redraw line.
+			line.attr('d', target.replace(new RegExp(linePos,"gi"), value));
+		};
+		/*
+			Low, High 별로 환자 배열을 순환.
+		 */
+		function patientByDrag (arr, isAltered)	{
+			bio.iteration.loop(arr, function (a)	{
+				if (model.data.patient)	{
+					if (a !== model.data.patient.name)	{
+						bio.iteration.loop(model.setting.defaultData.patient_list, 
+						function (p)	{
+							if (p.participant_id === a)	{
+								model.divide.patient_list.push(p);
+							}
+						});
+
+						model.divide.divide[a] = isAltered;
+					}
+				} else {
+					bio.iteration.loop(model.setting.defaultData.patient_list, 
+						function (p)	{
+							if (p.participant_id === a)	{
+								model.divide.patient_list.push(p);
+							}
+						});
+
+						model.divide.divide[a] = isAltered;
+				}
+			});
+		};
+		/*
+			Drag 후 변경 된 데이터를 차트에 적용한다.
+		 */
+		function changeByDrag (low, high)	{
+			model.divide.divide = {};
+			model.divide.patient_list = [];
+			model.divide.scatter = { os: [], dfs: [] };
+			// Pick up patients.
+			patientByDrag(low, 'unaltered');
+			patientByDrag(high, 'altered');
+			// Survival chart update.
+			drawSurvivalPlot(data);
+			if (data.patient)	{
+				drawPatient(data);	
+			}
+			// to blur selected targets.
+			toBlur(
+				d3.selectAll('#expression_bar_plot_rect'),
+				low, high);
+			toBlur(
+				d3.selectAll('#expression_scatter_plot_svg_scatter_shape_circle'),
+				low, high);
+		};
+
+		var cnf = bio.expressionConfig().division;
+		// Disivion bar on disivion tag.
+		bio.layout().get(model.setting.svgs, ['division'], 
+		function (id, svg)	{
+			var divCnf = cnf('division', data.axisMargin);
+
+			bio.divisionLine({
+				element: svg,
+				pathElement: [
+					d3.select('#expression_bar_plot_svg'),
+					d3.select('#expression_scatter_plot_svg')
+				],
+				info: [
+					{ 
+						additional: -10,
+						color: '#00AC52', 
+						direction: 'right',
+						text: 'Low score group', 
+					},
+					{ 
+						additional: 10,
+						color: '#FF6252',
+						direction: 'left',
+						text: 'High score group', 
+					}
+				],
+				data: data.bar,
+				text: divCnf.text,
+				attr: divCnf.attr,
+				on: {
+					mouseover: function (data, idx, that)	{
+						if (!model.isDraggable)	{
+							if (data.text.indexOf('Low') > -1)	{
+								var nowLowPid = that.invert(
+									that.position.now.low || 
+									that.position.init.low),
+										nowScore = that.data.bar.filter(function (d)	{
+											if (d.x === nowLowPid)	{
+												return d.value;
+											};
+										})[0].value;
+
+								bio.tooltip({
+									element: this,
+									contents: '<b>' + nowScore + '</b>',
+								});
+							} else {
+								var nowHighPid = that.invert(
+									that.position.now.high || 
+									that.position.init.high),
+										nowScore = that.data.bar.filter(function (d)	{
+										if (d.x === nowHighPid)	{
+											return d.value;
+										};
+									})[0].value;
+
+								bio.tooltip({
+									element: this,
+									contents: '<b>' + nowScore + '</b>',
+								});
+							}
+						}
+					},
+					mouseout: function (data, idx, that)	{
+						bio.tooltip('hide');
+
+						model.isDraggable = false;
+					}
+				},
+				call: {
+					start: function (data, idx, that)	{
+						model.isDraggable = true;
+					},
+					drag: function (data, idx, that)	{
+						if (data.text.indexOf('Low') > -1)	{
+							that.position.init.low = that.position.init.low ? 
+							that.position.init.low : data.path_x;
+							that.position.now.low = that.position.now.low ? 
+							that.position.now.low += d3.event.dx: data.path_x;
+
+							var pos = that.position.now.low = 
+									Math.max(data.start, 
+									Math.min(that.position.now.high || data.path_x, 
+													 that.position.now.low));
+
+							redrawMarker(
+								d3.select(this), data, that.position.now.low);
+							redrawLine(d3.select(low_path), pos);
+							d3.selectAll(rect)
+								.attr('width', function (d, i, t)	{
+									return d.text === data.text ? pos - d.start : 
+												 d.end - that.position.now.high;
+							});
+
+						var nowLowPid = that.invert(that.position.now.low),
+								nowScore = that.data.bar.filter(function (d)	{
+									if (d.x === nowLowPid)	{
+										return d.value;
+									};
+								})[0].value;
+
+						bio.tooltip({
+							element: this,
+							contents: '<b>' + nowScore + '</b>',
+						});
+
+						} else {
+							that.position.init.high = that.position.init.high ? 
+							that.position.init.high : data.path_x;
+							that.position.now.high = that.position.now.high ? 
+							that.position.now.high += d3.event.dx: data.path_x;
+
+							var pos = that.position.now.high = 
+									Math.max(that.position.now.low || data.path_x, 
+									Math.min(data.end, that.position.now.high)),
+									line = d3.select(low_path).attr('d'),
+									linePos = line.substring(line.indexOf('M') + 1, 
+																					 line.indexOf(','));
+							
+							redrawMarker(
+								d3.select(this), data, that.position.now.high);
+							redrawLine(d3.select(high_path), pos);
+							d3.selectAll(rect)
+								.attr('x', function (d, i, t)	{
+									return d.text === data.text ? pos : d.start;
+								})
+								.attr('width', function (d, i, t)	{
+									return d.text === data.text ? d.end - pos : 
+												 that.position.now.low - d.start;
+							});
+
+						var nowHighPid = that.invert(that.position.now.high),
+								nowScore = that.data.bar.filter(function (d)	{
+								if (d.x === nowHighPid)	{
+									return d.value;
+								};
+							})[0].value;
+
+							bio.tooltip({
+								element: this,
+								contents: '<b>' + nowScore + '</b>',
+							});
+						}
+					},
+					end: function (data, idx, that)	{
+						var axis = [].concat(that.axis);
+						
+						model.divide.low_sample = 
+						that.invert(that.position.now.low);
+						model.divide.high_sample = 
+						that.invert(that.position.now.high);
+
+						model.divide.high_arr = axis.splice(
+							that.axis.indexOf(model.divide.high_sample), 
+							axis.length - 1);
+						model.divide.low_arr = axis.splice(0, 
+							that.axis.indexOf(model.divide.low_sample));
+
+						changeByDrag(model.divide.low_arr, model.divide.high_arr);
+						getDivisionData();
+
+						bio.tooltip('hide');
+					},
+				},
+				style: divCnf.style,
+				margin: divCnf.margin,
+				axis: data.axis.bar.x,
+				idxes: data.axis.bar.y,
+			}, model);
+		});
+	};
+	/*
+		초기 실행 또는 새 데이터를 받았을 때 실행되는 함수.
+	 */
+	function drawExpression (data, origin)	{
+		drawFuncSelectBox();
+		drawColorMapSelectBox(data.subtype);
+		if (origin.signature_list)	{
+			drawSigSelectBox(origin.signature_list);
+		}
+		drawLegend('color_mapping', model.now.subtypeSet || null);
+		drawLegend('scatter', ['Alive', 'Dead']);
+		drawColorGradient(data.axis.gradient.x);
+		drawHeatmap(data, data.axis.heatmap, data.axis.gradient.x);
+		drawFunctionBar(data, data.axis.bar);
+		drawSurvivalPlot(data);
+		drawScatter(data, data.axis.scatter, model.now.osdfs);
+
+		if (data.patient)	{
+			drawPatient(data);
+		}
+
+		drawDivision(data);
+		getDivisionData();
+	};
+
+	return function (opts)	{
+		model = {};
+		model = bio.initialize('expression');
+		model.isDraggable = false;
+		// Risk function 을 추가하는부분.
+		model.riskFunctions = opts.riskFunctions ? 
+		opts.riskFunctions : [];
+		opts.data.riskFunctions = model.riskFunctions;
+		model.setting = bio.setting('expression', opts);
+		model.data = model.setting.preprocessData;
+		bio.clinicalGenerator(model.data.subtype, 'expression');
+		model.divisionFunc = opts.divisionFunc ? 
+		opts.divisionFunc : null;
+		model.subtypeFunc = opts.onSubtypeSelection ? 
+		opts.onSubtypeSelection : null;
+		// About request configurations.
+		model.requestData = opts.requestData || {};
+		model.requestURL = opts.requestURL || '/rest/expressions';
+		// To initialize signature.
+		model.init.signature = opts.data.signature_list ? opts.data.signature_list[0].signature : [];
+		// model.now.signature = model.init.signature;
+		model.now.signature = model.requestData.signature;
+		model.init.bar_legend_height = 
+		document.querySelector('#expression_bar_legend').style.height;
+		// Make title of expression.
+		bio.title('#expression_title', 'Expressions');
+
+		drawExpression(model.data, model.setting.defaultData);
+
+		// console.log('>>> Expression reponse data: ', opts);
+		// console.log('>>> Expression setting data: ', model.setting);
+		// console.log('>>> Expression model data: ', model);
 	};
 };
 /*
@@ -12520,7 +12524,15 @@ function clinicalGenerator ()	{
 							val.charCodeAt(Math.abs(valueLen - i + (sameLength - 3))).toString(16).split('')[1] : 
 							val.charCodeAt(i).toString(16).split('')[1];
 
-						result += (secnd + first);
+						if (i % 2 == 0)	{
+							result += (secnd + first);
+						} if (i % 3 == 0)  {
+							result += (first + secnd);
+						} else {
+							// console.log(first, secnd)
+							// result += (first.substring(0, 2) + secnd.substring(0, 2) + first.substring(2, 3) + secnd.substring(2, 3));
+							// console.log(result);
+						}
 					}
 
 					model[val].color = result;
@@ -13239,6 +13251,284 @@ function tooltip ()	{
 		return show(tooltipDiv, target, parent);
 	};
 };
+function dependencies ()	{
+	'use strict';
+	// Dependencies 의 기능을 모아둔 Model 객체.
+	var model = {
+		version: {},	// Dependencies library 의 버전관련 객체.
+	};
+	/*
+		현재 적용 된 D3JS 의 버전이 
+		4 버전이면 true,
+		3 버전이면 false 를 반환하는 함수.
+	 */
+	model.version.d3v4 = function ()	{
+		// D3JS 가 존재하지 않을 경우 에러를 발생시킨다.
+		if (!d3)	{
+			throw new Error ('D3JS is not found');
+		}
+		// d3.version 의 0 번째 Index 가 '3' 일 경우 현재 D3JS
+		// 의 버전은 3 버전이다.
+		return d3.version.indexOf('3') === 0 ? false : true;
+	};
+	// Dependencies 객체의 기능을 모아둔 Model 객체를 반환한다.
+	return model;
+};
+function dom ()	{
+	'use strict';
+
+	var model = {};
+	/*
+		'#ID', '.Class' 중 존재하는 엘리먼트를 반환하는 함수.
+	 */
+	model.get = function (ele)	{
+		if (typeof(ele) === 'object')	{
+			return ele;
+		}
+
+		var classify = ['#', '.'],
+				classifyName = ele.removeSymbol(),
+				result = null;
+
+		bio.iteration.loop(classify, function (symbol)	{
+			var name = symbol + classifyName,
+					dom = document.querySelector(name);
+
+			if (dom)	{
+				result = dom;
+			}
+		});
+
+		return result;
+	};
+
+	model.remove = function (element, childs)	{
+		if (bio.objects.getType(element).indexOf('HTML') < 0)	{
+			throw new Error('Not a dom element');
+		}
+
+		bio.iteration.loop(childs, function (child)	{
+			element.removeChild(child);
+		});
+	};
+	/*
+		Element 파라미터 하위 Element 들을 
+		모두 제거하는 함수.
+	 */
+	model.removeAll = function (element)	{
+		if (bio.objects.getType(element).indexOf('HTML') < 0)	{
+			throw new Error('Not a dom element');
+		}
+
+	 	while (element.firstChild)	{
+	 		element.removeChild(element.firstChild);
+	 	}
+	};
+
+	model.siblings = function (child)	{
+		var siblingList = [];
+
+		for (var n = child.length - 1; n >= 0; n--)	{
+			siblingList.push(child[n]);
+		}
+
+		return siblingList;
+	};
+
+	return function ()	{
+		return model;
+	};
+};
+function iteration ()	{
+	'use strict';
+
+	var model = {};
+	/*
+		객체, 리스트를 반복하는 함수.
+		결과 값은 콜백함수의 파라미터로 전달 된다.
+	 */
+	model.loop = function (data, callback)	{
+		if (typeof(data) !== 'object')	{
+			throw new Error ('This is not Object or Array');
+		}
+
+		if (bio.objects.getType(data) === 'Array')	{
+			for (var i = 0, l = data.length; i < l; i++)	{
+				callback.call(this, data[i], i);
+			}
+		} else {
+			for (var key in data)	{
+				callback.call(this, key, data[key]);
+			}
+		}
+	};
+	// >>> About Array. 
+	/*
+		주어진 길이 만큼 주어진 값으로 리스트를 채워넣고 반환하는 함수.
+	 */
+	Array.prototype.fill = function (len, value)	{
+		for (var i = 0; i < len; i++)	{
+			this.push(value);
+		}
+
+		return this;
+	};
+
+	return model;
+};
+function math ()	{
+	'use strict';
+
+	var model = {};
+	/*
+		Number sequence 리스트에서 중간값의 위치를 반환한다.
+	 */
+	model.medianIndex = function (seqList)	{
+		var len = seqList.length;
+		// 홀수일 경우 1을 더한 후 2로 나누고 짝수는 그냥 2로 나눈다.
+		return len % 2 === 1 ? (len + 1) / 2 : len / 2;
+	};
+	/*
+		Number sequence 리스트에서 중간값을 반환한다.
+	 */
+	model.median = function (seqList)	{
+		var list = bio.objects.clone(seqList);
+		// 혹시라도 정렬이 안되어있을 경우를 고려하여 정렬한다.
+		return list.sort(function (a, b)	{
+						 return a > b ? 1 : -1;
+					 })[model.medianIndex(list)];
+	};
+	/*
+		두 수 혹은 숫자 리스트에서 가장 작은 값을 반환한다.
+	 */
+	model.min = function (v1, v2)	{
+		return arguments.length < 2 ? 
+					 Math.min.apply(null, v1) : 
+					 Math.min.call(null, v1, v2);
+	};
+	/*
+		두 수 혹은 숫자 리스트에서 가장 큰 값을 반환한다.
+	 */
+	model.max = function (v1, v2)	{
+		return arguments.length < 2 ? 
+					 Math.max.apply(null, v1) : 
+					 Math.max.call(null, v1, v2);
+	};
+	/*
+		Start 부터 End 까지의 범위내의 랜덤 값을 반환하는 함수.
+	 */
+	model.random = function (start, end)	{
+		start = start || 0;
+		end = end || 1;
+
+		return Math.floor(Math.random() * end) + start;
+	};
+
+	return model;
+};
+function objects ()	{
+	'use strict';
+
+	var model = {};
+	/*
+		Object 의 Type 을 문자열로 반환하는 함수.
+		Ex) 'SSS' -> 'String'.
+	 */
+	model.getType = function (obj)	{
+		var str = Object.prototype
+										.toString.call(obj);
+
+		return str.substring(
+					 str.indexOf(' ') + 1, 
+					 str.indexOf(']'));
+	};
+	/*
+		객체를 복사 (완전복사) 하여 반환하는 함수.
+	 */
+	model.clone = function (obj)	{
+		if (typeof(obj) !== 'object')	{
+			return obj;
+		} else {
+			if (model.getType(obj) === 'Array')	{
+				return new Array().concat(obj);
+			} else {
+				var copy = {};
+
+				bio.iteration.loop(obj, function (key, value)	{
+					if (obj.hasOwnProperty(key))	{
+						copy[key] = model.clone(obj[key]);
+					}
+				});
+
+				return copy;
+			}
+		}
+	};
+	/*
+		객체의 키를 값으로 찾아주는 함수.
+	 */
+	model.getKey = function (obj, value)	{
+		var keys = Object.keys(obj),
+				values = Object.values(obj);
+
+		return keys[values.indexOf(value)];
+	};
+
+	return model;
+}
+/*
+	String 객체의 prototype 으로 붙일 기능들을
+	모아둔 객체.
+ */
+function strings ()	{
+	'use strict';
+
+	String.prototype.matchAll = function (regex)	{
+		var matched = [], found;
+
+		while (found = regex.exec(this))	{
+			matched.push(found[0]);
+		}
+
+		return matched;
+	};
+	/*
+		String 을 대명사 표기법 형태로 바꿔 반환하는 함수.
+	 */
+	String.prototype.pronoun = function ()	{
+		return this[0].toUpperCase() + 
+					 this.substring(1).toLowerCase();
+	};
+	/*
+		문자열에 포함된 공백들을 지워주는 함수.
+	 */
+	String.prototype.removeWhiteSpace = function ()	{
+		return this.replace(/\s/ig, '');
+	};
+	/*
+		문자열에 포함된 특수문자들을 지워주는 함수.
+	 */
+	String.prototype.removeSymbol = function ()	{
+		return this.replace(/\W/ig, '');
+	}
+	/*
+		문자열에서 사용자지정위치의 문자를 다른 문자로 대치해주는 함수.
+		String 객체의 프로토타입으로 지정하였다.
+	 */
+	String.prototype.replaceAt = function (idx, rep)	{
+		// substring !== substr 
+		// substring 은 start 부터 end 까지,
+		// substr 은 start 부터 num 개를 자른다.
+		return this.substring(0, idx) + rep + 
+					 this.substring(idx + 1);
+	};
+	/*
+		파라미터 값을 문자열내에서 모두 바꿔준다.
+	 */
+	String.prototype.replaceAll = function (target, change)	{
+		return this.replace(new RegExp(target, 'ig'), change);
+	};
+};
 function variants ()	{
 	'use strict';
 
@@ -13598,283 +13888,5 @@ function variantsPatient ()	{
 			'#' + model.id + '_needle_patient_shape');
 		
 		bio.triangle(model.opts, model);
-	};
-};
-function dependencies ()	{
-	'use strict';
-	// Dependencies 의 기능을 모아둔 Model 객체.
-	var model = {
-		version: {},	// Dependencies library 의 버전관련 객체.
-	};
-	/*
-		현재 적용 된 D3JS 의 버전이 
-		4 버전이면 true,
-		3 버전이면 false 를 반환하는 함수.
-	 */
-	model.version.d3v4 = function ()	{
-		// D3JS 가 존재하지 않을 경우 에러를 발생시킨다.
-		if (!d3)	{
-			throw new Error ('D3JS is not found');
-		}
-		// d3.version 의 0 번째 Index 가 '3' 일 경우 현재 D3JS
-		// 의 버전은 3 버전이다.
-		return d3.version.indexOf('3') === 0 ? false : true;
-	};
-	// Dependencies 객체의 기능을 모아둔 Model 객체를 반환한다.
-	return model;
-};
-function dom ()	{
-	'use strict';
-
-	var model = {};
-	/*
-		'#ID', '.Class' 중 존재하는 엘리먼트를 반환하는 함수.
-	 */
-	model.get = function (ele)	{
-		if (typeof(ele) === 'object')	{
-			return ele;
-		}
-
-		var classify = ['#', '.'],
-				classifyName = ele.removeSymbol(),
-				result = null;
-
-		bio.iteration.loop(classify, function (symbol)	{
-			var name = symbol + classifyName,
-					dom = document.querySelector(name);
-
-			if (dom)	{
-				result = dom;
-			}
-		});
-
-		return result;
-	};
-
-	model.remove = function (element, childs)	{
-		if (bio.objects.getType(element).indexOf('HTML') < 0)	{
-			throw new Error('Not a dom element');
-		}
-
-		bio.iteration.loop(childs, function (child)	{
-			element.removeChild(child);
-		});
-	};
-	/*
-		Element 파라미터 하위 Element 들을 
-		모두 제거하는 함수.
-	 */
-	model.removeAll = function (element)	{
-		if (bio.objects.getType(element).indexOf('HTML') < 0)	{
-			throw new Error('Not a dom element');
-		}
-
-	 	while (element.firstChild)	{
-	 		element.removeChild(element.firstChild);
-	 	}
-	};
-
-	model.siblings = function (child)	{
-		var siblingList = [];
-
-		for (var n = child.length - 1; n >= 0; n--)	{
-			siblingList.push(child[n]);
-		}
-
-		return siblingList;
-	};
-
-	return function ()	{
-		return model;
-	};
-};
-function iteration ()	{
-	'use strict';
-
-	var model = {};
-	/*
-		객체, 리스트를 반복하는 함수.
-		결과 값은 콜백함수의 파라미터로 전달 된다.
-	 */
-	model.loop = function (data, callback)	{
-		if (typeof(data) !== 'object')	{
-			throw new Error ('This is not Object or Array');
-		}
-
-		if (bio.objects.getType(data) === 'Array')	{
-			for (var i = 0, l = data.length; i < l; i++)	{
-				callback.call(this, data[i], i);
-			}
-		} else {
-			for (var key in data)	{
-				callback.call(this, key, data[key]);
-			}
-		}
-	};
-	// >>> About Array. 
-	/*
-		주어진 길이 만큼 주어진 값으로 리스트를 채워넣고 반환하는 함수.
-	 */
-	Array.prototype.fill = function (len, value)	{
-		for (var i = 0; i < len; i++)	{
-			this.push(value);
-		}
-
-		return this;
-	};
-
-	return model;
-};
-function math ()	{
-	'use strict';
-
-	var model = {};
-	/*
-		Number sequence 리스트에서 중간값의 위치를 반환한다.
-	 */
-	model.medianIndex = function (seqList)	{
-		var len = seqList.length;
-		// 홀수일 경우 1을 더한 후 2로 나누고 짝수는 그냥 2로 나눈다.
-		return len % 2 === 1 ? (len + 1) / 2 : len / 2;
-	};
-	/*
-		Number sequence 리스트에서 중간값을 반환한다.
-	 */
-	model.median = function (seqList)	{
-		var list = bio.objects.clone(seqList);
-		// 혹시라도 정렬이 안되어있을 경우를 고려하여 정렬한다.
-		return list.sort(function (a, b)	{
-						 return a > b ? 1 : -1;
-					 })[model.medianIndex(list)];
-	};
-	/*
-		두 수 혹은 숫자 리스트에서 가장 작은 값을 반환한다.
-	 */
-	model.min = function (v1, v2)	{
-		return arguments.length < 2 ? 
-					 Math.min.apply(null, v1) : 
-					 Math.min.call(null, v1, v2);
-	};
-	/*
-		두 수 혹은 숫자 리스트에서 가장 큰 값을 반환한다.
-	 */
-	model.max = function (v1, v2)	{
-		return arguments.length < 2 ? 
-					 Math.max.apply(null, v1) : 
-					 Math.max.call(null, v1, v2);
-	};
-	/*
-		Start 부터 End 까지의 범위내의 랜덤 값을 반환하는 함수.
-	 */
-	model.random = function (start, end)	{
-		start = start || 0;
-		end = end || 1;
-
-		return Math.floor(Math.random() * end) + start;
-	};
-
-	return model;
-};
-function objects ()	{
-	'use strict';
-
-	var model = {};
-	/*
-		Object 의 Type 을 문자열로 반환하는 함수.
-		Ex) 'SSS' -> 'String'.
-	 */
-	model.getType = function (obj)	{
-		var str = Object.prototype
-										.toString.call(obj);
-
-		return str.substring(
-					 str.indexOf(' ') + 1, 
-					 str.indexOf(']'));
-	};
-	/*
-		객체를 복사 (완전복사) 하여 반환하는 함수.
-	 */
-	model.clone = function (obj)	{
-		if (typeof(obj) !== 'object')	{
-			return obj;
-		} else {
-			if (model.getType(obj) === 'Array')	{
-				return new Array().concat(obj);
-			} else {
-				var copy = {};
-
-				bio.iteration.loop(obj, function (key, value)	{
-					if (obj.hasOwnProperty(key))	{
-						copy[key] = model.clone(obj[key]);
-					}
-				});
-
-				return copy;
-			}
-		}
-	};
-	/*
-		객체의 키를 값으로 찾아주는 함수.
-	 */
-	model.getKey = function (obj, value)	{
-		var keys = Object.keys(obj),
-				values = Object.values(obj);
-
-		return keys[values.indexOf(value)];
-	};
-
-	return model;
-}
-/*
-	String 객체의 prototype 으로 붙일 기능들을
-	모아둔 객체.
- */
-function strings ()	{
-	'use strict';
-
-	String.prototype.matchAll = function (regex)	{
-		var matched = [], found;
-
-		while (found = regex.exec(this))	{
-			matched.push(found[0]);
-		}
-
-		return matched;
-	};
-	/*
-		String 을 대명사 표기법 형태로 바꿔 반환하는 함수.
-	 */
-	String.prototype.pronoun = function ()	{
-		return this[0].toUpperCase() + 
-					 this.substring(1).toLowerCase();
-	};
-	/*
-		문자열에 포함된 공백들을 지워주는 함수.
-	 */
-	String.prototype.removeWhiteSpace = function ()	{
-		return this.replace(/\s/ig, '');
-	};
-	/*
-		문자열에 포함된 특수문자들을 지워주는 함수.
-	 */
-	String.prototype.removeSymbol = function ()	{
-		return this.replace(/\W/ig, '');
-	}
-	/*
-		문자열에서 사용자지정위치의 문자를 다른 문자로 대치해주는 함수.
-		String 객체의 프로토타입으로 지정하였다.
-	 */
-	String.prototype.replaceAt = function (idx, rep)	{
-		// substring !== substr 
-		// substring 은 start 부터 end 까지,
-		// substr 은 start 부터 num 개를 자른다.
-		return this.substring(0, idx) + rep + 
-					 this.substring(idx + 1);
-	};
-	/*
-		파라미터 값을 문자열내에서 모두 바꿔준다.
-	 */
-	String.prototype.replaceAll = function (target, change)	{
-		return this.replace(new RegExp(target, 'ig'), change);
 	};
 };
