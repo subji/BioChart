@@ -36,6 +36,8 @@ function clinicalGenerator ()	{
 			bio.iteration.loop(values, function (val, idx)	{
 				var result = '#';
 
+				console.log(val);
+
 				if (val !== 'NA')	{
 					var valueLen = val.length;
 
@@ -46,15 +48,15 @@ function clinicalGenerator ()	{
 							secnd = isNaN(val.charCodeAt(i)) === true ? 
 							val.charCodeAt(Math.abs(valueLen - i + (sameLength - 3))).toString(16).split('')[1] : 
 							val.charCodeAt(i).toString(16).split('')[1];
-
-						if (i % 2 == 0)	{
-							result += (secnd + first);
-						} if (i % 3 == 0)  {
-							result += (first + secnd);
+						
+						if (sameLength > 1)	{
+							if (i % 2 == 0)	{
+								result += (secnd + first);
+							} if (i % 3 == 0)  {
+								result += (first + secnd);
+							}
 						} else {
-							// console.log(first, secnd)
-							// result += (first.substring(0, 2) + secnd.substring(0, 2) + first.substring(2, 3) + secnd.substring(2, 3));
-							// console.log(result);
+							result += (secnd + first);
 						}
 					}
 

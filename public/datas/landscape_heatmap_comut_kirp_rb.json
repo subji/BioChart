@@ -1,0 +1,4803 @@
+{
+  "status": 0,
+  "message": "OK",
+  "data": {
+    "name": "Comutations in TCGA KIRP",
+    "type": "KIRP",
+    "mutation_list": [
+      {
+        "participant_id": "TCGA-UZ-A9PU",
+        "gene": "CDK4",
+        "type": "Missense_Mutation"
+      },
+      {
+        "participant_id": "TCGA-A4-7287",
+        "gene": "CDKN2A",
+        "type": "Homozygous_Deletion"
+      },
+      {
+        "participant_id": "TCGA-A4-A57E",
+        "gene": "CDKN2A",
+        "type": "Homozygous_Deletion"
+      },
+      {
+        "participant_id": "TCGA-A4-A7UZ",
+        "gene": "CDKN2A",
+        "type": "Homozygous_Deletion"
+      },
+      {
+        "participant_id": "TCGA-AL-3466",
+        "gene": "CDKN2A",
+        "type": "Homozygous_Deletion"
+      },
+      {
+        "participant_id": "TCGA-AL-A5DJ",
+        "gene": "CDKN2A",
+        "type": "Homozygous_Deletion"
+      },
+      {
+        "participant_id": "TCGA-BQ-5877",
+        "gene": "CDKN2A",
+        "type": "Homozygous_Deletion"
+      },
+      {
+        "participant_id": "TCGA-BQ-7056",
+        "gene": "CDKN2A",
+        "type": "Homozygous_Deletion"
+      },
+      {
+        "participant_id": "TCGA-DZ-6131",
+        "gene": "CDKN2A",
+        "type": "Homozygous_Deletion"
+      },
+      {
+        "participant_id": "TCGA-G7-6789",
+        "gene": "CDKN2A",
+        "type": "Nonsense_Mutation"
+      },
+      {
+        "participant_id": "TCGA-G7-7501",
+        "gene": "CDKN2A",
+        "type": "Homozygous_Deletion"
+      },
+      {
+        "participant_id": "TCGA-HE-7130",
+        "gene": "CDKN2A",
+        "type": "Homozygous_Deletion"
+      },
+      {
+        "participant_id": "TCGA-IA-A40Y",
+        "gene": "CDKN2A",
+        "type": "Homozygous_Deletion"
+      },
+      {
+        "participant_id": "TCGA-J7-A8I2",
+        "gene": "CDKN2A",
+        "type": "Homozygous_Deletion"
+      },
+      {
+        "participant_id": "TCGA-SX-A71V",
+        "gene": "CDKN2A",
+        "type": "Homozygous_Deletion"
+      },
+      {
+        "participant_id": "TCGA-A4-7287",
+        "gene": "CDKN2B",
+        "type": "Homozygous_Deletion"
+      },
+      {
+        "participant_id": "TCGA-A4-A57E",
+        "gene": "CDKN2B",
+        "type": "Homozygous_Deletion"
+      },
+      {
+        "participant_id": "TCGA-A4-A7UZ",
+        "gene": "CDKN2B",
+        "type": "Homozygous_Deletion"
+      },
+      {
+        "participant_id": "TCGA-AL-3466",
+        "gene": "CDKN2B",
+        "type": "Homozygous_Deletion"
+      },
+      {
+        "participant_id": "TCGA-AL-A5DJ",
+        "gene": "CDKN2B",
+        "type": "Homozygous_Deletion"
+      },
+      {
+        "participant_id": "TCGA-BQ-5877",
+        "gene": "CDKN2B",
+        "type": "Homozygous_Deletion"
+      },
+      {
+        "participant_id": "TCGA-BQ-7056",
+        "gene": "CDKN2B",
+        "type": "Homozygous_Deletion"
+      },
+      {
+        "participant_id": "TCGA-DW-5561",
+        "gene": "CDKN2B",
+        "type": "Splice_Region"
+      },
+      {
+        "participant_id": "TCGA-DZ-6131",
+        "gene": "CDKN2B",
+        "type": "Homozygous_Deletion"
+      },
+      {
+        "participant_id": "TCGA-G7-7501",
+        "gene": "CDKN2B",
+        "type": "Homozygous_Deletion"
+      },
+      {
+        "participant_id": "TCGA-HE-7130",
+        "gene": "CDKN2B",
+        "type": "Homozygous_Deletion"
+      },
+      {
+        "participant_id": "TCGA-IA-A40Y",
+        "gene": "CDKN2B",
+        "type": "Homozygous_Deletion"
+      },
+      {
+        "participant_id": "TCGA-J7-A8I2",
+        "gene": "CDKN2B",
+        "type": "Homozygous_Deletion"
+      },
+      {
+        "participant_id": "TCGA-SX-A71V",
+        "gene": "CDKN2B",
+        "type": "Homozygous_Deletion"
+      }
+    ],
+    "gene_list": [
+      {
+        "gene": "CDKN2A",
+        "p": 0,
+        "q": 0
+      },
+      {
+        "gene": "CDKN2B",
+        "p": 0,
+        "q": 0
+      },
+      {
+        "gene": "CDK4",
+        "p": 0,
+        "q": 0
+      }
+    ],
+    "group_list": [
+      {
+        "name": "Clinical stage",
+        "data": [
+          {
+            "participant_id": "TCGA-2K-A9WE",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-2Z-A9J1",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-2Z-A9J2",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-2Z-A9J3",
+            "value": "Stage II"
+          },
+          {
+            "participant_id": "TCGA-2Z-A9J5",
+            "value": "Stage II"
+          },
+          {
+            "participant_id": "TCGA-2Z-A9J6",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-2Z-A9J7",
+            "value": "Stage IV"
+          },
+          {
+            "participant_id": "TCGA-2Z-A9J8",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-2Z-A9J9",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-2Z-A9JD",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-2Z-A9JE",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-2Z-A9JG",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-2Z-A9JI",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-2Z-A9JJ",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-2Z-A9JK",
+            "value": "Stage III"
+          },
+          {
+            "participant_id": "TCGA-2Z-A9JL",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-2Z-A9JM",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-2Z-A9JN",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-2Z-A9JO",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-2Z-A9JP",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-2Z-A9JQ",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-2Z-A9JR",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-2Z-A9JS",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-2Z-A9JT",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-4A-A93W",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-4A-A93X",
+            "value": "Stage IV"
+          },
+          {
+            "participant_id": "TCGA-4A-A93Y",
+            "value": "Stage II"
+          },
+          {
+            "participant_id": "TCGA-5P-A9JU",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-5P-A9JV",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-5P-A9JW",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-5P-A9JY",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-5P-A9JZ",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-5P-A9K0",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-5P-A9K2",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-5P-A9K3",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-5P-A9K6",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-5P-A9K8",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-5P-A9K9",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-5P-A9KA",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-5P-A9KC",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-5P-A9KE",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-5P-A9KH",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-A4-7286",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-A4-7287",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-A4-7288",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-A4-7583",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-A4-7584",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-A4-7585",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-A4-7732",
+            "value": "Stage II"
+          },
+          {
+            "participant_id": "TCGA-A4-7734",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-A4-7828",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-A4-7915",
+            "value": "Stage II"
+          },
+          {
+            "participant_id": "TCGA-A4-7996",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-A4-7997",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-A4-8098",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-A4-8310",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-A4-8311",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-A4-8312",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-A4-8515",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-A4-8516",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-A4-8517",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-A4-8630",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-A4-A48D",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-A4-A4ZT",
+            "value": "Stage II"
+          },
+          {
+            "participant_id": "TCGA-A4-A57E",
+            "value": "Stage IV"
+          },
+          {
+            "participant_id": "TCGA-A4-A5DU",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-A4-A5XZ",
+            "value": "Stage II"
+          },
+          {
+            "participant_id": "TCGA-A4-A5Y0",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-A4-A5Y1",
+            "value": "Stage III"
+          },
+          {
+            "participant_id": "TCGA-A4-A6HP",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-A4-A772",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-A4-A7UZ",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-AL-3466",
+            "value": "Stage IV"
+          },
+          {
+            "participant_id": "TCGA-AL-3467",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-AL-3468",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-AL-3471",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-AL-3472",
+            "value": "Stage II"
+          },
+          {
+            "participant_id": "TCGA-AL-3473",
+            "value": "Stage II"
+          },
+          {
+            "participant_id": "TCGA-AL-7173",
+            "value": "Stage IV"
+          },
+          {
+            "participant_id": "TCGA-AL-A5DJ",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-AT-A5NU",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-B1-5398",
+            "value": "Stage II"
+          },
+          {
+            "participant_id": "TCGA-B1-7332",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-B1-A47M",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-B1-A47N",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-B1-A47O",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-B1-A654",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-B1-A655",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-B1-A656",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-B1-A657",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-B3-3925",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-B3-3926",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-B3-4103",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-B3-4104",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-B3-8121",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-B3-A6W5",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-B9-4113",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-B9-4114",
+            "value": "Stage IV"
+          },
+          {
+            "participant_id": "TCGA-B9-4115",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-B9-4116",
+            "value": "Stage II"
+          },
+          {
+            "participant_id": "TCGA-B9-4117",
+            "value": "Stage II"
+          },
+          {
+            "participant_id": "TCGA-B9-4617",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-B9-5155",
+            "value": "Stage III"
+          },
+          {
+            "participant_id": "TCGA-B9-5156",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-B9-7268",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-B9-A44B",
+            "value": "Stage III"
+          },
+          {
+            "participant_id": "TCGA-B9-A5W7",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-B9-A5W8",
+            "value": "Stage II"
+          },
+          {
+            "participant_id": "TCGA-B9-A5W9",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-B9-A69E",
+            "value": "Stage II"
+          },
+          {
+            "participant_id": "TCGA-B9-A8YH",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-B9-A8YI",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-BQ-5875",
+            "value": "Stage II"
+          },
+          {
+            "participant_id": "TCGA-BQ-5876",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-BQ-5877",
+            "value": "Stage IV"
+          },
+          {
+            "participant_id": "TCGA-BQ-5878",
+            "value": "Stage III"
+          },
+          {
+            "participant_id": "TCGA-BQ-5879",
+            "value": "Stage III"
+          },
+          {
+            "participant_id": "TCGA-BQ-5880",
+            "value": "Stage III"
+          },
+          {
+            "participant_id": "TCGA-BQ-5881",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-BQ-5882",
+            "value": "Stage III"
+          },
+          {
+            "participant_id": "TCGA-BQ-5883",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-BQ-5884",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-BQ-5885",
+            "value": "Stage II"
+          },
+          {
+            "participant_id": "TCGA-BQ-5886",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-BQ-5887",
+            "value": "Stage III"
+          },
+          {
+            "participant_id": "TCGA-BQ-5888",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-BQ-5889",
+            "value": "Stage III"
+          },
+          {
+            "participant_id": "TCGA-BQ-5890",
+            "value": "Stage III"
+          },
+          {
+            "participant_id": "TCGA-BQ-5891",
+            "value": "Stage III"
+          },
+          {
+            "participant_id": "TCGA-BQ-5892",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-BQ-5893",
+            "value": "Stage IV"
+          },
+          {
+            "participant_id": "TCGA-BQ-5894",
+            "value": "Stage III"
+          },
+          {
+            "participant_id": "TCGA-BQ-7044",
+            "value": "Stage III"
+          },
+          {
+            "participant_id": "TCGA-BQ-7045",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-BQ-7046",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-BQ-7048",
+            "value": "Stage III"
+          },
+          {
+            "participant_id": "TCGA-BQ-7049",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-BQ-7050",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-BQ-7051",
+            "value": "Stage II"
+          },
+          {
+            "participant_id": "TCGA-BQ-7053",
+            "value": "Stage III"
+          },
+          {
+            "participant_id": "TCGA-BQ-7055",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-BQ-7056",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-BQ-7058",
+            "value": "Stage III"
+          },
+          {
+            "participant_id": "TCGA-BQ-7059",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-BQ-7060",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-BQ-7061",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-BQ-7062",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-DW-5560",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-DW-5561",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-DW-7834",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-DW-7836",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-DW-7837",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-DW-7838",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-DW-7839",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-DW-7840",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-DW-7841",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-DW-7842",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-DW-7963",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-DZ-6131",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-DZ-6132",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-DZ-6133",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-DZ-6134",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-DZ-6135",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-EV-5901",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-EV-5902",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-EV-5903",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-F9-A4JJ",
+            "value": "Stage III"
+          },
+          {
+            "participant_id": "TCGA-F9-A7Q0",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-F9-A7VF",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-F9-A8NY",
+            "value": "Stage IV"
+          },
+          {
+            "participant_id": "TCGA-F9-A97G",
+            "value": "Stage III"
+          },
+          {
+            "participant_id": "TCGA-G7-6789",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-G7-6790",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-G7-6792",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-G7-6793",
+            "value": "Stage IV"
+          },
+          {
+            "participant_id": "TCGA-G7-6795",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-G7-6796",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-G7-6797",
+            "value": "Stage III"
+          },
+          {
+            "participant_id": "TCGA-G7-7501",
+            "value": "Stage III"
+          },
+          {
+            "participant_id": "TCGA-G7-7502",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-G7-A4TM",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-G7-A8LB",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-G7-A8LC",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-G7-A8LD",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-G7-A8LE",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-GL-6846",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-GL-7773",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-GL-7966",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-GL-8500",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-GL-A4EM",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-GL-A59R",
+            "value": "Stage III"
+          },
+          {
+            "participant_id": "TCGA-GL-A59T",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-GL-A9DC",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-GL-A9DD",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-GL-A9DE",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-HE-7128",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-HE-7129",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-HE-7130",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-HE-A5NF",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-HE-A5NH",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-HE-A5NI",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-HE-A5NJ",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-HE-A5NK",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-HE-A5NL",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-IA-A40U",
+            "value": "Stage III"
+          },
+          {
+            "participant_id": "TCGA-IA-A40X",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-IA-A40Y",
+            "value": "Stage III"
+          },
+          {
+            "participant_id": "TCGA-IA-A83S",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-IA-A83T",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-IA-A83V",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-IA-A83W",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-IZ-8195",
+            "value": "Stage II"
+          },
+          {
+            "participant_id": "TCGA-IZ-8196",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-IZ-A6M8",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-IZ-A6M9",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-J7-6720",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-J7-8537",
+            "value": "Stage III"
+          },
+          {
+            "participant_id": "TCGA-J7-A8I2",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-KV-A6GD",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-KV-A6GE",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-KV-A74V",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-MH-A55W",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-MH-A55Z",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-MH-A560",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-MH-A561",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-MH-A562",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-MH-A854",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-MH-A855",
+            "value": "Stage II"
+          },
+          {
+            "participant_id": "TCGA-MH-A856",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-MH-A857",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-O9-A75Z",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-P4-A5E6",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-P4-A5E7",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-P4-A5E8",
+            "value": "Stage III"
+          },
+          {
+            "participant_id": "TCGA-P4-A5EA",
+            "value": "Stage III"
+          },
+          {
+            "participant_id": "TCGA-P4-A5EB",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-P4-A5ED",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-P4-AAVK",
+            "value": "Stage III"
+          },
+          {
+            "participant_id": "TCGA-P4-AAVL",
+            "value": "Stage III"
+          },
+          {
+            "participant_id": "TCGA-P4-AAVM",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-P4-AAVO",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-PJ-A5Z8",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-PJ-A5Z9",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-PJ-A8JU",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-Q2-A5QZ",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-SX-A71R",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-SX-A71S",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-SX-A71U",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-SX-A71V",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-SX-A71W",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-SX-A7SL",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-SX-A7SM",
+            "value": "Stage IV"
+          },
+          {
+            "participant_id": "TCGA-SX-A7SN",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-SX-A7SO",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-SX-A7SP",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-SX-A7SQ",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-SX-A7SR",
+            "value": "Stage II"
+          },
+          {
+            "participant_id": "TCGA-SX-A7SS",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-SX-A7SU",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-UN-AAZ9",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-UZ-A9PJ",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-UZ-A9PK",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-UZ-A9PL",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-UZ-A9PM",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-UZ-A9PN",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-UZ-A9PO",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-UZ-A9PP",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-UZ-A9PQ",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-UZ-A9PR",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-UZ-A9PS",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-UZ-A9PU",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-UZ-A9PV",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-UZ-A9PX",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-UZ-A9PZ",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-UZ-A9Q0",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-UZ-A9Q1",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-V9-A7HT",
+            "value": "Stage II"
+          },
+          {
+            "participant_id": "TCGA-WN-A9G9",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-WN-AB4C",
+            "value": "Stage I"
+          },
+          {
+            "participant_id": "TCGA-Y8-A894",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-Y8-A895",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-Y8-A896",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-Y8-A897",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-Y8-A898",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-Y8-A8RY",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-Y8-A8RZ",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-Y8-A8S0",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-Y8-A8S1",
+            "value": "NA"
+          }
+        ]
+      },
+      {
+        "name": "Smoking history",
+        "data": [
+          {
+            "participant_id": "TCGA-2K-A9WE",
+            "value": "Lifelong Non-smoker"
+          },
+          {
+            "participant_id": "TCGA-2Z-A9J1",
+            "value": "Lifelong Non-smoker"
+          },
+          {
+            "participant_id": "TCGA-2Z-A9J2",
+            "value": "Current reformed (> 15 years)"
+          },
+          {
+            "participant_id": "TCGA-2Z-A9J3",
+            "value": "Current smoker"
+          },
+          {
+            "participant_id": "TCGA-2Z-A9J5",
+            "value": "Current reformed smoker"
+          },
+          {
+            "participant_id": "TCGA-2Z-A9J6",
+            "value": "Lifelong Non-smoker"
+          },
+          {
+            "participant_id": "TCGA-2Z-A9J7",
+            "value": "Current reformed (<= 15 years)"
+          },
+          {
+            "participant_id": "TCGA-2Z-A9J8",
+            "value": "Current reformed (<= 15 years)"
+          },
+          {
+            "participant_id": "TCGA-2Z-A9J9",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-2Z-A9JD",
+            "value": "Current reformed (> 15 years)"
+          },
+          {
+            "participant_id": "TCGA-2Z-A9JE",
+            "value": "Lifelong Non-smoker"
+          },
+          {
+            "participant_id": "TCGA-2Z-A9JG",
+            "value": "Lifelong Non-smoker"
+          },
+          {
+            "participant_id": "TCGA-2Z-A9JI",
+            "value": "Current reformed (<= 15 years)"
+          },
+          {
+            "participant_id": "TCGA-2Z-A9JJ",
+            "value": "Lifelong Non-smoker"
+          },
+          {
+            "participant_id": "TCGA-2Z-A9JK",
+            "value": "Current reformed smoker"
+          },
+          {
+            "participant_id": "TCGA-2Z-A9JL",
+            "value": "Current reformed (<= 15 years)"
+          },
+          {
+            "participant_id": "TCGA-2Z-A9JM",
+            "value": "Current smoker"
+          },
+          {
+            "participant_id": "TCGA-2Z-A9JN",
+            "value": "Current reformed (<= 15 years)"
+          },
+          {
+            "participant_id": "TCGA-2Z-A9JO",
+            "value": "Current reformed (> 15 years)"
+          },
+          {
+            "participant_id": "TCGA-2Z-A9JP",
+            "value": "Lifelong Non-smoker"
+          },
+          {
+            "participant_id": "TCGA-2Z-A9JQ",
+            "value": "Current reformed smoker"
+          },
+          {
+            "participant_id": "TCGA-2Z-A9JR",
+            "value": "Current reformed smoker"
+          },
+          {
+            "participant_id": "TCGA-2Z-A9JS",
+            "value": "Lifelong Non-smoker"
+          },
+          {
+            "participant_id": "TCGA-2Z-A9JT",
+            "value": "Lifelong Non-smoker"
+          },
+          {
+            "participant_id": "TCGA-4A-A93W",
+            "value": "Current reformed (> 15 years)"
+          },
+          {
+            "participant_id": "TCGA-4A-A93X",
+            "value": "Lifelong Non-smoker"
+          },
+          {
+            "participant_id": "TCGA-4A-A93Y",
+            "value": "Current reformed (<= 15 years)"
+          },
+          {
+            "participant_id": "TCGA-5P-A9JU",
+            "value": "Current smoker"
+          },
+          {
+            "participant_id": "TCGA-5P-A9JV",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-5P-A9JW",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-5P-A9JY",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-5P-A9JZ",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-5P-A9K0",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-5P-A9K2",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-5P-A9K3",
+            "value": "Current smoker"
+          },
+          {
+            "participant_id": "TCGA-5P-A9K6",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-5P-A9K8",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-5P-A9K9",
+            "value": "Lifelong Non-smoker"
+          },
+          {
+            "participant_id": "TCGA-5P-A9KA",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-5P-A9KC",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-5P-A9KE",
+            "value": "Current reformed (<= 15 years)"
+          },
+          {
+            "participant_id": "TCGA-5P-A9KH",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-A4-7286",
+            "value": "Lifelong Non-smoker"
+          },
+          {
+            "participant_id": "TCGA-A4-7287",
+            "value": "Lifelong Non-smoker"
+          },
+          {
+            "participant_id": "TCGA-A4-7288",
+            "value": "Lifelong Non-smoker"
+          },
+          {
+            "participant_id": "TCGA-A4-7583",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-A4-7584",
+            "value": "Lifelong Non-smoker"
+          },
+          {
+            "participant_id": "TCGA-A4-7585",
+            "value": "Lifelong Non-smoker"
+          },
+          {
+            "participant_id": "TCGA-A4-7732",
+            "value": "Lifelong Non-smoker"
+          },
+          {
+            "participant_id": "TCGA-A4-7734",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-A4-7828",
+            "value": "Current reformed (<= 15 years)"
+          },
+          {
+            "participant_id": "TCGA-A4-7915",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-A4-7996",
+            "value": "Lifelong Non-smoker"
+          },
+          {
+            "participant_id": "TCGA-A4-7997",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-A4-8098",
+            "value": "Lifelong Non-smoker"
+          },
+          {
+            "participant_id": "TCGA-A4-8310",
+            "value": "Current reformed (> 15 years)"
+          },
+          {
+            "participant_id": "TCGA-A4-8311",
+            "value": "Lifelong Non-smoker"
+          },
+          {
+            "participant_id": "TCGA-A4-8312",
+            "value": "Current smoker"
+          },
+          {
+            "participant_id": "TCGA-A4-8515",
+            "value": "Lifelong Non-smoker"
+          },
+          {
+            "participant_id": "TCGA-A4-8516",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-A4-8517",
+            "value": "Lifelong Non-smoker"
+          },
+          {
+            "participant_id": "TCGA-A4-8630",
+            "value": "Current smoker"
+          },
+          {
+            "participant_id": "TCGA-A4-A48D",
+            "value": "Current reformed (> 15 years)"
+          },
+          {
+            "participant_id": "TCGA-A4-A4ZT",
+            "value": "Lifelong Non-smoker"
+          },
+          {
+            "participant_id": "TCGA-A4-A57E",
+            "value": "Current reformed (> 15 years)"
+          },
+          {
+            "participant_id": "TCGA-A4-A5DU",
+            "value": "Lifelong Non-smoker"
+          },
+          {
+            "participant_id": "TCGA-A4-A5XZ",
+            "value": "Current reformed (> 15 years)"
+          },
+          {
+            "participant_id": "TCGA-A4-A5Y0",
+            "value": "Current smoker"
+          },
+          {
+            "participant_id": "TCGA-A4-A5Y1",
+            "value": "Lifelong Non-smoker"
+          },
+          {
+            "participant_id": "TCGA-A4-A6HP",
+            "value": "Lifelong Non-smoker"
+          },
+          {
+            "participant_id": "TCGA-A4-A772",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-A4-A7UZ",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-AL-3466",
+            "value": "Current reformed (<= 15 years)"
+          },
+          {
+            "participant_id": "TCGA-AL-3467",
+            "value": "Lifelong Non-smoker"
+          },
+          {
+            "participant_id": "TCGA-AL-3468",
+            "value": "Current reformed (> 15 years)"
+          },
+          {
+            "participant_id": "TCGA-AL-3471",
+            "value": "Lifelong Non-smoker"
+          },
+          {
+            "participant_id": "TCGA-AL-3472",
+            "value": "Current reformed (> 15 years)"
+          },
+          {
+            "participant_id": "TCGA-AL-3473",
+            "value": "Lifelong Non-smoker"
+          },
+          {
+            "participant_id": "TCGA-AL-7173",
+            "value": "Current smoker"
+          },
+          {
+            "participant_id": "TCGA-AL-A5DJ",
+            "value": "Lifelong Non-smoker"
+          },
+          {
+            "participant_id": "TCGA-AT-A5NU",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-B1-5398",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-B1-7332",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-B1-A47M",
+            "value": "Lifelong Non-smoker"
+          },
+          {
+            "participant_id": "TCGA-B1-A47N",
+            "value": "Lifelong Non-smoker"
+          },
+          {
+            "participant_id": "TCGA-B1-A47O",
+            "value": "Lifelong Non-smoker"
+          },
+          {
+            "participant_id": "TCGA-B1-A654",
+            "value": "Current smoker"
+          },
+          {
+            "participant_id": "TCGA-B1-A655",
+            "value": "Lifelong Non-smoker"
+          },
+          {
+            "participant_id": "TCGA-B1-A656",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-B1-A657",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-B3-3925",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-B3-3926",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-B3-4103",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-B3-4104",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-B3-8121",
+            "value": "Lifelong Non-smoker"
+          },
+          {
+            "participant_id": "TCGA-B3-A6W5",
+            "value": "Lifelong Non-smoker"
+          },
+          {
+            "participant_id": "TCGA-B9-4113",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-B9-4114",
+            "value": "Current reformed (<= 15 years)"
+          },
+          {
+            "participant_id": "TCGA-B9-4115",
+            "value": "Current reformed (<= 15 years)"
+          },
+          {
+            "participant_id": "TCGA-B9-4116",
+            "value": "Lifelong Non-smoker"
+          },
+          {
+            "participant_id": "TCGA-B9-4117",
+            "value": "Current reformed (<= 15 years)"
+          },
+          {
+            "participant_id": "TCGA-B9-4617",
+            "value": "Lifelong Non-smoker"
+          },
+          {
+            "participant_id": "TCGA-B9-5155",
+            "value": "Current smoker"
+          },
+          {
+            "participant_id": "TCGA-B9-5156",
+            "value": "Current reformed (<= 15 years)"
+          },
+          {
+            "participant_id": "TCGA-B9-7268",
+            "value": "Current reformed (> 15 years)"
+          },
+          {
+            "participant_id": "TCGA-B9-A44B",
+            "value": "Current reformed smoker"
+          },
+          {
+            "participant_id": "TCGA-B9-A5W7",
+            "value": "Lifelong Non-smoker"
+          },
+          {
+            "participant_id": "TCGA-B9-A5W8",
+            "value": "Lifelong Non-smoker"
+          },
+          {
+            "participant_id": "TCGA-B9-A5W9",
+            "value": "Current smoker"
+          },
+          {
+            "participant_id": "TCGA-B9-A69E",
+            "value": "Current reformed (> 15 years)"
+          },
+          {
+            "participant_id": "TCGA-B9-A8YH",
+            "value": "Current smoker"
+          },
+          {
+            "participant_id": "TCGA-B9-A8YI",
+            "value": "Current reformed (> 15 years)"
+          },
+          {
+            "participant_id": "TCGA-BQ-5875",
+            "value": "Lifelong Non-smoker"
+          },
+          {
+            "participant_id": "TCGA-BQ-5876",
+            "value": "Current reformed (> 15 years)"
+          },
+          {
+            "participant_id": "TCGA-BQ-5877",
+            "value": "Current reformed (<= 15 years)"
+          },
+          {
+            "participant_id": "TCGA-BQ-5878",
+            "value": "Current reformed (<= 15 years)"
+          },
+          {
+            "participant_id": "TCGA-BQ-5879",
+            "value": "Current reformed (<= 15 years)"
+          },
+          {
+            "participant_id": "TCGA-BQ-5880",
+            "value": "Lifelong Non-smoker"
+          },
+          {
+            "participant_id": "TCGA-BQ-5881",
+            "value": "Current reformed (> 15 years)"
+          },
+          {
+            "participant_id": "TCGA-BQ-5882",
+            "value": "Lifelong Non-smoker"
+          },
+          {
+            "participant_id": "TCGA-BQ-5883",
+            "value": "Lifelong Non-smoker"
+          },
+          {
+            "participant_id": "TCGA-BQ-5884",
+            "value": "Current reformed (<= 15 years)"
+          },
+          {
+            "participant_id": "TCGA-BQ-5885",
+            "value": "Current reformed (> 15 years)"
+          },
+          {
+            "participant_id": "TCGA-BQ-5886",
+            "value": "Current reformed (> 15 years)"
+          },
+          {
+            "participant_id": "TCGA-BQ-5887",
+            "value": "Current reformed (<= 15 years)"
+          },
+          {
+            "participant_id": "TCGA-BQ-5888",
+            "value": "Lifelong Non-smoker"
+          },
+          {
+            "participant_id": "TCGA-BQ-5889",
+            "value": "Lifelong Non-smoker"
+          },
+          {
+            "participant_id": "TCGA-BQ-5890",
+            "value": "Current reformed (<= 15 years)"
+          },
+          {
+            "participant_id": "TCGA-BQ-5891",
+            "value": "Lifelong Non-smoker"
+          },
+          {
+            "participant_id": "TCGA-BQ-5892",
+            "value": "Lifelong Non-smoker"
+          },
+          {
+            "participant_id": "TCGA-BQ-5893",
+            "value": "Lifelong Non-smoker"
+          },
+          {
+            "participant_id": "TCGA-BQ-5894",
+            "value": "Current reformed (> 15 years)"
+          },
+          {
+            "participant_id": "TCGA-BQ-7044",
+            "value": "Current reformed (> 15 years)"
+          },
+          {
+            "participant_id": "TCGA-BQ-7045",
+            "value": "Current reformed (> 15 years)"
+          },
+          {
+            "participant_id": "TCGA-BQ-7046",
+            "value": "Current reformed (> 15 years)"
+          },
+          {
+            "participant_id": "TCGA-BQ-7048",
+            "value": "Current reformed (> 15 years)"
+          },
+          {
+            "participant_id": "TCGA-BQ-7049",
+            "value": "Current smoker"
+          },
+          {
+            "participant_id": "TCGA-BQ-7050",
+            "value": "Current reformed (<= 15 years)"
+          },
+          {
+            "participant_id": "TCGA-BQ-7051",
+            "value": "Lifelong Non-smoker"
+          },
+          {
+            "participant_id": "TCGA-BQ-7053",
+            "value": "Lifelong Non-smoker"
+          },
+          {
+            "participant_id": "TCGA-BQ-7055",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-BQ-7056",
+            "value": "Current reformed (> 15 years)"
+          },
+          {
+            "participant_id": "TCGA-BQ-7058",
+            "value": "Lifelong Non-smoker"
+          },
+          {
+            "participant_id": "TCGA-BQ-7059",
+            "value": "Lifelong Non-smoker"
+          },
+          {
+            "participant_id": "TCGA-BQ-7060",
+            "value": "Lifelong Non-smoker"
+          },
+          {
+            "participant_id": "TCGA-BQ-7061",
+            "value": "Current reformed (> 15 years)"
+          },
+          {
+            "participant_id": "TCGA-BQ-7062",
+            "value": "Current reformed (> 15 years)"
+          },
+          {
+            "participant_id": "TCGA-DW-5560",
+            "value": "Lifelong Non-smoker"
+          },
+          {
+            "participant_id": "TCGA-DW-5561",
+            "value": "Current reformed (<= 15 years)"
+          },
+          {
+            "participant_id": "TCGA-DW-7834",
+            "value": "Current reformed (<= 15 years)"
+          },
+          {
+            "participant_id": "TCGA-DW-7836",
+            "value": "Lifelong Non-smoker"
+          },
+          {
+            "participant_id": "TCGA-DW-7837",
+            "value": "Lifelong Non-smoker"
+          },
+          {
+            "participant_id": "TCGA-DW-7838",
+            "value": "Current smoker"
+          },
+          {
+            "participant_id": "TCGA-DW-7839",
+            "value": "Lifelong Non-smoker"
+          },
+          {
+            "participant_id": "TCGA-DW-7840",
+            "value": "Lifelong Non-smoker"
+          },
+          {
+            "participant_id": "TCGA-DW-7841",
+            "value": "Current smoker"
+          },
+          {
+            "participant_id": "TCGA-DW-7842",
+            "value": "Lifelong Non-smoker"
+          },
+          {
+            "participant_id": "TCGA-DW-7963",
+            "value": "Current smoker"
+          },
+          {
+            "participant_id": "TCGA-DZ-6131",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-DZ-6132",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-DZ-6133",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-DZ-6134",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-DZ-6135",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-EV-5901",
+            "value": "Current smoker"
+          },
+          {
+            "participant_id": "TCGA-EV-5902",
+            "value": "Lifelong Non-smoker"
+          },
+          {
+            "participant_id": "TCGA-EV-5903",
+            "value": "Lifelong Non-smoker"
+          },
+          {
+            "participant_id": "TCGA-F9-A4JJ",
+            "value": "Lifelong Non-smoker"
+          },
+          {
+            "participant_id": "TCGA-F9-A7Q0",
+            "value": "Lifelong Non-smoker"
+          },
+          {
+            "participant_id": "TCGA-F9-A7VF",
+            "value": "Lifelong Non-smoker"
+          },
+          {
+            "participant_id": "TCGA-F9-A8NY",
+            "value": "Lifelong Non-smoker"
+          },
+          {
+            "participant_id": "TCGA-F9-A97G",
+            "value": "Current reformed (<= 15 years)"
+          },
+          {
+            "participant_id": "TCGA-G7-6789",
+            "value": "Lifelong Non-smoker"
+          },
+          {
+            "participant_id": "TCGA-G7-6790",
+            "value": "Lifelong Non-smoker"
+          },
+          {
+            "participant_id": "TCGA-G7-6792",
+            "value": "Current smoker"
+          },
+          {
+            "participant_id": "TCGA-G7-6793",
+            "value": "Current reformed (<= 15 years)"
+          },
+          {
+            "participant_id": "TCGA-G7-6795",
+            "value": "Current reformed (> 15 years)"
+          },
+          {
+            "participant_id": "TCGA-G7-6796",
+            "value": "Lifelong Non-smoker"
+          },
+          {
+            "participant_id": "TCGA-G7-6797",
+            "value": "Current smoker"
+          },
+          {
+            "participant_id": "TCGA-G7-7501",
+            "value": "Current smoker"
+          },
+          {
+            "participant_id": "TCGA-G7-7502",
+            "value": "Current reformed (> 15 years)"
+          },
+          {
+            "participant_id": "TCGA-G7-A4TM",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-G7-A8LB",
+            "value": "Current reformed (<= 15 years)"
+          },
+          {
+            "participant_id": "TCGA-G7-A8LC",
+            "value": "Lifelong Non-smoker"
+          },
+          {
+            "participant_id": "TCGA-G7-A8LD",
+            "value": "Current reformed (<= 15 years)"
+          },
+          {
+            "participant_id": "TCGA-G7-A8LE",
+            "value": "Current reformed (<= 15 years)"
+          },
+          {
+            "participant_id": "TCGA-GL-6846",
+            "value": "Lifelong Non-smoker"
+          },
+          {
+            "participant_id": "TCGA-GL-7773",
+            "value": "Current reformed (<= 15 years)"
+          },
+          {
+            "participant_id": "TCGA-GL-7966",
+            "value": "Lifelong Non-smoker"
+          },
+          {
+            "participant_id": "TCGA-GL-8500",
+            "value": "Current reformed (<= 15 years)"
+          },
+          {
+            "participant_id": "TCGA-GL-A4EM",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-GL-A59R",
+            "value": "Lifelong Non-smoker"
+          },
+          {
+            "participant_id": "TCGA-GL-A59T",
+            "value": "Current reformed (> 15 years)"
+          },
+          {
+            "participant_id": "TCGA-GL-A9DC",
+            "value": "Lifelong Non-smoker"
+          },
+          {
+            "participant_id": "TCGA-GL-A9DD",
+            "value": "Current reformed (> 15 years)"
+          },
+          {
+            "participant_id": "TCGA-GL-A9DE",
+            "value": "Lifelong Non-smoker"
+          },
+          {
+            "participant_id": "TCGA-HE-7128",
+            "value": "Lifelong Non-smoker"
+          },
+          {
+            "participant_id": "TCGA-HE-7129",
+            "value": "Current reformed (<= 15 years)"
+          },
+          {
+            "participant_id": "TCGA-HE-7130",
+            "value": "Current reformed (> 15 years)"
+          },
+          {
+            "participant_id": "TCGA-HE-A5NF",
+            "value": "Current smoker"
+          },
+          {
+            "participant_id": "TCGA-HE-A5NH",
+            "value": "Lifelong Non-smoker"
+          },
+          {
+            "participant_id": "TCGA-HE-A5NI",
+            "value": "Current smoker"
+          },
+          {
+            "participant_id": "TCGA-HE-A5NJ",
+            "value": "Current reformed (> 15 years)"
+          },
+          {
+            "participant_id": "TCGA-HE-A5NK",
+            "value": "Current reformed (> 15 years)"
+          },
+          {
+            "participant_id": "TCGA-HE-A5NL",
+            "value": "Lifelong Non-smoker"
+          },
+          {
+            "participant_id": "TCGA-IA-A40U",
+            "value": "Current reformed (<= 15 years)"
+          },
+          {
+            "participant_id": "TCGA-IA-A40X",
+            "value": "Lifelong Non-smoker"
+          },
+          {
+            "participant_id": "TCGA-IA-A40Y",
+            "value": "Lifelong Non-smoker"
+          },
+          {
+            "participant_id": "TCGA-IA-A83S",
+            "value": "Current smoker"
+          },
+          {
+            "participant_id": "TCGA-IA-A83T",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-IA-A83V",
+            "value": "Current smoker"
+          },
+          {
+            "participant_id": "TCGA-IA-A83W",
+            "value": "Lifelong Non-smoker"
+          },
+          {
+            "participant_id": "TCGA-IZ-8195",
+            "value": "Lifelong Non-smoker"
+          },
+          {
+            "participant_id": "TCGA-IZ-8196",
+            "value": "Current reformed (> 15 years)"
+          },
+          {
+            "participant_id": "TCGA-IZ-A6M8",
+            "value": "Current reformed smoker"
+          },
+          {
+            "participant_id": "TCGA-IZ-A6M9",
+            "value": "Current reformed smoker"
+          },
+          {
+            "participant_id": "TCGA-J7-6720",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-J7-8537",
+            "value": "Lifelong Non-smoker"
+          },
+          {
+            "participant_id": "TCGA-J7-A8I2",
+            "value": "Lifelong Non-smoker"
+          },
+          {
+            "participant_id": "TCGA-KV-A6GD",
+            "value": "Lifelong Non-smoker"
+          },
+          {
+            "participant_id": "TCGA-KV-A6GE",
+            "value": "Lifelong Non-smoker"
+          },
+          {
+            "participant_id": "TCGA-KV-A74V",
+            "value": "Lifelong Non-smoker"
+          },
+          {
+            "participant_id": "TCGA-MH-A55W",
+            "value": "Lifelong Non-smoker"
+          },
+          {
+            "participant_id": "TCGA-MH-A55Z",
+            "value": "Lifelong Non-smoker"
+          },
+          {
+            "participant_id": "TCGA-MH-A560",
+            "value": "Lifelong Non-smoker"
+          },
+          {
+            "participant_id": "TCGA-MH-A561",
+            "value": "Lifelong Non-smoker"
+          },
+          {
+            "participant_id": "TCGA-MH-A562",
+            "value": "Lifelong Non-smoker"
+          },
+          {
+            "participant_id": "TCGA-MH-A854",
+            "value": "Current reformed (<= 15 years)"
+          },
+          {
+            "participant_id": "TCGA-MH-A855",
+            "value": "Current smoker"
+          },
+          {
+            "participant_id": "TCGA-MH-A856",
+            "value": "Current reformed (<= 15 years)"
+          },
+          {
+            "participant_id": "TCGA-MH-A857",
+            "value": "Lifelong Non-smoker"
+          },
+          {
+            "participant_id": "TCGA-O9-A75Z",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-P4-A5E6",
+            "value": "Current reformed (> 15 years)"
+          },
+          {
+            "participant_id": "TCGA-P4-A5E7",
+            "value": "Current reformed (> 15 years)"
+          },
+          {
+            "participant_id": "TCGA-P4-A5E8",
+            "value": "Lifelong Non-smoker"
+          },
+          {
+            "participant_id": "TCGA-P4-A5EA",
+            "value": "Lifelong Non-smoker"
+          },
+          {
+            "participant_id": "TCGA-P4-A5EB",
+            "value": "Current reformed (> 15 years)"
+          },
+          {
+            "participant_id": "TCGA-P4-A5ED",
+            "value": "Lifelong Non-smoker"
+          },
+          {
+            "participant_id": "TCGA-P4-AAVK",
+            "value": "Current reformed (> 15 years)"
+          },
+          {
+            "participant_id": "TCGA-P4-AAVL",
+            "value": "Lifelong Non-smoker"
+          },
+          {
+            "participant_id": "TCGA-P4-AAVM",
+            "value": "Current smoker"
+          },
+          {
+            "participant_id": "TCGA-P4-AAVO",
+            "value": "Current reformed (<= 15 years)"
+          },
+          {
+            "participant_id": "TCGA-PJ-A5Z8",
+            "value": "Lifelong Non-smoker"
+          },
+          {
+            "participant_id": "TCGA-PJ-A5Z9",
+            "value": "Current reformed (<= 15 years)"
+          },
+          {
+            "participant_id": "TCGA-PJ-A8JU",
+            "value": "Current reformed (> 15 years)"
+          },
+          {
+            "participant_id": "TCGA-Q2-A5QZ",
+            "value": "Current reformed (<= 15 years)"
+          },
+          {
+            "participant_id": "TCGA-SX-A71R",
+            "value": "Lifelong Non-smoker"
+          },
+          {
+            "participant_id": "TCGA-SX-A71S",
+            "value": "Current reformed (> 15 years)"
+          },
+          {
+            "participant_id": "TCGA-SX-A71U",
+            "value": "Current smoker"
+          },
+          {
+            "participant_id": "TCGA-SX-A71V",
+            "value": "Lifelong Non-smoker"
+          },
+          {
+            "participant_id": "TCGA-SX-A71W",
+            "value": "Current reformed (> 15 years)"
+          },
+          {
+            "participant_id": "TCGA-SX-A7SL",
+            "value": "Current reformed (<= 15 years)"
+          },
+          {
+            "participant_id": "TCGA-SX-A7SM",
+            "value": "Current smoker"
+          },
+          {
+            "participant_id": "TCGA-SX-A7SN",
+            "value": "Lifelong Non-smoker"
+          },
+          {
+            "participant_id": "TCGA-SX-A7SO",
+            "value": "Lifelong Non-smoker"
+          },
+          {
+            "participant_id": "TCGA-SX-A7SP",
+            "value": "Lifelong Non-smoker"
+          },
+          {
+            "participant_id": "TCGA-SX-A7SQ",
+            "value": "Lifelong Non-smoker"
+          },
+          {
+            "participant_id": "TCGA-SX-A7SR",
+            "value": "Current smoker"
+          },
+          {
+            "participant_id": "TCGA-SX-A7SS",
+            "value": "Current reformed (<= 15 years)"
+          },
+          {
+            "participant_id": "TCGA-SX-A7SU",
+            "value": "Lifelong Non-smoker"
+          },
+          {
+            "participant_id": "TCGA-UN-AAZ9",
+            "value": "Current reformed smoker"
+          },
+          {
+            "participant_id": "TCGA-UZ-A9PJ",
+            "value": "Current reformed (> 15 years)"
+          },
+          {
+            "participant_id": "TCGA-UZ-A9PK",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-UZ-A9PL",
+            "value": "Lifelong Non-smoker"
+          },
+          {
+            "participant_id": "TCGA-UZ-A9PM",
+            "value": "Current smoker"
+          },
+          {
+            "participant_id": "TCGA-UZ-A9PN",
+            "value": "NA"
+          },
+          {
+            "participant_id": "TCGA-UZ-A9PO",
+            "value": "Current reformed (> 15 years)"
+          },
+          {
+            "participant_id": "TCGA-UZ-A9PP",
+            "value": "Lifelong Non-smoker"
+          },
+          {
+            "participant_id": "TCGA-UZ-A9PQ",
+            "value": "Current smoker"
+          },
+          {
+            "participant_id": "TCGA-UZ-A9PR",
+            "value": "Current reformed (> 15 years)"
+          },
+          {
+            "participant_id": "TCGA-UZ-A9PS",
+            "value": "Current reformed (> 15 years)"
+          },
+          {
+            "participant_id": "TCGA-UZ-A9PU",
+            "value": "Lifelong Non-smoker"
+          },
+          {
+            "participant_id": "TCGA-UZ-A9PV",
+            "value": "Lifelong Non-smoker"
+          },
+          {
+            "participant_id": "TCGA-UZ-A9PX",
+            "value": "Current reformed (> 15 years)"
+          },
+          {
+            "participant_id": "TCGA-UZ-A9PZ",
+            "value": "Current reformed smoker"
+          },
+          {
+            "participant_id": "TCGA-UZ-A9Q0",
+            "value": "Current reformed smoker"
+          },
+          {
+            "participant_id": "TCGA-UZ-A9Q1",
+            "value": "Lifelong Non-smoker"
+          },
+          {
+            "participant_id": "TCGA-V9-A7HT",
+            "value": "Current reformed smoker"
+          },
+          {
+            "participant_id": "TCGA-WN-A9G9",
+            "value": "Current reformed (<= 15 years)"
+          },
+          {
+            "participant_id": "TCGA-WN-AB4C",
+            "value": "Current smoker"
+          },
+          {
+            "participant_id": "TCGA-Y8-A894",
+            "value": "Current smoker"
+          },
+          {
+            "participant_id": "TCGA-Y8-A895",
+            "value": "Lifelong Non-smoker"
+          },
+          {
+            "participant_id": "TCGA-Y8-A896",
+            "value": "Current smoker"
+          },
+          {
+            "participant_id": "TCGA-Y8-A897",
+            "value": "Lifelong Non-smoker"
+          },
+          {
+            "participant_id": "TCGA-Y8-A898",
+            "value": "Lifelong Non-smoker"
+          },
+          {
+            "participant_id": "TCGA-Y8-A8RY",
+            "value": "Current reformed (> 15 years)"
+          },
+          {
+            "participant_id": "TCGA-Y8-A8RZ",
+            "value": "Current smoker"
+          },
+          {
+            "participant_id": "TCGA-Y8-A8S0",
+            "value": "Lifelong Non-smoker"
+          },
+          {
+            "participant_id": "TCGA-Y8-A8S1",
+            "value": "Lifelong Non-smoker"
+          }
+        ]
+      },
+      {
+        "name": "Gender",
+        "data": [
+          {
+            "participant_id": "TCGA-2K-A9WE",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-2Z-A9J1",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-2Z-A9J2",
+            "value": "FEMALE"
+          },
+          {
+            "participant_id": "TCGA-2Z-A9J3",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-2Z-A9J5",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-2Z-A9J6",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-2Z-A9J7",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-2Z-A9J8",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-2Z-A9J9",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-2Z-A9JD",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-2Z-A9JE",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-2Z-A9JG",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-2Z-A9JI",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-2Z-A9JJ",
+            "value": "FEMALE"
+          },
+          {
+            "participant_id": "TCGA-2Z-A9JK",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-2Z-A9JL",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-2Z-A9JM",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-2Z-A9JN",
+            "value": "FEMALE"
+          },
+          {
+            "participant_id": "TCGA-2Z-A9JO",
+            "value": "FEMALE"
+          },
+          {
+            "participant_id": "TCGA-2Z-A9JP",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-2Z-A9JQ",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-2Z-A9JR",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-2Z-A9JS",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-2Z-A9JT",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-4A-A93W",
+            "value": "FEMALE"
+          },
+          {
+            "participant_id": "TCGA-4A-A93X",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-4A-A93Y",
+            "value": "FEMALE"
+          },
+          {
+            "participant_id": "TCGA-5P-A9JU",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-5P-A9JV",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-5P-A9JW",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-5P-A9JY",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-5P-A9JZ",
+            "value": "FEMALE"
+          },
+          {
+            "participant_id": "TCGA-5P-A9K0",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-5P-A9K2",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-5P-A9K3",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-5P-A9K6",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-5P-A9K8",
+            "value": "FEMALE"
+          },
+          {
+            "participant_id": "TCGA-5P-A9K9",
+            "value": "FEMALE"
+          },
+          {
+            "participant_id": "TCGA-5P-A9KA",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-5P-A9KC",
+            "value": "FEMALE"
+          },
+          {
+            "participant_id": "TCGA-5P-A9KE",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-5P-A9KH",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-A4-7286",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-A4-7287",
+            "value": "FEMALE"
+          },
+          {
+            "participant_id": "TCGA-A4-7288",
+            "value": "FEMALE"
+          },
+          {
+            "participant_id": "TCGA-A4-7583",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-A4-7584",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-A4-7585",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-A4-7732",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-A4-7734",
+            "value": "FEMALE"
+          },
+          {
+            "participant_id": "TCGA-A4-7828",
+            "value": "FEMALE"
+          },
+          {
+            "participant_id": "TCGA-A4-7915",
+            "value": "FEMALE"
+          },
+          {
+            "participant_id": "TCGA-A4-7996",
+            "value": "FEMALE"
+          },
+          {
+            "participant_id": "TCGA-A4-7997",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-A4-8098",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-A4-8310",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-A4-8311",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-A4-8312",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-A4-8515",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-A4-8516",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-A4-8517",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-A4-8630",
+            "value": "FEMALE"
+          },
+          {
+            "participant_id": "TCGA-A4-A48D",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-A4-A4ZT",
+            "value": "FEMALE"
+          },
+          {
+            "participant_id": "TCGA-A4-A57E",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-A4-A5DU",
+            "value": "FEMALE"
+          },
+          {
+            "participant_id": "TCGA-A4-A5XZ",
+            "value": "FEMALE"
+          },
+          {
+            "participant_id": "TCGA-A4-A5Y0",
+            "value": "FEMALE"
+          },
+          {
+            "participant_id": "TCGA-A4-A5Y1",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-A4-A6HP",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-A4-A772",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-A4-A7UZ",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-AL-3466",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-AL-3467",
+            "value": "FEMALE"
+          },
+          {
+            "participant_id": "TCGA-AL-3468",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-AL-3471",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-AL-3472",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-AL-3473",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-AL-7173",
+            "value": "FEMALE"
+          },
+          {
+            "participant_id": "TCGA-AL-A5DJ",
+            "value": "FEMALE"
+          },
+          {
+            "participant_id": "TCGA-AT-A5NU",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-B1-5398",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-B1-7332",
+            "value": "FEMALE"
+          },
+          {
+            "participant_id": "TCGA-B1-A47M",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-B1-A47N",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-B1-A47O",
+            "value": "FEMALE"
+          },
+          {
+            "participant_id": "TCGA-B1-A654",
+            "value": "FEMALE"
+          },
+          {
+            "participant_id": "TCGA-B1-A655",
+            "value": "FEMALE"
+          },
+          {
+            "participant_id": "TCGA-B1-A656",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-B1-A657",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-B3-3925",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-B3-3926",
+            "value": "FEMALE"
+          },
+          {
+            "participant_id": "TCGA-B3-4103",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-B3-4104",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-B3-8121",
+            "value": "FEMALE"
+          },
+          {
+            "participant_id": "TCGA-B3-A6W5",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-B9-4113",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-B9-4114",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-B9-4115",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-B9-4116",
+            "value": "FEMALE"
+          },
+          {
+            "participant_id": "TCGA-B9-4117",
+            "value": "FEMALE"
+          },
+          {
+            "participant_id": "TCGA-B9-4617",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-B9-5155",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-B9-5156",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-B9-7268",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-B9-A44B",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-B9-A5W7",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-B9-A5W8",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-B9-A5W9",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-B9-A69E",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-B9-A8YH",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-B9-A8YI",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-BQ-5875",
+            "value": "FEMALE"
+          },
+          {
+            "participant_id": "TCGA-BQ-5876",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-BQ-5877",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-BQ-5878",
+            "value": "FEMALE"
+          },
+          {
+            "participant_id": "TCGA-BQ-5879",
+            "value": "FEMALE"
+          },
+          {
+            "participant_id": "TCGA-BQ-5880",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-BQ-5881",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-BQ-5882",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-BQ-5883",
+            "value": "FEMALE"
+          },
+          {
+            "participant_id": "TCGA-BQ-5884",
+            "value": "FEMALE"
+          },
+          {
+            "participant_id": "TCGA-BQ-5885",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-BQ-5886",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-BQ-5887",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-BQ-5888",
+            "value": "FEMALE"
+          },
+          {
+            "participant_id": "TCGA-BQ-5889",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-BQ-5890",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-BQ-5891",
+            "value": "FEMALE"
+          },
+          {
+            "participant_id": "TCGA-BQ-5892",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-BQ-5893",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-BQ-5894",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-BQ-7044",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-BQ-7045",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-BQ-7046",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-BQ-7048",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-BQ-7049",
+            "value": "FEMALE"
+          },
+          {
+            "participant_id": "TCGA-BQ-7050",
+            "value": "FEMALE"
+          },
+          {
+            "participant_id": "TCGA-BQ-7051",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-BQ-7053",
+            "value": "FEMALE"
+          },
+          {
+            "participant_id": "TCGA-BQ-7055",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-BQ-7056",
+            "value": "FEMALE"
+          },
+          {
+            "participant_id": "TCGA-BQ-7058",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-BQ-7059",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-BQ-7060",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-BQ-7061",
+            "value": "FEMALE"
+          },
+          {
+            "participant_id": "TCGA-BQ-7062",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-DW-5560",
+            "value": "FEMALE"
+          },
+          {
+            "participant_id": "TCGA-DW-5561",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-DW-7834",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-DW-7836",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-DW-7837",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-DW-7838",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-DW-7839",
+            "value": "FEMALE"
+          },
+          {
+            "participant_id": "TCGA-DW-7840",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-DW-7841",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-DW-7842",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-DW-7963",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-DZ-6131",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-DZ-6132",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-DZ-6133",
+            "value": "FEMALE"
+          },
+          {
+            "participant_id": "TCGA-DZ-6134",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-DZ-6135",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-EV-5901",
+            "value": "FEMALE"
+          },
+          {
+            "participant_id": "TCGA-EV-5902",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-EV-5903",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-F9-A4JJ",
+            "value": "FEMALE"
+          },
+          {
+            "participant_id": "TCGA-F9-A7Q0",
+            "value": "FEMALE"
+          },
+          {
+            "participant_id": "TCGA-F9-A7VF",
+            "value": "FEMALE"
+          },
+          {
+            "participant_id": "TCGA-F9-A8NY",
+            "value": "FEMALE"
+          },
+          {
+            "participant_id": "TCGA-F9-A97G",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-G7-6789",
+            "value": "FEMALE"
+          },
+          {
+            "participant_id": "TCGA-G7-6790",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-G7-6792",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-G7-6793",
+            "value": "FEMALE"
+          },
+          {
+            "participant_id": "TCGA-G7-6795",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-G7-6796",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-G7-6797",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-G7-7501",
+            "value": "FEMALE"
+          },
+          {
+            "participant_id": "TCGA-G7-7502",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-G7-A4TM",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-G7-A8LB",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-G7-A8LC",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-G7-A8LD",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-G7-A8LE",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-GL-6846",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-GL-7773",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-GL-7966",
+            "value": "FEMALE"
+          },
+          {
+            "participant_id": "TCGA-GL-8500",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-GL-A4EM",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-GL-A59R",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-GL-A59T",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-GL-A9DC",
+            "value": "FEMALE"
+          },
+          {
+            "participant_id": "TCGA-GL-A9DD",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-GL-A9DE",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-HE-7128",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-HE-7129",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-HE-7130",
+            "value": "FEMALE"
+          },
+          {
+            "participant_id": "TCGA-HE-A5NF",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-HE-A5NH",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-HE-A5NI",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-HE-A5NJ",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-HE-A5NK",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-HE-A5NL",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-IA-A40U",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-IA-A40X",
+            "value": "FEMALE"
+          },
+          {
+            "participant_id": "TCGA-IA-A40Y",
+            "value": "FEMALE"
+          },
+          {
+            "participant_id": "TCGA-IA-A83S",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-IA-A83T",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-IA-A83V",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-IA-A83W",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-IZ-8195",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-IZ-8196",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-IZ-A6M8",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-IZ-A6M9",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-J7-6720",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-J7-8537",
+            "value": "FEMALE"
+          },
+          {
+            "participant_id": "TCGA-J7-A8I2",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-KV-A6GD",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-KV-A6GE",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-KV-A74V",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-MH-A55W",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-MH-A55Z",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-MH-A560",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-MH-A561",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-MH-A562",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-MH-A854",
+            "value": "FEMALE"
+          },
+          {
+            "participant_id": "TCGA-MH-A855",
+            "value": "FEMALE"
+          },
+          {
+            "participant_id": "TCGA-MH-A856",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-MH-A857",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-O9-A75Z",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-P4-A5E6",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-P4-A5E7",
+            "value": "FEMALE"
+          },
+          {
+            "participant_id": "TCGA-P4-A5E8",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-P4-A5EA",
+            "value": "FEMALE"
+          },
+          {
+            "participant_id": "TCGA-P4-A5EB",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-P4-A5ED",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-P4-AAVK",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-P4-AAVL",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-P4-AAVM",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-P4-AAVO",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-PJ-A5Z8",
+            "value": "FEMALE"
+          },
+          {
+            "participant_id": "TCGA-PJ-A5Z9",
+            "value": "FEMALE"
+          },
+          {
+            "participant_id": "TCGA-PJ-A8JU",
+            "value": "FEMALE"
+          },
+          {
+            "participant_id": "TCGA-Q2-A5QZ",
+            "value": "FEMALE"
+          },
+          {
+            "participant_id": "TCGA-SX-A71R",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-SX-A71S",
+            "value": "FEMALE"
+          },
+          {
+            "participant_id": "TCGA-SX-A71U",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-SX-A71V",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-SX-A71W",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-SX-A7SL",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-SX-A7SM",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-SX-A7SN",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-SX-A7SO",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-SX-A7SP",
+            "value": "FEMALE"
+          },
+          {
+            "participant_id": "TCGA-SX-A7SQ",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-SX-A7SR",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-SX-A7SS",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-SX-A7SU",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-UN-AAZ9",
+            "value": "FEMALE"
+          },
+          {
+            "participant_id": "TCGA-UZ-A9PJ",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-UZ-A9PK",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-UZ-A9PL",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-UZ-A9PM",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-UZ-A9PN",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-UZ-A9PO",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-UZ-A9PP",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-UZ-A9PQ",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-UZ-A9PR",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-UZ-A9PS",
+            "value": "FEMALE"
+          },
+          {
+            "participant_id": "TCGA-UZ-A9PU",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-UZ-A9PV",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-UZ-A9PX",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-UZ-A9PZ",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-UZ-A9Q0",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-UZ-A9Q1",
+            "value": "FEMALE"
+          },
+          {
+            "participant_id": "TCGA-V9-A7HT",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-WN-A9G9",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-WN-AB4C",
+            "value": "FEMALE"
+          },
+          {
+            "participant_id": "TCGA-Y8-A894",
+            "value": "FEMALE"
+          },
+          {
+            "participant_id": "TCGA-Y8-A895",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-Y8-A896",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-Y8-A897",
+            "value": "FEMALE"
+          },
+          {
+            "participant_id": "TCGA-Y8-A898",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-Y8-A8RY",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-Y8-A8RZ",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-Y8-A8S0",
+            "value": "MALE"
+          },
+          {
+            "participant_id": "TCGA-Y8-A8S1",
+            "value": "MALE"
+          }
+        ]
+      },
+      {
+        "name": "Vital status",
+        "data": [
+          {
+            "participant_id": "TCGA-2K-A9WE",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-2Z-A9J1",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-2Z-A9J2",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-2Z-A9J3",
+            "value": "DECEASED"
+          },
+          {
+            "participant_id": "TCGA-2Z-A9J5",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-2Z-A9J6",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-2Z-A9J7",
+            "value": "DECEASED"
+          },
+          {
+            "participant_id": "TCGA-2Z-A9J8",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-2Z-A9J9",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-2Z-A9JD",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-2Z-A9JE",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-2Z-A9JG",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-2Z-A9JI",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-2Z-A9JJ",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-2Z-A9JK",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-2Z-A9JL",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-2Z-A9JM",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-2Z-A9JN",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-2Z-A9JO",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-2Z-A9JP",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-2Z-A9JQ",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-2Z-A9JR",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-2Z-A9JS",
+            "value": "DECEASED"
+          },
+          {
+            "participant_id": "TCGA-2Z-A9JT",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-4A-A93W",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-4A-A93X",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-4A-A93Y",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-5P-A9JU",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-5P-A9JV",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-5P-A9JW",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-5P-A9JY",
+            "value": "DECEASED"
+          },
+          {
+            "participant_id": "TCGA-5P-A9JZ",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-5P-A9K0",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-5P-A9K2",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-5P-A9K3",
+            "value": "DECEASED"
+          },
+          {
+            "participant_id": "TCGA-5P-A9K6",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-5P-A9K8",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-5P-A9K9",
+            "value": "DECEASED"
+          },
+          {
+            "participant_id": "TCGA-5P-A9KA",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-5P-A9KC",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-5P-A9KE",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-5P-A9KH",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-A4-7286",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-A4-7287",
+            "value": "DECEASED"
+          },
+          {
+            "participant_id": "TCGA-A4-7288",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-A4-7583",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-A4-7584",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-A4-7585",
+            "value": "DECEASED"
+          },
+          {
+            "participant_id": "TCGA-A4-7732",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-A4-7734",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-A4-7828",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-A4-7915",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-A4-7996",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-A4-7997",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-A4-8098",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-A4-8310",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-A4-8311",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-A4-8312",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-A4-8515",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-A4-8516",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-A4-8517",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-A4-8630",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-A4-A48D",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-A4-A4ZT",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-A4-A57E",
+            "value": "DECEASED"
+          },
+          {
+            "participant_id": "TCGA-A4-A5DU",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-A4-A5XZ",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-A4-A5Y0",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-A4-A5Y1",
+            "value": "DECEASED"
+          },
+          {
+            "participant_id": "TCGA-A4-A6HP",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-A4-A772",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-A4-A7UZ",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-AL-3466",
+            "value": "DECEASED"
+          },
+          {
+            "participant_id": "TCGA-AL-3467",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-AL-3468",
+            "value": "DECEASED"
+          },
+          {
+            "participant_id": "TCGA-AL-3471",
+            "value": "DECEASED"
+          },
+          {
+            "participant_id": "TCGA-AL-3472",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-AL-3473",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-AL-7173",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-AL-A5DJ",
+            "value": "DECEASED"
+          },
+          {
+            "participant_id": "TCGA-AT-A5NU",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-B1-5398",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-B1-7332",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-B1-A47M",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-B1-A47N",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-B1-A47O",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-B1-A654",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-B1-A655",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-B1-A656",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-B1-A657",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-B3-3925",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-B3-3926",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-B3-4103",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-B3-4104",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-B3-8121",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-B3-A6W5",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-B9-4113",
+            "value": "DECEASED"
+          },
+          {
+            "participant_id": "TCGA-B9-4114",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-B9-4115",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-B9-4116",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-B9-4117",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-B9-4617",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-B9-5155",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-B9-5156",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-B9-7268",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-B9-A44B",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-B9-A5W7",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-B9-A5W8",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-B9-A5W9",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-B9-A69E",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-B9-A8YH",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-B9-A8YI",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-BQ-5875",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-BQ-5876",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-BQ-5877",
+            "value": "DECEASED"
+          },
+          {
+            "participant_id": "TCGA-BQ-5878",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-BQ-5879",
+            "value": "DECEASED"
+          },
+          {
+            "participant_id": "TCGA-BQ-5880",
+            "value": "DECEASED"
+          },
+          {
+            "participant_id": "TCGA-BQ-5881",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-BQ-5882",
+            "value": "DECEASED"
+          },
+          {
+            "participant_id": "TCGA-BQ-5883",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-BQ-5884",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-BQ-5885",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-BQ-5886",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-BQ-5887",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-BQ-5888",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-BQ-5889",
+            "value": "DECEASED"
+          },
+          {
+            "participant_id": "TCGA-BQ-5890",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-BQ-5891",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-BQ-5892",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-BQ-5893",
+            "value": "DECEASED"
+          },
+          {
+            "participant_id": "TCGA-BQ-5894",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-BQ-7044",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-BQ-7045",
+            "value": "DECEASED"
+          },
+          {
+            "participant_id": "TCGA-BQ-7046",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-BQ-7048",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-BQ-7049",
+            "value": "DECEASED"
+          },
+          {
+            "participant_id": "TCGA-BQ-7050",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-BQ-7051",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-BQ-7053",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-BQ-7055",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-BQ-7056",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-BQ-7058",
+            "value": "DECEASED"
+          },
+          {
+            "participant_id": "TCGA-BQ-7059",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-BQ-7060",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-BQ-7061",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-BQ-7062",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-DW-5560",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-DW-5561",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-DW-7834",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-DW-7836",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-DW-7837",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-DW-7838",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-DW-7839",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-DW-7840",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-DW-7841",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-DW-7842",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-DW-7963",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-DZ-6131",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-DZ-6132",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-DZ-6133",
+            "value": "DECEASED"
+          },
+          {
+            "participant_id": "TCGA-DZ-6134",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-DZ-6135",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-EV-5901",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-EV-5902",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-EV-5903",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-F9-A4JJ",
+            "value": "DECEASED"
+          },
+          {
+            "participant_id": "TCGA-F9-A7Q0",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-F9-A7VF",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-F9-A8NY",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-F9-A97G",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-G7-6789",
+            "value": "DECEASED"
+          },
+          {
+            "participant_id": "TCGA-G7-6790",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-G7-6792",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-G7-6793",
+            "value": "DECEASED"
+          },
+          {
+            "participant_id": "TCGA-G7-6795",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-G7-6796",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-G7-6797",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-G7-7501",
+            "value": "DECEASED"
+          },
+          {
+            "participant_id": "TCGA-G7-7502",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-G7-A4TM",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-G7-A8LB",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-G7-A8LC",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-G7-A8LD",
+            "value": "DECEASED"
+          },
+          {
+            "participant_id": "TCGA-G7-A8LE",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-GL-6846",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-GL-7773",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-GL-7966",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-GL-8500",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-GL-A4EM",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-GL-A59R",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-GL-A59T",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-GL-A9DC",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-GL-A9DD",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-GL-A9DE",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-HE-7128",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-HE-7129",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-HE-7130",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-HE-A5NF",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-HE-A5NH",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-HE-A5NI",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-HE-A5NJ",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-HE-A5NK",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-HE-A5NL",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-IA-A40U",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-IA-A40X",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-IA-A40Y",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-IA-A83S",
+            "value": "DECEASED"
+          },
+          {
+            "participant_id": "TCGA-IA-A83T",
+            "value": "DECEASED"
+          },
+          {
+            "participant_id": "TCGA-IA-A83V",
+            "value": "DECEASED"
+          },
+          {
+            "participant_id": "TCGA-IA-A83W",
+            "value": "DECEASED"
+          },
+          {
+            "participant_id": "TCGA-IZ-8195",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-IZ-8196",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-IZ-A6M8",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-IZ-A6M9",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-J7-6720",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-J7-8537",
+            "value": "DECEASED"
+          },
+          {
+            "participant_id": "TCGA-J7-A8I2",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-KV-A6GD",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-KV-A6GE",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-KV-A74V",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-MH-A55W",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-MH-A55Z",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-MH-A560",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-MH-A561",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-MH-A562",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-MH-A854",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-MH-A855",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-MH-A856",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-MH-A857",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-O9-A75Z",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-P4-A5E6",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-P4-A5E7",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-P4-A5E8",
+            "value": "DECEASED"
+          },
+          {
+            "participant_id": "TCGA-P4-A5EA",
+            "value": "DECEASED"
+          },
+          {
+            "participant_id": "TCGA-P4-A5EB",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-P4-A5ED",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-P4-AAVK",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-P4-AAVL",
+            "value": "DECEASED"
+          },
+          {
+            "participant_id": "TCGA-P4-AAVM",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-P4-AAVO",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-PJ-A5Z8",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-PJ-A5Z9",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-PJ-A8JU",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-Q2-A5QZ",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-SX-A71R",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-SX-A71S",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-SX-A71U",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-SX-A71V",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-SX-A71W",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-SX-A7SL",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-SX-A7SM",
+            "value": "DECEASED"
+          },
+          {
+            "participant_id": "TCGA-SX-A7SN",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-SX-A7SO",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-SX-A7SP",
+            "value": "DECEASED"
+          },
+          {
+            "participant_id": "TCGA-SX-A7SQ",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-SX-A7SR",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-SX-A7SS",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-SX-A7SU",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-UN-AAZ9",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-UZ-A9PJ",
+            "value": "DECEASED"
+          },
+          {
+            "participant_id": "TCGA-UZ-A9PK",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-UZ-A9PL",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-UZ-A9PM",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-UZ-A9PN",
+            "value": "DECEASED"
+          },
+          {
+            "participant_id": "TCGA-UZ-A9PO",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-UZ-A9PP",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-UZ-A9PQ",
+            "value": "DECEASED"
+          },
+          {
+            "participant_id": "TCGA-UZ-A9PR",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-UZ-A9PS",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-UZ-A9PU",
+            "value": "DECEASED"
+          },
+          {
+            "participant_id": "TCGA-UZ-A9PV",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-UZ-A9PX",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-UZ-A9PZ",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-UZ-A9Q0",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-UZ-A9Q1",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-V9-A7HT",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-WN-A9G9",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-WN-AB4C",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-Y8-A894",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-Y8-A895",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-Y8-A896",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-Y8-A897",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-Y8-A898",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-Y8-A8RY",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-Y8-A8RZ",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-Y8-A8S0",
+            "value": "LIVING"
+          },
+          {
+            "participant_id": "TCGA-Y8-A8S1",
+            "value": "LIVING"
+          }
+        ]
+      }
+    ],
+    "patient_list": []
+  }
+}
