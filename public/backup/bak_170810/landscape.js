@@ -637,7 +637,7 @@ var landscape = (function (landscape)	{
 			});
 		});
 
-		console.log('Given Landscape data: ', opts);
-		console.log('Landscape Model data: ', model);
+		// console.log('Given Landscape data: ', opts);
+		// console.log('Landscape Model data: ', model);
 	};
 }(landscape||{}));

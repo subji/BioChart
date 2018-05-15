@@ -89,7 +89,7 @@ var eventHandler = (function (eventHandler)	{
 		데이터등을 반환해주는 함수.
 	 */
 	eventHandler.hoverSVG = function (data, idx)	{
-		console.log(data);
+		// console.log(data);
 	};
 
 	return eventHandler;

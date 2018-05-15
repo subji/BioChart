@@ -129,7 +129,7 @@ function pathwayConfig ()	{
 
 							$('#drug_modal').on('shown.bs.modal', function (e)	{
 								var bodyHeight = $(this).find('.modal-body').css('height');
-								console.log(bodyHeight);
+								// console.log(bodyHeight);
 								bio.table({
 									height: parseFloat(bodyHeight) - 70,
 									element: body,

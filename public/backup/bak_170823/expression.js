@@ -168,7 +168,7 @@ var expression = (function (expression)	{
 			items: ['Average'],
 			click: function (v)	{
 				model.now.func = v;
-				console.log('Function is: ', model.now.func);
+				// console.log('Function is: ', model.now.func);
 			},
 		});
 	};
@@ -692,7 +692,7 @@ var expression = (function (expression)	{
 
 		drawAll(o.data);
 
-		console.log('Given Expression data: ', o);
-		console.log('Expression Model data: ', model);
+		// console.log('Given Expression data: ', o);
+		// console.log('Expression Model data: ', model);
 	};
 }(expression||{}));

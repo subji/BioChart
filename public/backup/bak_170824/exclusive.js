@@ -76,8 +76,8 @@ var exclusive = (function ()	{
 		Network 차트를 그리는 함수.
 	 */
 	function drawNetwork ()	{
-		console.log(model.now.geneset,
-			model.data.network)
+		// console.log(model.now.geneset,
+			// model.data.network)
 		network({
 			data: model.data.network[model.now.geneset],
 			element: '#exclusivity_network',
@@ -338,7 +338,7 @@ var exclusive = (function ()	{
 	};
 
 	return function (o)	{
-		console.log('Given Exclusivity data: ', o);
+		// console.log('Given Exclusivity data: ', o);
 		var e = document.querySelector(o.element || null),
 				w = parseFloat(o.width || e.style.width || 1400),
 				h = parseFloat(o.height || e.style.height || 700);
@@ -369,6 +369,6 @@ var exclusive = (function ()	{
 
 		drawExclusivity();
 
-		console.log('Exclusivity Model data: ', model);
+		// console.log('Exclusivity Model data: ', model);
 	};
 }());

@@ -184,7 +184,7 @@ var preprocessing = (function (preprocessing)	{
 			return d.type = config.landscape.name(d.type), d;
 		});
 
-		console.log('Preprocess of Variants: ', vl);
+		// console.log('Preprocess of Variants: ', vl);
 
 		return vl;
 	};
@@ -439,7 +439,7 @@ var preprocessing = (function (preprocessing)	{
 		network(d.network); 
 		survival(d.heatmap);
 
-		console.log('Preprocess of Exclusivity: ', el);
+		// console.log('Preprocess of Exclusivity: ', el);
 
 		return el;
 	};
@@ -668,7 +668,7 @@ var preprocessing = (function (preprocessing)	{
 		linearAxis();
 		ordinalAxis();
 
-		console.log('Preprocess of Landscape: ', ml);
+		// console.log('Preprocess of Landscape: ', ml);
 		return ml;
 	};
 	// ============== Mutational Landscape =================
@@ -907,7 +907,7 @@ var preprocessing = (function (preprocessing)	{
 			d.y = exp.axis.bar.y[1];
 		});
 
-		console.log('Preprocessing of Expression: ', exp);
+		// console.log('Preprocessing of Expression: ', exp);
 		return exp;
 	};
 	// ============== Expression =================

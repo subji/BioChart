@@ -16,7 +16,7 @@ router.post('/datas', function(req, res, next) {
 	glob(url + '/' + chart + '*', function (err, files)	{
 		var sendSet = [];
 
-		console.log(files)
+		// console.log(files)
 		files.forEach(function (file)	{
 			var fileData = fs.readFileSync(file, 'utf8');
 			

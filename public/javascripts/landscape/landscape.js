@@ -291,7 +291,7 @@ function landscape ()	{
 				return false;			
 			}
 		} catch(err)	{
-			console.log('')
+			// console.log('')
 		} 
 
 		d3.select(that)

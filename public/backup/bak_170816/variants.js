@@ -260,7 +260,7 @@ var variants = (function (variants)	{
 		title();
 		drawVariants();
 
-		console.log('Given Variants data: ', o);
-		console.log('Variants model data: ', model);
+		// console.log('Given Variants data: ', o);
+		// console.log('Variants model data: ', model);
 	};
 }(variants||{}));

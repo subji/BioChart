@@ -48,8 +48,6 @@ function survival ()	{
 			}
 		});
 
-		console.log(all, pure)
-
 		return { month: month, pure: pure, all: all };
 	};
 	/*

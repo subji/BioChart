@@ -36,7 +36,7 @@ function clinicalGenerator ()	{
 			bio.iteration.loop(values, function (val, idx)	{
 				var result = '#';
 
-				console.log(val);
+				// console.log(val);
 
 				if (val !== 'NA')	{
 					var valueLen = val.length;

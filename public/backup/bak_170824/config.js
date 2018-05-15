@@ -1213,7 +1213,6 @@ config.variants.needle = {
 	on: {
 		mouseover: function (d, i, m)	{
 			draw.toFront(this);
-			console.log(this);
 
 			tooltip({
 				element: this,
@@ -1269,7 +1268,6 @@ config.variants.needleGraph = {
 			return cv.now.width[d.info.identifier] = r;
 		},
 		height: function (d, i, m)	{
-			console.log(m.sh)
 			return m.sh;
 		},
 	},
