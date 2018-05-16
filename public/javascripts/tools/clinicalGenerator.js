@@ -23,7 +23,8 @@ function clinicalGenerator ()	{
 		bio.iteration.loop(clinicals, function (clinical, values)	{
 			var i = 0,
 				beforeValue = '',
-				sameLength = 1;
+				sameLength = 1,
+				colorObj = {};
 
 			bio.iteration.loop(values, function (v)	{
 				if (beforeValue.length === v.length)	{
@@ -34,9 +35,8 @@ function clinicalGenerator ()	{
 			});
 
 			bio.iteration.loop(values, function (val, idx)	{
-				var result = '#';
-
-				// console.log(val);
+				var result = '#',
+					tempArr = [];
 
 				if (val !== 'NA')	{
 					var valueLen = val.length;
@@ -44,7 +44,9 @@ function clinicalGenerator ()	{
 					i = i > valueLen ? i - valueLen : i;
 
 					for (var len = i + 3; i < len; i++)	{
-						var first = i.toString(16),
+						var first = isNaN(val.charCodeAt(i)) === true ?
+							val.charCodeAt(Math.abs(valueLen - i + (sameLength - 3))).toString(16).split('')[1] :
+							val.charCodeAt(i).toString(16).split('')[0],
 							secnd = isNaN(val.charCodeAt(i)) === true ? 
 							val.charCodeAt(Math.abs(valueLen - i + (sameLength - 3))).toString(16).split('')[1] : 
 							val.charCodeAt(i).toString(16).split('')[1];
@@ -52,19 +54,25 @@ function clinicalGenerator ()	{
 						if (sameLength > 1)	{
 							if (i % 2 == 0)	{
 								result += (secnd + first);
-							} if (i % 3 == 0)  {
+							} if (i % 2 == 1)  {
 								result += (first + secnd);
 							}
 						} else {
 							result += (secnd + first);
 						}
+						
+						tempArr.push(first, secnd);
 					}
 
 					model[val].color = result;
+
+					colorObj[val] = tempArr;
 				} else {
 					model[val].color = naColor;
 				}
 			});
+
+			console.log(colorObj)
 		});
 	};
 

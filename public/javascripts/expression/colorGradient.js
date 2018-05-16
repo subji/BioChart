@@ -13,14 +13,12 @@ function colorGradient ()	{
 		Gradient 색상과 비율을 설정하는 함수.
 	 */
 	function setColorRate (offset, colors)	{
-		var copyOffset = [].concat(offset)
-											 .splice(1, offset.length - 2);
+		var copyOffset = [].concat(offset).splice(1, offset.length - 2);
 
 		setOffset('0%', colors[0]);
 
 		bio.iteration.loop(copyOffset, function (cp, idx)	{
-			var value = Math.round((bio.math.max(offset) - 
-															bio.math.min(offset)) / cp * 10);
+			var value = Math.round((bio.math.max(offset) - bio.math.min(offset)) / cp === 0 ? 1 : (cp * 10));
 
 			model.offsets.show.push({
 				offset: value - model.adjustValue + '%',
@@ -46,8 +44,7 @@ function colorGradient ()	{
 		model.colors = opts.colors || ['#000000', '#FFFFFF'];
 		model.offset = opts.offset || [0, 100];
 		model.defs = model.element.append('defs');
-		model.lineGradient = model.defs.append('linearGradient')
-																	 .attr('id', model.id);
+		model.lineGradient = model.defs.append('linearGradient').attr('id', model.id);
 
 		setColorRate(model.offset, model.colors);
 
@@ -55,10 +52,10 @@ function colorGradient ()	{
 		 .data(model.offsets.show).enter()
 		 .append('stop')
 		 .attr('offset', function (data, idx)	{ 
-		 		return data.offset; 
+			return data.offset; 
 		 })
 		 .attr('stop-color', function (data, idx)	{
-		 		return data.color;
+			return data.color;
 		 });
 
 		 return model;

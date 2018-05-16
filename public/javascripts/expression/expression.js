@@ -257,8 +257,7 @@ function expression ()	{
 			});
 
 			bio.rectangle({
-				element: bio.rendering()
-										.addGroup(svg, 0, 0, 'gradient-shape'),
+				element: bio.rendering().addGroup(svg, 0, 0, 'gradient-shape'),
 				attr: shapeCnf.attr,
 				style: shapeCnf.style,
 			}, model);
@@ -270,7 +269,7 @@ function expression ()	{
 				range: axisCnf.range,
 				margin: axisCnf.margin,
 				exclude: axisCnf.exclude,
-				tickValues: [axis[0], axis[2]],
+				tickValues: [axis[0], axis[1], axis[2]],
 				domain: [axis[0], axis[2]],
 			}).selectAll('text').style('fill', '#999999');
 		});
@@ -781,42 +780,46 @@ function expression ()	{
 				attr: divCnf.attr,
 				on: {
 					mouseover: function (data, idx, that)	{
-						if (!model.isDraggable)	{
-							if (data.text.indexOf('Low') > -1)	{
-								var nowLowPid = that.invert(
-									that.position.now.low || 
-									that.position.init.low),
-										nowScore = that.data.bar.filter(function (d)	{
-											if (d.x === nowLowPid)	{
-												return d.value;
+						if (this.tagName === 'polygon')	{
+							if (!model.isDraggable) {
+								if (data.text.indexOf('Low') > -1) {
+									var nowLowPid = that.invert(
+											that.position.now.low ||
+											that.position.init.low),
+										nowScore = that.data.bar.filter(function (d) {
+											if (d.x === nowLowPid) {
+												return d.value.toString();
 											};
 										})[0].value;
 
-								bio.tooltip({
-									element: this,
-									contents: '<b>' + nowScore + '</b>',
-								});
-							} else {
-								var nowHighPid = that.invert(
-									that.position.now.high || 
-									that.position.init.high),
-										nowScore = that.data.bar.filter(function (d)	{
-										if (d.x === nowHighPid)	{
-											return d.value;
-										};
-									})[0].value;
+									bio.tooltip({
+										element: this,
+										contents: '<b>' + nowScore + '</b>',
+									});
+								} else {
+									var nowHighPid = that.invert(
+											that.position.now.high ||
+											that.position.init.high),
+										nowScore = that.data.bar.filter(function (d) {
+											if (d.x === nowHighPid) {
+												return d.value.toString();
+											};
+										})[0].value;
 
-								bio.tooltip({
-									element: this,
-									contents: '<b>' + nowScore + '</b>',
-								});
+									bio.tooltip({
+										element: this,
+										contents: '<b>' + nowScore + '</b>',
+									});
+								}
 							}
 						}
 					},
 					mouseout: function (data, idx, that)	{
-						bio.tooltip('hide');
-
-						model.isDraggable = false;
+						if (this.tagName === 'polygon')	{
+							bio.tooltip('hide');
+	
+							model.isDraggable = false;
+						}
 					}
 				},
 				call: {
@@ -847,7 +850,7 @@ function expression ()	{
 						var nowLowPid = that.invert(that.position.now.low),
 								nowScore = that.data.bar.filter(function (d)	{
 									if (d.x === nowLowPid)	{
-										return d.value;
+										return d.value.toString();
 									};
 								})[0].value;
 
@@ -884,7 +887,7 @@ function expression ()	{
 						var nowHighPid = that.invert(that.position.now.high),
 								nowScore = that.data.bar.filter(function (d)	{
 								if (d.x === nowHighPid)	{
-									return d.value;
+									return d.value.toString();
 								};
 							})[0].value;
 

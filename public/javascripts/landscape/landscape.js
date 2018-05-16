@@ -774,16 +774,12 @@ function landscape ()	{
 		Landscape 축들을 그려주는 함수.
 	 */
 	function drawAxis (part, direction)	{
-		var p = {
-			sample: 's_s', gene: 'gene', pq: 'pq', group: 's_g'
-		}[part];
+		var p = { sample: 's_s', gene: 'gene', pq: 'pq', group: 's_g' }[part];
 
-		bio.layout().get(model.setting.svgs, [p], 
-		function (id, svg)	{
-			var config = bio.landscapeConfig().axis(
-										part, direction, svg),
-					common = bio.landscapeConfig().axis('common'),
-					data = model.data.axis[part][direction.toLowerCase()];
+		bio.layout().get(model.setting.svgs, [p], function (id, svg)	{
+			var config = bio.landscapeConfig().axis(part, direction, svg),
+				common = bio.landscapeConfig().axis('common'),
+				data = model.data.axis[part][direction.toLowerCase()];
 			// Group 의 경우 각각에 데이터가 들어있으므로 Looping 을 하여
 			// 맞은 값을 가져온다.
 			if (part === 'group')	{
@@ -791,17 +787,16 @@ function landscape ()	{
 					// id 가 / 가 들어간 경우 '' 처리를 하므로
 					// / 가 들어간 데이터는 처리가 되지 않는다.
 					// / 가 들어간 Clinical 에도 적용되게 하였다.
-					if (id.indexOf(g[0].removeWhiteSpace()
-														 .replace('/', '')) > -1)	{
+					if (id.indexOf(g[0].removeWhiteSpace() .replace('/', '')) > -1)	{
 						data = g;
 					}
 				});
 			} 
 
 			var geneDrag = d3.drag()
-											 .on('start', geneDragStart)
-											 .on('drag', geneDragMove)
-											 .on('end', geneDragEnd);
+				.on('start', geneDragStart)
+				.on('drag', geneDragMove)
+				.on('end', geneDragEnd);
 
 			var axises = bio.axises()[config.direction]({
 				element: svg,
@@ -920,6 +915,8 @@ function landscape ()	{
 				})
 				.call(geneDrag);
 		});
+		// Clinical axis 세로 중앙 정렬.
+		d3.selectAll('#landscape_axis_group text').style('dominant-baseline', 'hanging');
 	};
 	/*
 		Sort 버튼이 어느 버튼인지 반환하는 함수.
