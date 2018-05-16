@@ -915,8 +915,17 @@ function landscape ()	{
 				})
 				.call(geneDrag);
 		});
+		d3.selectAll('#landscape_axis_group')
+		.style('text-overflow', 'ellipsis')
+		.style('white-space', 'nowrap');
 		// Clinical axis 세로 중앙 정렬.
-		d3.selectAll('#landscape_axis_group text').style('dominant-baseline', 'hanging');
+		d3.selectAll('#landscape_axis_group text')
+		.attr('dy', function (d)	{
+			var mdy = parseFloat(d3.select(this.parentNode.parentNode.parentNode).attr('height')),
+				th = bio.drawing().textSize.height(d);
+			
+			return mdy / 2 + ((th / 2)) - 5;
+		});
 	};
 	/*
 		Sort 버튼이 어느 버튼인지 반환하는 함수.

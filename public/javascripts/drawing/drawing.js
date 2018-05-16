@@ -14,13 +14,13 @@ function drawing ()	{
 	function textHeight (text, block)	{
 		// var result = {};
 
-  //   block.style.verticalAlign = 'baseline';
-  //   result.ascent = block.offsetTop - text.offsetTop;
-  //   block.style.verticalAlign = 'bottom';
-  //   result.height = block.offsetTop - text.offsetTop;
-  //   result.descent = result.height - result.ascent;
+	//   block.style.verticalAlign = 'baseline';
+	//   result.ascent = block.offsetTop - text.offsetTop;
+	//   block.style.verticalAlign = 'bottom';
+	//   result.height = block.offsetTop - text.offsetTop;
+	//   result.descent = result.height - result.ascent;
 
-    return text.getBoundingClientRect().height.toFixed();
+   		return text.getBoundingClientRect().height.toFixed();
     // return block.offsetTop - text.offsetTop - 2;
 	  // return result.height - 2;
 	};

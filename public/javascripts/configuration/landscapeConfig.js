@@ -40,7 +40,7 @@ function landscapeConfig ()	{
 				margin: [5, 0, 25, 0],
 			},
 			groupY: {
-				top: 5,
+				top: 0,
 				left: 30,
 				range: [0, 0],
 				direction: 'right', 
@@ -98,8 +98,7 @@ function landscapeConfig ()	{
 
 						if (d3.event.altKey)	{
 							return {
-								sorted: bio.landscapeSort()
-													 .gene(that.data.axis.heatmap.x, temp, 
+								sorted: bio.landscapeSort().gene(that.data.axis.heatmap.x, temp, 
 													 			 that.now.exclusivity_opt, that.data.type),
 								model: that,
 							};	
@@ -463,7 +462,11 @@ function landscapeConfig ()	{
 						return that.scaleX(data.x) || that.margin.left;
 					},
 					y: function (data, idx, that)	{
-						return that.scaleY(data.y);
+						var mdh = d3.select(this.parentNode.parentNode).attr('height'),
+							gh = bio.scales().band(that.scaleY);
+
+						return mdh / 2 - (gh / 2);
+						// return that.scaleY(data.y) + 5;
 					},
 					width: function (data, idx, that)	{
 						return bio.scales().band(that.scaleX);
