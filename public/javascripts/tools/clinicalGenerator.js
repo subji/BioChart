@@ -78,7 +78,7 @@ function clinicalGenerator ()	{
 			});
 		});
 
-		console.log(colorText)
+		// console.log(colorText)
 	};
 
 	function orders (clinicals)	{
