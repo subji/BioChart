@@ -20,7 +20,11 @@ function clinicalGenerator ()	{
 		색상을 정해준다.
 	 */
 	function colors (clinicals)	{
+		var colorText = '';
+
 		bio.iteration.loop(clinicals, function (clinical, values)	{
+			colorText += clinical;
+
 			var i = 0,
 				beforeValue = '',
 				sameLength = 1;
@@ -31,12 +35,19 @@ function clinicalGenerator ()	{
 				} else {
 					beforeValue = v;
 				}
+
+				colorText += v;
 			});
 
-			bio.iteration.loop(values, function (val, idx)	{
-				var newValue = clinical + val + idx + clinical + val + idx;
+			// for (var i = 0; i < 16; i++)	{
+			// 	console.log(i.toString(16), 'g'.toString(16));
+			// }
 
+			bio.iteration.loop(values, function (val, idx)	{
+				var newValue = clinical + val + val;
 				var result = '#';
+
+				console.log(newValue)
 
 				if (val !== 'NA')	{
 					var valueLen = newValue.length;
@@ -66,6 +77,8 @@ function clinicalGenerator ()	{
 				}
 			});
 		});
+
+		console.log(colorText)
 	};
 
 	function orders (clinicals)	{
