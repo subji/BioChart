@@ -47,7 +47,7 @@ function clinicalGenerator ()	{
 				var newValue = clinical + val + val;
 				var result = '#';
 
-				console.log(newValue)
+				// console.log(newValue)
 
 				if (val !== 'NA')	{
 					var valueLen = newValue.length;
