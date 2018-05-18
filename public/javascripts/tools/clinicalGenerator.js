@@ -149,12 +149,8 @@ function clinicalGenerator ()	{
 	return function (clinicalData, chart)	{
 		model = {};
 		
-		if (Object.keys(bio.boilerPlate.clinicalInfo).length === 0)	{
-			toArrClinicalData(clinicalData, chart);
+		toArrClinicalData(clinicalData, chart);
 
-			bio.boilerPlate.clinicalInfo = model;
-		} else {
-			bio.boilerPlate.clinicalInfo = bio.boilerPlate.clinicalInfo;
-		} 
+		bio.boilerPlate.clinicalInfo = model; 
 	};
 };
