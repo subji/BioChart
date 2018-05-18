@@ -1,84 +1,69 @@
 function clinicalGenerator ()	{
 	'use strict';
 
-	var model = {},
-			naColor = '#D6E2E3';
-
-	function getRandomColor ()	{
-		var letters = '0123456789ABCDEF',
-				color = '#';
-
-		for (var i = 0; i < 6; i++)	{
-			color += letters[Math.floor(Math.random() * 16)];
-		}
-
-		return color;
-	}
+	var model = {}, 
+		naColor = '#D6E2E3';
 	/*
 		Clinical 의 색상을 지정해주는 함수.
 		이는 Clinical 의 개수와 상관없이 일정하게 
 		색상을 정해준다.
 	 */
 	function colors (clinicals)	{
-		var colorText = '';
+		var idx = 1,
+			clinicalColorArr = [],
+			colorArr = [];
 
-		bio.iteration.loop(clinicals, function (clinical, values)	{
-			colorText += clinical;
+		function getHexaString (num)	{
+			num = parseInt(num);
 
-			var i = 0,
-				beforeValue = '',
-				sameLength = 1;
+			if (num <= 15)	{
+				return num.toString(16);
+			} else {
+				var remain = Math.round(num / 15) + (num % 15);
 
-			bio.iteration.loop(values, function (v)	{
-				if (beforeValue.length === v.length)	{
-					sameLength += 1;
+				if (remain <= 15)	{
+					return remain.toString(16);
 				} else {
-					beforeValue = v;
+					return getHexaString(remain);
 				}
+			}
+		};
 
-				colorText += v;
+		bio.iteration.loop(clinicals, function (c, values)	{
+			var colorText = c.hashCode(idx++);
+
+			bio.iteration.loop(values, function (v, i)	{
+				colorText += v.hashCode(i) + c.hashCode(i * 2);
 			});
 
-			// for (var i = 0; i < 16; i++)	{
-			// 	console.log(i.toString(16), 'g'.toString(16));
-			// }
+			clinicalColorArr.push(colorText);
+			colorArr.push([]);
+		});
 
-			bio.iteration.loop(values, function (val, idx)	{
-				var newValue = clinical + val + val;
-				var result = '#';
+		bio.iteration.loop(clinicalColorArr, function (text, index)	{
+			var hexTxt = '';
 
-				// console.log(newValue)
+			for (var i = 0, l = text.length; i < l; i+=2)	{
+				hexTxt += getHexaString(text.substring(i, i + 2));
 
-				if (val !== 'NA')	{
-					var valueLen = newValue.length;
+				if (hexTxt.length === 6)	{
+					colorArr[index].push('#' + hexTxt);
+					hexTxt = '';
+				}
+			}
+		});
 
-					i = i > valueLen ? i - valueLen : i;
+		bio.iteration.loop(colorArr, function (c, ci) {
+			var key = Object.keys(clinicals)[ci];
 
-					for (var len = i + 3; i < len; i++)	{
-						var first = i.toString(16),
-							secnd = isNaN(newValue.charCodeAt(i)) === true ? 
-							newValue.charCodeAt(Math.abs(valueLen - i * sameLength)).toString(16).split('')[1] : 
-							newValue.charCodeAt(i).toString(16).split('')[1];
-						
-						if (sameLength > 1)	{
-							if (i % 2 == 0)	{
-								result += (secnd + first);
-							} if (i % 2 == 1)  {
-								result += (first + secnd);
-							}
-						} else {
-							result += (secnd + first);
-						}
-					}
-
-					model[val].color = result;
+			bio.iteration.loop(clinicals[key], function (v, vi) {
+				if (v !== 'NA')	{
+					model[v].color = colorArr[ci][vi];
 				} else {
-					model[val].color = naColor;
+					model[v].color = naColor;
 				}
 			});
 		});
-
-		// console.log(colorText)
 	};
 
 	function orders (clinicals)	{
@@ -163,9 +148,13 @@ function clinicalGenerator ()	{
 
 	return function (clinicalData, chart)	{
 		model = {};
+		
+		if (Object.keys(bio.boilerPlate.clinicalInfo).length === 0)	{
+			toArrClinicalData(clinicalData, chart);
 
-		toArrClinicalData(clinicalData, chart);
-
-		bio.boilerPlate.clinicalInfo = model;
+			bio.boilerPlate.clinicalInfo = model;
+		} else {
+			bio.boilerPlate.clinicalInfo = bio.boilerPlate.clinicalInfo;
+		} 
 	};
 };

@@ -50,4 +50,26 @@ function strings ()	{
 	String.prototype.replaceAll = function (target, change)	{
 		return this.replace(new RegExp(target, 'ig'), change);
 	};
+	/*
+		문자열의 Hashcode 값을 추출하는 함수.
+	*/
+	String.prototype.hashCode = function (shift)	{
+		var hash = 0, 
+			i, 
+			chr;
+
+		shift = shift || 5;
+
+		if (this.length === 0) {
+			return hash;
+		}
+
+		for (i = 0; i < this.length; i++)	{
+			chr = this.charCodeAt(i);
+			hash = ((hash << shift) - hash) + chr;
+			hash |= 0;
+		}
+
+		return Math.abs(hash).toString();
+	};
 };
