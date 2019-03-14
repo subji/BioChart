@@ -99,6 +99,7 @@ var SurvivalCurve = function() {
     function initLines() {
         // elem.line = d3.svg.line()
         elem.line = d3.line()
+            .curve(d3.curveStepAfter)
             // .interpolate("step-after")
             .x(function(d) { 
                 return elem.xScale(d.time); 

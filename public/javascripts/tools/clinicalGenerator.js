@@ -1,12 +1,10 @@
 function clinicalGenerator ()	{
 	'use strict';
 
-	var model = {}, 
-		naColor = '#D6E2E3';
+	var model = {};
 	/*
 		Clinical 의 색상을 지정해주는 함수.
-		이는 Clinical 의 개수와 상관없이 일정하게 
-		색상을 정해준다.
+		이는 Clinical 의 개수와 상관없이 일정하게 색상을 정해준다.
 	 */
 	function colors (clinicals)	{
 		var idx = 1,
@@ -60,7 +58,7 @@ function clinicalGenerator ()	{
 				if (v !== 'NA')	{
 					model[v].color = colorArr[ci][vi];
 				} else {
-					model[v].color = naColor;
+					model[v].color = '#D6E2E3';
 				}
 			});
 		});

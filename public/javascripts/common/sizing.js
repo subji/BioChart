@@ -153,8 +153,8 @@ function sizing ()	{
 			landscape_pq: { width: w * 0.1, height: geneHeight },
 		};
 
-		bio.iteration.loop(isPlotted, function (isP)	{
-			if (isP.indexOf('pq') > -1 || isP.indexOf('gene') > -1)	{
+		bio.iteration.loop(isPlotted, function (isP, isV)	{
+			if (isP.indexOf('pq') > -1 && !isV)	{
 				id.landscape_sample.width = w * 0.66;
 				id.landscape_heatmap.width = w * 0.66;
 				id.landscape_group.width = w * 0.66;
